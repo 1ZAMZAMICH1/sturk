@@ -1,16 +1,14 @@
 // src/components/Hero.jsx
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Clouds, Cloud, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import './Hero.css';
 import heroTextImg from '../assets/hero-text.png';
 
-// 1. Оборачиваем сцену в memo.
-// Это гарантирует, что даже если React захочет обновить страницу (из-за текста),
-// облака не шелохнутся. Они будут заморожены.
-const HeroScene = React.memo(() => {
+// Компонент сцены
+const HeroScene = () => {
   return (
     <>
       <ambientLight intensity={0.5} />
@@ -28,7 +26,7 @@ const HeroScene = React.memo(() => {
         noise={1} 
       />
 
-      {/* ТВОИ НАСТРОЙКИ ОБЛАКОВ (1 в 1) */}
+      {/* ТВОИ ОБЛАКА */}
       <Clouds material={THREE.MeshBasicMaterial} limit={400}> 
         <Cloud seed={10} segments={120} bounds={[50, 40, 2]} volume={60} color="#1a0b05" position={[0, 0, -18]} speed={0} opacity={1} />
         <Cloud seed={20} segments={80} bounds={[40, 30, 5]} volume={40} color="#2e1608" position={[0, 0, -14]} speed={0.02} opacity={0.95} />
@@ -42,35 +40,46 @@ const HeroScene = React.memo(() => {
       <fog attach="fog" args={['#1a0b05', 5, 40]} />
     </>
   );
-});
+};
 
 const Hero = () => {
   const [isReady, setIsReady] = useState(false);
+  const [renderKey, setRenderKey] = useState(0);
 
-  // useMemo здесь критически важен. Он держит сцену в памяти.
-  const stableScene = useMemo(() => <HeroScene />, []);
+  // ХАК: Принудительный перезапуск сцены (симуляция StrictMode на проде)
+  useEffect(() => {
+    // Ждем 50мс и заставляем сцену перерисоваться (ключ меняется 0 -> 1)
+    const timer = setTimeout(() => {
+      setRenderKey(1); 
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // useMemo "запоминает" сцену, но зависит от renderKey.
+  // Когда renderKey станет 1, сцена пересоздастся (станет "вторым вариантом", который ты любишь)
+  // и после этого застынет.
+  const scene = useMemo(() => <HeroScene />, [renderKey]);
 
   return (
     <div className="hero-container">
       <div className="texture-overlay"></div>
       <div className="vignette-overlay"></div>
 
-      {/* 
-         ОПТИМИЗАЦИЯ:
-         1. dpr={[1, 1.5]} -> Ограничиваем качество до 1.5x (вместо 2x/3x). Картинка почти та же, нагрузка на 50% меньше.
-         2. gl={{ antialias: false }} -> Отключаем сглаживание краев. Для облаков это не видно, а FPS растет.
-         3. powerPreference="high-performance" -> Просим браузер включить мощную видеокарту.
-      */}
       <Canvas 
+        // Важно: key={renderKey} заставляет React полностью убить и создать Канвас заново
+        key={renderKey}
         camera={{ position: [0, 0, 14], fov: 60 }}
+        // ОПТИМИЗАЦИЯ: Включена (1.5x качество, без сглаживания)
         dpr={[1, 1.5]}
         gl={{ antialias: false, powerPreference: "high-performance" }}
         onCreated={() => {
-          // Таймер для текста
-          setTimeout(() => setIsReady(true), 500);
+          // Показываем текст только если это уже "второй" (финальный) рендер
+          if (renderKey === 1) {
+            setTimeout(() => setIsReady(true), 500);
+          }
         }}
       >
-        {stableScene}
+        {scene}
       </Canvas>
 
       <div className="hero-content">

@@ -7,15 +7,25 @@ import * as THREE from 'three';
 import './Hero.css';
 import heroTextImg from '../assets/hero-text.png';
 
-// 1. ЗАМОРОЗКА СЦЕНЫ
-// useMemo гарантирует, что этот кусок кода выполнится 1 раз.
-// Никаких повторных генераций, никаких сдвигов, никакого мерцания.
 const HeroScene = React.memo(() => {
+  // Выносим конфигурацию облаков в переменную, чтобы использовать дважды
+  const cloudConfig = (
+    <>
+      <Cloud seed={10} segments={120} bounds={[50, 40, 2]} volume={60} color="#1a0b05" position={[0, 0, -18]} speed={0} opacity={1} />
+      <Cloud seed={20} segments={80} bounds={[40, 30, 5]} volume={40} color="#2e1608" position={[0, 0, -14]} speed={0.02} opacity={0.95} />
+      <Cloud seed={30} segments={60} bounds={[35, 25, 6]} volume={30} color="#542a0c" position={[0, 0, -10]} speed={0.05} opacity={0.85} />
+      <Cloud seed={40} segments={50} bounds={[30, 20, 6]} volume={25} color="#783c12" position={[0, 0, -6]} speed={0.08} opacity={0.7} />
+      <Cloud seed={50} segments={40} bounds={[25, 15, 4]} volume={20} color="#9c5219" position={[0, 0, -2]} speed={0.12} opacity={0.6} />
+      <Cloud seed={60} segments={30} bounds={[20, 12, 4]} volume={15} color="#b86e28" position={[0, 0, 2]} speed={0.2} opacity={0.4} />
+    </>
+  );
+
   return (
     <>
-      <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, 10]} color="#ff7b00" intensity={2.5} />
-      <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={1} />
+      {/* СВЕТ: Усилен, чтобы компенсировать потерю яркости на проде */}
+      <ambientLight intensity={1.0} />
+      <pointLight position={[10, 10, 10]} color="#ff7b00" intensity={5.0} />
+      <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={3.0} />
 
       <Sparkles 
         count={800} 
@@ -23,19 +33,26 @@ const HeroScene = React.memo(() => {
         position={[0, 0, 10]} 
         size={2} 
         speed={0.4} 
-        opacity={0.8} 
+        opacity={1} 
         color="#ffcc66" 
         noise={1} 
       />
 
-      {/* ТВОИ ОБЛАКА (ОРИГИНАЛ) */}
+      {/* 
+         СЛОЙ 1: Основной
+      */}
       <Clouds material={THREE.MeshBasicMaterial} limit={400}> 
-        <Cloud seed={10} segments={120} bounds={[50, 40, 2]} volume={60} color="#1a0b05" position={[0, 0, -18]} speed={0} opacity={1} />
-        <Cloud seed={20} segments={80} bounds={[40, 30, 5]} volume={40} color="#2e1608" position={[0, 0, -14]} speed={0.02} opacity={0.95} />
-        <Cloud seed={30} segments={60} bounds={[35, 25, 6]} volume={30} color="#542a0c" position={[0, 0, -10]} speed={0.05} opacity={0.85} />
-        <Cloud seed={40} segments={50} bounds={[30, 20, 6]} volume={25} color="#783c12" position={[0, 0, -6]} speed={0.08} opacity={0.7} />
-        <Cloud seed={50} segments={40} bounds={[25, 15, 4]} volume={20} color="#9c5219" position={[0, 0, -2]} speed={0.12} opacity={0.6} />
-        <Cloud seed={60} segments={30} bounds={[20, 12, 4]} volume={15} color="#b86e28" position={[0, 0, 2]} speed={0.2} opacity={0.4} />
+        {cloudConfig}
+      </Clouds>
+
+      {/* 
+         СЛОЙ 2 (ДУБЛЬ): 
+         Мы рисуем те же облака второй раз поверх первых.
+         Это создает эффект "Strict Mode" с локалки: облака станут густыми,
+         яркими и примут ту форму, которая тебе нравится.
+      */}
+      <Clouds material={THREE.MeshBasicMaterial} limit={400} position={[0, 0, 0.1]}> 
+        {cloudConfig}
       </Clouds>
 
       <color attach="background" args={['#1a0b05']} />
@@ -47,7 +64,7 @@ const HeroScene = React.memo(() => {
 const Hero = () => {
   const [isReady, setIsReady] = useState(false);
   
-  // Создаем сцену и кладем в память. Больше она не изменится.
+  // Создаем сцену 1 раз.
   const stableScene = useMemo(() => <HeroScene />, []);
 
   return (
@@ -57,11 +74,14 @@ const Hero = () => {
 
       <Canvas 
         camera={{ position: [0, 0, 14], fov: 60 }}
-        // ВАЖНО: Заставляем Нетлифи использовать максимальное качество (как у тебя локально)
+        // Используем родное разрешение для четкости
         dpr={window.devicePixelRatio}
-        // Включаем сглаживание, чтобы облака были мягкими (как у тебя локально)
-        gl={{ antialias: true }}
-        onCreated={() => setTimeout(() => setIsReady(true), 500)}
+        // Включаем сглаживание для мягкости
+        gl={{ antialias: true, powerPreference: "high-performance" }}
+        onCreated={() => {
+           // Текст появится через полсекунды
+           setTimeout(() => setIsReady(true), 500);
+        }}
       >
         {stableScene}
       </Canvas>

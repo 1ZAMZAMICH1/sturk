@@ -1,17 +1,43 @@
-import React from 'react';
+// src/App.js
 import Hero from './components/Hero';
-import HistoricSite from './components/HistoricSite'; // Импортируй новый компонент
-import './App.css';
+import Categories from './components/Categories';
+import MapSection from './components/MapSection';
+import Hospitality from './components/Hospitality';
+import Guides from './components/Guides';
+import Articles from './components/Articles';
 
 function App() {
   return (
     <div className="App">
-      <main>
+      {/* Первая страница */}
+      <section style={{ height: '100vh' }}>
         <Hero />
-        <HistoricSite /> {/* Вот он */}
-        {/* Можешь добавить еще один такой же, чтобы проверить, что он тоже анимируется */}
-        {/* <HistoricSite /> */}
-      </main>
+      </section>
+
+      {/* Вторая страница */}
+      <section style={{ height: '100vh' }}>
+        <Categories />
+      </section>
+
+      {/* Третья страница */}
+      <section style={{ height: '100vh' }}>
+        <MapSection />
+      </section>
+
+      {/* Четвертая страница */}
+      <section style={{ height: '100vh' }}>
+        <Hospitality />
+      </section>
+
+      {/* Пятая страница */}
+      <section style={{ height: '100vh' }}>
+        <Guides />
+      </section>
+
+      {/* Шестая страница */}
+      <section style={{ height: '100vh' }}>
+        <Articles />
+      </section>
     </div>
   );
 }

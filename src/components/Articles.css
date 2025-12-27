@@ -1,0 +1,421 @@
+/* =========================================
+   1. ПЕРЕМЕННЫЕ И БАЗОВЫЕ НАСТРОЙКИ
+   ========================================= */
+:root {
+  /* Новая теплая гамма (темный уголь/войлок) */
+  --bg-stone: #181614;       
+  --card-bg: #22201e;        
+  --accent-gold: #c5a059;    
+  --text-primary: #e6e1d6;   
+  --text-secondary: #9c968f; 
+  --border-stone: #3d3630;   
+}
+
+.turkic-news-container {
+  background-color: var(--bg-stone);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: 'Times New Roman', serif;
+  
+  /* НОВЫЙ ФОН: Эффект темной ткани/ковра + виньетка */
+  background-image: 
+    radial-gradient(circle at center, rgba(0,0,0,0) 20%, rgba(0,0,0,0.8) 100%),
+    repeating-linear-gradient(45deg, rgba(197, 160, 89, 0.03) 0px, rgba(197, 160, 89, 0.03) 1px, transparent 1px, transparent 10px),
+    repeating-linear-gradient(-45deg, rgba(197, 160, 89, 0.03) 0px, rgba(197, 160, 89, 0.03) 1px, transparent 1px, transparent 10px);
+
+  /* Отступ для корректного скролла к якорю */
+  scroll-margin-top: 20px; 
+}
+
+/* =========================================
+   2. ЗАГОЛОВОК
+   ========================================= */
+.news-header {
+  text-align: center;
+  margin-bottom: 80px;
+  position: relative;
+}
+
+.news-title {
+  font-size: 3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--accent-gold);
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 0px #000;
+  border-bottom: 2px solid var(--accent-gold);
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.news-subtitle {
+  color: var(--text-secondary);
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
+/* =========================================
+   3. ЛЕНТА ВРЕМЕНИ (TIMELINE)
+   ========================================= */
+.timeline-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  padding: 10px 0;
+}
+
+/* Центральная линия */
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(to bottom, transparent, var(--accent-gold), transparent);
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+/* Обертка для позиционирования карточки */
+.article-card {
+  position: relative;
+  width: 50%;
+  padding: 0 40px 40px 40px;
+  box-sizing: border-box;
+}
+
+.article-card.left {
+  left: 0;
+  text-align: right;
+}
+
+.article-card.right {
+  left: 50%;
+  text-align: left;
+}
+
+/* =========================================
+   4. РОМБЫ (ТАМГА) - ИСПРАВЛЕННОЕ ЦЕНТРИРОВАНИЕ
+   ========================================= */
+.timeline-node {
+  position: absolute;
+  top: 20px;
+  width: 24px;
+  height: 24px;
+  background: var(--bg-stone);
+  border: 2px solid var(--accent-gold);
+  transform: rotate(45deg); 
+  z-index: 2;
+  transition: all 0.3s ease;
+  box-sizing: content-box;
+}
+
+.node-inner {
+  width: 10px;
+  height: 10px;
+  background: var(--accent-gold);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* МАТЕМАТИКА ЦЕНТРИРОВАНИЯ ДЛЯ ДЕСКТОПА */
+/* Ширина ромба с рамкой ~28px. Половина = 14px. */
+@media (min-width: 769px) {
+  .article-card.left .timeline-node {
+    left: 100%;       
+    margin-left: -14px; /* Сдвигаем влево на ровную половину */
+  }
+
+  .article-card.right .timeline-node {
+    left: 0;          
+    margin-left: -14px; /* Сдвигаем влево на ровную половину */
+  }
+}
+
+.article-card:hover .timeline-node {
+  background: var(--accent-gold);
+  box-shadow: 0 0 15px var(--accent-gold);
+}
+
+/* =========================================
+   5. ДИЗАЙН КАРТОЧКИ
+   ========================================= */
+.card-content {
+  display: flex;
+  background: var(--card-bg);
+  border: 1px solid var(--border-stone);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  overflow: hidden;
+}
+
+.article-card.left .card-content {
+  flex-direction: row-reverse; 
+}
+
+.article-card:hover .card-content {
+  transform: translateY(-5px);
+  border-color: var(--accent-gold);
+}
+
+/* Полоса с датой */
+.card-date-wrapper {
+  background: #131110;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--border-stone);
+  min-width: 40px;
+}
+
+.article-card.left .card-date-wrapper {
+  border-right: none;
+  border-left: 1px solid var(--border-stone);
+}
+
+.card-date {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  letter-spacing: 4px;
+  color: var(--accent-gold);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+/* Тело контента */
+.card-body {
+  padding: 20px;
+  flex: 1;
+  text-align: left;
+}
+
+.image-container {
+  position: relative;
+  margin-bottom: 15px;
+  overflow: hidden;
+  border: 1px solid var(--border-stone);
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s ease;
+  filter: sepia(30%) contrast(110%); /* Атмосферный фильтр */
+}
+
+.article-card:hover img {
+  transform: scale(1.05);
+  filter: sepia(0%);
+}
+
+.category-tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--accent-gold);
+  color: #000;
+  padding: 2px 10px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.card-body h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.4rem;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: normal;
+  letter-spacing: 1px;
+}
+
+.card-body p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 15px;
+}
+
+.read-more-btn {
+  background: transparent;
+  border: 1px solid var(--accent-gold);
+  color: var(--accent-gold);
+  padding: 8px 16px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.read-more-btn:hover {
+  background: var(--accent-gold);
+  color: #000;
+}
+
+/* =========================================
+   6. ПАГИНАЦИЯ (КНОПКИ ВНИЗУ)
+   ========================================= */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border-stone);
+  position: relative;
+}
+
+.pagination-container::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 10px;
+  height: 10px;
+  background: var(--accent-gold);
+}
+
+.page-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: 'Times New Roman', serif;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.3s;
+  padding: 10px 20px;
+}
+
+.page-btn:hover:not(:disabled) {
+  color: var(--accent-gold);
+}
+
+.page-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 15px;
+  margin: 0 20px;
+}
+
+.page-number {
+  width: 40px;
+  height: 40px;
+  background: var(--bg-stone);
+  border: 1px solid var(--border-stone);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.page-number.active {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
+  transform: scale(1.1);
+}
+
+.page-number:hover:not(.active) {
+  border-color: #777;
+  color: #fff;
+}
+
+.page-number::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 4px;
+  height: 4px;
+  background: transparent;
+  border-bottom: 1px solid var(--accent-gold);
+  border-right: 1px solid var(--accent-gold);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.page-number.active::after {
+  opacity: 1;
+}
+
+/* =========================================
+   7. АДАПТИВНОСТЬ (MOBILE)
+   ========================================= */
+@media (max-width: 768px) {
+  .news-title {
+    font-size: 2rem;
+  }
+
+  .timeline-line {
+    left: 20px;
+    transform: none; 
+  }
+
+  .article-card {
+    width: 100%;
+    padding-left: 60px;
+    padding-right: 0;
+    margin-bottom: 30px;
+  }
+  
+  .article-card.left, .article-card.right {
+    left: 0;
+    text-align: left;
+  }
+  
+  /* Пересчет центра ромба для мобилы (Линия на 20px -> Центр 22px -> Сдвиг -14px = 8px) */
+  .article-card.left .timeline-node,
+  .article-card.right .timeline-node {
+    left: 8px; 
+    right: auto;
+    margin-left: 0;
+  }
+
+  .card-content, 
+  .article-card.left .card-content {
+    flex-direction: row; 
+    border-left: 1px solid var(--border-stone);
+    border-right: 1px solid var(--border-stone);
+  }
+  
+  .card-date-wrapper,
+  .article-card.left .card-date-wrapper {
+    border-left: none;
+    border-right: 1px solid var(--border-stone);
+  }
+
+  .pagination-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .page-numbers {
+    order: 1;
+  }
+  
+  .page-btn {
+    order: 2;
+    width: 100%;
+    border: 1px solid var(--border-stone);
+  }
+}

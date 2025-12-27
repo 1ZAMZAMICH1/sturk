@@ -1,0 +1,111 @@
+/* src/components/MapSection.css */
+
+.map-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  /* Темный теплый фон (база под канвас) */
+  background-color: #261912; 
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- 3D ФОН --- */
+.hero-bg-container {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 0;
+}
+
+/* --- ЦВЕТОКОРРЕКЦИЯ (ВМЕСТО ПРОСТО ОВЕРЛЕЯ) --- */
+.color-grade-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 1; 
+  
+  /* ИСПОЛЬЗУЕМ ГРАДИЕНТ ДЛЯ ОБЪЕМА */
+  /* Центр светлее (песочный), края темнее (коричневый) */
+  background: radial-gradient(
+    circle at center, 
+    rgba(212, 175, 55, 0.2) 0%,   /* Золотистый центр */
+    rgba(139, 69, 19, 0.4) 60%,   /* Коричневые края */
+    rgba(60, 30, 10, 0.8) 100%    /* Темная виньетка */
+  );
+  
+  /* SOFT-LIGHT: Вплавляет цвет в 3D, повышая контраст и насыщенность, а не замыливая */
+  /* Если будет слишком темно, попробуй 'overlay' или 'screen' */
+  mix-blend-mode: soft-light; 
+}
+
+/* --- СВИТОК --- */
+.scroll-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 75vh;
+  z-index: 10;
+  /* Глубокая тень */
+  filter: drop-shadow(0 50px 100px rgba(0,0,0,0.9));
+}
+
+.roller-wrapper { height: 100%; flex-shrink: 0; position: relative; z-index: 20; }
+.roller-img { height: 100%; width: auto; display: block; filter: drop-shadow(15px 0 25px rgba(0,0,0,0.7)); }
+.roller-wrapper.right .roller-img { filter: drop-shadow(-15px 0 25px rgba(0,0,0,0.7)); }
+
+.paper-center {
+  position: relative;
+  height: 64%; 
+  width: 0px; 
+  transition: width 2.5s cubic-bezier(0.25, 1, 0.5, 1);
+  margin-left: -25px; 
+  margin-right: -25px; 
+  z-index: 5;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+}
+
+.scroll-container.open .paper-center { width: 65vw; }
+
+.paper-bg-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: fill; z-index: 1; }
+.map-mask-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; mix-blend-mode: multiply; opacity: 0.95; }
+
+/* LEAFLET */
+.leaflet-instance {
+  width: 100%; height: 100%;
+  background: transparent;
+  filter: sepia(0.4) contrast(1.2) brightness(0.9) saturate(0.6);
+}
+.inner-shadow-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 80px rgba(20, 10, 5, 0.8); pointer-events: none; z-index: 100; }
+
+/* --- UI --- */
+.map-ui {
+  position: absolute; bottom: 5vh; width: 100%; text-align: center; z-index: 50;
+  opacity: 0; transition: opacity 1s ease 2s;
+}
+.map-ui.visible { opacity: 1; }
+
+.ui-title { 
+  color: #d4af37; font-family: serif; font-size: 2.5rem; margin-bottom: 25px; 
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 1); letter-spacing: 3px; text-transform: uppercase; 
+}
+
+.ui-filters { display: flex; justify-content: center; gap: 15px; }
+
+.ui-btn { 
+  background: rgba(10, 5, 2, 0.8); border: 1px solid #8c7853; color: #dcc48e; padding: 12px 24px; border-radius: 4px; cursor: pointer; transition: all 0.3s; font-family: serif; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;
+}
+.ui-btn:hover, .ui-btn.active { 
+  background: #d4af37; color: #1a0b05; border-color: #d4af37; box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.custom-pin { display: flex; justify-content: center; align-items: center; }
+.pin-core { width: 8px; height: 8px; border-radius: 50%; border: 2px solid #fff; z-index: 2; box-shadow: 0 0 5px rgba(0,0,0,1); }
+.pin-glow { position: absolute; width: 24px; height: 24px; border-radius: 50%; opacity: 0.6; animation: pulse 2s infinite; }
+@keyframes pulse { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(2); opacity: 0; } }
+
+.glass-popup .leaflet-popup-content-wrapper { background: rgba(26, 11, 5, 0.95); color: #dcc48e; border: 1px solid #d4af37; border-radius: 2px; font-family: serif; }
+.glass-popup .leaflet-popup-tip { background: #d4af37; }
+.glass-popup h3 { margin: 0 0 5px 0; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 5px; text-transform: uppercase; }
+.glass-popup p { margin: 0; font-size: 0.85rem; color: #ccc; }

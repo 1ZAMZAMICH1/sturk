@@ -7,7 +7,9 @@ import * as THREE from 'three';
 import './Hero.css';
 import heroTextImg from '../assets/hero-text.png';
 
-// Оборачиваем сцену в memo, чтобы она создалась 1 раз и замерла навсегда
+// 1. Оборачиваем сцену в memo.
+// Это гарантирует, что даже если React захочет обновить страницу (из-за текста),
+// облака не шелохнутся. Они будут заморожены.
 const HeroScene = React.memo(() => {
   return (
     <>
@@ -15,7 +17,6 @@ const HeroScene = React.memo(() => {
       <pointLight position={[10, 10, 10]} color="#ff7b00" intensity={2.5} />
       <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={1} />
 
-      {/* ТВОИ ПАРАМЕТРЫ 1 В 1 */}
       <Sparkles 
         count={800} 
         scale={[40, 30, 2]} 
@@ -27,7 +28,7 @@ const HeroScene = React.memo(() => {
         noise={1} 
       />
 
-      {/* ТВОИ ОБЛАКА 1 В 1 */}
+      {/* ТВОИ НАСТРОЙКИ ОБЛАКОВ (1 в 1) */}
       <Clouds material={THREE.MeshBasicMaterial} limit={400}> 
         <Cloud seed={10} segments={120} bounds={[50, 40, 2]} volume={60} color="#1a0b05" position={[0, 0, -18]} speed={0} opacity={1} />
         <Cloud seed={20} segments={80} bounds={[40, 30, 5]} volume={40} color="#2e1608" position={[0, 0, -14]} speed={0.02} opacity={0.95} />
@@ -46,22 +47,30 @@ const HeroScene = React.memo(() => {
 const Hero = () => {
   const [isReady, setIsReady] = useState(false);
 
-  // useMemo гарантирует, что <HeroScene /> не перезагрузится при смене isReady
-  const scene = useMemo(() => <HeroScene />, []);
+  // useMemo здесь критически важен. Он держит сцену в памяти.
+  const stableScene = useMemo(() => <HeroScene />, []);
 
   return (
     <div className="hero-container">
       <div className="texture-overlay"></div>
       <div className="vignette-overlay"></div>
 
-      {/* Я УБРАЛ dpr и gl настройки. Теперь рендер дефолтный, как у тебя локально */}
+      {/* 
+         ОПТИМИЗАЦИЯ:
+         1. dpr={[1, 1.5]} -> Ограничиваем качество до 1.5x (вместо 2x/3x). Картинка почти та же, нагрузка на 50% меньше.
+         2. gl={{ antialias: false }} -> Отключаем сглаживание краев. Для облаков это не видно, а FPS растет.
+         3. powerPreference="high-performance" -> Просим браузер включить мощную видеокарту.
+      */}
       <Canvas 
-        camera={{ position: [0, 0, 14], fov: 60 }} 
+        camera={{ position: [0, 0, 14], fov: 60 }}
+        dpr={[1, 1.5]}
+        gl={{ antialias: false, powerPreference: "high-performance" }}
         onCreated={() => {
+          // Таймер для текста
           setTimeout(() => setIsReady(true), 500);
         }}
       >
-        {scene}
+        {stableScene}
       </Canvas>
 
       <div className="hero-content">

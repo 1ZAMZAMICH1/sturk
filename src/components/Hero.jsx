@@ -1,20 +1,21 @@
 // src/components/Hero.jsx
 
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Clouds, Cloud, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import './Hero.css';
 import heroTextImg from '../assets/hero-text.png';
 
-function HeroScene() {
+// Оборачиваем сцену в memo, чтобы она создалась 1 раз и замерла навсегда
+const HeroScene = React.memo(() => {
   return (
     <>
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} color="#ff7b00" intensity={2.5} />
       <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={1} />
 
-      {/* ЧАСТИЦЫ */}
+      {/* ТВОИ ПАРАМЕТРЫ 1 В 1 */}
       <Sparkles 
         count={800} 
         scale={[40, 30, 2]} 
@@ -26,7 +27,7 @@ function HeroScene() {
         noise={1} 
       />
 
-      {/* ОБЛАКА */}
+      {/* ТВОИ ОБЛАКА 1 В 1 */}
       <Clouds material={THREE.MeshBasicMaterial} limit={400}> 
         <Cloud seed={10} segments={120} bounds={[50, 40, 2]} volume={60} color="#1a0b05" position={[0, 0, -18]} speed={0} opacity={1} />
         <Cloud seed={20} segments={80} bounds={[40, 30, 5]} volume={40} color="#2e1608" position={[0, 0, -14]} speed={0.02} opacity={0.95} />
@@ -36,28 +37,41 @@ function HeroScene() {
         <Cloud seed={60} segments={30} bounds={[20, 12, 4]} volume={15} color="#b86e28" position={[0, 0, 2]} speed={0.2} opacity={0.4} />
       </Clouds>
 
-      {/* Фон синхронизирован со второй страницей */}
       <color attach="background" args={['#1a0b05']} />
       <fog attach="fog" args={['#1a0b05', 5, 40]} />
     </>
   );
-}
+});
 
 const Hero = () => {
+  const [isReady, setIsReady] = useState(false);
+
+  // useMemo гарантирует, что <HeroScene /> не перезагрузится при смене isReady
+  const scene = useMemo(() => <HeroScene />, []);
+
   return (
     <div className="hero-container">
       <div className="texture-overlay"></div>
       <div className="vignette-overlay"></div>
 
-      <Canvas camera={{ position: [0, 0, 14], fov: 60 }}>
-        <HeroScene />
+      {/* Я УБРАЛ dpr и gl настройки. Теперь рендер дефолтный, как у тебя локально */}
+      <Canvas 
+        camera={{ position: [0, 0, 14], fov: 60 }} 
+        onCreated={() => {
+          setTimeout(() => setIsReady(true), 500);
+        }}
+      >
+        {scene}
       </Canvas>
 
       <div className="hero-content">
-        <img src={heroTextImg} alt="Туркестан" className="hero-text-image" />
+        <img 
+          src={heroTextImg} 
+          alt="Туркестан" 
+          className={`hero-text-image ${isReady ? 'visible' : ''}`} 
+        />
       </div>
 
-      {/* ПЕРЕХОД ВНИЗ */}
       <div className="hero-transition-bottom"></div>
     </div>
   );

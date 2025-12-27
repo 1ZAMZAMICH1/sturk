@@ -7,9 +7,9 @@ import * as THREE from 'three';
 import './Hero.css';
 import heroTextImg from '../assets/hero-text.png';
 
-// Запоминаем сцену НАМЕРТВО.
-// useMemo гарантирует, что эти облака создадутся 1 раз.
-// Они не будут перерисовываться, не будут мерцать, не будут сдвигаться.
+// 1. ЗАМОРОЗКА СЦЕНЫ
+// useMemo гарантирует, что этот кусок кода выполнится 1 раз.
+// Никаких повторных генераций, никаких сдвигов, никакого мерцания.
 const HeroScene = React.memo(() => {
   return (
     <>
@@ -28,7 +28,7 @@ const HeroScene = React.memo(() => {
         noise={1} 
       />
 
-      {/* ТВОИ ОРИГИНАЛЬНЫЕ НАСТРОЙКИ (segments=120 и т.д.) */}
+      {/* ТВОИ ОБЛАКА (ОРИГИНАЛ) */}
       <Clouds material={THREE.MeshBasicMaterial} limit={400}> 
         <Cloud seed={10} segments={120} bounds={[50, 40, 2]} volume={60} color="#1a0b05" position={[0, 0, -18]} speed={0} opacity={1} />
         <Cloud seed={20} segments={80} bounds={[40, 30, 5]} volume={40} color="#2e1608" position={[0, 0, -14]} speed={0.02} opacity={0.95} />
@@ -47,7 +47,7 @@ const HeroScene = React.memo(() => {
 const Hero = () => {
   const [isReady, setIsReady] = useState(false);
   
-  // Создаем сцену один раз. Пустой массив [] значит "никогда не обновлять".
+  // Создаем сцену и кладем в память. Больше она не изменится.
   const stableScene = useMemo(() => <HeroScene />, []);
 
   return (
@@ -55,13 +55,12 @@ const Hero = () => {
       <div className="texture-overlay"></div>
       <div className="vignette-overlay"></div>
 
-      {/* 
-          Я УБРАЛ dpr, gl и powerPreference.
-          Теперь Канвас работает в "родном" режиме твоего монитора.
-          Облака будут четкими и той формы, которую ты видел в самом начале.
-      */}
       <Canvas 
         camera={{ position: [0, 0, 14], fov: 60 }}
+        // ВАЖНО: Заставляем Нетлифи использовать максимальное качество (как у тебя локально)
+        dpr={window.devicePixelRatio}
+        // Включаем сглаживание, чтобы облака были мягкими (как у тебя локально)
+        gl={{ antialias: true }}
         onCreated={() => setTimeout(() => setIsReady(true), 500)}
       >
         {stableScene}

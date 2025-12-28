@@ -1,24 +1,16 @@
-import React, { useState, useMemo, useEffect } from 'react'; // <--- ДОБАВИЛИ useEffect
+import React, { useState, memo } from 'react'; // Добавили 'memo'
 import { Canvas } from '@react-three/fiber';
 import { Clouds, Cloud, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import './Hero.css';
 import heroTextImg from '../assets/hero-text.png';
 
-const HeroScene = React.memo(() => {
-  // ↓↓↓ ГЛАВНЫЙ ФИКС ЗДЕСЬ ↓↓↓
-  // Мы создаем состояние, чтобы отложить рендеринг облаков на один кадр.
-  const [canRenderClouds, setCanRenderClouds] = useState(false);
-
-  // Этот хук выполнится один раз ПОСЛЕ первого рендера.
-  // Он включит флаг canRenderClouds, что вызовет второй рендер.
-  useEffect(() => {
-    // Небольшая задержка, чтобы гарантировать, что сцена готова.
-    const timer = setTimeout(() => setCanRenderClouds(true), 50); 
-    return () => clearTimeout(timer); // Очистка таймера
-  }, []);
-  
-  // Конфиг облаков остаётся без изменений
+// ↓↓↓ ГЛАВНЫЙ ФИКС ЗДЕСЬ ↓↓↓
+// 1. Мы создаем новый компонент, который содержит ТОЛЬКО проблемные облака.
+// 2. Мы оборачиваем его в React.memo().
+// Это говорит React: "Отрендери этот компонент ОДИН РАЗ и больше никогда его не трогай".
+// StrictMode не сможет заставить его перерисоваться и испортить облака.
+const MemoizedClouds = memo(() => {
   const cloudConfig = (
     <>
       <Cloud seed={10} segments={120} bounds={[50, 40, 2]} volume={60} color="#1a0b05" position={[0, 0, -18]} speed={0} opacity={1} />
@@ -32,36 +24,18 @@ const HeroScene = React.memo(() => {
 
   return (
     <>
-      {/* Свет и эффекты */}
-      <ambientLight intensity={1.2} />
-      <pointLight position={[10, 10, 10]} color="#ff7b00" intensity={5.0} />
-      <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={3.0} />
-      <Sparkles count={800} scale={[40, 30, 2]} position={[0, 0, 10]} size={2} speed={0.4} opacity={1} color="#ffcc66" noise={1} />
-
-      {/* 
-        ↓↓↓ РЕНДЕРИМ ОБЛАКА ТОЛЬКО КОГДА СРАБОТАЕТ useEffect ↓↓↓
-        Это гарантирует, что мы получим тот же результат, что и при втором рендере в StrictMode.
-      */}
-      {canRenderClouds && (
-        <>
-          <Clouds material={THREE.MeshBasicMaterial} limit={400}> 
-            {cloudConfig}
-          </Clouds>
-          <Clouds material={THREE.MeshBasicMaterial} limit={400} position={[0, 0, 0.1]}> 
-            {cloudConfig}
-          </Clouds>
-        </>
-      )}
-
-      <color attach="background" args={['#1a0b05']} />
-      <fog attach="fog" args={['#1a0b05', 5, 40]} />
+      <Clouds material={THREE.MeshBasicMaterial} limit={400}> 
+        {cloudConfig}
+      </Clouds>
+      <Clouds material={THREE.MeshBasicMaterial} limit={400} position={[0, 0, 0.1]}> 
+        {cloudConfig}
+      </Clouds>
     </>
   );
 });
 
 const Hero = () => {
   const [isReady, setIsReady] = useState(false);
-  const stableScene = useMemo(() => <HeroScene />, []);
 
   return (
     <div className="hero-container">
@@ -79,7 +53,16 @@ const Hero = () => {
         }}
         onCreated={() => setTimeout(() => setIsReady(true), 200)}
       >
-        {stableScene}
+        <ambientLight intensity={1.2} />
+        <pointLight position={[10, 10, 10]} color="#ff7b00" intensity={5.0} />
+        <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={3.0} />
+        <Sparkles count={800} scale={[40, 30, 2]} position={[0, 0, 10]} size={2} speed={0.4} opacity={1} color="#ffcc66" noise={1} />
+        
+        {/* Теперь мы используем наш "защищенный" компонент */}
+        <MemoizedClouds />
+
+        <color attach="background" args={['#1a0b05']} />
+        <fog attach="fog" args={['#1a0b05', 5, 40]} />
       </Canvas>
 
       <div className="hero-content">

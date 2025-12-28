@@ -1,16 +1,11 @@
-import React, { useState, memo } from 'react'; // Добавили 'memo'
-import { Canvas } from '@react-three/fiber';
+import React from 'react'; // <--- ВОТ ИСПРАВЛЕНИЕ
+import { Canvas, useThree } from '@react-three/fiber';
 import { Clouds, Cloud, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import './Hero.css';
 import heroTextImg from '../assets/hero-text.png';
 
-// ↓↓↓ ГЛАВНЫЙ ФИКС ЗДЕСЬ ↓↓↓
-// 1. Мы создаем новый компонент, который содержит ТОЛЬКО проблемные облака.
-// 2. Мы оборачиваем его в React.memo().
-// Это говорит React: "Отрендери этот компонент ОДИН РАЗ и больше никогда его не трогай".
-// StrictMode не сможет заставить его перерисоваться и испортить облака.
-const MemoizedClouds = memo(() => {
+const MemoizedClouds = React.memo(() => {
   const cloudConfig = (
     <>
       <Cloud seed={10} segments={120} bounds={[50, 40, 2]} volume={60} color="#1a0b05" position={[0, 0, -18]} speed={0} opacity={1} />
@@ -34,8 +29,33 @@ const MemoizedClouds = memo(() => {
   );
 });
 
+const Scene = ({ setIsReady }) => {
+  const { invalidate } = useThree();
+
+  React.useEffect(() => {
+    invalidate();
+
+    const timer = setTimeout(() => setIsReady(true), 200);
+    return () => clearTimeout(timer);
+  }, [invalidate, setIsReady]);
+
+  return (
+    <>
+      <ambientLight intensity={1.2} />
+      <pointLight position={[10, 10, 10]} color="#ff7b00" intensity={5.0} />
+      <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={3.0} />
+      <Sparkles count={800} scale={[40, 30, 2]} position={[0, 0, 10]} size={2} speed={0.4} opacity={1} color="#ffcc66" noise={1} />
+      
+      <MemoizedClouds />
+
+      <color attach="background" args={['#1a0b05']} />
+      <fog attach="fog" args={['#1a0b05', 5, 40]} />
+    </>
+  );
+};
+
 const Hero = () => {
-  const [isReady, setIsReady] = useState(false);
+  const [isReady, setIsReady] = React.useState(false);
 
   return (
     <div className="hero-container">
@@ -43,6 +63,7 @@ const Hero = () => {
       <div className="vignette-overlay"></div>
 
       <Canvas 
+        frameloop="demand" 
         camera={{ position: [0, 0, 14], fov: 60 }}
         dpr={window.devicePixelRatio}
         gl={{ 
@@ -51,18 +72,8 @@ const Hero = () => {
           outputEncoding: THREE.sRGBEncoding,
           toneMapping: THREE.ACESFilmicToneMapping
         }}
-        onCreated={() => setTimeout(() => setIsReady(true), 200)}
       >
-        <ambientLight intensity={1.2} />
-        <pointLight position={[10, 10, 10]} color="#ff7b00" intensity={5.0} />
-        <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={3.0} />
-        <Sparkles count={800} scale={[40, 30, 2]} position={[0, 0, 10]} size={2} speed={0.4} opacity={1} color="#ffcc66" noise={1} />
-        
-        {/* Теперь мы используем наш "защищенный" компонент */}
-        <MemoizedClouds />
-
-        <color attach="background" args={['#1a0b05']} />
-        <fog attach="fog" args={['#1a0b05', 5, 40]} />
+        <Scene setIsReady={setIsReady} />
       </Canvas>
 
       <div className="hero-content">

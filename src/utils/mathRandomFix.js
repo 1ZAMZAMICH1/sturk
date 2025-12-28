@@ -19,14 +19,28 @@ const originalRandom = Math.random;
 // Создаем детерминированный генератор
 const seededRng = new SeededRandom(42);
 
-// Подменяем Math.random
-Math.random = () => seededRng.next();
+// Счетчик вызовов для отладки
+let callCount = 0;
+const maxCalls = 10000; // Примерно столько нужно для инициализации облаков
 
-// Возвращаем оригинальный Math.random через 1 секунду
-// (этого достаточно для инициализации облаков)
-setTimeout(() => {
+// Подменяем Math.random с ограничением по количеству вызовов
+Math.random = () => {
+  callCount++;
+  
+  // После большого количества вызовов возвращаем оригинальный random
+  if (callCount > maxCalls) {
+    return originalRandom();
+  }
+  
+  return seededRng.next();
+};
+
+console.log('Math.random patched for cloud stability');
+
+// Функция для принудительного возврата (можно вызвать извне)
+window.__restoreMathRandom = () => {
   Math.random = originalRandom;
-  console.log('Math.random restored');
-}, 1000);
+  console.log('Math.random restored manually');
+};
 
 export default {};

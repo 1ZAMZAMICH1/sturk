@@ -1,59 +1,11 @@
-import React, { useState, memo, useEffect } from 'react';
+import React, { useState, memo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Clouds, Cloud, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import './Hero.css';
 import heroTextImg from '../assets/hero-text.png';
 
-// Детерминированный генератор для стабильности
-class SeededRandom {
-  constructor(seed) {
-    this.seed = seed % 2147483647;
-    if (this.seed <= 0) this.seed += 2147483646;
-  }
-  
-  next() {
-    this.seed = (this.seed * 16807) % 2147483647;
-    return (this.seed - 1) / 2147483646;
-  }
-}
-
-// Глобально фиксируем Math.random перед первым рендером облаков
-let originalRandom = null;
-let isRandomFixed = false;
-
-const fixMathRandom = () => {
-  if (!isRandomFixed) {
-    originalRandom = Math.random;
-    const seededRng = new SeededRandom(42);
-    Math.random = () => seededRng.next();
-    isRandomFixed = true;
-  }
-};
-
-const restoreMathRandom = () => {
-  if (isRandomFixed && originalRandom) {
-    Math.random = originalRandom;
-    isRandomFixed = false;
-  }
-};
-
 const MemoizedClouds = memo(() => {
-  useEffect(() => {
-    // Фиксируем Math.random перед монтированием
-    fixMathRandom();
-    
-    // Возвращаем через небольшую задержку после инициализации
-    const timer = setTimeout(() => {
-      restoreMathRandom();
-    }, 500);
-    
-    return () => {
-      clearTimeout(timer);
-      restoreMathRandom();
-    };
-  }, []);
-
   const cloudConfig = (
     <>
       <Cloud seed={10} segments={120} bounds={[50, 40, 2]} volume={60} color="#1a0b05" position={[0, 0, -18]} speed={0} opacity={1} />

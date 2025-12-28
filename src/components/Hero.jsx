@@ -1,11 +1,23 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react'; // <--- ДОБАВИЛИ useEffect
 import { Canvas } from '@react-three/fiber';
 import { Clouds, Cloud, Sparkles } from '@react-three/drei';
-import * as THREE from 'three'; // <--- ДОБАВИЛИ ЭТОТ ИМПОРТ
+import * as THREE from 'three';
 import './Hero.css';
 import heroTextImg from '../assets/hero-text.png';
 
 const HeroScene = React.memo(() => {
+  // ↓↓↓ ГЛАВНЫЙ ФИКС ЗДЕСЬ ↓↓↓
+  // Мы создаем состояние, чтобы отложить рендеринг облаков на один кадр.
+  const [canRenderClouds, setCanRenderClouds] = useState(false);
+
+  // Этот хук выполнится один раз ПОСЛЕ первого рендера.
+  // Он включит флаг canRenderClouds, что вызовет второй рендер.
+  useEffect(() => {
+    // Небольшая задержка, чтобы гарантировать, что сцена готова.
+    const timer = setTimeout(() => setCanRenderClouds(true), 50); 
+    return () => clearTimeout(timer); // Очистка таймера
+  }, []);
+  
   // Конфиг облаков остаётся без изменений
   const cloudConfig = (
     <>
@@ -20,29 +32,26 @@ const HeroScene = React.memo(() => {
 
   return (
     <>
-      {/* Свет остаётся без изменений */}
+      {/* Свет и эффекты */}
       <ambientLight intensity={1.2} />
       <pointLight position={[10, 10, 10]} color="#ff7b00" intensity={5.0} />
       <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={3.0} />
+      <Sparkles count={800} scale={[40, 30, 2]} position={[0, 0, 10]} size={2} speed={0.4} opacity={1} color="#ffcc66" noise={1} />
 
-      <Sparkles 
-        count={800} 
-        scale={[40, 30, 2]} 
-        position={[0, 0, 10]} 
-        size={2} 
-        speed={0.4} 
-        opacity={1} 
-        color="#ffcc66" 
-        noise={1} 
-      />
-
-      {/* Облака остаются без изменений */}
-      <Clouds material={THREE.MeshBasicMaterial} limit={400}> 
-        {cloudConfig}
-      </Clouds>
-      <Clouds material={THREE.MeshBasicMaterial} limit={400} position={[0, 0, 0.1]}> 
-        {cloudConfig}
-      </Clouds>
+      {/* 
+        ↓↓↓ РЕНДЕРИМ ОБЛАКА ТОЛЬКО КОГДА СРАБОТАЕТ useEffect ↓↓↓
+        Это гарантирует, что мы получим тот же результат, что и при втором рендере в StrictMode.
+      */}
+      {canRenderClouds && (
+        <>
+          <Clouds material={THREE.MeshBasicMaterial} limit={400}> 
+            {cloudConfig}
+          </Clouds>
+          <Clouds material={THREE.MeshBasicMaterial} limit={400} position={[0, 0, 0.1]}> 
+            {cloudConfig}
+          </Clouds>
+        </>
+      )}
 
       <color attach="background" args={['#1a0b05']} />
       <fog attach="fog" args={['#1a0b05', 5, 40]} />
@@ -59,19 +68,14 @@ const Hero = () => {
       <div className="texture-overlay"></div>
       <div className="vignette-overlay"></div>
 
-      {/* 
-        ↓↓↓ ОСНОВНЫЕ ИЗМЕНЕНИЯ ЗДЕСЬ ↓↓↓
-        Мы добавили свойство `gl` с настройками цвета и тонирования.
-        Именно это исправляет тусклую картинку на Netlify.
-      */}
       <Canvas 
         camera={{ position: [0, 0, 14], fov: 60 }}
         dpr={window.devicePixelRatio}
         gl={{ 
           antialias: true, 
           powerPreference: "high-performance",
-          outputEncoding: THREE.sRGBEncoding, 
-          toneMapping: THREE.ACESFilmicToneMapping 
+          outputEncoding: THREE.sRGBEncoding,
+          toneMapping: THREE.ACESFilmicToneMapping
         }}
         onCreated={() => setTimeout(() => setIsReady(true), 200)}
       >

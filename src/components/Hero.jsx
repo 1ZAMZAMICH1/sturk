@@ -1,3 +1,4 @@
+// src/components/Hero.jsx
 import React, { useState, memo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Clouds, Cloud, Sparkles } from '@react-three/drei';

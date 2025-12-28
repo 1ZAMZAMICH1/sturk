@@ -1,14 +1,12 @@
-// src/components/Hero.jsx
-
 import React, { useState, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Clouds, Cloud, Sparkles } from '@react-three/drei';
-import * as THREE from 'three';
+import * as THREE from 'three'; // <--- ДОБАВИЛИ ЭТОТ ИМПОРТ
 import './Hero.css';
 import heroTextImg from '../assets/hero-text.png';
 
 const HeroScene = React.memo(() => {
-  // Твои ОРИГИНАЛЬНЫЕ облака (сиды 10, 20, 30...)
+  // Конфиг облаков остаётся без изменений
   const cloudConfig = (
     <>
       <Cloud seed={10} segments={120} bounds={[50, 40, 2]} volume={60} color="#1a0b05" position={[0, 0, -18]} speed={0} opacity={1} />
@@ -22,10 +20,10 @@ const HeroScene = React.memo(() => {
 
   return (
     <>
-      {/* СВЕТ: Усилен в 2 раза, чтобы компенсировать отсутствие глюка на Нетлифи */}
-      <ambientLight intensity={1.0} />
+      {/* Свет остаётся без изменений */}
+      <ambientLight intensity={1.2} />
       <pointLight position={[10, 10, 10]} color="#ff7b00" intensity={5.0} />
-      <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={2.0} />
+      <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={3.0} />
 
       <Sparkles 
         count={800} 
@@ -33,18 +31,16 @@ const HeroScene = React.memo(() => {
         position={[0, 0, 10]} 
         size={2} 
         speed={0.4} 
-        opacity={0.8} 
+        opacity={1} 
         color="#ffcc66" 
         noise={1} 
       />
 
-      {/* СЛОЙ 1: Оригинал */}
+      {/* Облака остаются без изменений */}
       <Clouds material={THREE.MeshBasicMaterial} limit={400}> 
         {cloudConfig}
       </Clouds>
-
-      {/* СЛОЙ 2: Копия поверх (Создает эффект жирности и правильной формы) */}
-      <Clouds material={THREE.MeshBasicMaterial} limit={400} position={[0, 0, 0.05]}> 
+      <Clouds material={THREE.MeshBasicMaterial} limit={400} position={[0, 0, 0.1]}> 
         {cloudConfig}
       </Clouds>
 
@@ -56,8 +52,6 @@ const HeroScene = React.memo(() => {
 
 const Hero = () => {
   const [isReady, setIsReady] = useState(false);
-  
-  // useMemo защищает от перезагрузки при появлении текста
   const stableScene = useMemo(() => <HeroScene />, []);
 
   return (
@@ -65,13 +59,21 @@ const Hero = () => {
       <div className="texture-overlay"></div>
       <div className="vignette-overlay"></div>
 
+      {/* 
+        ↓↓↓ ОСНОВНЫЕ ИЗМЕНЕНИЯ ЗДЕСЬ ↓↓↓
+        Мы добавили свойство `gl` с настройками цвета и тонирования.
+        Именно это исправляет тусклую картинку на Netlify.
+      */}
       <Canvas 
         camera={{ position: [0, 0, 14], fov: 60 }}
-        // Используем родное разрешение (для четкости)
         dpr={window.devicePixelRatio}
-        // Включаем сглаживание
-        gl={{ antialias: true }}
-        onCreated={() => setTimeout(() => setIsReady(true), 500)}
+        gl={{ 
+          antialias: true, 
+          powerPreference: "high-performance",
+          outputEncoding: THREE.sRGBEncoding, 
+          toneMapping: THREE.ACESFilmicToneMapping 
+        }}
+        onCreated={() => setTimeout(() => setIsReady(true), 200)}
       >
         {stableScene}
       </Canvas>

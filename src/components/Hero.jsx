@@ -17,14 +17,10 @@ const CLOUD_DATA = [
 
 const MemoizedClouds = memo(() => {
   return (
-    <>
-      <Clouds key="clouds-base" seed={42} material={THREE.MeshBasicMaterial} limit={1000}>
-        {CLOUD_DATA.map(props => <Cloud {...props} />)}
-      </Clouds>
-      <Clouds key="clouds-overlay" seed={43} material={THREE.MeshBasicMaterial} limit={1000} position={[0, 0, 0.1]}>
-        {CLOUD_DATA.map(props => <Cloud {...props} />)}
-      </Clouds>
-    </>
+    <Clouds key="unified-clouds" seed={42} limit={1200}>
+      <meshBasicMaterial depthWrite={false} transparent />
+      {CLOUD_DATA.map(props => <Cloud {...props} />)}
+    </Clouds>
   );
 });
 
@@ -37,6 +33,7 @@ const Hero = () => {
       <div className="vignette-overlay"></div>
 
       <Canvas
+        key="hero-canvas"
         camera={{ position: [0, 0, 14], fov: 60 }}
         dpr={[1, 2]}
         gl={{
@@ -44,10 +41,7 @@ const Hero = () => {
           powerPreference: "high-performance",
           toneMapping: THREE.NoToneMapping,
         }}
-        onCreated={(state) => {
-          state.gl.outputColorSpace = THREE.SRGBColorSpace;
-          setTimeout(() => setIsReady(true), 200);
-        }}
+        onCreated={() => setTimeout(() => setIsReady(true), 200)}
       >
         <ambientLight intensity={1.2} />
         <pointLight position={[10, 10, 10]} color="#ff7b00" intensity={5.0} />

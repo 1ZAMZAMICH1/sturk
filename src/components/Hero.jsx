@@ -6,25 +6,23 @@ import * as THREE from 'three';
 import './Hero.css';
 import heroTextImg from '../assets/hero-text.png';
 
-const MemoizedClouds = memo(() => {
-  const cloudConfig = (
-    <>
-      <Cloud key="c1" seed={10} segments={120} bounds={[50, 40, 2]} volume={60} color="#1a0b05" position={[0, 0, -18]} speed={0} opacity={1} />
-      <Cloud key="c2" seed={20} segments={80} bounds={[40, 30, 5]} volume={40} color="#2e1608" position={[0, 0, -14]} speed={0.02} opacity={0.95} />
-      <Cloud key="c3" seed={30} segments={60} bounds={[35, 25, 6]} volume={30} color="#542a0c" position={[0, 0, -10]} speed={0.05} opacity={0.85} />
-      <Cloud key="c4" seed={40} segments={50} bounds={[30, 20, 6]} volume={25} color="#783c12" position={[0, 0, -6]} speed={0.08} opacity={0.7} />
-      <Cloud key="c5" seed={50} segments={40} bounds={[25, 15, 4]} volume={20} color="#9c5219" position={[0, 0, -2]} speed={0.12} opacity={0.6} />
-      <Cloud key="c6" seed={60} segments={30} bounds={[20, 12, 4]} volume={15} color="#b86e28" position={[0, 0, 2]} speed={0.2} opacity={0.4} />
-    </>
-  );
+const CLOUD_DATA = [
+  { key: "c1", seed: 10, segments: 120, bounds: [50, 40, 2], volume: 60, color: "#1a0b05", position: [0, 0, -18], speed: 0, opacity: 1 },
+  { key: "c2", seed: 20, segments: 80, bounds: [40, 30, 5], volume: 40, color: "#2e1608", position: [0, 0, -14], speed: 0.02, opacity: 0.95 },
+  { key: "c3", seed: 30, segments: 60, bounds: [35, 25, 6], volume: 30, color: "#542a0c", position: [0, 0, -10], speed: 0.05, opacity: 0.85 },
+  { key: "c4", seed: 40, segments: 50, bounds: [30, 20, 6], volume: 25, color: "#783c12", position: [0, 0, -6], speed: 0.08, opacity: 0.7 },
+  { key: "c5", seed: 50, segments: 40, bounds: [25, 15, 4], volume: 20, color: "#9c5219", position: [0, 0, -2], speed: 0.12, opacity: 0.6 },
+  { key: "c6", seed: 60, segments: 30, bounds: [20, 12, 4], volume: 15, color: "#b86e28", position: [0, 0, 2], speed: 0.2, opacity: 0.4 },
+];
 
+const MemoizedClouds = memo(() => {
   return (
     <>
-      <Clouds material={THREE.MeshBasicMaterial} limit={400}>
-        {cloudConfig}
+      <Clouds key="clouds-base" seed={42} material={THREE.MeshBasicMaterial} limit={1000}>
+        {CLOUD_DATA.map(props => <Cloud {...props} />)}
       </Clouds>
-      <Clouds material={THREE.MeshBasicMaterial} limit={400} position={[0, 0, 0.1]}>
-        {cloudConfig}
+      <Clouds key="clouds-overlay" seed={43} material={THREE.MeshBasicMaterial} limit={1000} position={[0, 0, 0.1]}>
+        {CLOUD_DATA.map(props => <Cloud {...props} />)}
       </Clouds>
     </>
   );
@@ -44,10 +42,12 @@ const Hero = () => {
         gl={{
           antialias: true,
           powerPreference: "high-performance",
-          toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.0
+          toneMapping: THREE.NoToneMapping,
         }}
-        onCreated={() => setTimeout(() => setIsReady(true), 200)}
+        onCreated={(state) => {
+          state.gl.outputColorSpace = THREE.SRGBColorSpace;
+          setTimeout(() => setIsReady(true), 200);
+        }}
       >
         <ambientLight intensity={1.2} />
         <pointLight position={[10, 10, 10]} color="#ff7b00" intensity={5.0} />

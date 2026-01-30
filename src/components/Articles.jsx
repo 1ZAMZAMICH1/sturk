@@ -66,7 +66,7 @@ const rawData = [
   },
 ];
 
-const ITEMS_PER_PAGE = 4;
+const ITEMS_PER_PAGE = 6;
 
 const Articles = () => {
   const [currentPage, setCurrentPage] = useState(1);

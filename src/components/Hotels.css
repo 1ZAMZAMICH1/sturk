@@ -1,0 +1,219 @@
+.hotels-section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    /* background-color: #050515; Удалено для прозрачности */
+    overflow: visible;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- ФОН --- */
+/* Удалено, так как используется общий фон HospitalityBackground */
+
+/* --- КОНТЕНТ --- */
+.hotels-content {
+    position: relative;
+    z-index: 10;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 60px;
+}
+
+.hotels-text-block {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hotels-subtitle {
+    font-family: serif;
+    font-size: 2.8rem;
+    color: #d4af37;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 25px;
+    line-height: 1.2;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.hotels-description {
+    font-size: 1.1rem;
+    color: #e0d0c0;
+    line-height: 1.8;
+    letter-spacing: 0.5px;
+    opacity: 0.9;
+}
+
+.hotels-ornament {
+    margin-top: 30px;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, #d4af37, transparent);
+}
+
+/* (Карточки и сетка копируются из Hospitality или используются общие, 
+   но для изоляции пропишем основные здесь) */
+
+.hotels-section .mosaic-col {
+    width: 50%;
+    height: 600px;
+    overflow: hidden;
+    padding: 10px;
+}
+
+.hotels-section .mosaic-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    gap: 20px;
+    height: 100%;
+}
+
+/* Совместимость с компонентами карточек */
+.hotels-section .khan-card {
+    position: relative;
+    background: #111;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.4s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+.hotels-section .khan-card.large {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.hotels-section .khan-card:hover {
+    transform: scale(1.02);
+    z-index: 2;
+}
+
+.hotels-section .khan-img-box {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.hotels-section .khan-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.6s ease;
+    filter: grayscale(100%) sepia(0.3) contrast(1.1);
+    transform: scale(1.05);
+}
+
+.hotels-section .khan-card:hover .khan-img-box img {
+    filter: grayscale(0%) sepia(0) contrast(1);
+    transform: scale(1);
+}
+
+.hotels-section .grain-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("https://www.transparenttextures.com/patterns/noise-lines.png");
+    opacity: 0.2;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+
+.hotels-section .khan-border {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    pointer-events: none;
+    transition: border-color 0.4s;
+    clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
+}
+
+.hotels-section .khan-card:hover .khan-border {
+    border-color: #d4af37;
+    box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+.hotels-section .corner {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #d4af37;
+    transition: all 0.4s;
+    opacity: 0;
+}
+
+.hotels-section .c-tl {
+    top: 0;
+    left: 0;
+}
+
+.hotels-section .c-tr {
+    top: 0;
+    right: 0;
+}
+
+.hotels-section .c-bl {
+    bottom: 0;
+    left: 0;
+}
+
+.hotels-section .c-br {
+    bottom: 0;
+    right: 0;
+}
+
+.hotels-section .khan-card:hover .corner {
+    opacity: 1;
+}
+
+.hotels-section .khan-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(to top, #0f0502 10%, transparent);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    transform: translateY(10px);
+    transition: transform 0.4s ease;
+}
+
+.hotels-section .khan-card:hover .khan-info {
+    transform: translateY(0);
+}
+
+.hotels-section .khan-type {
+    font-size: 0.7rem;
+    color: #d4af37;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+    opacity: 0.8;
+}
+
+.hotels-section .khan-title {
+    color: #fff;
+    font-family: serif;
+    font-size: 1.4rem;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 1);
+}
+
+.hotels-section .large .khan-title {
+    font-size: 2.2rem;
+}

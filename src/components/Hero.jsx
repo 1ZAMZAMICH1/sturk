@@ -18,11 +18,11 @@ const MemoizedClouds = memo(() => {
   );
 
   // Fix for Netlify production build mirroring issues
-  // If in production, we flip the group to counteract the rendering inversion
+  // Use rotation to flip X and Y without inverting normals (which caused "weird" look)
   const isProd = import.meta.env.PROD;
 
   return (
-    <group scale={isProd ? [1, -1, 1] : [1, 1, 1]}>
+    <group rotation={isProd ? [0, 0, Math.PI] : [0, 0, 0]}>
       <Clouds material={THREE.MeshBasicMaterial} limit={400}>
         {cloudConfig}
       </Clouds>

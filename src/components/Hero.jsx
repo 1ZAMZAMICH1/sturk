@@ -1,4 +1,3 @@
-// src/components/Hero.jsx
 import React, { useState, memo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Clouds, Cloud, Sparkles } from '@react-three/drei';
@@ -18,10 +17,16 @@ const MemoizedClouds = memo(() => {
     </>
   );
 
+  // Fix for Netlify production build mirroring issues
+  // If in production, we flip the group to counteract the rendering inversion
+  const isProd = import.meta.env.PROD;
+
   return (
-    <Clouds material={THREE.MeshBasicMaterial} limit={400}>
-      {cloudConfig}
-    </Clouds>
+    <group scale={isProd ? [-1, -1, 1] : [1, 1, 1]}>
+      <Clouds material={THREE.MeshBasicMaterial} limit={400}>
+        {cloudConfig}
+      </Clouds>
+    </group>
   );
 });
 

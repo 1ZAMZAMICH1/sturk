@@ -22,7 +22,7 @@ const MemoizedClouds = memo(() => {
   const isProd = import.meta.env.PROD;
 
   return (
-    <group scale={isProd ? [-1, -1, 1] : [1, 1, 1]}>
+    <group scale={isProd ? [1, -1, 1] : [1, 1, 1]}>
       <Clouds material={THREE.MeshBasicMaterial} limit={400}>
         {cloudConfig}
       </Clouds>

@@ -1,21 +1,26 @@
-import React from 'react';
-import { Canvas } from '@react-three/fiber';
-import { Sparkles, Cloud } from '@react-three/drei';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { fetchSheetData } from '../services/api';
 import './Hotels.css';
 
-const HOTEL_IMG = "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1000&auto=format&fit=crop";
-
-const DATA = {
-    hotels: [
-        { id: 2, title: "Karavan", type: "Boutique", size: "small", img: HOTEL_IMG },
-        { id: 3, title: "Hampton", type: "Hotel", size: "small", img: HOTEL_IMG },
-        { id: 4, title: "Silk Way", type: "Hostel", size: "small", img: HOTEL_IMG },
-        { id: 5, title: "Grand", type: "Hotel", size: "small", img: HOTEL_IMG },
-        { id: 1, title: "Rixos", type: "Resort", size: "large", img: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/291667636.jpg?k=123456" },
-    ]
-};
-
 const Hotels = () => {
+    const [hotels, setHotels] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const loadHotels = async () => {
+            const data = await fetchSheetData('hotels');
+            setHotels(data.length > 0 ? data : []);
+            setLoading(false);
+        };
+        loadHotels();
+    }, []);
+
+    if (loading) return <div className="loading-state">Загрузка отелей...</div>;
+
+    const largeHotel = hotels.find(h => h.size === 'large') || hotels[0];
+    const smallHotels = hotels.filter(h => h.id !== largeHotel?.id);
+
     return (
         <div className="hotels-section">
             <div className="hotels-content">
@@ -28,14 +33,18 @@ const Hotels = () => {
                         выберите идеальное место для восстановления сил в самом сердце Центральной Азии.
                     </p>
                     <div className="hotels-ornament"></div>
+                    <Link to="/hotels" className="hotels-explore-btn">
+                        Смотреть все отели
+                        <span className="btn-arrow">→</span>
+                    </Link>
                 </div>
 
                 <div className="mosaic-col right-mosaic">
                     <div className="mosaic-grid">
-                        {DATA.hotels.map((item) => (
-                            <div className={`khan-card ${item.size}`} key={item.id}>
+                        {hotels.map((item) => (
+                            <div className={`khan-card ${item.size || 'small'}`} key={item.id}>
                                 <div className="khan-img-box">
-                                    <img src={item.img} alt={item.title} />
+                                    <img src={item.image || item.img} alt={item.name || item.title} />
                                     <div className="grain-overlay"></div>
                                 </div>
                                 <div className="khan-border">
@@ -46,7 +55,7 @@ const Hotels = () => {
                                 </div>
                                 <div className="khan-info">
                                     <span className="khan-type">{item.type}</span>
-                                    <h4 className="khan-title">{item.title}</h4>
+                                    <h4 className="khan-title">{item.name || item.title}</h4>
                                 </div>
                             </div>
                         ))}

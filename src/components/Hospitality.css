@@ -280,3 +280,55 @@
 .large .khan-title {
   font-size: 2.2rem;
 }
+
+.hosp-explore-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+  padding: 14px 28px;
+  background: transparent;
+  border: 1px solid rgba(212, 160, 23, 0.4);
+  color: #f0e8d8;
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.hosp-explore-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(212, 160, 23, 0.2),
+      transparent);
+  transition: all 0.5s;
+}
+
+.hosp-explore-btn:hover {
+  border-color: #c8a84b;
+  box-shadow: 0 0 20px rgba(200, 168, 75, 0.2);
+  transform: translateX(5px);
+}
+
+.hosp-explore-btn:hover::before {
+  left: 100%;
+}
+
+.btn-arrow {
+  display: inline-block;
+  transition: transform 0.3s;
+}
+
+.hosp-explore-btn:hover .btn-arrow {
+  transform: translateX(5px);
+}

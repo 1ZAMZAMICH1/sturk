@@ -1,0 +1,104 @@
+import React, { useState, useEffect } from 'react';
+import { fetchSheetData, updateSheetData } from '../../services/api';
+import { Icons } from '../AdminIcons';
+import RestaurantEditModal from './RestaurantEditModal';
+
+const RestaurantsManager = () => {
+    const [restaurants, setRestaurants] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedRes, setSelectedRes] = useState(null);
+
+    useEffect(() => {
+        const loadRestaurants = async () => {
+            const data = await fetchSheetData('restaurants');
+            setRestaurants(data);
+            setLoading(false);
+        };
+        loadRestaurants();
+    }, []);
+
+    const handleSave = async (updated) => {
+        const success = await updateSheetData('restaurants', 'update', updated);
+        if (success) {
+            setRestaurants(prev => {
+                const exists = prev.find(r => r.id === updated.id);
+                if (exists) {
+                    return prev.map(r => r.id === updated.id ? updated : r);
+                }
+                return [...prev, updated];
+            });
+            setSelectedRes(null);
+            alert(`Заведение "${updated.name}" сохранено в Google Таблицу`);
+        } else {
+            alert('Ошибка при сохранении в Таблицу');
+        }
+    };
+
+    const handleDelete = async (id) => {
+        if (window.confirm('Удалить этот ресторан из базы?')) {
+            const success = await updateSheetData('restaurants', 'delete', { id });
+            if (success) {
+                setRestaurants(prev => prev.filter(r => r.id !== id));
+            }
+        }
+    };
+
+    if (loading) return <div className="admin-loading">Считываем меню из Google Sheets...</div>;
+
+    return (
+        <div className="admin-manager">
+            <div className="admin-table-container">
+                <div className="admin-table-header">
+                    <div className="modal-title-wrap">
+                        <span className="type-badge">Гастрономия</span>
+                        <h3>Список заведений ({restaurants.length})</h3>
+                    </div>
+                    <button className="admin-add-btn" onClick={() => setSelectedRes({ name: '', cuisine: 'Казахская', city: 'Туркестан', image: '' })}>
+                        <Icons.Plus /> Добавить заведение
+                    </button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Фото</th>
+                            <th>Название</th>
+                            <th>Кухня / Город</th>
+                            <th>Цена</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {restaurants.map(r => (
+                            <tr key={r.id}>
+                                <td><img src={r.image} alt="" className="admin-table-img" /></td>
+                                <td><strong>{r.name}</strong></td>
+                                <td>
+                                    <div className="type-badge">{r.cuisine}</div>
+                                    <br />
+                                    <small>{r.city}</small>
+                                </td>
+                                <td>{r.priceTag}</td>
+                                <td>
+                                    <div className="admin-table-actions">
+                                        <button className="btn-edit" onClick={() => setSelectedRes(r)}>Изменить</button>
+                                        <button className="btn-delete" onClick={() => handleDelete(r.id)}>Удалить</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            {selectedRes && (
+                <RestaurantEditModal
+                    restaurant={selectedRes}
+                    onSave={handleSave}
+                    onClose={() => setSelectedRes(null)}
+                />
+            )}
+        </div>
+    );
+};
+
+export default RestaurantsManager;

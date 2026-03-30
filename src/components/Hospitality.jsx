@@ -1,31 +1,32 @@
-import React from 'react';
-import { Canvas } from '@react-three/fiber';
-import { Sparkles, Cloud } from '@react-three/drei';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { fetchSheetData } from '../services/api';
 import './Hospitality.css';
 
-const PLACEHOLDER_IMG = "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000&auto=format&fit=crop";
-const HOTEL_IMG = "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1000&auto=format&fit=crop";
-
-const DATA = {
-  food: [
-    { id: 1, title: "Sandyq", type: "Этно-Ресторан", size: "large", img: "https://lh3.googleusercontent.com/p/AF1QipN-Z1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1=s1360-w1360-h1020" },
-    { id: 2, title: "Navat", type: "Чайхана", size: "small", img: "https://lh3.googleusercontent.com/p/AF1QipO_y_y_y_y_y_y_y_y_y_y_y_y_y_y_y_y_y_y=s1360-w1360-h1020" },
-    { id: 3, title: "Edem", type: "Кофейня", size: "small", img: PLACEHOLDER_IMG },
-    { id: 4, title: "Plov Center", type: "Асхана", size: "small", img: PLACEHOLDER_IMG },
-    { id: 5, title: "Chai", type: "Лаунж", size: "small", img: PLACEHOLDER_IMG },
-  ]
-};
-
 const Hospitality = () => {
+  const [restaurants, setRestaurants] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const data = await fetchSheetData('restaurants');
+      setRestaurants(data);
+      setLoading(false);
+    };
+    loadData();
+  }, []);
+
+  if (loading) return <div className="loading-state">Ароматы востока наполняют комнату...</div>;
+
   return (
-    <div className="hospitality-section hospitality-food">
+    <div className="hospitality-section">
       <div className="hosp-content">
         <div className="mosaic-col left-mosaic">
           <div className="mosaic-grid">
-            {DATA.food.map((item) => (
-              <div className={`khan-card ${item.size}`} key={item.id}>
+            {restaurants.slice(0, 5).map((item) => (
+              <div className={`khan-card ${item.size || 'small'}`} key={item.id}>
                 <div className="khan-img-box">
-                  <img src={item.img} alt={item.title} />
+                  <img src={item.image} alt={item.name} />
                   <div className="grain-overlay"></div>
                 </div>
                 <div className="khan-border">
@@ -35,8 +36,8 @@ const Hospitality = () => {
                   <div className="corner c-br"></div>
                 </div>
                 <div className="khan-info">
-                  <span className="khan-type">{item.type}</span>
-                  <h4 className="khan-title">{item.title}</h4>
+                  <span className="khan-type">{item.cuisine || item.type}</span>
+                  <h4 className="khan-title">{item.name}</h4>
                 </div>
               </div>
             ))}
@@ -51,6 +52,10 @@ const Hospitality = () => {
             каждое блюдо здесь рассказывает свою легенду. Почувствуйте истинное восточное гостеприимство в лучших заведениях города.
           </p>
           <div className="hosp-ornament"></div>
+          <Link to="/restaurants" className="hosp-explore-btn">
+            Смотреть все заведения
+            <span className="btn-arrow">→</span>
+          </Link>
         </div>
       </div>
     </div>

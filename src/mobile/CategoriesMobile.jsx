@@ -1,20 +1,12 @@
-// src/components/Categories.jsx
+// src/mobile/CategoriesMobile.jsx
 
-import React, { useState, useEffect, useRef, useMemo, useLayoutEffect, Suspense } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useLayoutEffect } from 'react';
 import { Canvas, useFrame, extend } from '@react-three/fiber';
-import {
-  Text,
-  useCursor,
-  Float,
-  useTexture,
-  useVideoTexture,
-  Environment,
-  shaderMaterial
-} from '@react-three/drei';
+import { Text, useCursor, Float, useTexture, Environment, shaderMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 import { useNavigate } from 'react-router-dom';
 import { fetchSheetData } from '../services/api';
-import './Categories.css';
+import './CategoriesMobile.css';
 
 // Импорт картинок
 import cityImg from '../assets/city.jpg';
@@ -39,11 +31,7 @@ const ARCH_HEIGHT = 3.4;
 
 // ШЕЙДЕР
 const PetroSoftMaterial = shaderMaterial(
-  {
-    uTime: 0,
-    uColor: new THREE.Color('#d4af37'),
-    uTexture: null,
-  },
+  { uTime: 0, uColor: new THREE.Color('#d4af37'), uTexture: null },
   `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
   `
     uniform float uTime;
@@ -63,7 +51,6 @@ const PetroSoftMaterial = shaderMaterial(
     }
   `
 );
-
 extend({ PetroSoftMaterial });
 
 const seededRandom = (seed) => {
@@ -71,26 +58,25 @@ const seededRandom = (seed) => {
   return x - Math.floor(x);
 };
 
-// 1. ФОН: КЕРЕГЕ (Оптимизация: InstancedMesh + отключен Raycast)
+// 1. ФОН: КЕРЕГЕ
 const KeregeBackground = () => {
   const meshRef = useRef();
-  const count = 24 * 2;
+  const count = 68 * 2; 
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
   useLayoutEffect(() => {
     if (!meshRef.current) return;
-    const radius = 14;
+    const radius = 40;
     let index = 0;
-    for (let i = 0; i < 24; i++) {
-      const angle = (i / 24) * Math.PI * 2;
+    const segments = 68;
+    for (let i = 0; i < segments; i++) {
+      const angle = (i / segments) * Math.PI * 2;
       const x = Math.sin(angle) * radius;
       const z = Math.cos(angle) * radius;
-
       dummy.position.set(x, 0, z);
       dummy.rotation.set(0, angle, Math.PI / 8);
       dummy.updateMatrix();
       meshRef.current.setMatrixAt(index++, dummy.matrix);
-
       dummy.rotation.set(0, angle, -Math.PI / 8);
       dummy.updateMatrix();
       meshRef.current.setMatrixAt(index++, dummy.matrix);
@@ -103,28 +89,32 @@ const KeregeBackground = () => {
   });
 
   return (
-    // raycast={null} — Важнейшая оптимизация. CPU игнорирует этот объект при наведении мыши.
     <instancedMesh ref={meshRef} args={[null, null, count]} raycast={null}>
-      <cylinderGeometry args={[0.08, 0.08, 14, 5]} />
-      <meshStandardMaterial color="#5c4033" roughness={0.9} metalness={0.1} />
+      <cylinderGeometry args={[0.08, 0.08, 45, 5]} />
+      <meshStandardMaterial 
+        color="#5c4033" 
+        emissive="#2a1a10" 
+        emissiveIntensity={0.2} 
+        roughness={0.9} 
+        metalness={0.1} 
+      />
     </instancedMesh>
   );
 };
 
-// 2. ФОН: ПЕТРОГЛИФЫ (Оптимизация: Общая геометрия + отключен Raycast)
+// 2. ФОН: ПЕТРОГЛИФЫ
 const sharedPlaneGeometry = new THREE.PlaneGeometry(1, 1);
-
 const PetroglyphWall = () => {
   const textures = useTexture([p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12]);
   const materialsRef = useRef([]);
 
   const items = useMemo(() => {
-    const glyphs = []; const count = 60; const radius = 16; const minDist = 5.5;
-    let currentSeed = 999; let attempts = 0;
-    while (glyphs.length < count && attempts < 20000) {
+    const glyphs = []; const count = 70; const radius = 50; const minDist = 10.0;
+    let currentSeed = 9999; let attempts = 0;
+    while (glyphs.length < count && attempts < 10000) {
       attempts++; currentSeed++;
       const angle = seededRandom(currentSeed) * Math.PI * 2;
-      const y = (seededRandom(currentSeed + 5000) - 0.5) * 30;
+      const y = (seededRandom(currentSeed + 7000) - 0.5) * 50;
       const x = Math.sin(angle) * radius;
       const z = Math.cos(angle) * radius;
       const newPos = new THREE.Vector3(x, y, z);
@@ -132,11 +122,10 @@ const PetroglyphWall = () => {
       for (let other of glyphs) { if (newPos.distanceTo(other.vecPos) < minDist) { tooClose = true; break; } }
       if (!tooClose) {
         const rScale = seededRandom(currentSeed + 1000);
-        const rTexIndex = seededRandom(currentSeed + 2000);
         glyphs.push({
-          vecPos: newPos, pos: [x, y, z],
-          rot: [0, angle + Math.PI, 0], scale: 3.5 + rScale * 3.5,
-          texture: textures[Math.floor(rTexIndex * textures.length)],
+          pos: [x, y, z], vecPos: newPos,
+          rot: [0, angle + Math.PI, 0], scale: 5.0 + rScale * 8.0,
+          texture: textures[Math.floor(seededRandom(currentSeed + 2000) * textures.length)],
           timeOffset: seededRandom(currentSeed + 3000) * 20
         });
       }
@@ -146,38 +135,21 @@ const PetroglyphWall = () => {
 
   useFrame((state) => {
     const time = state.clock.elapsedTime;
-    const mats = materialsRef.current;
-    for (let i = 0; i < items.length; i++) {
-      if (mats[i]) mats[i].uTime = time + items[i].timeOffset;
-    }
+    items.forEach((item, i) => { if (materialsRef.current[i]) materialsRef.current[i].uTime = time + item.timeOffset; });
   });
 
   return (
     <group>
       {items.map((item, i) => (
-        <mesh
-          key={i}
-          position={item.pos}
-          rotation={item.rot}
-          scale={[item.scale, item.scale, 1]}
-          geometry={sharedPlaneGeometry}
-          raycast={null} // Отключаем проверку кликов для камней
-        >
-          <petroSoftMaterial
-            ref={el => materialsRef.current[i] = el}
-            uTexture={item.texture}
-            uColor={new THREE.Color("#d4af37")}
-            side={THREE.DoubleSide}
-            transparent={true}
-          />
+        <mesh key={i} position={item.pos} rotation={item.rot} scale={[item.scale, item.scale, 1]} geometry={sharedPlaneGeometry} raycast={null}>
+          <petroSoftMaterial ref={el => materialsRef.current[i] = el} uTexture={item.texture} uColor={new THREE.Color("#d4af37")} side={THREE.DoubleSide} transparent={true} />
         </mesh>
       ))}
     </group>
   );
 };
 
-// 3. ГЕОМЕТРИЯ АРКИ
-// Внешняя форма (для кольца-рамки)
+// 3. АРКА
 const createArchShape = (width, height) => {
   const shape = new THREE.Shape();
   const w = width / 2; const h = height / 2;
@@ -186,54 +158,43 @@ const createArchShape = (width, height) => {
   return shape;
 };
 
-// Рамка-кольцо: внешний контур с «дыркой» внутри
 const createFrameRing = (width, height, border) => {
   const outer = createArchShape(width, height);
   const scale = (width - border) / width;
   const iw = (width / 2) * scale;
   const ih = (height / 2) * scale;
   const hole = new THREE.Path();
-  hole.moveTo(-iw, -ih);
-  hole.lineTo(iw, -ih);
-  hole.lineTo(iw, ih - 1.2 * scale);
+  hole.moveTo(-iw, -ih); hole.lineTo(iw, -ih); hole.lineTo(iw, ih - 1.2 * scale);
   hole.quadraticCurveTo(iw, ih, 0, ih + 1.0 * scale);
-  hole.quadraticCurveTo(-iw, ih, -iw, ih - 1.2 * scale);
-  hole.lineTo(-iw, -ih);
+  hole.quadraticCurveTo(-iw, ih, -iw, ih - 1.2 * scale); hole.lineTo(-iw, -ih);
   outer.holes.push(hole);
   return { outerWithHole: outer, scale, iw, ih };
 };
 
-// 4. КАРТОЧКА
-const PortalCard = ({ index, url, title, color, position, rotation, hoveredState, setHovered, onClick }) => {
+const MobilePortalCard = ({ index, url, title, position, rotation, hoveredState, setHovered, onClick }) => {
   const groupRef = useRef();
   const isHovered = hoveredState === index;
+  const texture = useTexture(url);
 
-  // ГАРАНТИРОВАННЫЕ КАРТИНКИ
-  const defaultUrls = [cityImg, historyImg, natureImg];
-  const activeUrl = url && url.length > 10 && !url.includes('example.com') ? url : defaultUrls[index % 3];
-
-  const texture = useTexture(activeUrl);
-  useLayoutEffect(() => {
-    if (texture) {
-      texture.center.set(0.5, 0.5);
-      texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+  useFrame((state, delta) => {
+    const dt = Math.min(delta, 0.1);
+    const targetScale = isHovered ? 1.05 : 1.0;
+    const targetZ = isHovered ? 0.3 : 0;
+    if (groupRef.current) {
+      groupRef.current.scale.setScalar(THREE.MathUtils.lerp(groupRef.current.scale.x, targetScale, dt * 4));
+      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, position[2] + targetZ, dt * 4);
     }
-  }, [texture]);
-
+  });
 
   const { frameGeometry, imageGeometry } = useMemo(() => {
     const BORDER = 0.05;
     const { outerWithHole, scale, iw, ih } = createFrameRing(ARCH_WIDTH, ARCH_HEIGHT, BORDER);
     const fGeo = new THREE.ExtrudeGeometry(outerWithHole, { depth: 0.18, bevelEnabled: true, bevelThickness: 0.04, bevelSize: 0.04, bevelSegments: 3, curveSegments: 32 });
-    
-    // Внутренняя форма
     const innerShape = new THREE.Shape();
     innerShape.moveTo(-iw, -ih); innerShape.lineTo(iw, -ih); innerShape.lineTo(iw, ih - 1.2 * scale);
     innerShape.quadraticCurveTo(iw, ih, 0, ih + 1.0 * scale);
-    innerShape.quadraticCurveTo(-iw, ih, -iw, ih - 1.2 * scale);
-    innerShape.lineTo(-iw, -ih);
+    innerShape.quadraticCurveTo(-iw, ih, -iw, ih - 1.2 * scale); innerShape.lineTo(-iw, -ih);
     const iGeo = new THREE.ShapeGeometry(innerShape, 64);
-    
     const uvAttr = iGeo.attributes.uv;
     const posAttr = iGeo.attributes.position;
     const fullH = ih + ih + 1.0 * scale;
@@ -242,45 +203,25 @@ const PortalCard = ({ index, url, title, color, position, rotation, hoveredState
       uvAttr.setXY(i, (x + iw) / (iw * 2), (y + ih) / fullH);
     }
     uvAttr.needsUpdate = true;
-
     return { frameGeometry: fGeo, imageGeometry: iGeo };
   }, []);
 
-  useFrame((state, delta) => {
-    const dt = Math.min(delta, 0.1);
-    const targetScale = isHovered ? 1.05 : 1.0;
-    const targetZ = isHovered ? 0.3 : 0;
-
-    if (groupRef.current) {
-      groupRef.current.scale.setScalar(THREE.MathUtils.lerp(groupRef.current.scale.x, targetScale, dt * 4));
-      groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, position[2] + targetZ, dt * 4);
-    }
-  });
+  // Разбиваем заголовок на строки
+  const titleLines = useMemo(() => title ? title.split(' ') : [''], [title]);
 
   return (
-    <group
-      ref={groupRef}
-      position={position}
-      rotation={rotation}
-      onPointerOver={(e) => { e.stopPropagation(); setHovered(index); }}
-      onPointerOut={(e) => { e.stopPropagation(); setHovered(null); }}
-      onClick={(e) => { e.stopPropagation(); onClick(index); }}
+    <group 
+      ref={groupRef} position={position} rotation={rotation}
+      onPointerOver={() => setHovered(index)} onPointerOut={() => setHovered(null)} onClick={() => onClick(index)}
     >
       <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
-        {/* Рамка-кольцо. Передняя грань на z=0.18 */}
         <mesh geometry={frameGeometry} position={[0, 0, -0.09]}>
           <meshStandardMaterial color="#d4af37" metalness={0.9} roughness={0.3} envMapIntensity={1.5} />
         </mesh>
-
-        {/* Картинка по форме внутреннего проёма, лежит в центре кольца */}
         <mesh geometry={imageGeometry} position={[0, 0, 0]}>
-          <meshBasicMaterial
-            map={texture}
-            transparent={false}
-            side={THREE.FrontSide}
-          />
+          <meshBasicMaterial map={texture} side={THREE.FrontSide} />
         </mesh>
-
+        
         {/* Первая строка (ГОРОДСКИЕ и т.д.) — крупно */}
         <Text
           position={[0, -1.9, 0.22]}
@@ -293,13 +234,13 @@ const PortalCard = ({ index, url, title, color, position, rotation, hoveredState
           textAlign="center"
           outlineWidth={0}
         >
-          {(title ? title.split(' ')[0] : '').toUpperCase()}
+          {titleLines[0].toUpperCase()}
         </Text>
 
-        {/* Вторая строка (ДОСТОПРИМЕЧАТЕЛЬНОСТИ) — мельче */}
-        {title && title.split(' ')[1] && (
+        {/* Вторая строка (ДОСТОПРИМЕЧАТЕЛЬНОСТИ) — мельче, чтобы влезла */}
+        {titleLines[1] && (
           <Text
-            position={[0, -2.25, 0.22]}
+            position={[0, -2.25, 0.22]} // Под первой строкой
             fontSize={0.22}
             font="https://fonts.gstatic.com/s/playfairdisplay/v40/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKebukDQ.ttf"
             color="#ffd700"
@@ -309,7 +250,7 @@ const PortalCard = ({ index, url, title, color, position, rotation, hoveredState
             textAlign="center"
             outlineWidth={0}
           >
-            {title.split(' ')[1].toUpperCase()}
+            {titleLines[1].toUpperCase()}
           </Text>
         )}
       </Float>
@@ -317,8 +258,8 @@ const PortalCard = ({ index, url, title, color, position, rotation, hoveredState
   );
 };
 
-// --- СЦЕНА ---
-function CategoriesScene({ onSelectCategory }) {
+const CategoriesMobile = () => {
+  const navigate = useNavigate();
   const [hovered, setHovered] = useState(null);
   const [archData, setArchData] = useState([]);
 
@@ -326,87 +267,54 @@ function CategoriesScene({ onSelectCategory }) {
     const loadArches = async () => {
       try {
         const data = await fetchSheetData('categories');
-        console.log('--- ARCH DATA FROM SHEETS ---', data);
-        if (data && Array.isArray(data) && data.length >= 3) {
-          setArchData(data);
-        } else {
-          console.warn('Using FALLBACK ARCHES because sheets data is missing or incomplete');
-          setArchData([
-            { tag: 'city', title: 'Город', url: cityImg, color: '#40e0d0' },
-            { tag: 'spirit', title: 'История', url: historyImg, color: '#ffd700' },
-            { tag: 'nature', title: 'Природа', url: natureImg, color: '#50c878' }
-          ]);
-        }
-      } catch (err) {
-        console.error('Error loading arches:', err);
-      }
+        if (data && Array.isArray(data) && data.length >= 3) { setArchData(data); }
+        else { setArchData([{ tag: 'city', title: 'Город', url: cityImg }, { tag: 'spirit', title: 'История', url: historyImg }, { tag: 'nature', title: 'Природа', url: natureImg }]); }
+      } catch (err) { }
     };
     loadArches();
   }, []);
 
   const handlePortalClick = (index) => {
     const target = archData[index]?.tag || 'city';
-    onSelectCategory(`/category/${target}`);
+    navigate(`/category/${target}`);
   };
 
   return (
-    <>
-      <Environment preset="city" blur={1} />
-      <color attach="background" args={['#1a0b05']} />
-
-      <PetroglyphWall />
-      <KeregeBackground />
-
-      <ambientLight intensity={0.4} />
-      <pointLight position={[0, -5, 5]} intensity={2} color="#ffaa00" distance={15} />
-      <spotLight position={[0, 10, 5]} intensity={3} color="#fff" angle={0.5} />
-
-      <group position={[0, -0.5, 0]}>
-        {archData.slice(0, 3).map((item, idx) => (
-          <PortalCard
-            key={idx}
-            index={idx}
-            url={item.url || item.image}
-            title={item.title || item.name}
-            color={item.color || '#ffd700'}
-            position={[idx === 0 ? -3.8 : idx === 1 ? 0 : 3.8, 0, idx === 1 ? 0 : 0.5]}
-            rotation={[0, idx === 0 ? 0.6 : idx === 2 ? -0.6 : 0, 0]}
-            hoveredState={hovered}
-            setHovered={setHovered}
-            onClick={handlePortalClick}
-          />
-        ))}
-      </group>
-      <fog attach="fog" args={['#1a0b05', 15, 35]} />
-    </>
-  );
-}
-
-const Categories = () => {
-  const navigate = useNavigate();
-
-  return (
-    <div className="categories-container">
-      <div className="categories-transition-top"></div>
-
-      <div className="categories-header">
-        <h2 className="categories-title">Врата Туркестана</h2>
+    <div className="cat-mob-root">
+      <div className="cat-mob-header">
+        <h2 className="cat-mob-title">Врата Туркестана</h2>
       </div>
 
-      <Canvas
-        camera={{ position: [0, 0, 9], fov: 50 }}
-        dpr={[1, 1.5]}
-        gl={{
-          powerPreference: "high-performance",
-          antialias: true
-        }}
-      >
-        <Suspense fallback={null}>
-          <CategoriesScene onSelectCategory={(url) => navigate(url)} />
-        </Suspense>
+      <Canvas camera={{ position: [0, 0, 24], fov: 42 }}>
+        <Environment preset="city" blur={1} />
+        <color attach="background" args={['#1a0b05']} />
+        <PetroglyphWall />
+        <KeregeBackground />
+        <ambientLight intensity={0.6} />
+        <pointLight position={[0, 0, 10]} intensity={6.0} color="#ffaa00" distance={100} />
+        <spotLight position={[0, 15, 10]} intensity={5.0} color="#fff" angle={0.5} />
+
+        <group position={[0, -0.5, 0]} scale={1.1}>
+          {archData.slice(0, 3).map((item, idx) => (
+            <MobilePortalCard
+              key={idx}
+              index={idx}
+              url={item.url || item.image}
+              title={item.title || item.name}
+              position={
+                idx === 0 ? [-1.4, 3.8, 0.2] :
+                idx === 1 ? [1.61, 0.13, 0] :
+                [-1.47, -4.09, 0.1]
+              }
+              rotation={[0, 0, 0]}
+              hoveredState={hovered} setHovered={setHovered} onClick={handlePortalClick}
+            />
+          ))}
+        </group>
+        <fog attach="fog" args={['#1a0b05', 30, 95]} />
       </Canvas>
     </div>
   );
 };
 
-export default Categories;
+export default CategoriesMobile;

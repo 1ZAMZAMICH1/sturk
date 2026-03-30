@@ -1,0 +1,128 @@
+/* src/mobile/MapSectionMobile.css */
+
+.map-mob-root {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: #261912;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 2vh; /* Прижали заголовок к самому верху */
+}
+
+/* ── 3D ФОН ────────────────── */
+.mob-hero-bg { position: absolute; inset: 0; z-index: 0; }
+.mob-color-grade {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background: radial-gradient(circle at center, rgba(212,175,55,0.2) 0%, rgba(139,69,19,0.4) 60%, rgba(26,11,5,0.9) 100% );
+  mix-blend-mode: soft-light;
+}
+
+/* ── ЗАГОЛОВОК ─────────────── */
+.mob-ui-title {
+  color: #d4af37;
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 1);
+  z-index: 100;
+  opacity: 0;
+  transition: all 1s ease 1s;
+  margin-bottom: 2vh; /* Зазор до свитка */
+}
+.mob-ui-title.visible { opacity: 1; }
+
+/* ── ОБЁРТКА ДЛЯ ФИКСАЦИИ МЕСТА (LAYOUT BOX) ─────
+   Эта коробка говорит браузеру, что свиток занимает 70vh в высоту. 
+   Это предотвращает нахлёст заголовка на роллеры.
+*/
+.mob-scroll-frame {
+  position: relative;
+  width: 100%;
+  height: 70vh; /* Визуальная высота всего свитка */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.mob-scroll-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70vh;   /* Будущая высота */
+  height: 98vw;  /* Будущая ширина */
+  transform: rotate(90deg);
+  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.9));
+}
+
+/* ── РОЛЛЕРЫ (как на ПК) ──── */
+.mob-roller-wrapper { height: 100%; flex-shrink: 0; position: relative; z-index: 20; }
+.mob-roller-img { height: 100%; width: auto; display: block; filter: drop-shadow(15px 0 25px rgba(0, 0, 0, 0.7)); }
+.mob-roller-wrapper.right .mob-roller-img { filter: drop-shadow(-15px 0 25px rgba(0,0,0,0.7)); }
+
+/* ── БУМАГА ───────────────── */
+.mob-paper-center {
+  position: relative;
+  height: 68%; /* Пропорция бумаги к ручкам */
+  width: 0px;
+  transition: width 2.5s cubic-bezier(0.25, 1, 0.5, 1);
+  margin-left: -25px; margin-right: -25px;
+  z-index: 5;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
+}
+.mob-scroll-wrap.open .mob-paper-center { width: 70vh; }
+.mob-paper-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; z-index: 1; }
+
+/* ── МАСКА И КАРТА ──────────── */
+.mob-map-mask { position: absolute; inset: 0; z-index: 5; mix-blend-mode: multiply; opacity: 0.95; overflow: hidden; }
+
+.mob-leaflet {
+  /* Огромный квадрат для покрытия всей площади бумаги при повороте */
+  width: 110vh !important;
+  height: 110vh !important;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  background: transparent;
+  filter: sepia(0.4) contrast(1.2) brightness(0.9) saturate(0.6);
+}
+
+/* ── UI ────────────────────── */
+.mob-map-ui {
+  position: absolute;
+  bottom: 2vh;
+  width: 100%;
+  z-index: 50;
+  opacity: 0;
+  transition: opacity 1s ease 2s;
+  display: flex; flex-direction: column; align-items: center; gap: 15px;
+}
+.mob-map-ui.visible { opacity: 1; }
+.mob-ui-section { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.mob-section-label { color: rgba(220, 196, 142, 0.4); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; font-family: serif; margin-bottom: 8px; }
+.mob-ui-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 95vw; }
+
+.mob-ui-btn {
+  background: rgba(10, 5, 2, 0.8); border: 1px solid #8c7853; color: #dcc48e; padding: 8px 16px; border-radius: 4px;
+  font-family: 'Playfair Display', serif; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px;
+}
+.mob-ui-btn.active { background: #d4af37; color: #1a0b05; border-color: #d4af37; }
+
+/* Мозаика */
+.mob-ui-btn:nth-child(odd) { transform: translateX(-4px); }
+.mob-ui-btn:nth-child(even) { transform: translateX(4px); }
+
+/* ПИНЫ */
+.custom-pin { display:flex; justify-content:center; align-items:center; }
+.pin-core { width:8px; height:8px; border-radius:50%; border:2px solid #fff; z-index:2; box-shadow:0 0 5px rgba(0,0,0,1); }
+.pin-glow { position:absolute; width:24px; height:24px; border-radius:50%; opacity:0.6; animation:pulse-mob 2s infinite; }
+@keyframes pulse-mob { 0%{transform:scale(1);opacity:0.6;} 100%{transform:scale(2);opacity:0;} }
+
+.glass-popup .leaflet-popup-content-wrapper { background:rgba(26,11,5,0.95); color:#dcc48e; border:1px solid #d4af37; border-radius:2px; font-family:serif; }
+.glass-popup h3 { margin:0 0 5px; font-size:0.9rem; text-transform:uppercase; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
+.glass-popup p  { margin:0; font-size:0.8rem; color:#ccc; }

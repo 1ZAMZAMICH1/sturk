@@ -1,81 +1,86 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './Articles.css';
+import { Icons } from '../admin/AdminIcons';
+import { fetchSheetData } from '../services/api';
 
-// !!! ВАЖНО: Импортируем картинку. 
-// Проверь путь: если assets лежит в папке src, то путь правильный.
-// Если assets в public, то импорт не нужен, можно просто писать "/assets/nature.jpg"
-import natureImg from '../assets/nature.jpg'; 
+const ArticleModal = ({ article, onClose }) => {
+  return (
+    <div className="art-modal-overlay" onClick={onClose}>
+      <div className="art-modal-inner shepherd-style" onClick={e => e.stopPropagation()}>
+        <div className="art-modal-frame-top"></div>
+        <button className="art-modal-close-gold" onClick={onClose}>
+           <span>×</span>
+        </button>
 
-const rawData = [
-  { 
-    id: 1, 
-    title: "Открытие сезона Кокпар", 
-    date: "27.12.2025", 
-    description: "Великая степь оживает. Лучшие всадники соберутся у подножия гор...", 
-    category: "Спорт", 
-    // Используем переменную natureImg вместо ссылки
-    image: natureImg 
-  },
-  { 
-    id: 2, 
-    title: "Фестиваль «Голос Умай»", 
-    date: "15.01.2026", 
-    description: "Этно-музыканты со всего тюркского мира представят новые композиции...", 
-    category: "Культура", 
-    image: natureImg 
-  },
-  { 
-    id: 3, 
-    title: "Обновление коллекции юрт", 
-    date: "05.02.2026", 
-    description: "Мастера из Кызылорды представили новый метод сборки кереге...", 
-    category: "Ремесло", 
-    image: natureImg 
-  },
-  { 
-    id: 4, 
-    title: "Легенды старого шамана", 
-    date: "12.02.2026", 
-    description: "Новая рубрика на сайте о забытых мифах и легендах...", 
-    category: "Истории", 
-    image: natureImg 
-  },
-  { 
-    id: 5, 
-    title: "Находка в Береле", 
-    date: "20.02.2026", 
-    description: "Археологи нашли золото сакского периода...", 
-    category: "История", 
-    image: natureImg 
-  },
-  { 
-    id: 6, 
-    title: "Совет старейшин", 
-    date: "01.03.2026", 
-    description: "Приняты новые решения касательно развития этно-туризма...", 
-    category: "Общество", 
-    image: natureImg 
-  },
-  { 
-    id: 7, 
-    title: "Праздник Наурыз", 
-    date: "22.03.2026", 
-    description: "Готовимся к великому дню весеннего равноденствия...", 
-    category: "Праздник", 
-    image: natureImg 
-  },
-];
+        <div className="art-modal-scroll-area">
+          <div className="art-modal-hero-mini">
+            <img src={article.previewImage} alt="" />
+            <div className="art-modal-hero-overlay" />
+          </div>
+
+          <div className="art-modal-body-neat">
+            <div className="art-modal-header-info">
+              <span className="art-modal-tag">{article.category}</span>
+              <span className="art-modal-date-mini">{article.date}</span>
+            </div>
+            
+            <h2 className="art-modal-title-neat">{article.title}</h2>
+            
+            <div className="art-modal-divider">
+              <div className="div-line"></div>
+              <div className="div-diamond"></div>
+              <div className="div-line"></div>
+            </div>
+
+            <div className="art-modal-text-neat">
+              {article.content}
+            </div>
+
+            {article.gallery && article.gallery.length > 0 && (
+              <div className="art-modal-gallery-compact">
+                {article.gallery.map((url, i) => (
+                  <div key={i} className="gallery-img-frame">
+                    <img src={url} alt="" />
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            <div className="art-modal-footer-ornament">
+              <span>Автор: {article.author}</span>
+            </div>
+          </div>
+        </div>
+        <div className="art-modal-frame-bottom"></div>
+      </div>
+    </div>
+  );
+};
 
 const ITEMS_PER_PAGE = 6;
 
 const Articles = () => {
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedArticle, setSelectedArticle] = useState(null);
   const newsTopRef = useRef(null);
+
+  useEffect(() => {
+    const loadArticles = async () => {
+      const data = await fetchSheetData('articles');
+      setArticles(data);
+      setLoading(false);
+    };
+    loadArticles();
+  }, []);
+
+  if (loading) return <div className="loading-state">Новости Туркестана загружаются...</div>;
 
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-  const currentArticles = rawData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(rawData.length / ITEMS_PER_PAGE);
+  const currentArticles = articles.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(articles.length / ITEMS_PER_PAGE);
 
   const scrollToTop = () => {
     if (newsTopRef.current) {
@@ -103,7 +108,8 @@ const Articles = () => {
   };
 
   return (
-    <div className="turkic-news-container" ref={newsTopRef}>
+    <div className="turkic-news-container">
+
       <header className="news-header">
         <h1 className="news-title">Шежіре</h1>
         <p className="news-subtitle">Страница {currentPage} из {totalPages}</p>
@@ -112,9 +118,9 @@ const Articles = () => {
 
       <div className="timeline-wrapper">
         <div className="timeline-line"></div>
-        
+
         {currentArticles.map((article, index) => (
-          <div key={article.id} className={`article-card ${index % 2 === 0 ? 'left' : 'right'}`}>
+          <div key={article.id} className={`article-card ${index % 2 === 0 ? 'left' : 'right'}`} onClick={() => setSelectedArticle(article)}>
             <div className="timeline-node">
               <div className="node-inner"></div>
             </div>
@@ -125,11 +131,11 @@ const Articles = () => {
               </div>
               <div className="card-body">
                 <div className="image-container">
-                    <img src={article.image} alt={article.title} />
-                    <span className="category-tag">{article.category}</span>
+                  <img src={article.previewImage} alt={article.title} />
+                  <span className="category-tag">{article.category}</span>
                 </div>
                 <h3>{article.title}</h3>
-                <p>{article.description}</p>
+                <p>{article.excerpt}</p>
                 <button className="read-more-btn">
                   Читать далее <span>&#10142;</span>
                 </button>
@@ -137,11 +143,15 @@ const Articles = () => {
             </div>
           </div>
         ))}
+
+        {selectedArticle && (
+          <ArticleModal article={selectedArticle} onClose={() => setSelectedArticle(null)} />
+        )}
       </div>
 
       <div className="pagination-container">
-        <button 
-          className="page-btn prev" 
+        <button
+          className="page-btn prev"
           onClick={handlePrev}
           disabled={currentPage === 1}
         >
@@ -160,8 +170,8 @@ const Articles = () => {
           ))}
         </div>
 
-        <button 
-          className="page-btn next" 
+        <button
+          className="page-btn next"
           onClick={handleNext}
           disabled={currentPage === totalPages}
         >

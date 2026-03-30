@@ -1,53 +1,34 @@
-import Hero from './components/Hero';
-import Categories from './components/Categories';
-import MapSection from './components/MapSection';
-import HospitalityBackground from './components/HospitalityBackground';
-import Hospitality from './components/Hospitality';
-import Hotels from './components/Hotels';
-import Guides from './components/Guides';
-import Articles from './components/Articles';
+/* src/App.jsx */
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LandingPage from './components/LandingPage';
+import LandingPageMobile from './mobile/LandingPageMobile';
+import CategoryPage from './components/CategoryPage';
+import HotelsPage from './components/HotelsPage';
+import RestaurantsPage from './components/RestaurantsPage';
+import GuidesPage from './components/GuidesPage';
+import AdminPanel from './admin/AdminPanel';
 
 function App() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
-    <div className="App">
-      {/* Первая страница */}
-      <section style={{ height: '100vh' }}>
-        <Hero />
-      </section>
-
-      {/* Вторая страница */}
-      <section style={{ height: '100vh' }}>
-        <Categories />
-      </section>
-
-      {/* Третья страница */}
-      <section style={{ height: '100vh' }}>
-        <MapSection />
-      </section>
-
-      {/* Объединенный раздел: Еда и Отели */}
-      <div className="hospitality-hotels-wrapper" style={{ position: 'relative' }}>
-        <HospitalityBackground />
-
-        <section style={{ height: '100vh', position: 'relative', zIndex: 1 }}>
-          <Hospitality />
-        </section>
-
-        <section style={{ height: '100vh', position: 'relative', zIndex: 1 }}>
-          <Hotels />
-        </section>
-      </div>
-
-      {/* Шестая страница */}
-      <section style={{ height: '100vh' }}>
-        <Guides />
-      </section>
-
-      {/* Седьмая страница */}
-      <section style={{ height: '100vh' }}>
-        <Articles />
-      </section>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={isMobile ? <LandingPageMobile /> : <LandingPage />} />
+        <Route path="/category/:id" element={<CategoryPage />} />
+        <Route path="/hotels" element={<HotelsPage />} />
+        <Route path="/restaurants" element={<RestaurantsPage />} />
+        <Route path="/guides" element={<GuidesPage />} />
+        <Route path="/admin" element={<AdminPanel />} />
+      </Routes>
+    </Router>
   );
 }
 

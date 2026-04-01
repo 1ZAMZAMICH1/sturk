@@ -114,16 +114,16 @@ function ShieldItemMobile({ data, index, realCountIdx }) {
         {/* ЛИЦЕВАЯ СТОРОНА (НОРМАЛЬНЫЙ ВИД) — теперь у всех 60 щитов */}
         <group position={[0, 0, 0.1]}>
           <mesh>
-            <torusGeometry args={[1.6, 0.08, 4, 16]} />
-            <meshStandardMaterial color="#d4af37" roughness={0.4} metalness={0.8} />
+            <torusGeometry args={[1.6, 0.08, 12, 48]} />
+            <meshStandardMaterial color="#d4af37" roughness={0.3} metalness={0.9} />
           </mesh>
           <mesh position={[0, 0, -0.05]}>
-            <circleGeometry args={[1.6, 12]} />
-            <meshStandardMaterial color="#5c3a21" roughness={0.9} />
+            <circleGeometry args={[1.6, 48]} />
+            <meshStandardMaterial color="#5c3a21" roughness={0.8} />
           </mesh>
           <mesh position={[0, 0, 0.05]} rotation={[Math.PI / 2, 0, 0]}>
-            <sphereGeometry args={[0.3, 8, 4, 0, Math.PI * 2, 0, Math.PI * 0.5]} />
-            <meshStandardMaterial color="#b8860b" />
+            <sphereGeometry args={[0.3, 16, 8, 0, Math.PI * 2, 0, Math.PI * 0.5]} />
+            <meshStandardMaterial color="#b8860b" metalness={0.7} />
           </mesh>
         </group>
 
@@ -131,7 +131,7 @@ function ShieldItemMobile({ data, index, realCountIdx }) {
         {data.isReal && (
           <group rotation={[0, Math.PI, 0]} position={[0, 0, -0.1]}>
             <mesh position={[0, 0, -0.06]}>
-              <circleGeometry args={[1.55, 16]} />
+              <circleGeometry args={[1.55, 48]} />
               <meshStandardMaterial color="#261912" />
             </mesh>
             {shouldRenderDetails && (
@@ -249,8 +249,8 @@ const GuidesMobile = () => {
         <React.Suspense fallback={null}>
           <Canvas 
             camera={{ position: [0, 0, 16], fov: 60 }} 
-            dpr={[1, 1.2]}
-            gl={{ antialias: false, alpha: true }}
+            dpr={[1, 1.5]}
+            gl={{ antialias: true, alpha: true }}
           >
             <ambientLight intensity={1.2} color="#ffdcb3" />
             <pointLight position={[5, 10, 10]} intensity={3} color="#ffaa00" />

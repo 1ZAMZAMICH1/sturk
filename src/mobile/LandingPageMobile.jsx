@@ -9,61 +9,40 @@ import HotelsMobile from './HotelsMobile';
 import GuidesMobile from './GuidesMobile';
 import Articles from '../components/Articles';
 
-// Обертка для разгрузки видеопамяти (WebGL)
-const LazySection = ({ children, height = '100vh', threshold = 0.5 }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      setIsVisible(entry.isIntersecting);
-    }, { threshold });
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [threshold]);
-
-  return (
-    <section ref={ref} style={{ minHeight: height, width: '100%', position: 'relative' }}>
-      {/* key={isVisible} принудительно убивает все ресурсы внутри при увольнении секции */}
-      {isVisible ? <div key="active-canvas">{children}</div> : <div style={{ height }} />}
-    </section>
-  );
-};
-
 const LandingPageMobile = () => {
     return (
         <div className="App-mobile">
             {/* 1. HERO */}
-            <LazySection>
+            <section style={{ minHeight: '100vh', width: '100%', position: 'relative' }}>
                 <Hero />
-            </LazySection>
+            </section>
 
             {/* 2. CATEGORIES */}
-            <LazySection>
+            <section style={{ minHeight: '100vh', width: '100%', position: 'relative' }}>
                 <CategoriesMobile />
-            </LazySection>
+            </section>
 
             {/* 3. MAP */}
-            <LazySection>
+            <section style={{ minHeight: '100vh', width: '100%', position: 'relative' }}>
                 <MapSectionMobile />
-            </LazySection>
+            </section>
 
             {/* 4. HOSPITALITY */}
-            <LazySection minHeight="100vh">
+            <section style={{ minHeight: '100vh', width: '100%', position: 'relative' }}>
                 <HospitalityMobile />
-            </LazySection>
+            </section>
 
-            {/* 4. HOTELS */}
-            <LazySection minHeight="100vh">
+            {/* 5. HOTELS */}
+            <section style={{ minHeight: '100vh', width: '100%', position: 'relative' }}>
                 <HotelsMobile />
-            </LazySection>
+            </section>
 
-            {/* 5. GUIDES */}
-            <LazySection>
+            {/* 6. GUIDES */}
+            <section style={{ minHeight: '100vh', width: '100%', position: 'relative' }}>
                 <GuidesMobile />
-            </LazySection>
+            </section>
 
-            {/* 6. ARTICLES (Обычный HTML, не требует отсечения) */}
+            {/* 7. ARTICLES */}
             <section style={{ minHeight: '100vh', width: '100%' }}>
                 <Articles />
             </section>

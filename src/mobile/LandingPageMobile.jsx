@@ -10,6 +10,8 @@ import GuidesMobile from './GuidesMobile';
 import Articles from '../components/Articles';
 import TransitionDivider from '../components/TransitionDivider';
 
+import HospitalityBackground from '../components/HospitalityBackground';
+
 const LandingPageMobile = () => {
     return (
         <div className="App-mobile">
@@ -34,15 +36,16 @@ const LandingPageMobile = () => {
 
             <TransitionDivider type="ornament" nextBg="#2a0a0a" />
 
-            {/* 4. HOSPITALITY */}
-            <section style={{ minHeight: '100vh', width: '100%', position: 'relative' }}>
-                <HospitalityMobile />
-            </section>
-
-            {/* 5. HOTELS (NO DIVIDER BEFORE THIS ONE AS PER USER REQUEST) */}
-            <section style={{ minHeight: '100vh', width: '100%', position: 'relative' }}>
-                <HotelsMobile />
-            </section>
+            {/* 4 & 5. HOSPITALITY & HOTELS (SHARED BACKGROUND) */}
+            <div className="hospitality-hotels-wrapper-mob" style={{ position: 'relative' }}>
+                <HospitalityBackground />
+                <section style={{ width: '100%', position: 'relative', zIndex: 1 }}>
+                    <HospitalityMobile />
+                </section>
+                <section style={{ width: '100%', position: 'relative', zIndex: 1 }}>
+                    <HotelsMobile />
+                </section>
+            </div>
 
             <TransitionDivider type="ornament" nextBg="#1a0b05" />
 

@@ -12,106 +12,71 @@ import {
 import { Link } from 'react-router-dom';
 import * as THREE from 'three';
 import './GuidesMobile.css';
-
 import { fetchSheetData } from '../services/api';
 
-// --- ГЕНЕРАТОР ПОЗИЦИЙ ---
+// --- ГЕНЕРАТОР ПОЗИЦИЙ (мобайл) ---
 const generatePositionsMobile = (seed, count) => {
   let localSeed = seed;
   const random = () => {
     const x = Math.sin(localSeed++) * 10000;
     return x - Math.floor(x);
   };
-
   const positions = [];
-  const minDistance = 2.2; // Гарантированный зазор между щитами
-  const xRange = 3.5;    // Строго под ширину мобильного экрана (чтобы не обрезались)
-  const yRange = 8.0;    // По вертикали
-  const safeZoneX = 2.2; // Свободное место для текста по горизонтали
-  const safeZoneY = 2.0; // Свободное место для текста по вертикали
-
+  const minDistance = 2.2;
+  const xRange = 3.5;
+  const yRange = 8.0;
+  const safeZoneX = 2.2;
+  const safeZoneY = 2.0;
   let attempts = 0;
   while (positions.length < count && attempts < 5000) {
     attempts++;
     const x = (random() - 0.5) * 2 * xRange;
     const y = (random() - 0.5) * 2 * yRange;
     const z = (random() - 0.5) * 3;
-
     if (Math.abs(x) < safeZoneX && Math.abs(y) < safeZoneY) continue;
-
     let tooClose = false;
     for (let pos of positions) {
       const dx = pos[0] - x;
       const dy = pos[1] - y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < minDistance) {
-        tooClose = true;
-        break;
-      }
+      if (Math.sqrt(dx * dx + dy * dy) < minDistance) { tooClose = true; break; }
     }
     if (!tooClose) positions.push([x, y, z]);
   }
   return positions;
 };
 
-// --- КОМПОНЕНТ ЩИТА ---
-function ShieldItemMobile({ data, index, realCountIdx, inView }) {
+// --- КОМПОНЕНТ ЩИТА (мобайл) ---
+function ShieldItemMobile({ data, index, openSignal }) {
   const groupRef = useRef();
-  const [isFlippedManual, setIsFlippedManual] = useState(false);
   const [shouldRenderDetails, setShouldRenderDetails] = useState(false);
 
   useEffect(() => {
-    setIsFlippedManual(false);
     setShouldRenderDetails(false);
   }, [data.id]);
 
   useFrame((state, delta) => {
-    if (!groupRef.current || !data.isReal || !inView) return;
-    
-    const time = state.clock.elapsedTime % 8;
-    let isAutoOpen = false;
-
-    const baseDelay = realCountIdx * 0.4;
-    if (time > baseDelay && time < 5 + baseDelay) {
-      isAutoOpen = true;
-    }
-
-    if ((isAutoOpen || isFlippedManual) && !shouldRenderDetails) {
-      setShouldRenderDetails(true);
-    }
-
-    const isOpen = isFlippedManual || isAutoOpen;
+    if (!groupRef.current) return;
+    const isOpen = data.isReal && openSignal;
     const targetRotation = isOpen ? Math.PI : 0;
+    // Включаем рендер деталей сразу как только начали открываться
+    if (isOpen && !shouldRenderDetails) setShouldRenderDetails(true);
 
     groupRef.current.rotation.y = THREE.MathUtils.lerp(
       groupRef.current.rotation.y,
       targetRotation,
       delta * 4
     );
-
-    const sway = Math.sin(state.clock.elapsedTime * 0.7 + index * 132) * 0.04;
-    groupRef.current.rotation.z = sway;
+    groupRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.7 + index * 132) * 0.04;
   });
 
   return (
     <group position={data.pos}>
-      {/* ШЕСТ — теперь у всех */}
       <mesh position={[0, 15, 0]}>
         <cylinderGeometry args={[0.02, 0.02, 30, 4]} />
         <meshStandardMaterial color="#3d2b1f" />
       </mesh>
-      
-      <group 
-        ref={groupRef} 
-        scale={[0.42, 0.42, 0.42]}
-        onClick={(e) => {
-          if (data.isReal) {
-            e.stopPropagation();
-            setIsFlippedManual(!isFlippedManual);
-          }
-        }}
-      >
-        {/* ЛИЦЕВАЯ СТОРОНА (НОРМАЛЬНЫЙ ВИД) — теперь у всех 60 щитов */}
+      <group ref={groupRef} scale={[0.42, 0.42, 0.42]}>
+        {/* Лицевая сторона */}
         <group position={[0, 0, 0.1]}>
           <mesh>
             <torusGeometry args={[1.6, 0.08, 12, 48]} />
@@ -126,8 +91,7 @@ function ShieldItemMobile({ data, index, realCountIdx, inView }) {
             <meshStandardMaterial color="#b8860b" metalness={0.7} />
           </mesh>
         </group>
-
-        {/* ОБРАТНАЯ СТОРОНА (ИНФО) — ТОЛЬКО ДЛЯ ГИДОВ */}
+        {/* Обратная сторона — только для реальных */}
         {data.isReal && (
           <group rotation={[0, Math.PI, 0]} position={[0, 0, -0.1]}>
             <mesh position={[0, 0, -0.06]}>
@@ -140,29 +104,14 @@ function ShieldItemMobile({ data, index, realCountIdx, inView }) {
                   url={data.img || "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=300&q=60"}
                   scale={[1.8, 1.8]}
                   position={[0, 0.4, 0.05]}
-                  transparent
-                  radius={1}
+                  transparent radius={1}
                 />
-                <Text
-                  position={[0, -0.7, 0.1]}
-                  fontSize={0.24}
-                  maxWidth={2.0}
-                  textAlign="center"
-                  color="#d4af37"
-                  anchorX="center"
-                  anchorY="top"
-                >
+                <Text position={[0, -0.7, 0.1]} fontSize={0.24} maxWidth={2.0} textAlign="center"
+                  color="#d4af37" anchorX="center" anchorY="top">
                   {data.name}
                 </Text>
-                <Text
-                  position={[0, -1.1, 0.1]}
-                  fontSize={0.16}
-                  maxWidth={1.8}
-                  textAlign="center"
-                  color="#a89f91"
-                  anchorX="center"
-                  anchorY="top"
-                >
+                <Text position={[0, -1.1, 0.1]} fontSize={0.16} maxWidth={1.8} textAlign="center"
+                  color="#a89f91" anchorX="center" anchorY="top">
                   {data.role}
                 </Text>
               </React.Suspense>
@@ -174,13 +123,24 @@ function ShieldItemMobile({ data, index, realCountIdx, inView }) {
   );
 }
 
+// --- КОНСТАНТЫ ---
+const TOTAL_SHIELDS_MOB = 17;  // Всего щитов в сцене
+const REAL_COUNT_MOB = 12;     // Из них 12 активных
+const ITEMS_PER_PAGE_MOB = 12; // 12 гидов на страницу
+const OPEN_DURATION = 15000;
+const CLOSE_SPREAD = 4000;
+const PAUSE_DURATION = 2000;
+
 const GuidesMobile = () => {
   const [guides, setGuides] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [openSignals, setOpenSignals] = useState(Array(TOTAL_SHIELDS_MOB).fill(false));
   const [inView, setInView] = useState(false);
   const rootRef = useRef(null);
+  const timersRef = useRef([]);
 
+  // IntersectionObserver — анимация только когда секция видна
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       setInView(entry.isIntersecting);
@@ -190,49 +150,33 @@ const GuidesMobile = () => {
   }, []);
 
   useEffect(() => {
-    const load = async () => {
-      const data = await fetchSheetData('guides');
-      setGuides(data);
-      setLoading(false);
-    };
-    load();
+    fetchSheetData('guides').then(data => { setGuides(data); setLoading(false); });
   }, []);
 
+  // Данные: 17 щитов, 12 реальных
   const guidesData = useMemo(() => {
     if (!guides || guides.length === 0) return [];
-    const itemsPerPage = 6;
-    const startIndex = (page - 1) * itemsPerPage;
-    const pageGuides = guides.slice(startIndex, startIndex + itemsPerPage);
-    
-    const positions = generatePositionsMobile(777, 60);
-    
-    // БЕРЕМ 6 ЩИТОВ, КОТОРЫЕ БЛИЖЕ К ЦЕНТРУ И К КАМЕРЕ
-    const scoredPositions = positions.map((pos, index) => {
-      const distFromCenter = Math.sqrt(pos[0] * pos[0] + pos[1] * pos[1]);
-      const depthScore = pos[2];
-      const score = (12 - distFromCenter) + (depthScore * 2);
-      return { index, score };
-    });
-    
-    scoredPositions.sort((a, b) => b.score - a.score);
-    const top6Indices = scoredPositions.slice(0, 6).map(item => item.index);
-    const realIndicesSet = new Set(top6Indices);
+    const startIndex = (page - 1) * ITEMS_PER_PAGE_MOB;
+    const pageGuides = guides.slice(startIndex, startIndex + ITEMS_PER_PAGE_MOB);
+    const positions = generatePositionsMobile(777, TOTAL_SHIELDS_MOB);
+
+    // Выбираем 12 ближайших к камере щитов
+    const scored = positions.map((pos, index) => ({
+      index,
+      score: pos[2] + (12 - Math.sqrt(pos[0] ** 2 + pos[1] ** 2)) * 0.5
+    }));
+    scored.sort((a, b) => b.score - a.score);
+    const topIndices = new Set(scored.slice(0, REAL_COUNT_MOB).map(item => item.index));
 
     let gIdx = 0;
     return positions.map((pos, i) => {
-      const isReal = realIndicesSet.has(i);
+      const isReal = topIndices.has(i);
       const guide = isReal ? pageGuides[gIdx % pageGuides.length] : null;
-      let orderIdx = -1;
-      if (isReal) {
-        orderIdx = gIdx;
-        gIdx++;
-      }
-
+      if (isReal) gIdx++;
       return {
         id: `${page}-${i}`,
-        pos: pos,
+        pos,
         isReal: !!guide,
-        realIdx: orderIdx,
         name: guide?.name?.toUpperCase() || "",
         role: guide?.specialty?.toUpperCase() || "",
         img: guide?.photo || "",
@@ -240,8 +184,56 @@ const GuidesMobile = () => {
     });
   }, [page, guides]);
 
-  const nextPage = () => setPage(prev => ( (prev * 6) < guides.length ? prev + 1 : prev ));
-  const prevPage = () => setPage(prev => (prev > 1 ? prev - 1 : prev));
+  // Авто-анимация (только когда секция в зоне видимости)
+  useEffect(() => {
+    if (loading || !inView) return;
+    let isMounted = true;
+
+    const clearAll = () => timersRef.current.forEach(t => clearTimeout(t));
+
+    const runCycle = () => {
+      clearAll();
+      timersRef.current = [];
+      setOpenSignals(Array(TOTAL_SHIELDS_MOB).fill(false));
+
+      // Хаотично открываем в течение 15 сек
+      for (let i = 0; i < TOTAL_SHIELDS_MOB; i++) {
+        const openDelay = Math.random() * OPEN_DURATION;
+        const t = setTimeout(() => {
+          if (!isMounted) return;
+          setOpenSignals(prev => { const n = [...prev]; n[i] = true; return n; });
+        }, openDelay);
+        timersRef.current.push(t);
+      }
+
+      // Хаотично закрываем (каждый со своим delay)
+      for (let i = 0; i < TOTAL_SHIELDS_MOB; i++) {
+        const closeDelay = OPEN_DURATION + Math.random() * CLOSE_SPREAD;
+        const t = setTimeout(() => {
+          if (!isMounted) return;
+          setOpenSignals(prev => { const n = [...prev]; n[i] = false; return n; });
+        }, closeDelay);
+        timersRef.current.push(t);
+      }
+
+      // Смена страницы
+      const pageSwitch = setTimeout(() => {
+        if (!isMounted) return;
+        setPage(prev => {
+          const totalPages = Math.ceil(guides.length / ITEMS_PER_PAGE_MOB);
+          return totalPages > 1 ? (prev >= totalPages ? 1 : prev + 1) : prev;
+        });
+      }, OPEN_DURATION + CLOSE_SPREAD + PAUSE_DURATION);
+      timersRef.current.push(pageSwitch);
+
+      // Следующий цикл
+      const nextCycle = setTimeout(runCycle, OPEN_DURATION + CLOSE_SPREAD + PAUSE_DURATION + 500);
+      timersRef.current.push(nextCycle);
+    };
+
+    runCycle();
+    return () => { isMounted = false; clearAll(); };
+  }, [loading, inView, guides.length]);
 
   if (loading) return <div className="mob-loading">Зовем мастеров пути...</div>;
 
@@ -252,13 +244,13 @@ const GuidesMobile = () => {
 
       <div className="guides-mob-header">
         <h2 className="guides-mob-title">ГИДЫ</h2>
-        <span className="guides-mob-subtitle">Страница {page}</span>
+        {/* Текст со страницей убран */}
       </div>
 
       <div className="guides-mob-canvas">
         <React.Suspense fallback={null}>
-          <Canvas 
-            camera={{ position: [0, 0, 16], fov: 60 }} 
+          <Canvas
+            camera={{ position: [0, 0, 16], fov: 60 }}
             dpr={[1, 1.5]}
             gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
           >
@@ -266,16 +258,14 @@ const GuidesMobile = () => {
             <pointLight position={[5, 10, 10]} intensity={3} color="#ffaa00" />
             <Environment preset="sunset" />
             <Sparkles count={50} scale={[25, 25, 10]} size={2} speed={0.3} opacity={0.4} color="#ffaa00" />
-            
             <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.2}>
               <group>
                 {guidesData.map((g, i) => (
-                  <ShieldItemMobile 
-                    key={g.id} 
-                    data={g} 
-                    index={i} 
-                    realCountIdx={g.realIdx}
-                    inView={inView}
+                  <ShieldItemMobile
+                    key={g.id}
+                    data={g}
+                    index={i}
+                    openSignal={openSignals[i] || false}
                   />
                 ))}
               </group>
@@ -285,20 +275,7 @@ const GuidesMobile = () => {
         </React.Suspense>
       </div>
 
-      <div className="guides-mob-nav">
-        {page > 1 && (
-          <button className="mob-nav-btn left" onClick={prevPage}>
-            <svg viewBox="0 0 50 100"><path d="M40,10 Q10,50 40,90" fill="none" stroke="#d4af37" strokeWidth="4" /></svg>
-          </button>
-        )}
-        {(page * 6) < guides.length && (
-          <button className="mob-nav-btn right" onClick={nextPage}>
-            <svg viewBox="0 0 50 100"><path d="M10,10 Q40,50 10,90" fill="none" stroke="#d4af37" strokeWidth="4" /></svg>
-          </button>
-        )}
-      </div>
-
-      <div className="guides-mob-hint">Просто нажми на щит батыра</div>
+      {/* Hint и nav-кнопки убраны — навигация теперь автоматическая */}
 
       <Link to="/guides" className="guides-mob-link">
         Смотреть всех гидов <span>→</span>

@@ -1,0 +1,563 @@
+/* ============================================================
+   RestaurantsPage.css — CONCEPT: «НОМАДИЧЕСКАЯ ЭЛЕГАНТНОСТЬ»
+   Clean, authentic, high-end editorial layout.
+   Uses real cultural assets instead of CSS tricks.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap');
+
+:root {
+    --rp-espresso: #1a1614;
+    /* Deep, warm almost-black */
+    --rp-charcoal: #2a2421;
+    /* Slightly lighter background for cards */
+    --rp-sand: #dcb88e;
+    /* Pale gold/sand for primary text */
+    --rp-sand-dim: rgba(220, 184, 142, 0.6);
+    --rp-bone: #f4f0ec;
+    /* Off-white for high contrast body text */
+    --rp-spice: #b04b31;
+    /* Subtle terracotta accent */
+    --rp-baskur: url('/src/assets/baskur.png');
+    --rp-pattern: url('/src/assets/kazakh-pattern.png');
+}
+
+/* src/mobile/RestaurantsPageMobile.css */
+
+* {
+    box-sizing: border-box !important;
+}
+
+/* ─── BASE ─── */
+.rp-root {
+    min-height: 100vh;
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden;
+    background-color: var(--rp-espresso);
+    color: var(--rp-bone);
+    font-family: 'Jost', sans-serif;
+    position: relative;
+    padding-bottom: 80px;
+    margin: 0;
+    left: 0;
+}
+
+/* ─── AUTHENTIC 'KIIZ' FELT BACKGROUND ─── */
+.rp-root::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url('/src/assets/felt-texture.png');
+    background-size: 512px;
+    /* Tiling size */
+    background-repeat: repeat;
+    opacity: 0.22;
+    /* Subtle tactile feel */
+    mix-blend-mode: overlay;
+}
+
+/* Gradient depth over the texture */
+.rp-mob-root::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(20, 18, 16, 0.5) 100%);
+}
+
+/* ─── HEADER & NAVIGATION ─── */
+.rp-mob-header-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    width: 100% !important;
+    max-width: 100vw !important;
+    background: rgba(26, 22, 20, 0.98);
+    backdrop-filter: blur(15px);
+}
+
+.rp-mob-header-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background-image: var(--rp-baskur);
+    background-size: auto 8px;
+    background-repeat: repeat-x;
+    opacity: 0.8;
+}
+
+.rp-mob-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    height: 60px;
+    width: 100%;
+}
+
+.rp-mob-back {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--rp-sand-dim);
+    text-decoration: none;
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.rp-mob-logo-box {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.rp-mob-header-logo {
+    max-height: 20px;
+    width: auto;
+}
+
+.rp-mob-count {
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    color: var(--rp-sand);
+    flex-shrink: 0;
+}
+
+/* ─ Filtering ─ */
+.rp-mob-filter-bar {
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    align-items: center;
+}
+
+.rp-mob-filter-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.rp-mob-f-btn {
+    background: transparent;
+    border: 1px solid rgba(220, 184, 142, 0.2);
+    color: var(--rp-sand-dim);
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+}
+
+.rp-mob-f-btn.active {
+    background: var(--rp-sand);
+    color: var(--rp-espresso);
+    border-color: var(--rp-sand);
+}
+
+/* ─── EDITORIAL HERO ─── */
+.rp-mob-hero {
+    padding: 30px 15px 20px;
+    text-align: center;
+    width: 100%;
+}
+
+.rp-mob-h-main {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: var(--rp-bone);
+    margin: 0;
+    line-height: 1.1;
+}
+
+.rp-mob-h-sub {
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    margin-top: 8px;
+}
+
+/* ─── PORTRAIT IMAGE CARDS ─── */
+.rp-mob-grid-container {
+    padding: 0 10px;
+    width: 100%;
+    max-width: 100%;
+}
+
+.rp-mob-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    width: 100%;
+    max-width: 100%;
+}
+
+.rp-mob-card {
+    cursor: pointer;
+    position: relative;
+    width: 100%;
+}
+
+/* Image Frame */
+.rp-mob-card-img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3/4;
+    /* Elegant portrait */
+    overflow: hidden;
+    border-radius: 4px;
+    background: var(--rp-charcoal);
+}
+
+.rp-mob-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* Darker gradient over image for text legibility */
+.rp-mob-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(26, 22, 20, 0.95) 0%, rgba(26, 22, 20, 0.2) 50%, transparent 100%);
+    opacity: 0.9;
+}
+
+.rp-mob-card-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(26, 22, 20, 0.75);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(220, 184, 142, 0.3);
+    color: var(--rp-sand);
+    font-size: 0.55rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    z-index: 5;
+}
+
+/* New Integrated Content Overlay */
+.rp-mob-card-content-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px 10px;
+    text-align: center;
+}
+
+.rp-mob-card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--rp-sand);
+    margin: 0 0 5px;
+    font-weight: 400;
+}
+
+.rp-mob-card-meta {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.55rem;
+    color: var(--rp-bone);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    opacity: 0.8;
+}
+
+.rp-mob-card-sig {
+    font-size: 0.65rem;
+    opacity: 0.7;
+    line-height: 1.2;
+}
+
+/* ─── CULTURAL MAGAZINE MODAL (MOBILE STACK) ─── */
+.rp-mob-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(15, 12, 10, 0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: flex-end;
+}
+
+.rp-mob-modal-container {
+    width: 100%;
+    height: 100vh;
+    background: var(--rp-espresso);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    animation: slideUpMob 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpMob {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+/* Убираем вертикальную ленту Баскур с мобилки */
+.rp-mob-modal-container::after {
+    display: none;
+}
+
+.rp-mob-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 100;
+    background: rgba(26, 22, 20, 0.5);
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--rp-sand-dim);
+    color: var(--rp-sand);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Left Side: Photo (Top on mobile) */
+.rp-mob-modal-visual {
+    flex: 0 0 45vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.rp-mob-modal-visual::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 15vh;
+    background: linear-gradient(to top, var(--rp-espresso) 0%, transparent 100%);
+    z-index: 5;
+}
+
+.rp-mob-modal-visual-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Right Side: Content (Bottom on mobile) */
+.rp-mob-modal-content {
+    flex: 1;
+    padding: 30px 20px 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.rp-mob-modal-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 80px;
+}
+
+.rp-mob-modal-header {
+    margin-bottom: 30px;
+}
+
+.rp-mob-m-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--rp-bone);
+    margin: 0 0 10px;
+    line-height: 1.1;
+}
+
+.rp-mob-m-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--rp-sand);
+}
+
+.rp-mob-m-sec {
+    margin-bottom: 40px;
+}
+
+.rp-mob-m-sec-title {
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+}
+
+.rp-mob-m-desc {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Menu */
+.rp-mob-m-menu {
+    gap: 12px;
+}
+
+.rp-mob-menu-row {
+    gap: 10px;
+}
+
+.rp-mob-menu-name {
+    font-size: 0.95rem;
+}
+
+/* Action Footer */
+.rp-mob-modal-action {
+    padding: 20px;
+    border-top: 1px solid rgba(220, 184, 142, 0.1);
+    background: var(--rp-espresso);
+    position: sticky;
+    bottom: 0;
+}
+
+.rp-mob-action-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+}
+
+/* Thumbs */
+.rp-modal-gallery-thumbs {
+    bottom: 20px;
+    left: 20px;
+    gap: 8px;
+}
+
+.rp-thumb {
+    width: 50px;
+    height: 50px;
+}
+
+.rp-thumb:hover {
+    border-color: var(--rp-sand);
+    transform: scale(1.08);
+}
+
+.rp-thumb.active {
+    border-color: var(--rp-sand);
+    box-shadow: 0 0 25px rgba(220, 184, 142, 0.4);
+}
+
+/* Modern Nearby Grid */
+.rp-nearby-modern-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.rp-nearby-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(42, 36, 33, 0.6);
+    border: 1px solid rgba(220, 184, 142, 0.1);
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.rp-nearby-card:hover {
+    background: rgba(220, 184, 142, 0.08);
+    border-color: var(--rp-sand);
+    transform: translateX(5px);
+}
+
+.rp-nearby-card img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.rp-nearby-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.rp-nearby-info strong {
+    font-size: 0.8rem;
+    color: var(--rp-bone);
+}
+
+.rp-nearby-info span {
+    font-size: 0.7rem;
+    color: var(--rp-sand-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Map Placeholder */
+.rp-map-placeholder {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(220, 184, 142, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.rp-map-view {
+    height: 150px;
+    background-image: url('https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/68.27,43.30,12,0/600x200?access_token=none'); /* Placeholder static map style background or pattern */
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.rp-map-pin-pulse {
+    width: 40px;
+    height: 40px;
+    background: var(--rp-sand);
+    color: var(--rp-espresso);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 0 0 rgba(220, 184, 142, 0.4);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(220, 184, 142, 0.7); }
+    70% { box-shadow: 0 0 0 20px rgba(220, 184, 142, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 184, 142, 0); }
+}
+
+.rp-map-address {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: var(--rp-sand-dim);
+}
+
+.rp-modal-action .full-width {
+    width: 100%;
+}

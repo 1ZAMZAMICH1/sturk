@@ -18,13 +18,15 @@ const Hospitality = () => {
 
   if (loading) return <div className="loading-state">Ароматы востока наполняют комнату...</div>;
 
+  const displayRestaurants = restaurants.slice(0, 5);
+
   return (
     <div className="hospitality-section">
       <div className="hosp-content">
         <div className="mosaic-col left-mosaic">
           <div className="mosaic-grid">
-            {restaurants.slice(0, 5).map((item) => (
-              <div className={`khan-card ${item.size || 'small'}`} key={item.id}>
+            {displayRestaurants.map((item, index) => (
+              <div className={`khan-card ${index === 4 ? 'large' : 'small'}`} key={item.id}>
                 <div className="khan-img-box">
                   <img src={item.image} alt={item.name} />
                   <div className="grain-overlay"></div>

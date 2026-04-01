@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Jost:wght@300;400;500;600&display=swap');
+
 /* =========================================
    1. ПЕРЕМЕННЫЕ И БАЗОВЫЕ НАСТРОЙКИ
    ========================================= */
@@ -433,9 +435,9 @@
   }
 }
 
- /* =========================================
-    8. ОБНОВЛЕННОЕ МОДАЛЬНОЕ ОКНО (SHEPHERD STYLE)
-    ========================================= */
+/* =========================================
+   8. МОДАЛЬНОЕ ОКНО — ТУРКЕСТАНСКИЙ ДИВАН
+   ========================================= */
 .art-modal-overlay {
     position: fixed;
     inset: 0;
@@ -456,14 +458,18 @@
 
 .art-modal-inner.shepherd-style {
     width: 100%;
-    max-width: 620px; /* Компактнее */
-    max-height: 85vh;
-    background: #1c1a18;
+    max-width: 760px;
+    max-height: 88vh;
+    background: #1a140a;
     position: relative;
-    border: 1px solid #c5a05944;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 0 100px rgba(197, 160, 89, 0.05);
+    border: 1px solid rgba(197, 160, 89, 0.35);
+    box-shadow:
+        0 40px 80px rgba(0, 0, 0, 0.9),
+        inset 0 0 120px rgba(197, 160, 89, 0.04),
+        0 0 0 1px rgba(197, 160, 89, 0.08);
     display: flex;
     flex-direction: column;
+    overflow: hidden; /* важно: обрезаем детей */
     animation: slideUpArt 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
@@ -472,10 +478,23 @@
     to { transform: translateY(0); opacity: 1; }
 }
 
+/* Орнаментальные полосы «Жолак» — шёлковый пояс */
 .art-modal-frame-top, .art-modal-frame-bottom {
-    height: 4px;
-    background: repeating-linear-gradient(90deg, var(--accent-gold) 0, var(--accent-gold) 20px, transparent 20px, transparent 40px);
-    opacity: 0.4;
+    flex-shrink: 0;
+    height: 6px;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            var(--accent-gold) 0px,
+            var(--accent-gold) 12px,
+            transparent 12px,
+            transparent 18px,
+            rgba(197,160,89,0.4) 18px,
+            rgba(197,160,89,0.4) 24px,
+            transparent 24px,
+            transparent 30px
+        );
+    opacity: 0.7;
 }
 
 .art-modal-close-gold {
@@ -501,29 +520,47 @@
     transform: rotate(90deg) scale(1.1);
 }
 
+/* Скроллируемая область — ключевой фикс */
+.art-modal-scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    /* Кастомный скролл */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(197,160,89,0.3) transparent;
+}
+.art-modal-scroll-area::-webkit-scrollbar { width: 4px; }
+.art-modal-scroll-area::-webkit-scrollbar-thumb {
+    background: rgba(197,160,89,0.3);
+    border-radius: 2px;
+}
+
 .art-modal-hero-mini {
     width: 100%;
-    height: 280px;
+    height: 300px;
     position: relative;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .art-modal-hero-mini img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: sepia(20%) contrast(1.1);
+    filter: sepia(25%) contrast(1.1) brightness(0.85);
 }
 
 .art-modal-hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, transparent, rgba(28, 26, 24, 1));
+    background: linear-gradient(to bottom, transparent 30%, #1a140a 100%);
 }
 
 .art-modal-body-neat {
-    padding: 0 50px 50px; /* Большие боковые отступы для "книжности" */
-    margin-top: -30px;
+    padding: 0 50px 50px;
+    margin-top: -40px;
     position: relative;
     z-index: 2;
 }
@@ -552,15 +589,83 @@
 }
 
 .art-modal-title-neat {
-    font-size: 2.4rem;
-    line-height: 1.1;
-    color: #fff;
-    margin-bottom: 25px;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: var(--text-primary);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    line-height: 1.25;
+    color: #f0e6d0;
+    margin-bottom: 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Ключевой фикс: текст не вылетает */
+.art-modal-text-neat {
+    font-family: 'Georgia', serif;
+    font-size: 1rem;
+    line-height: 1.85;
+    color: #c8b99a;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
     white-space: pre-wrap;
-    font-family: 'Times New Roman', serif;
+    max-width: 100%;
+}
+
+/* Декоративный разделитель «Бөлгіш» */
+.art-modal-divider {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0 25px;
+}
+.div-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(197,160,89,0.4), transparent);
+}
+.div-diamond {
+    width: 8px;
+    height: 8px;
+    background: var(--accent-gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+    box-shadow: 0 0 8px rgba(197,160,89,0.5);
+}
+
+/* Галерея внутри модалки */
+.art-modal-gallery-compact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.gallery-img-frame {
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border: 1px solid rgba(197,160,89,0.2);
+    border-radius: 4px;
+}
+
+.gallery-img-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: sepia(15%);
+    transition: filter 0.3s;
+}
+
+.gallery-img-frame:hover img { filter: sepia(0%); }
+
+/* Подпись автора */
+.art-modal-footer-ornament {
+    margin-top: 35px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(197,160,89,0.15);
+    text-align: right;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    font-style: italic;
 }
 
 .art-modal-gallery {

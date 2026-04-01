@@ -6,7 +6,9 @@ import LandingPageMobile from './mobile/LandingPageMobile';
 import CategoryPage from './components/CategoryPage';
 import CategoryPageMobile from './mobile/CategoryPageMobile';
 import HotelsPage from './components/HotelsPage';
+import HotelsPageMobile from './mobile/HotelsPageMobile';
 import RestaurantsPage from './components/RestaurantsPage';
+import RestaurantsPageMobile from './mobile/RestaurantsPageMobile';
 import GuidesPage from './components/GuidesPage';
 import AdminPanel from './admin/AdminPanel';
 
@@ -24,8 +26,8 @@ function App() {
       <Routes>
         <Route path="/" element={isMobile ? <LandingPageMobile /> : <LandingPage />} />
         <Route path="/category/:id" element={isMobile ? <CategoryPageMobile /> : <CategoryPage />} />
-        <Route path="/hotels" element={<HotelsPage />} />
-        <Route path="/restaurants" element={<RestaurantsPage />} />
+        <Route path="/hotels" element={isMobile ? <HotelsPageMobile /> : <HotelsPage />} />
+        <Route path="/restaurants" element={isMobile ? <RestaurantsPageMobile /> : <RestaurantsPage />} />
         <Route path="/guides" element={<GuidesPage />} />
         <Route path="/admin" element={<AdminPanel />} />
       </Routes>

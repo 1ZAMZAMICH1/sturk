@@ -18,8 +18,7 @@ const Hotels = () => {
 
     if (loading) return <div className="loading-state">Загрузка отелей...</div>;
 
-    const largeHotel = hotels.find(h => h.size === 'large') || hotels[0];
-    const smallHotels = hotels.filter(h => h.id !== largeHotel?.id);
+    const displayHotels = hotels.slice(0, 5);
 
     return (
         <div className="hotels-section">
@@ -41,8 +40,8 @@ const Hotels = () => {
 
                 <div className="mosaic-col right-mosaic">
                     <div className="mosaic-grid">
-                        {hotels.map((item) => (
-                            <div className={`khan-card ${item.size || 'small'}`} key={item.id}>
+                        {displayHotels.map((item, index) => (
+                            <div className={`khan-card ${index === 4 ? 'large' : 'small'}`} key={item.id}>
                                 <div className="khan-img-box">
                                     <img src={item.image || item.img} alt={item.name || item.title} />
                                     <div className="grain-overlay"></div>

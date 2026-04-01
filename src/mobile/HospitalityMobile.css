@@ -1,15 +1,20 @@
 /* src/mobile/HospitalityMobile.css */
 
+.hospitality-hotels-wrapper-mob {
+  background-color: #2a0a0a;
+  position: relative;
+}
+
 /* ── КОРЕНЬ ── */
-.hospitality-mob-root {
+.hosp-mob-root {
   position: relative;
   width: 100%;
-  min-height: 100vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: 80px 20px 40px;
+  padding: 40px 20px 0;
   box-sizing: border-box;
+  background: transparent;
 }
 
 .hospitality-bg-static {
@@ -70,6 +75,7 @@
   text-align: center;
   padding-top: 6vh;
   padding-bottom: 3vh;
+  margin: 0 auto; /* Добавил центровку */
 }
 
 .hosp-mob-title {
@@ -125,7 +131,7 @@
   grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(4, 90px);
   gap: 10px;
-  margin-bottom: 4vh;
+  margin: 0 auto 4vh; /* Добавил auto для центровки */
 }
 
 /* ── ОДНА КАРТОЧКА ── */

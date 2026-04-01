@@ -1,0 +1,160 @@
+/* src/mobile/HotelsMobile.css */
+
+.hot-mob-root {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 20px 80px; /* Уменьшил сверху, оставил снизу */
+  box-sizing: border-box;
+  background: transparent;
+}
+
+/* --- 3D ФОН (Золотистая пустыня) --- */
+.hot-mob-canvas-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hot-mob-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(184, 146, 15, 0.1) 0%, #0c0806 100%);
+  z-index: 2;
+}
+
+/* --- ЗАГРУЗКА --- */
+.mob-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #b8920f;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  background: #0c0806;
+}
+
+/* --- ЗЕРКАЛО: КАРТОЧКИ СВЕРХУ --- */
+.hot-mob-mosaic {
+  position: relative;
+  z-index: 10;
+  width: 92%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(4, 90px);
+  gap: 10px;
+  margin: 0 auto 4vh; /* Добавил auto для центровки */
+}
+
+.khan-card-mob {
+  position: relative;
+  background: #111;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+}
+
+.khan-card-mob.large {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.khan-card-mob:active { transform: scale(0.97); }
+
+.khan-img-box-mob { width: 100%; height: 100%; position: relative; }
+.khan-img-box-mob img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(100%) sepia(0.3) contrast(1.1);
+  transform: scale(1.05);
+  transition: all 0.5s;
+}
+.khan-card-mob:active .khan-img-box-mob img { filter: grayscale(0%); transform: scale(1); }
+
+.grain-overlay-mob {
+  position: absolute; inset: 0;
+  background-image: url("https://www.transparenttextures.com/patterns/noise-lines.png");
+  opacity: 0.2; pointer-events: none; mix-blend-mode: overlay;
+}
+
+.khan-border-mob {
+  position: absolute; top: 6px; left: 6px; right: 6px; bottom: 6px;
+  border: 1px solid rgba(184, 146, 15, 0.3); pointer-events: none;
+  clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+}
+
+.corner { position: absolute; width: 5px; height: 5px; background: #b8920f; opacity: 0; }
+.c-tl { top: 0; left: 0; }
+.c-tr { top: 0; right: 0; }
+.c-bl { bottom: 0; left: 0; }
+.c-br { bottom: 0; right: 0; }
+.khan-card-mob:active .corner { opacity: 1; }
+
+.khan-info-mob {
+  position: absolute; bottom: 0; left: 0; width: 100%; padding: 12px;
+  background: linear-gradient(to top, #0f0502 10%, transparent);
+  display: flex; flex-direction: column;
+}
+
+.khan-type-mob { font-size: 0.55rem; color: #b8920f; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 3px; opacity: 0.8; }
+.khan-title-mob { color: #fff; font-family: 'Playfair Display', serif; font-size: 0.85rem; margin: 0; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 8px rgba(0,0,0,1); }
+.khan-card-mob.large .khan-title-mob { font-size: 1.2rem; }
+
+/* --- ЗЕРКАЛО: ТЕКСТ ПОД КАРТИНКАМИ --- */
+.hot-mob-header {
+  position: relative;
+  z-index: 10;
+  width: 90%;
+  text-align: center;
+  padding-top: 6vh;
+  padding-bottom: 3vh;
+  margin: 0 auto; /* Добавил центровку */
+}
+
+.hot-mob-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem;
+  color: #b8920f;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  line-height: 1.3;
+  margin: 0 0 16px;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+}
+
+.hot-mob-desc {
+  font-size: 0.85rem;
+  color: #e0d0c0;
+  line-height: 1.7;
+  opacity: 0.9;
+  margin: 0 auto 20px;
+}
+
+.hot-mob-ornament {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #b8920f, transparent);
+  margin: 0 auto 20px;
+}
+
+.hot-mob-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 22px;
+  background: transparent;
+  border: 1px solid rgba(184, 146, 15, 0.4);
+  color: #f0e8d8;
+  text-decoration: none;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: 'Playfair Display', serif;
+  transition: all 0.3s;
+}
+.hot-mob-btn:active { border-color: #b8920f; }

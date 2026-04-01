@@ -34,15 +34,6 @@ const HospitalityMobile = () => {
 
   return (
     <div className="hosp-mob-root">
-      {/* 3D фон — точная копия с ПК */}
-      <div className="hosp-mob-canvas-bg">
-        <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
-          <DarkAtmosphere />
-        </Canvas>
-        <div className="hosp-mob-fabric" />
-        <div className="hosp-mob-vignette" />
-      </div>
-
       {/* Заголовок сверху по центру */}
       <div className="hosp-mob-header">
         <h2 className="hosp-mob-title">Вкус Великого<br />Шелкового Пути</h2>
@@ -58,8 +49,8 @@ const HospitalityMobile = () => {
 
       {/* Мозаичная сетка — как на ПК */}
       <div className="hosp-mob-mosaic">
-        {restaurants.slice(0, 5).map((item) => (
-          <div className={`khan-card-mob ${item.size || 'small'}`} key={item.id}>
+        {restaurants.slice(0, 5).map((item, index) => (
+          <div className={`khan-card-mob ${index === 4 ? 'large' : 'small'}`} key={item.id}>
             <div className="khan-img-box-mob">
               <img src={item.image} alt={item.name} />
               <div className="grain-overlay-mob" />

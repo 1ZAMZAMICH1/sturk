@@ -45,13 +45,7 @@
 }
 
 .center-subtitle {
-  display: block;
-  font-size: 1.2rem;
-  color: #8c7853;
-  margin-top: 15px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  font-weight: 300;
+  display: none; /* убран текст со страницей */
 }
 
 /* --- НОВЫЕ ЗОНЫ НАВИГАЦИИ (ВО ВСЮ ВЫСОТУ) --- */
@@ -162,15 +156,8 @@
 }
 
 @keyframes pulseHint {
-
-  0%,
-  100% {
-    opacity: 0.3;
-  }
-
-  50% {
-    opacity: 0.7;
-  }
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
 }
 
 .noise-overlay {
@@ -198,7 +185,7 @@
 
 .guides-explore-link {
   position: absolute;
-  bottom: 80px;
+  bottom: 25px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 100;

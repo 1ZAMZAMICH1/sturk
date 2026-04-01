@@ -55,7 +55,7 @@ const generatePositionsMobile = (seed, count) => {
 };
 
 // --- КОМПОНЕНТ ЩИТА ---
-function ShieldItemMobile({ data, index, realCountIdx }) {
+function ShieldItemMobile({ data, index, realCountIdx, inView }) {
   const groupRef = useRef();
   const [isFlippedManual, setIsFlippedManual] = useState(false);
   const [shouldRenderDetails, setShouldRenderDetails] = useState(false);
@@ -66,7 +66,7 @@ function ShieldItemMobile({ data, index, realCountIdx }) {
   }, [data.id]);
 
   useFrame((state, delta) => {
-    if (!groupRef.current || !data.isReal) return;
+    if (!groupRef.current || !data.isReal || !inView) return;
     
     const time = state.clock.elapsedTime % 8;
     let isAutoOpen = false;
@@ -178,6 +178,16 @@ const GuidesMobile = () => {
   const [guides, setGuides] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [inView, setInView] = useState(false);
+  const rootRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      setInView(entry.isIntersecting);
+    }, { threshold: 0.05 });
+    if (rootRef.current) observer.observe(rootRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const load = async () => {
@@ -194,13 +204,13 @@ const GuidesMobile = () => {
     const startIndex = (page - 1) * itemsPerPage;
     const pageGuides = guides.slice(startIndex, startIndex + itemsPerPage);
     
-    const positions = generatePositionsMobile(777, 30);
+    const positions = generatePositionsMobile(777, 60);
     
     // БЕРЕМ 6 ЩИТОВ, КОТОРЫЕ БЛИЖЕ К ЦЕНТРУ И К КАМЕРЕ
     const scoredPositions = positions.map((pos, index) => {
       const distFromCenter = Math.sqrt(pos[0] * pos[0] + pos[1] * pos[1]);
       const depthScore = pos[2];
-      const score = (10 - distFromCenter) + (depthScore * 2);
+      const score = (12 - distFromCenter) + (depthScore * 2);
       return { index, score };
     });
     
@@ -236,7 +246,7 @@ const GuidesMobile = () => {
   if (loading) return <div className="mob-loading">Зовем мастеров пути...</div>;
 
   return (
-    <div className="guides-mob-root">
+    <div className="guides-mob-root" ref={rootRef}>
       <div className="noise-overlay" />
       <div className="vignette-guides" />
 
@@ -250,12 +260,12 @@ const GuidesMobile = () => {
           <Canvas 
             camera={{ position: [0, 0, 16], fov: 60 }} 
             dpr={[1, 1.5]}
-            gl={{ antialias: true, alpha: true }}
+            gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
           >
             <ambientLight intensity={1.2} color="#ffdcb3" />
             <pointLight position={[5, 10, 10]} intensity={3} color="#ffaa00" />
             <Environment preset="sunset" />
-            <Sparkles count={80} scale={[25, 25, 10]} size={2} speed={0.3} opacity={0.4} color="#ffaa00" />
+            <Sparkles count={50} scale={[25, 25, 10]} size={2} speed={0.3} opacity={0.4} color="#ffaa00" />
             
             <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.2}>
               <group>
@@ -265,6 +275,7 @@ const GuidesMobile = () => {
                     data={g} 
                     index={i} 
                     realCountIdx={g.realIdx}
+                    inView={inView}
                   />
                 ))}
               </group>

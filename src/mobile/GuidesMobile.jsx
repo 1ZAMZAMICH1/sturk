@@ -48,18 +48,25 @@ const generatePositionsMobile = (seed, count) => {
 // --- КОМПОНЕНТ ЩИТА (мобайл) ---
 function ShieldItemMobile({ data, index, openSignal }) {
   const groupRef = useRef();
-  const [shouldRenderDetails, setShouldRenderDetails] = useState(false);
+  // Используем ref вместо state, чтобы не вызывать setState внутри useFrame
+  const detailsRenderedRef = useRef(false);
+  const [detailsVisible, setDetailsVisible] = useState(false);
 
   useEffect(() => {
-    setShouldRenderDetails(false);
+    detailsRenderedRef.current = false;
+    setDetailsVisible(false);
   }, [data.id]);
 
   useFrame((state, delta) => {
     if (!groupRef.current) return;
     const isOpen = data.isReal && openSignal;
     const targetRotation = isOpen ? Math.PI : 0;
-    // Включаем рендер деталей сразу как только начали открываться
-    if (isOpen && !shouldRenderDetails) setShouldRenderDetails(true);
+
+    // Активируем рендер деталей только один раз через ref
+    if (isOpen && !detailsRenderedRef.current) {
+      detailsRenderedRef.current = true;
+      setDetailsVisible(true);
+    }
 
     groupRef.current.rotation.y = THREE.MathUtils.lerp(
       groupRef.current.rotation.y,
@@ -98,7 +105,7 @@ function ShieldItemMobile({ data, index, openSignal }) {
               <circleGeometry args={[1.55, 48]} />
               <meshStandardMaterial color="#261912" />
             </mesh>
-            {shouldRenderDetails && (
+            {detailsVisible && (
               <React.Suspense fallback={null}>
                 <Image
                   url={data.img || "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=300&q=60"}
@@ -184,9 +191,9 @@ const GuidesMobile = () => {
     });
   }, [page, guides]);
 
-  // Авто-анимация (только когда секция в зоне видимости)
+  // Авто-анимация — запускается сразу после загрузки данных
   useEffect(() => {
-    if (loading || !inView) return;
+    if (loading) return;
     let isMounted = true;
 
     const clearAll = () => timersRef.current.forEach(t => clearTimeout(t));
@@ -233,7 +240,7 @@ const GuidesMobile = () => {
 
     runCycle();
     return () => { isMounted = false; clearAll(); };
-  }, [loading, inView, guides.length]);
+  }, [loading, guides.length]);
 
   if (loading) return <div className="mob-loading">Зовем мастеров пути...</div>;
 
@@ -252,7 +259,7 @@ const GuidesMobile = () => {
           <Canvas
             camera={{ position: [0, 0, 16], fov: 60 }}
             dpr={[1, 1.5]}
-            gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
+            gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
           >
             <ambientLight intensity={1.2} color="#ffdcb3" />
             <pointLight position={[5, 10, 10]} intensity={3} color="#ffaa00" />

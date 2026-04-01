@@ -68,7 +68,7 @@ const ArticlesManager = () => {
                             date: new Date().toLocaleDateString('ru-RU'),
                             category: 'История',
                             content: '',
-                            previewImage: ''
+                            image: ''
                         })}
                     >
                         <Icons.Plus /> Написать статью
@@ -86,7 +86,7 @@ const ArticlesManager = () => {
                     <tbody>
                         {articles.map(a => (
                             <tr key={a.id}>
-                                <td><img src={a.previewImage} alt="" className="admin-table-img" /></td>
+                                <td><img src={a.image} alt="" className="admin-table-img" /></td>
                                 <td>
                                     <strong>{a.title}</strong>
                                     <br />

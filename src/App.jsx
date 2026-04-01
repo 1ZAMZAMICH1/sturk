@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import LandingPageMobile from './mobile/LandingPageMobile';
 import CategoryPage from './components/CategoryPage';
+import CategoryPageMobile from './mobile/CategoryPageMobile';
 import HotelsPage from './components/HotelsPage';
 import RestaurantsPage from './components/RestaurantsPage';
 import GuidesPage from './components/GuidesPage';
@@ -22,7 +23,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={isMobile ? <LandingPageMobile /> : <LandingPage />} />
-        <Route path="/category/:id" element={<CategoryPage />} />
+        <Route path="/category/:id" element={isMobile ? <CategoryPageMobile /> : <CategoryPage />} />
         <Route path="/hotels" element={<HotelsPage />} />
         <Route path="/restaurants" element={<RestaurantsPage />} />
         <Route path="/guides" element={<GuidesPage />} />

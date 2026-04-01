@@ -123,8 +123,8 @@ const ArticleEditModal = ({ article, onSave, onClose }) => {
                         <div className="admin-gallery-editor">
                             <ImageUpload 
                                 label="Превью (Главное фото)" 
-                                value={formData.previewImage} 
-                                onChange={(url) => setFormData(p => ({ ...p, previewImage: url }))} 
+                                value={formData.image} 
+                                onChange={(url) => setFormData(p => ({ ...p, image: url }))} 
                             />
                             
                             <label className="label-mini-gold" style={{ marginTop: '20px', display: 'block' }}>Галерея в тексте</label>

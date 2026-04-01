@@ -14,7 +14,7 @@ const ArticleModal = ({ article, onClose }) => {
 
         <div className="art-modal-scroll-area">
           <div className="art-modal-hero-mini">
-            <img src={article.previewImage} alt="" />
+            <img src={article.image} alt="" />
             <div className="art-modal-hero-overlay" />
           </div>
 
@@ -131,7 +131,7 @@ const Articles = () => {
               </div>
               <div className="card-body">
                 <div className="image-container">
-                  <img src={article.previewImage} alt={article.title} />
+                  <img src={article.image} alt={article.title} />
                   <span className="category-tag">{article.category}</span>
                 </div>
                 <h3>{article.title}</h3>

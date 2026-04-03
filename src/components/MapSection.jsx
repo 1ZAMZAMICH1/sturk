@@ -65,23 +65,32 @@ const getIcon = (type) => {
 
 const MapResizeController = () => {
   const map = useMap();
+
   useEffect(() => {
-    // ОПТИМИЗАЦИЯ: requestAnimationFrame более плавный для анимации, чем setInterval
-    let frameId;
-    const startTime = Date.now();
-    const duration = 3000;
+    if (!map) return;
 
-    const animate = () => {
-      const now = Date.now();
-      if (now - startTime < duration) {
-        map.invalidateSize();
-        frameId = requestAnimationFrame(animate);
-      }
+    // Немедленный вызов при монтировании
+    map.invalidateSize();
+
+    // ResizeObserver — поймает точный момент изменения размера контейнера
+    const container = map.getContainer();
+    const observer = new ResizeObserver(() => {
+      map.invalidateSize();
+    });
+    if (container) observer.observe(container);
+
+    // Принудительный вызов после анимации свитка (transition: 2.5s)
+    const t1 = setTimeout(() => map.invalidateSize(), 2600);
+    // Ещё один чуть позже на случай рендер-задержки
+    const t2 = setTimeout(() => map.invalidateSize(), 3000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(t1);
+      clearTimeout(t2);
     };
-
-    animate();
-    return () => cancelAnimationFrame(frameId);
   }, [map]);
+
   return null;
 };
 

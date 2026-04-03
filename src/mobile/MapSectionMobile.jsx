@@ -124,6 +124,13 @@ const MapSectionMobile = () => {
               maskImage:         `url(${paperTextureImg})`,
               WebkitMaskImage:   `url(${paperTextureImg})`,
               maskSize:          '100% 100%',
+              WebkitMaskSize:    '100% 100%',
+              maskRepeat:        'no-repeat',
+              WebkitMaskRepeat:  'no-repeat',
+              maskPosition:      'center',
+              WebkitMaskPosition: 'center',
+              willChange:        'mask',
+              WebkitMaskComposite: 'destination-in'
             }}>
               <MapContainer
                 center={[43.0, 68.5]} zoom={8}

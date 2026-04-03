@@ -21,6 +21,15 @@ import cityImg from '../assets/city.jpg';
 import historyImg from '../assets/history.jpg';
 import natureImg from '../assets/nature.jpg';
 
+import gor1 from '../assets/gor1.png';
+import ist1 from '../assets/ist1.png';
+import duh1 from '../assets/duh1.png';
+
+// Файлы для фона арок (контент)
+import gor2 from '../assets/gor2.png';
+import ist2 from '../assets/ist2.png';
+import duh2 from '../assets/duh2.png';
+
 import p1 from '../assets/petroglyph-1.png';
 import p2 from '../assets/petroglyph-2.png';
 import p3 from '../assets/petroglyph-3.png';
@@ -39,11 +48,7 @@ const ARCH_HEIGHT = 3.4;
 
 // ШЕЙДЕР
 const PetroSoftMaterial = shaderMaterial(
-  {
-    uTime: 0,
-    uColor: new THREE.Color('#d4af37'),
-    uTexture: null,
-  },
+  { uTime: 0, uColor: new THREE.Color('#d4af37'), uTexture: null },
   `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
   `
     uniform float uTime;
@@ -64,7 +69,48 @@ const PetroSoftMaterial = shaderMaterial(
   `
 );
 
-extend({ PetroSoftMaterial });
+// Шейдер для серебряных надписей (Металлик с отсечением фона)
+const MetalLabelMaterial = shaderMaterial(
+  { uTime: 0, uTexture: null, uBaseColor: new THREE.Color('#ffffff') },
+  `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  `
+    uniform float uTime;
+    uniform sampler2D uTexture;
+    uniform vec3 uBaseColor;
+    varying vec2 vUv;
+    void main() {
+      // Получаем текстуру
+      vec4 tex = texture2D(uTexture, vUv);
+      
+      // СУПЕР-СГЛАЖИВАНИЕ (Anti-aliasing через производные)
+      // Эту технику используют для идеально ровных краев
+      float edge = fwidth(tex.a);
+      float alpha = smoothstep(0.5 - edge, 0.5 + edge, tex.a);
+      
+      // Если прозрачность в самом файле совсем низкая - не рисуем
+      if (alpha < 0.05) discard;
+      
+      // Насыщенное ЗОЛОТО
+      float gradient = sin(vUv.x * 2.5 + uTime * 1.5) * 0.5 + 0.5;
+      // Цвета: Глубокое золото -> Яркий блик
+      vec3 gold = mix(vec3(0.58, 0.42, 0.12), vec3(1.0, 0.9, 0.5), gradient);
+      
+      // Дополнительный солнечный "перелив" (sheen)
+      float sheen = pow(1.0 - vUv.y, 4.0) * 0.7;
+      vec3 finalColor = gold + sheen;
+      
+      gl_FragColor = vec4(finalColor, alpha);
+    }
+  `
+);
+
+extend({ PetroSoftMaterial, MetalLabelMaterial });
 
 const seededRandom = (seed) => {
   const x = Math.sin(seed * 12.9898) * 43758.5453;
@@ -206,17 +252,46 @@ const createFrameRing = (width, height, border) => {
 // 4. КАРТОЧКА
 const PortalCard = ({ index, url, title, color, position, rotation, hoveredState, setHovered, onClick }) => {
   const groupRef = useRef();
+  const labelMatRef = useRef();
   const isHovered = hoveredState === index;
 
-  // ГАРАНТИРОВАННЫЕ КАРТИНКИ
-  const defaultUrls = [cityImg, historyImg, natureImg];
-  const activeUrl = url && url.length > 10 && !url.includes('example.com') ? url : defaultUrls[index % 3];
+  // Изображения контента из ассетов
+  const archContentAssets = [gor2, ist2, duh2];
+  const activeUrl = archContentAssets[index % 3];
 
   const texture = useTexture(activeUrl);
+  // Загружаем ваши подписи
+  const labelTextures = useTexture([gor1, ist1, duh1]);
+  const activeLabel = labelTextures[index % 3];
+
   useLayoutEffect(() => {
-    if (texture) {
+    if (activeLabel) {
+       // Сверхсглаживание краев
+       activeLabel.anisotropy = 16;
+       activeLabel.minFilter = THREE.LinearFilter;
+       activeLabel.magFilter = THREE.LinearFilter;
+       activeLabel.needsUpdate = true;
+    }
+  }, [activeLabel]);
+  
+  useLayoutEffect(() => {
+    if (texture && texture.image) {
+      const imageAspect = texture.image.width / texture.image.height;
+      const archAspect = ARCH_WIDTH / ARCH_HEIGHT;
+
       texture.center.set(0.5, 0.5);
+      
+      if (imageAspect > archAspect) {
+        texture.repeat.set(archAspect / imageAspect, 1);
+        texture.offset.x = (1 - texture.repeat.x) / 2;
+      } else {
+        texture.repeat.set(1, imageAspect / archAspect);
+        texture.offset.y = (1 - texture.repeat.y) / 2;
+      }
+
       texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+      texture.minFilter = THREE.LinearFilter;
+      texture.needsUpdate = true;
     }
   }, [texture]);
 
@@ -248,12 +323,18 @@ const PortalCard = ({ index, url, title, color, position, rotation, hoveredState
 
   useFrame((state, delta) => {
     const dt = Math.min(delta, 0.1);
-    const targetScale = isHovered ? 1.05 : 1.0;
+    // Для центральной арки (index 1) делаем базовый масштаб чуть больше (1.1), так как она стоит глубже
+    const baseScale = index === 1 ? 1.1 : 1.0;
+    const targetScale = isHovered ? baseScale * 1.05 : baseScale;
     const targetZ = isHovered ? 0.3 : 0;
 
     if (groupRef.current) {
-      groupRef.current.scale.setScalar(THREE.MathUtils.lerp(groupRef.current.scale.x, targetScale, dt * 4));
+      const s = THREE.MathUtils.lerp(groupRef.current.scale.x, targetScale, dt * 4);
+      groupRef.current.scale.set(s, s, s);
       groupRef.current.position.z = THREE.MathUtils.lerp(groupRef.current.position.z, position[2] + targetZ, dt * 4);
+    }
+    if (labelMatRef.current) {
+      labelMatRef.current.uTime = state.clock.elapsedTime;
     }
   });
 
@@ -281,37 +362,21 @@ const PortalCard = ({ index, url, title, color, position, rotation, hoveredState
           />
         </mesh>
 
-        {/* Первая строка (ГОРОДСКИЕ и т.д.) — крупно */}
-        <Text
-          position={[0, -1.9, 0.22]}
-          fontSize={0.4}
-          font="https://fonts.gstatic.com/s/playfairdisplay/v40/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKebukDQ.ttf"
-          color="#ffd700"
-          anchorX="center"
-          anchorY="top"
-          letterSpacing={0.05}
-          textAlign="center"
-          outlineWidth={0}
+        {/* ВАШИ ГРАФИЧЕСКИЕ ПОДПИСИ К АРКАМ (Размер: scale, Позиция: position) */}
+        {/* Индивидуальная подгонка высоты и вылета вперед для боковых арок */}
+        {/* ВАШИ ГРАФИЧЕСКИЕ ПОДПИСИ К АРКАМ (Умный шейдер для серебра) */}
+        <mesh 
+          position={[0, (index === 0 || index === 2) ? -1.8 : -2.2, 0.35]} 
+          scale={[4.2, 0.9, 1]}
         >
-          {(title ? title.split(' ')[0] : '').toUpperCase()}
-        </Text>
-
-        {/* Вторая строка (ДОСТОПРИМЕЧАТЕЛЬНОСТИ) — мельче */}
-        {title && title.split(' ')[1] && (
-          <Text
-            position={[0, -2.25, 0.22]}
-            fontSize={0.22}
-            font="https://fonts.gstatic.com/s/playfairdisplay/v40/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKebukDQ.ttf"
-            color="#ffd700"
-            anchorX="center"
-            anchorY="top"
-            letterSpacing={0.05}
-            textAlign="center"
-            outlineWidth={0}
-          >
-            {title.split(' ')[1].toUpperCase()}
-          </Text>
-        )}
+          <planeGeometry args={[1, 1]} />
+          <metalLabelMaterial 
+            ref={labelMatRef}
+            uTexture={activeLabel}
+            transparent={true} 
+            depthWrite={false}
+          />
+        </mesh>
       </Float>
     </group>
   );
@@ -332,9 +397,9 @@ function CategoriesScene({ onSelectCategory }) {
         } else {
           console.warn('Using FALLBACK ARCHES because sheets data is missing or incomplete');
           setArchData([
-            { tag: 'city', title: 'Город', url: cityImg, color: '#40e0d0' },
-            { tag: 'spirit', title: 'История', url: historyImg, color: '#ffd700' },
-            { tag: 'nature', title: 'Природа', url: natureImg, color: '#50c878' }
+            { tag: 'city', title: 'Городские', url: cityImg, color: '#40e0d0' },
+            { tag: 'spirit', title: 'Исторические', url: historyImg, color: '#ffd700' },
+            { tag: 'nature', title: 'Духовные', url: natureImg, color: '#50c878' }
           ]);
         }
       } catch (err) {
@@ -358,6 +423,9 @@ function CategoriesScene({ onSelectCategory }) {
       <KeregeBackground />
 
       <ambientLight intensity={0.4} />
+      {/* Спекулятивный свет для ярких бликов на серебре */}
+      <pointLight position={[0, 0, 5]} intensity={10} color="#ffffff" distance={20} />
+      
       <pointLight position={[0, -5, 5]} intensity={2} color="#ffaa00" distance={15} />
       <spotLight position={[0, 10, 5]} intensity={3} color="#fff" angle={0.5} />
 
@@ -395,7 +463,7 @@ const Categories = () => {
 
       <Canvas
         camera={{ position: [0, 0, 9], fov: 50 }}
-        dpr={[1, 1.5]}
+        dpr={[1, 2]}
         gl={{
           powerPreference: "high-performance",
           antialias: true

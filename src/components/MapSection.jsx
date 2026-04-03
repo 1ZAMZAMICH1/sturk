@@ -1,6 +1,8 @@
 // src/components/MapSection.jsx
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { useInView } from '../hooks/useInView';
+import { useNavigate } from 'react-router-dom';
 import { fetchSheetData } from '../services/api';
 import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline, Tooltip } from 'react-leaflet';
 import { Canvas } from '@react-three/fiber';
@@ -131,18 +133,26 @@ const HeroBackgroundScene = React.memo(() => {
 });
 
 const MapSection = () => {
+  const { ref: sectionRef, inView: canvasReady } = useInView({ rootMargin: '300px' });
   const [isOpen, setIsOpen] = useState(false);
   const [filter, setFilter] = useState('all');
   const [activePoint, setActivePoint] = useState(null);
   const [mapPoints, setMapPoints] = useState([]);
   const [mapRoutes, setMapRoutes] = useState([]);
+  const [attractions, setAttractions] = useState([]);
   const [activeRouteId, setActiveRouteId] = useState(null); // Новый стейт для выбора маршрута
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadData = async () => {
-      const points = await fetchSheetData('map_points');
-      const routes = await fetchSheetData('map_routes');
+      const [points, routes, atts] = await Promise.all([
+          fetchSheetData('map_points'),
+          fetchSheetData('map_routes'),
+          fetchSheetData('attractions')
+      ]);
       
+      setAttractions(atts || []);
+
       // Проверяем наличие валидных точек
       const hasValidPoints = points && Array.isArray(points) && points.length > 0 && points.some(p => p.pos);
       
@@ -161,10 +171,7 @@ const MapSection = () => {
         return { ...r, nodes };
       }).filter(r => r.nodes.length > 0) : [];
 
-      // Сливаем реальные маршруты с демо, если реальных нет. 
       const finalRoutes = (parsedRoutes.length > 0) ? parsedRoutes : FALLBACK_ROUTES;
-      
-      console.log('Map Data Loaded:', { points: parsedPoints.length, routes: parsedRoutes.length });
       
       setMapPoints(parsedPoints.length > 0 ? parsedPoints : FALLBACK_POINTS);
       setMapRoutes(finalRoutes);
@@ -181,18 +188,46 @@ const MapSection = () => {
     return mapPoints.filter(p => filter === 'all' || p.type === filter);
   }, [filter, mapPoints]);
 
+  const handleOpenDetails = (point) => {
+      console.log('Клик по точке на карте:', point.title);
+      
+      // Ищем привязанный объект: сначала по ID, затем по названию (как запасной вариант)
+      let attr = null;
+      if (point.attractionId) {
+          attr = attractions.find(a => String(a.id) === String(point.attractionId));
+      } 
+      
+      if (!attr) {
+          // Если ID нет или не нашли, пробуем найти по точному совпадению названия
+          attr = attractions.find(a => a.name === point.title);
+          if (attr) console.log('Объект найден по названию:', attr.name);
+      }
+
+      if (attr) {
+          const cat = attr.category_tag || attr.type || 'history';
+          const targetUrl = `/category/${cat}?id=${attr.id}`;
+          console.log('Переход к объекту:', targetUrl);
+          navigate(targetUrl);
+      } else {
+          console.warn('Не удалось найти данные для этой точки в списке достопримечательностей.');
+          alert('Данные для этого объекта еще не заполнены в разделе категорий.');
+      }
+  };
+
   return (
-    <div className={`map-section ${isOpen ? 'open' : ''}`}>
+    <div ref={sectionRef} className={`map-section ${isOpen ? 'open' : ''}`}>
 
       <div className="map-transition-bottom"></div>
 
-      {/* 3D ФОН */}
+      {/* 3D ФОН — грузится только когда секция видна */}
       <div className="hero-bg-container">
-        {/* ОПТИМИЗАЦИЯ: dpr ограничено [1, 1.5] для производительности на Retina */}
-        <Canvas camera={{ position: [0, 0, 14], fov: 60 }} dpr={[1, 1.5]}>
-          <HeroBackgroundScene />
-        </Canvas>
-
+        {canvasReady ? (
+          <Canvas camera={{ position: [0, 0, 14], fov: 60 }} dpr={[1, 1.5]}>
+            <HeroBackgroundScene />
+          </Canvas>
+        ) : (
+          <div style={{ width: '100%', height: '100%', background: '#261912' }} />
+        )}
         <div className="color-grade-overlay"></div>
       </div>
 
@@ -222,7 +257,7 @@ const MapSection = () => {
               attributionControl={false}
               scrollWheelZoom={true}
               className="leaflet-instance"
-              preferCanvas={true} // ОПТИМИЗАЦИЯ: Использует Canvas для отрисовки векторов Leaflet (если будут линии)
+              preferCanvas={true}
             >
               <TileLayer
                 url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
@@ -233,11 +268,10 @@ const MapSection = () => {
               <MapResizeController />
               <div className="inner-shadow-overlay"></div>
               
-              {/* РЕНДЕР МАРШРУТОВ (показываем только выбранный или все, если нужно) */}
               {mapRoutes.map(route => {
                 const isActive = activeRouteId === route.id || activeRouteId === 'all';
                 if (!isActive && activeRouteId !== null) return null;
-                if (activeRouteId === null) return null; // По умолчанию скрыты
+                if (activeRouteId === null) return null; 
 
                 return (
                   <Polyline 
@@ -252,20 +286,33 @@ const MapSection = () => {
                 );
               })}
 
-              {filteredPoints.map(point => (
-                <Marker
-                  key={point.id}
-                  position={point.pos}
-                  // ОПТИМИЗАЦИЯ: Берем кастомную иконку или системную из кэша
-                  icon={point.icon ? L.icon({ iconUrl: point.icon, iconSize: [40, 40], iconAnchor: [20, 20] }) : getIcon(point.type)}
-                  eventHandlers={{ click: () => setActivePoint(point) }}
-                >
-                  <Popup className="glass-popup" closeButton={false} autoPan={true}>
-                    <h3>{point.title}</h3>
-                    <p>{point.desc}</p>
-                  </Popup>
-                </Marker>
-              ))}
+              {filteredPoints.map(point => {
+                const attr = attractions.find(a => String(a.id) === String(point.attractionId || point.articleId) || a.name === point.title);
+                return (
+                  <Marker
+                    key={point.id}
+                    position={point.pos}
+                    icon={point.icon ? L.icon({ 
+                      iconUrl: point.icon, 
+                      iconSize: [60, 60], 
+                      iconAnchor: [30, 30],
+                      className: 'premium-map-icon' 
+                    }) : getIcon(point.type)}
+                    eventHandlers={{ click: () => setActivePoint(point) }}
+                  >
+                    <Popup className="glass-popup" closeButton={false} autoPan={true}>
+                      <div className="map-popup-card">
+                          {attr?.image && <img src={attr.image} className="popup-preview-img" alt="" />}
+                          <div className="popup-info">
+                              <h3>{point.title}</h3>
+                              <p>{(attr?.description || point.desc)?.substring(0, 80)}...</p>
+                              <button className="popup-more-btn" onClick={() => handleOpenDetails(point)}>Подробнее</button>
+                          </div>
+                      </div>
+                    </Popup>
+                  </Marker>
+                );
+              })}
             </MapContainer>
           </div>
         </div>

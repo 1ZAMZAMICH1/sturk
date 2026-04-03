@@ -1,6 +1,7 @@
 import { Cloud, Sparkles } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import React from 'react';
+import { useInView } from '../hooks/useInView';
 import './Hospitality.css';
 
 const DarkAtmosphere = () => {
@@ -15,12 +16,17 @@ const DarkAtmosphere = () => {
 };
 
 const HospitalityBackground = () => {
+    const { ref: sectionRef, inView: canvasReady } = useInView({ rootMargin: '400px' });
     return (
-        <div className="hosp-canvas-container shared-background">
+        <div ref={sectionRef} className="hosp-canvas-container shared-background">
             <div className="sticky-bg-content">
-                <Canvas camera={{ position: [0, 0, 10], fov: 50 }} style={{ touchAction: 'pan-y' }}>
-                    <DarkAtmosphere />
-                </Canvas>
+                {canvasReady ? (
+                    <Canvas camera={{ position: [0, 0, 10], fov: 50 }} style={{ touchAction: 'pan-y' }}>
+                        <DarkAtmosphere />
+                    </Canvas>
+                ) : (
+                    <div style={{ width: '100%', height: '100%', background: '#2a0a0a' }} />
+                )}
                 <div className="fabric-texture-overlay"></div>
                 <div className="warm-vignette"></div>
             </div>

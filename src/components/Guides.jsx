@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
+import { useInView } from '../hooks/useInView';
 import {
   Text,
   Image,
@@ -233,19 +234,23 @@ const Guides = () => {
     return () => { isMounted = false; clearAll(); };
   }, [loading, guides.length]);
 
-  if (loading) return <div className="loading-state">Загрузка мастеров пути...</div>;
+  const { ref: sectionRef, inView: canvasReady } = useInView({ rootMargin: '400px' });
 
   return (
-    <div className="guides-section">
+    <div ref={sectionRef} className="guides-section">
       <div className="noise-overlay"></div>
       <div className="vignette-guides"></div>
       <div className="center-text-container">
         <h2 className="center-title">ГИДЫ</h2>
       </div>
       <div className="guides-canvas-container">
-        <Canvas camera={{ position: [0, 0, 12], fov: 45 }} dpr={[1, 2]}>
-          <GuidesScene page={page} allGuides={guides} openSignals={openSignals} />
-        </Canvas>
+        {canvasReady ? (
+          <Canvas camera={{ position: [0, 0, 12], fov: 45 }} dpr={[1, 2]}>
+            <GuidesScene page={page} allGuides={guides} openSignals={openSignals} />
+          </Canvas>
+        ) : (
+          <div style={{ width: '100%', height: '100%', background: '#181614' }} />
+        )}
       </div>
       <Link to="/guides" className="guides-explore-link">
         Смотреть всех гидов

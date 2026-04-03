@@ -22,10 +22,19 @@ const CategoriesManager = () => {
                 fetchSheetData('restaurants'),
                 fetchSheetData('categories')
             ]);
-            setAttractions(atts || []);
+            setAttractions((atts || []).map(a => ({
+                ...a,
+                // Восстанавливаем объект координат из плоских полей таблицы
+                coordinates: a.coordinates || { 
+                    lat: parseFloat(a.lat) || 0, 
+                    lng: parseFloat(a.lng) || 0 
+                }
+            })));
             setHotels(hots || []);
             setRestaurants(restos || []);
             setCategoryArches(arches || []);
+            
+            console.log('Attractions Loaded:', atts); 
         } catch (e) {
             console.error(e);
         }
@@ -51,7 +60,19 @@ const CategoriesManager = () => {
             updatedItem.category_tag = activeTab;
         }
 
-        const success = await updateSheetData('attractions', 'update', updatedItem);
+        // Сплющиваем координаты для Google Таблиц (одна колонка - одна цифра)
+        const payload = {
+            ...updatedItem,
+            lat: updatedItem.coordinates?.lat || 0,
+            lng: updatedItem.coordinates?.lng || 0
+        };
+        
+        // Убираем сложный объект, чтобы не путать Apps Script
+        delete payload.coordinates;
+
+        console.log('Saving Attraction with Coords:', payload);
+
+        const success = await updateSheetData('attractions', 'update', payload);
         if (success) {
             loadAllData();
             setSelectedItem(null);
@@ -186,6 +207,7 @@ const CategoriesManager = () => {
                             <th>Фото</th>
                             <th>Название</th>
                             <th>Город</th>
+                            <th>Корды</th>
                             <th>Действия</th>
                         </tr>
                     </thead>
@@ -195,6 +217,13 @@ const CategoriesManager = () => {
                                 <td><img src={item.image} alt="" className="admin-table-img" /></td>
                                 <td><strong>{item.name}</strong></td>
                                 <td>{item.city}</td>
+                                <td>
+                                    {item.lat && item.lng ? (
+                                        <small className="art-coords-text">{item.lat}, {item.lng}</small>
+                                    ) : (
+                                        <span className="error-text">Нет</span>
+                                    )}
+                                </td>
                                 <td>
                                     <div className="admin-table-actions">
                                         <button className="btn-edit" onClick={() => setSelectedItem(item)}>Изменить</button>

@@ -114,6 +114,7 @@ const CategoryPage = () => {
     const [guides, setGuides] = useState([]);
     const [activeCity, setActiveCity] = useState('все');
     const [selected, setSelected] = useState(null);
+    const queryId = useMemo(() => new URLSearchParams(window.location.search).get('id'), [window.location.search]);
 
     useEffect(() => {
         const loadAll = async () => {
@@ -123,14 +124,23 @@ const CategoryPage = () => {
                 fetchSheetData('restaurants'),
                 fetchSheetData('guides')
             ]);
-            setData(allAtts.filter(a => a.category_tag === catId || a.type === catId));
+            
+            const filteredData = allAtts.filter(a => a.category_tag === catId || a.type === catId);
+            setData(filteredData);
             setHots(allHots);
             setRestos(allRestos);
             setGuides(allGuides);
+
+            // Auto-open logic
+            if (queryId) {
+                const item = filteredData.find(i => String(i.id) === String(queryId));
+                if (item) setSelected(item);
+            }
+
             setLoading(false);
         };
         loadAll();
-    }, [catId]);
+    }, [catId, queryId]);
 
     const cities = useMemo(() => {
         const set = new Set(data.map(i => i.city).filter(Boolean));

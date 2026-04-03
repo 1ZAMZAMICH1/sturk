@@ -2,6 +2,7 @@
 // ОТКАТ К РАБОЧЕЙ ВЕРСИИ (с поворотом всего контейнера)
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fetchSheetData } from '../services/api';
 import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from 'react-leaflet';
 import { Canvas } from '@react-three/fiber';
@@ -79,12 +80,18 @@ const MapSectionMobile = () => {
   const [filter, setFilter]       = useState('all');
   const [mapPoints, setMapPoints] = useState([]);
   const [mapRoutes, setMapRoutes] = useState([]);
+  const [attractions, setAttractions] = useState([]);
   const [activeRouteId, setActiveRouteId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
-      const pts  = await fetchSheetData('map_points');
-      const rts  = await fetchSheetData('map_routes');
+      const [pts, rts, atts] = await Promise.all([
+          fetchSheetData('map_points'),
+          fetchSheetData('map_routes'),
+          fetchSheetData('attractions')
+      ]);
+      setAttractions(atts || []);
       const parsed = (pts && Array.isArray(pts) ? pts : FALLBACK_POINTS)
         .map(p => ({ ...p, pos: Array.isArray(p.pos) ? p.pos : (typeof p.pos === 'string' ? p.pos.split(',').map(Number) : [0,0]) }))
         .filter(p => !isNaN(p.pos[0]) && p.pos[0] !== 0);
@@ -99,6 +106,23 @@ const MapSectionMobile = () => {
     mapPoints.filter(p => filter === 'all' || p.type === filter),
   [filter, mapPoints]);
 
+  const handleOpenDetails = (point) => {
+      let attr = null;
+      if (point.attractionId || point.articleId) {
+          attr = attractions.find(a => String(a.id) === String(point.attractionId || point.articleId));
+      } 
+      if (!attr) {
+          attr = attractions.find(a => a.name === point.title);
+      }
+
+      if (attr) {
+          const cat = attr.category_tag || attr.type || 'history';
+          navigate(`/category/${cat}?id=${attr.id}`);
+      } else {
+          alert('Информация об этом объекте скоро появится!');
+      }
+  };
+
   return (
     <div className={`map-mob-root ${isOpen ? 'open' : ''}`}>
 
@@ -111,7 +135,6 @@ const MapSectionMobile = () => {
 
       <h2 className={`mob-ui-title ${isOpen ? 'visible' : ''}`}>Навигатор</h2>
 
-      {/* ОБОЛОЧКА СВИКА ДЛЯ ПОЗИЦИОНИРОВАНИЯ */}
       <div className="mob-scroll-frame">
         <div className={`mob-scroll-wrap ${isOpen ? 'open' : ''}`}>
           <div className="mob-roller-wrapper left">
@@ -129,7 +152,6 @@ const MapSectionMobile = () => {
               WebkitMaskRepeat:  'no-repeat',
               maskPosition:      'center',
               WebkitMaskPosition: 'center',
-              willChange:        'mask',
               WebkitMaskComposite: 'destination-in'
             }}>
               <MapContainer
@@ -147,14 +169,25 @@ const MapSectionMobile = () => {
                   return <Polyline key={r.id} positions={r.nodes} color={r.color||'#00e5ff'} weight={5} opacity={0.9} />;
                 })}
 
-                {filteredPoints.map(p => (
-                  <Marker key={p.id} position={p.pos}
-                    icon={p.icon ? L.icon({ iconUrl:p.icon, iconSize:[40,40], iconAnchor:[20,20] }) : getIcon(p.type)}>
-                    <Popup className="glass-popup" closeButton={false}>
-                      <h3>{p.title}</h3><p>{p.desc}</p>
-                    </Popup>
-                  </Marker>
-                ))}
+                {filteredPoints.map(p => {
+                  const attr = attractions.find(a => String(a.id) === String(p.attractionId || p.articleId) || a.name === p.title);
+                  return (
+                    <Marker key={p.id} position={p.pos}
+                      icon={p.icon ? L.icon({ iconUrl:p.icon, iconSize:[45,45], iconAnchor:[22,22], className: 'premium-map-icon' }) : getIcon(p.type)}
+                      eventHandlers={{ click: () => {} }}
+                    >
+                      <Popup className="glass-popup" closeButton={false} autoPan={true}>
+                        <div className="map-popup-card">
+                            {attr?.image && <img src={attr.image} className="popup-preview-img" alt="" />}
+                            <div className="popup-info">
+                                <h3>{p.title}</h3>
+                                <button className="popup-more-btn" onClick={() => handleOpenDetails(p)}>Подробнее</button>
+                            </div>
+                        </div>
+                      </Popup>
+                    </Marker>
+                  );
+                })}
               </MapContainer>
             </div>
           </div>

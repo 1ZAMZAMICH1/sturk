@@ -133,6 +133,27 @@
   z-index: 100;
 }
 
+/* Очищаем иконки от фильтров карты */
+.leaflet-marker-icon, .leaflet-marker-shadow {
+    filter: none !important;
+}
+
+.premium-map-icon {
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)) !important;
+}
+/* УБРАЛИ HOVER ПРЫЖОК, ТАК КАК ОН КОНФЛИКТУЕТ С LEAFLET */
+
+.inner-shadow-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 60px rgba(20, 10, 5, 0.5);
+  pointer-events: none;
+  z-index: 400;
+}
+
 /* --- UI --- */
 .map-header,
 .map-ui {
@@ -144,22 +165,13 @@
   transition: opacity 1s ease 2s;
 }
 
-.map-header {
-    top: 8vh;
-}
-
-.map-ui {
-    bottom: 5vh;
-}
-
-.map-header.visible,
-.map-ui.visible {
-  opacity: 1;
-}
+.map-header { top: 8vh; }
+.map-ui { bottom: 5vh; }
+.map-header.visible, .map-ui.visible { opacity: 1; }
 
 .ui-title {
   color: #d4af37;
-  font-family: 'Playfair Display', serif; /* Используем фирменный шрифт */
+  font-family: 'Playfair Display', serif;
   font-size: 3rem;
   margin: 0;
   text-shadow: 0 4px 15px rgba(0, 0, 0, 1), 0 0 20px rgba(212, 175, 55, 0.4);
@@ -245,41 +257,64 @@
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.6;
-  }
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2); opacity: 0; }
+}
 
-  100% {
-    transform: scale(2);
-    opacity: 0;
-  }
+/* --- POPUP CARD --- */
+.map-popup-card {
+    display: flex;
+    flex-direction: column;
+    width: 180px;
+}
+.popup-preview-img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+.popup-info h3 {
+    margin: 0 0 8px 0;
+    font-size: 0.9rem;
+    color: #f3e5ab;
+    font-family: 'Playfair Display', serif;
+}
+.popup-info p {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: #ccc;
+    margin-bottom: 12px;
+}
+.popup-more-btn {
+    width: 100%;
+    background: #c59d5f;
+    color: #fff;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.popup-more-btn:hover {
+    background: #d4af37;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
 }
 
 .glass-popup .leaflet-popup-content-wrapper {
-  background: rgba(26, 11, 5, 0.95);
+  background: rgba(18, 10, 5, 0.98);
   color: #dcc48e;
-  border: 1px solid #d4af37;
-  border-radius: 2px;
-  font-family: serif;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
 }
-
-.glass-popup .leaflet-popup-tip {
-  background: #d4af37;
-}
-
-.glass-popup h3 {
-  margin: 0 0 5px 0;
-  font-size: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 5px;
-  text-transform: uppercase;
-}
-
-.glass-popup p {
-  margin: 0;
-  font-size: 0.85rem;
-  color: #ccc;
+.glass-popup .leaflet-popup-content {
+    margin: 12px;
 }
 
 /* --- MAP LABELS (TOOLTIPS) --- */

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useMemo, useLayoutEffect, Suspense } from 'react';
 import { Canvas, useFrame, extend } from '@react-three/fiber';
+import { useInView } from '../hooks/useInView';
 import {
   Text,
   useCursor,
@@ -452,27 +453,29 @@ function CategoriesScene({ onSelectCategory }) {
 
 const Categories = () => {
   const navigate = useNavigate();
+  const { ref: sectionRef, inView: canvasReady } = useInView({ rootMargin: '300px' });
 
   return (
-    <div className="categories-container">
+    <div ref={sectionRef} className="categories-container">
       <div className="categories-transition-top"></div>
 
       <div className="categories-header">
         <h2 className="categories-title">Врата Туркестана</h2>
       </div>
 
-      <Canvas
-        camera={{ position: [0, 0, 9], fov: 50 }}
-        dpr={[1, 2]}
-        gl={{
-          powerPreference: "high-performance",
-          antialias: true
-        }}
-      >
-        <Suspense fallback={null}>
-          <CategoriesScene onSelectCategory={(url) => navigate(url)} />
-        </Suspense>
-      </Canvas>
+      {canvasReady ? (
+        <Canvas
+          camera={{ position: [0, 0, 9], fov: 50 }}
+          dpr={[1, 2]}
+          gl={{ powerPreference: "high-performance", antialias: true }}
+        >
+          <Suspense fallback={null}>
+            <CategoriesScene onSelectCategory={(url) => navigate(url)} />
+          </Suspense>
+        </Canvas>
+      ) : (
+        <div style={{ width: '100%', flex: 1, background: '#1a0b05' }} />
+      )}
     </div>
   );
 };

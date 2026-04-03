@@ -18,7 +18,7 @@ const HospitalityBackground = () => {
     return (
         <div className="hosp-canvas-container shared-background">
             <div className="sticky-bg-content">
-                <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
+                <Canvas camera={{ position: [0, 0, 10], fov: 50 }} style={{ touchAction: 'pan-y' }}>
                     <DarkAtmosphere />
                 </Canvas>
                 <div className="fabric-texture-overlay"></div>

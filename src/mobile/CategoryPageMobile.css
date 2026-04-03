@@ -28,6 +28,7 @@
     overflow-x: hidden;
     padding-bottom: 120px;
     position: relative;
+    touch-action: pan-y; /* Важно для свайпа */
 }
 
 /* ── КАЗАХСКИЙ ОРНАМЕНТ (ФОН) — ЭФФЕКТ «ПРОЯВЛЕНИЯ» СВЕТОМ ── */
@@ -50,6 +51,7 @@
     pointer-events: none;
     z-index: 0;
     opacity: 0.05;
+    touch-action: pan-y;
 }
 
 /* ── ПЛАВНОЕ ПЕРЕЛИВАНИЕ (БЛИК СВЕТА) ── */
@@ -78,6 +80,7 @@
     animation: lineShimmer 12s infinite ease-in-out;
     pointer-events: none;
     z-index: 1;
+    touch-action: pan-y;
 }
 
 @keyframes lineShimmer {

@@ -187,6 +187,11 @@ const MapSection = () => {
         <div className="color-grade-overlay"></div>
       </div>
 
+      {/* UI HEADER (ЗАГОЛОВОК СВЕРХУ) */}
+      <div className={`map-header ${isOpen ? 'visible' : ''}`}>
+        <h2 className="ui-title">Навигатор</h2>
+      </div>
+
       {/* СВИТОК */}
       <div className={`scroll-container ${isOpen ? 'open' : ''}`}>
         <div className="roller-wrapper left">
@@ -261,10 +266,8 @@ const MapSection = () => {
         </div>
       </div>
 
-      {/* UI */}
+      {/* UI CONTROLS (КНОПКИ СНИЗУ) */}
       <div className={`map-ui ${isOpen ? 'visible' : ''}`}>
-        <h2 className="ui-title">Навигатор</h2>
-        
         <div className="ui-controls-wrapper">
           <div className="ui-section">
             <span className="section-label">Объекты:</span>

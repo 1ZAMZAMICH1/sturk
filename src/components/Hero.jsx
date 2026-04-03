@@ -40,6 +40,7 @@ const Hero = () => {
 
       <Canvas
         camera={{ position: [0, 0, 14], fov: 60, up: [0, 1, 0] }}
+        style={{ touchAction: 'pan-y' }}
         dpr={[1, 2]}
         gl={{
           antialias: true,

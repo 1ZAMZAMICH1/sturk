@@ -134,9 +134,9 @@
 }
 
 /* --- UI --- */
+.map-header,
 .map-ui {
   position: absolute;
-  bottom: 5vh;
   width: 100%;
   text-align: center;
   z-index: 50;
@@ -144,17 +144,26 @@
   transition: opacity 1s ease 2s;
 }
 
+.map-header {
+    top: 8vh;
+}
+
+.map-ui {
+    bottom: 5vh;
+}
+
+.map-header.visible,
 .map-ui.visible {
   opacity: 1;
 }
 
 .ui-title {
   color: #d4af37;
-  font-family: serif;
-  font-size: 2.5rem;
-  margin-bottom: 25px;
-  text-shadow: 0 4px 10px rgba(0, 0, 0, 1);
-  letter-spacing: 3px;
+  font-family: 'Playfair Display', serif; /* Используем фирменный шрифт */
+  font-size: 3rem;
+  margin: 0;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 1), 0 0 20px rgba(212, 175, 55, 0.4);
+  letter-spacing: 8px;
   text-transform: uppercase;
 }
 

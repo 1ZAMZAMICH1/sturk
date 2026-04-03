@@ -285,7 +285,7 @@ const CategoriesMobile = () => {
         <h2 className="cat-mob-title">Врата Туркестана</h2>
       </div>
 
-      <Canvas camera={{ position: [0, 0, 24], fov: 42 }}>
+      <Canvas camera={{ position: [0, 0, 24], fov: 42 }} style={{ touchAction: 'pan-y' }}>
         <Environment preset="city" blur={1} />
         <color attach="background" args={['#1a0b05']} />
         <PetroglyphWall />

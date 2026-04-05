@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { fetchSheetData } from '../services/api';
 import { Canvas } from '@react-three/fiber';
@@ -21,6 +22,7 @@ const SandsOfTimeAtmosphere = () => (
 );
 
 const HotelsMobile = () => {
+  const { t } = useTranslation();
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -33,29 +35,28 @@ const HotelsMobile = () => {
     load();
   }, []);
 
-  if (loading) return <div className="mob-loading">Залы ожидания готовятся...</div>;
+  if (loading) return <div className="mob-loading">{t('hotels.loading')}</div>;
 
   return (
     <div className="hot-mob-root">
       {/* ЗАГОЛОВОК СВЕРХУ (Нормальный вид) */}
       <div className="hot-mob-header">
-        <h2 className="hot-mob-title">Отдых Достойный<br />Великих Ханов</h2>
+        <h2 className="hot-mob-title" dangerouslySetInnerHTML={{ __html: t('hotels.title') }} />
         <p className="hot-mob-desc">
-          После долгого пути обретите покой в лучших отелях Туркестана.
-          Мы объединили современный комфорт с уникальным национальным колоритом.
+          {t('hotels.description')}
         </p>
         <div className="hot-mob-ornament" />
         <Link to="/hotels" className="hot-mob-btn">
-          Смотреть все отели <span>→</span>
+          {t('hotels.btn')} <span>→</span>
         </Link>
       </div>
 
       {/* МОЗАИКА СНИЗУ */}
       <div className="hot-mob-mosaic">
         {hotels.slice(0, 5).map((item, index) => (
-          <div className={`khan-card-mob ${index === 4 ? 'large' : 'small'}`} key={item.id}>
+          <div className={`khan-card-mob ${index === 4 ? 'large' : 'small'}`} key={item.id} onClick={() => window.location.href=`/hotels?id=${item.id}`}>
             <div className="khan-img-box-mob">
-              <img src={item.image} alt={item.name} />
+              <img src={item.image || item.img} alt={item.name || item.title} />
               <div className="grain-overlay-mob" />
             </div>
             <div className="khan-border-mob">
@@ -64,7 +65,7 @@ const HotelsMobile = () => {
             </div>
             <div className="khan-info-mob">
                <span className="khan-type-mob">{item.type}</span>
-               <h4 className="khan-title-mob">{item.name}</h4>
+               <h4 className="khan-title-mob">{item.name || item.title}</h4>
             </div>
           </div>
         ))}

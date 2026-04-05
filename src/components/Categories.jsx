@@ -1,6 +1,7 @@
 // src/components/Categories.jsx
 
 import React, { useState, useEffect, useRef, useMemo, useLayoutEffect, Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Canvas, useFrame, extend } from '@react-three/fiber';
 import { useInView } from '../hooks/useInView';
 import {
@@ -30,6 +31,21 @@ import duh1 from '../assets/duh1.png';
 import gor2 from '../assets/gor2.png';
 import ist2 from '../assets/ist2.png';
 import duh2 from '../assets/duh2.png';
+
+// Казахские подписи
+import gor2kaz from '../assets/gor2kaz.png';
+import ist2kaz from '../assets/ist2kaz.png';
+import prir2kaz from '../assets/prir2kaz.png';
+
+// Английские подписи
+import gor3en from '../assets/gor3en.png';
+import ist3en from '../assets/ist3en.png';
+import prir3en from '../assets/prir3en.png';
+
+// Китайские подписи
+import gor4zn from '../assets/gor4zn.png';
+import ist4zn from '../assets/ist4zn.png';
+import prir4zn from '../assets/prir4zn.png';
 
 import p1 from '../assets/petroglyph-1.png';
 import p2 from '../assets/petroglyph-2.png';
@@ -254,6 +270,7 @@ const createFrameRing = (width, height, border) => {
 const PortalCard = ({ index, url, title, color, position, rotation, hoveredState, setHovered, onClick }) => {
   const groupRef = useRef();
   const labelMatRef = useRef();
+  const { i18n } = useTranslation();
   const isHovered = hoveredState === index;
 
   // Изображения контента из ассетов
@@ -261,9 +278,19 @@ const PortalCard = ({ index, url, title, color, position, rotation, hoveredState
   const activeUrl = archContentAssets[index % 3];
 
   const texture = useTexture(activeUrl);
-  // Загружаем ваши подписи
-  const labelTextures = useTexture([gor1, ist1, duh1]);
-  const activeLabel = labelTextures[index % 3];
+  
+  // Выбор текстуры подписи в зависимости от языка
+  const labelTexturesRU = useTexture([gor1, ist1, duh1]);
+  const labelTexturesKZ = useTexture([gor2kaz, ist2kaz, prir2kaz]);
+  const labelTexturesEN = useTexture([gor3en, ist3en, prir3en]);
+  const labelTexturesZH = useTexture([gor4zn, ist4zn, prir4zn]);
+  
+  const activeLabel = useMemo(() => {
+    if (i18n.language === 'kz') return labelTexturesKZ[index % 3];
+    if (i18n.language === 'en') return labelTexturesEN[index % 3];
+    if (i18n.language === 'zh') return labelTexturesZH[index % 3];
+    return labelTexturesRU[index % 3];
+  }, [i18n.language, index, labelTexturesKZ, labelTexturesEN, labelTexturesZH, labelTexturesRU]);
 
   useLayoutEffect(() => {
     if (activeLabel) {
@@ -452,6 +479,7 @@ function CategoriesScene({ onSelectCategory }) {
 }
 
 const Categories = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { ref: sectionRef, inView: canvasReady } = useInView({ rootMargin: '300px' });
 
@@ -460,7 +488,7 @@ const Categories = () => {
       <div className="categories-transition-top"></div>
 
       <div className="categories-header">
-        <h2 className="categories-title">Врата Туркестана</h2>
+        <h2 className="categories-title">{t('categories.title')}</h2>
       </div>
 
       {canvasReady ? (

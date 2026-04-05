@@ -2,6 +2,7 @@
 // ОТКАТ К РАБОЧЕЙ ВЕРСИИ (с поворотом всего контейнера)
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { fetchSheetData } from '../services/api';
 import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from 'react-leaflet';
@@ -24,10 +25,10 @@ const FALLBACK_POINTS = [
 ];
 
 const FILTERS = [
-  { id: 'all',    label: 'Всё'     },
-  { id: 'sight',  label: 'История' },
-  { id: 'nature', label: 'Природа' },
-  { id: 'hotel',  label: 'Отели'  },
+  { id: 'all' },
+  { id: 'sight' },
+  { id: 'nature' },
+  { id: 'hotel' },
 ];
 
 const TYPE_COLORS = { sight: '#00ffff', nature: '#00ff7f', hotel: '#da70d6', city: '#ffd700' };
@@ -76,6 +77,7 @@ const MobileMapBackground = React.memo(() => (
 ));
 
 const MapSectionMobile = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen]       = useState(false);
   const [filter, setFilter]       = useState('all');
   const [mapPoints, setMapPoints] = useState([]);
@@ -133,7 +135,7 @@ const MapSectionMobile = () => {
         <div className="mob-color-grade" />
       </div>
 
-      <h2 className={`mob-ui-title ${isOpen ? 'visible' : ''}`}>Навигатор</h2>
+      <h2 className={`mob-ui-title ${isOpen ? 'visible' : ''}`}>{t('map.title')}</h2>
 
       <div className="mob-scroll-frame">
         <div className={`mob-scroll-wrap ${isOpen ? 'open' : ''}`}>
@@ -181,7 +183,7 @@ const MapSectionMobile = () => {
                             {attr?.image && <img src={attr.image} className="popup-preview-img" alt="" />}
                             <div className="popup-info">
                                 <h3>{p.title}</h3>
-                                <button className="popup-more-btn" onClick={() => handleOpenDetails(p)}>Подробнее</button>
+                                <button className="popup-more-btn" onClick={() => handleOpenDetails(p)}>{t('map.details')}</button>
                             </div>
                         </div>
                       </Popup>
@@ -200,18 +202,18 @@ const MapSectionMobile = () => {
 
       <div className={`mob-map-ui ${isOpen ? 'visible' : ''}`}>
         <div className="mob-ui-section">
-          <span className="mob-section-label">Объекты</span>
+          <span className="mob-section-label">{t('map.categories_label')}</span>
           <div className="mob-ui-grid">
             {FILTERS.map(f => (
-              <button key={f.id} onClick={() => setFilter(f.id)} className={`mob-ui-btn ${filter === f.id ? 'active' : ''}`}>{f.label}</button>
+              <button key={f.id} onClick={() => setFilter(f.id)} className={`mob-ui-btn ${filter === f.id ? 'active' : ''}`}>{t(`filters.${f.id}`)}</button>
             ))}
           </div>
         </div>
         {mapRoutes.length > 0 && (
           <div className="mob-ui-section">
-          <span className="mob-section-label">Пути</span>
+          <span className="mob-section-label">{t('map.routes_label')}</span>
           <div className="mob-ui-grid">
-            <button onClick={() => setActiveRouteId(activeRouteId === 'all' ? null : 'all')} className={`mob-ui-btn ${activeRouteId === 'all' ? 'active' : ''}`}>Все пути</button>
+            <button onClick={() => setActiveRouteId(activeRouteId === 'all' ? null : 'all')} className={`mob-ui-btn ${activeRouteId === 'all' ? 'active' : ''}`}>{t('map.all_routes')}</button>
             {mapRoutes.map(r => (
               <button key={r.id} onClick={() => setActiveRouteId(activeRouteId === r.id ? null : r.id)} className={`mob-ui-btn ${activeRouteId === r.id ? 'active' : ''}`}>{r.title}</button>
             ))}

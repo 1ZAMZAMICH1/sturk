@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import './HotelsPage.css';
 import { Icons } from '../admin/AdminIcons';
@@ -29,6 +30,7 @@ export const Stars = ({ count }) => (
 );
 
 export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
+    const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState('overview');
     const [mainImage, setMainImage] = useState(hotel.image);
     const [nearbyData, setNearbyData] = useState({ attractions: [], restaurants: [] });
@@ -67,7 +69,7 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                     </div>
                     <div className="hp-royal-right">
                         <div className="hp-royal-header">
-                            <div className="hp-royal-eyebrow">{hotel.type} · {hotel.city}</div>
+                            <div className="hp-royal-eyebrow">{t(`hotels_page.types.${hotel.type}`)} · {hotel.city}</div>
                             <h2 className="hp-royal-name">{hotel.name}</h2>
                             <div className="hp-royal-meta-row">
                                 <Stars count={hotel.stars} />
@@ -75,30 +77,30 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                             </div>
                         </div>
                         <nav className="hp-info-tabs">
-                            <button className={activeTab === 'overview' ? 'active' : ''} onClick={() => setActiveTab('overview')}>Обзор</button>
-                            <button className={activeTab === 'rooms' ? 'active' : ''} onClick={() => setActiveTab('rooms')}>Номера</button>
-                            <button className={activeTab === 'nearby' ? 'active' : ''} onClick={() => setActiveTab('nearby')}>Рядом</button>
+                            <button className={activeTab === 'overview' ? 'active' : ''} onClick={() => setActiveTab('overview')}>{t('hotels_page.tab_overview')}</button>
+                            <button className={activeTab === 'rooms' ? 'active' : ''} onClick={() => setActiveTab('rooms')}>{t('hotels_page.tab_rooms')}</button>
+                            <button className={activeTab === 'nearby' ? 'active' : ''} onClick={() => setActiveTab('nearby')}>{t('hotels_page.tab_nearby')}</button>
                         </nav>
                         <div className="hp-royal-scroll">
                             {activeTab === 'overview' && (
                                 <div className="slide-in">
                                     <p className="hp-description">{hotel.description}</p>
                                     <div className="hp-royal-section">
-                                        <h4 className="hp-sec-title">Преимущества</h4>
+                                        <h4 className="hp-sec-title">{t('hotels_page.amenities_title')}</h4>
                                         <div className="hp-amenities-refined">
                                             {hotel.amenities?.map(a => {
                                                 const Icon = AMENITY_MAP[a] || Icons.Star;
                                                 return (
                                                     <div key={a} className="hp-amenity-pill">
                                                         <Icon style={{ width: '16px', color: 'var(--hp-gold)' }} />
-                                                        <span>{a}</span>
+                                                        <span>{t(`hotels_page.amenities.${a}`)}</span>
                                                     </div>
                                                 );
                                             })}
                                         </div>
                                     </div>
                                     <div className="hp-royal-section">
-                                        <h4 className="hp-sec-title">Адрес</h4>
+                                        <h4 className="hp-sec-title">{t('hotels_page.address_title')}</h4>
                                         <p style={{ color: 'var(--hp-ink)' }}>{hotel.location}</p>
                                     </div>
                                 </div>
@@ -114,7 +116,7 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                                                         <RoomIcon style={{ width: '20px', color: 'var(--hp-gold)' }} />
                                                         <span className="room-name">{room.name}</span>
                                                     </div>
-                                                    <span className="room-price">от {room.price}</span>
+                                                    <span className="room-price">{t('hotels_page.from_price', { price: room.price })}</span>
                                                 </div>
                                             );
                                         })}
@@ -126,7 +128,7 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                                     <div className="hp-nearby-grid-royal">
                                         {nearbyData.attractions.length > 0 && (
                                             <div className="nearby-group">
-                                                <h4 className="hp-sec-title">Достопримечательности</h4>
+                                                <h4 className="hp-sec-title">{t('hotels_page.nearby_attractions')}</h4>
                                                 <div className="nearby-list-r">
                                                     {nearbyData.attractions.map(a => (
                                                         <div key={a.id} className="hp-nearby-item-royal clickable" onClick={() => onOpenOther && onOpenOther(a, 'attraction')}>
@@ -139,7 +141,7 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                                         )}
                                         {nearbyData.restaurants.length > 0 && (
                                             <div className="nearby-group">
-                                                <h4 className="hp-sec-title">Рестораны</h4>
+                                                <h4 className="hp-sec-title">{t('hotels_page.nearby_restaurants')}</h4>
                                                 <div className="nearby-list-r">
                                                     {nearbyData.restaurants.map(r => (
                                                         <div key={r.id} className="hp-nearby-item-royal clickable" onClick={() => onOpenOther && onOpenOther(r, 'restaurant')}>
@@ -156,7 +158,7 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                         </div>
                         <div className="hp-royal-footer">
                             <a href={hotel.websiteUrl || "#"} target="_blank" rel="noopener noreferrer" className="hp-book-btn-royal">
-                                Перейти на сайт отеля <Icons.External />
+                                {t('hotels_page.visit_website')} <Icons.External />
                             </a>
                         </div>
                     </div>
@@ -192,6 +194,7 @@ const HotelCard = ({ hotel, onClick }) => (
 );
 
 const HotelsPage = () => {
+    const { t } = useTranslation();
     const [hotels, setHotels] = useState([]);
     const [loading, setLoading] = useState(true);
     const [atts, setAtts] = useState([]);
@@ -228,31 +231,31 @@ const HotelsPage = () => {
         return true;
     });
 
-    if (loading) return <div className="loading-state">Залы ожидания готовятся...</div>;
+    if (loading) return <div className="loading-state">{t('hotels_page.loading')}</div>;
 
     return (
         <div className="hp-root">
             <div className="hp-bg-star-layer" />
             <div className="hp-header-wrap">
                 <div className="hp-topbar">
-                    <Link to="/" className="hp-back">Назад</Link>
+                    <Link to="/" className="hp-back">{t('ui.back')}</Link>
                     <div className="hp-logo-box"><img src={heroTextImg} alt="Turkistan" className="hp-header-logo" /></div>
-                    <div className="hp-count-badge"><span>{filtered.length}</span> Объектов</div>
+                    <div className="hp-count-badge"><span>{filtered.length}</span> {t('hotels_page.objects_label')}</div>
                 </div>
                 <div className="hp-filter-bar">
                     <div className="hp-filter-box">
                         <div className="hp-filter-group">
-                            {CITIES.map(c => <button key={c} className={`hp-f-btn ${city === c ? 'active' : ''}`} onClick={() => setCity(c)}>{c === 'All' ? 'Все города' : c}</button>)}
+                            {CITIES.map(c => <button key={c} className={`hp-f-btn ${city === c ? 'active' : ''}`} onClick={() => setCity(c)}>{c === 'All' ? t('hotels_page.all_cities') : c}</button>)}
                         </div>
                         <div className="hp-filter-group">
-                            {TYPES.map(t => <button key={t} className={`hp-f-btn ${filter === t ? 'active' : ''}`} onClick={() => setFilter(t)}>{t === 'All' ? 'Все типы' : t}</button>)}
+                            {TYPES.map(type => <button key={type} className={`hp-f-btn ${filter === type ? 'active' : ''}`} onClick={() => setFilter(type)}>{type === 'All' ? t('hotels_page.all_types') : t(`hotels_page.types.${type}`)}</button>)}
                         </div>
                     </div>
                 </div>
             </div>
 
             <div className="hp-hero">
-                <h1 className="hp-hero-h"><span className="hp-h-main">Отели</span></h1>
+                <h1 className="hp-hero-h"><span className="hp-h-main">{t('hotels_page.hero_title')}</span></h1>
             </div>
 
             <div className="hp-grid-container">

@@ -1,27 +1,31 @@
 // src/mobile/RestaurantsPageMobile.jsx — МОБИЛЬНАЯ ВЕРСИЯ «НОМАДИЧЕСКАЯ ЭЛЕГАНТНОСТЬ» 
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import './RestaurantsPageMobile.css';
 import { Icons } from '../admin/AdminIcons';
-import heroTextImg from '../assets/hero-text.png';
-
-// We need access to Attractions & Hotels for cross-modal linking
-import { attractionsData, hotelsData } from '../data/attractionsData';
-import { AttractionModal } from '../components/CategoryPage';
-import { HotelModal } from '../mobile/HotelsPageMobile'; // Используем мобильную версию модалки отелей
+import { AttractionModal } from '../mobile/CategoryPageMobile';
+import { HotelModal } from '../mobile/HotelsPageMobile'; 
 import { fetchSheetData } from '../services/api';
 
-export const EditorialModal = ({ res, onClose, onOpenOther }) => {
+import heroTextImgRU from '../assets/hero-text.png';
+import heroTextImgKZ from '../assets/hero-textkz.png';
+import heroTextImgEN from '../assets/hero-texten.png';
+import heroTextImgZH from '../assets/hero-textzh.png';
+
+const heroImages = {
+  ru: heroTextImgRU,
+  kz: heroTextImgKZ,
+  en: heroTextImgEN,
+  zh: heroTextImgZH
+};
+
+export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = [] }) => {
+    const { t } = useTranslation();
     const [mainImg, setMainImg] = useState(res.image);
 
-    const nearbyAtts = (res.nearbyAttractions || []).map(id => {
-        const all = [...attractionsData.city, ...attractionsData.spirit, ...attractionsData.nature];
-        return all.find(a => a.id === id);
-    }).filter(Boolean);
-
-    const nearbyHots = (res.nearbyHotels || []).map(id => {
-        return hotelsData.find(h => h.id === id);
-    }).filter(Boolean);
+    const nearbyAtts = (res.nearbyAttractions || []).map(id => atts.find(a => a.id === id)).filter(Boolean);
+    const nearbyHots = (res.nearbyHotels || []).map(id => hots.find(h => h.id === id)).filter(Boolean);
 
     return (
         <div className="rp-mob-modal-overlay" onClick={onClose}>
@@ -60,24 +64,24 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
                                 <span>·</span>
                                 <span>{res.priceTag}</span>
                                 <span>·</span>
-                                <span>{res.city}</span>
+                                <span>{res.city || t('category.default_region')}</span>
                             </div>
                             {res.signature && (
                                 <div className="rp-mob-m-signature-inline">
                                     <Icons.Crown style={{ width: 14, color: 'var(--rp-sand)' }} />
-                                    <span>Рекомендуем: {res.signature}</span>
+                                    <span>{t('restaurants.modal.recommend')}: {res.signature}</span>
                                 </div>
                             )}
                         </div>
 
                         <div className="rp-mob-m-sec">
-                            <div className="rp-mob-m-sec-title">История & Атмосфера</div>
+                            <div className="rp-mob-m-sec-title">{t('restaurants.modal.history_title')}</div>
                             <p className="rp-mob-m-desc">{res.description}</p>
                         </div>
 
                         {res.menu && (
                             <div className="rp-mob-m-sec">
-                                <div className="rp-mob-m-sec-title">Гастрономия</div>
+                                <div className="rp-mob-m-sec-title">{t('restaurants.modal.gastronomy')}</div>
                                 <div className="rp-mob-m-menu">
                                     {res.menu.map(m => (
                                         <div key={m.item} className="rp-mob-menu-row">
@@ -92,14 +96,14 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
 
                         {nearbyAtts.length > 0 && (
                             <div className="rp-mob-m-sec">
-                                <div className="rp-mob-m-sec-title">Рекомендуем посетить рядом</div>
+                                <div className="rp-mob-m-sec-title">{t('category.nearby_hotels_title')}</div>
                                 <div className="rp-mob-nearby-modern-grid">
                                     {nearbyAtts.map(att => (
-                                        <div key={att.id} className="rp-mob-nearby-card" onClick={() => onOpenOther('attraction', att)}>
+                                        <div key={att.id} className="rp-mob-nearby-card" onClick={() => onOpenOther && onOpenOther('attraction', att)}>
                                             <img src={att.image} alt="" />
                                             <div className="rp-mob-nearby-info">
                                                 <strong>{att.name}</strong>
-                                                <span>Достопримечательность</span>
+                                                <span>{t('category.meta.history')}</span>
                                             </div>
                                         </div>
                                     ))}
@@ -109,10 +113,10 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
 
                         {nearbyHots.length > 0 && (
                             <div className="rp-mob-m-sec">
-                                <div className="rp-mob-m-sec-title">Отели поблизости</div>
+                                <div className="rp-mob-m-sec-title">{t('category.nearby_hotels')}</div>
                                 <div className="rp-mob-nearby-modern-grid">
                                     {nearbyHots.map(hot => (
-                                        <div key={hot.id} className="rp-mob-nearby-card" onClick={() => onOpenOther('hotel', hot)}>
+                                        <div key={hot.id} className="rp-mob-nearby-card" onClick={() => onOpenOther && onOpenOther('hotel', hot)}>
                                             <img src={hot.image} alt="" />
                                             <div className="rp-mob-nearby-info">
                                                 <strong>{hot.name}</strong>
@@ -125,7 +129,7 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
                         )}
 
                         <div className="rp-mob-m-sec">
-                            <div className="rp-mob-m-sec-title">Местоположение</div>
+                            <div className="rp-mob-m-sec-title">{t('hotels.modal.address')}</div>
                             <div className="rp-mob-map-placeholder">
                                 <div className="rp-mob-map-view">
                                     <div className="rp-mob-map-pin-pulse">
@@ -141,7 +145,7 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
 
                         {res.specialty && (
                             <div className="rp-mob-m-sec">
-                                <div className="rp-mob-m-sec-title">Кулинарный Секрет</div>
+                                <div className="rp-mob-m-sec-title">{t('restaurants.modal.secret_title')}</div>
                                 <div className="rp-mob-m-special">
                                     "{res.specialty}"
                                 </div>
@@ -150,7 +154,7 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
                     </div>
 
                     <div className="rp-mob-modal-action">
-                        <button className="rp-mob-action-btn full-width">Забронировать столик</button>
+                        <button className="rp-mob-action-btn full-width">{t('restaurants.modal.book_table')}</button>
                     </div>
                 </div>
             </div>
@@ -179,23 +183,34 @@ const EditorialCard = ({ res, onClick }) => {
 };
 
 const RestaurantsPageMobile = () => {
+    const { t, i18n } = useTranslation();
     const [restaurants, setRestaurants] = useState([]);
+    const [atts, setAtts] = useState([]);
+    const [hots, setHots] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selected, setSelected] = useState(null);
     const [filter, setFilter] = useState('Все');
     const [city, setCity] = useState('Все');
     const [otherModal, setOtherModal] = useState(null);
 
+    const currentLogo = heroImages[i18n.language] || heroImages.ru;
+
     useEffect(() => {
         const load = async () => {
-            const data = await fetchSheetData('restaurants');
-            setRestaurants(Array.isArray(data) ? data : []);
+            const [rData, aData, hData] = await Promise.all([
+                fetchSheetData('restaurants'),
+                fetchSheetData('attractions'),
+                fetchSheetData('hotels')
+            ]);
+            setRestaurants(Array.isArray(rData) ? rData : []);
+            setAtts(Array.isArray(aData) ? aData : []);
+             setHots(Array.isArray(hData) ? hData : []);
             setLoading(false);
         };
         load();
     }, []);
 
-    if (loading) return <div className="loading-state">Ароматы востока наполняют комнату...</div>;
+    if (loading) return <div className="loading-state">{t('hospitality.loading')}</div>;
 
     const CITIES = ['Все', 'Туркестан', 'Отрар', 'Сауран'];
     const TYPES = ['Все', 'Казахская', 'Узбекская', 'Восточная', 'Европейская', 'Кофейня'];
@@ -222,28 +237,28 @@ const RestaurantsPageMobile = () => {
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                             <path d="M19 12H5M12 5l-7 7 7 7" />
                         </svg>
-                        Назад
+                        {t('category.back')}
                     </Link>
                     <div className="rp-mob-logo-box">
-                        <img src={heroTextImg} alt="Turkistan" className="rp-mob-header-logo" />
+                        <img src={currentLogo} alt="Turkistan" className="rp-mob-header-logo" />
                     </div>
                     <div className="rp-mob-count">
-                        {finalFiltered.length} Заведений
+                        {finalFiltered.length} {t('category.objects_count')}
                     </div>
                 </div>
 
                 <div className="rp-mob-filter-bar">
                     <div className="rp-mob-filter-group">
-                        {CITIES.map(c => (
-                            <button key={c} className={`rp-mob-f-btn ${city === c ? 'active' : ''}`} onClick={() => setCity(c)}>
-                                {c}
+                        {CITIES.map(cityItem => (
+                            <button key={cityItem} className={`rp-mob-f-btn ${city === cityItem ? 'active' : ''}`} onClick={() => setCity(cityItem)}>
+                                {cityItem === 'Все' ? t('filters.all') : cityItem}
                             </button>
                         ))}
                     </div>
                     <div className="rp-mob-filter-group">
-                        {TYPES.map(t => (
-                            <button key={t} className={`rp-mob-f-btn ${filter === t ? 'active' : ''}`} onClick={() => setFilter(t)}>
-                                {t}
+                        {TYPES.map(type => (
+                            <button key={type} className={`rp-mob-f-btn ${filter === type ? 'active' : ''}`} onClick={() => setFilter(type)}>
+                                {type === 'Все' ? t('filters.all') : type}
                             </button>
                         ))}
                     </div>
@@ -252,8 +267,8 @@ const RestaurantsPageMobile = () => {
 
             {/* ─── HERO ─── */}
             <div className="rp-mob-hero">
-                <h1 className="rp-mob-h-main">Рестораны</h1>
-                <div className="rp-mob-h-sub">Вкус Великой Степи</div>
+                <h1 className="rp-mob-h-main">{t('restaurants.page_title')}</h1>
+                <div className="rp-mob-h-sub">{t('restaurants.page_subtitle')}</div>
             </div>
 
             {/* ─── GRID ─── */}
@@ -271,6 +286,8 @@ const RestaurantsPageMobile = () => {
             {selected && (
                 <EditorialModal 
                     res={selected} 
+                    atts={atts}
+                    hots={hots}
                     onClose={() => setSelected(null)} 
                     onOpenOther={handleOpenOther}
                 />

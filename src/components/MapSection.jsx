@@ -1,6 +1,7 @@
 // src/components/MapSection.jsx
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useInView } from '../hooks/useInView';
 import { useNavigate } from 'react-router-dom';
 import { fetchSheetData } from '../services/api';
@@ -133,6 +134,7 @@ const HeroBackgroundScene = React.memo(() => {
 });
 
 const MapSection = () => {
+  const { t } = useTranslation();
   const { ref: sectionRef, inView: canvasReady } = useInView({ rootMargin: '300px' });
   const [isOpen, setIsOpen] = useState(false);
   const [filter, setFilter] = useState('all');
@@ -233,7 +235,7 @@ const MapSection = () => {
 
       {/* UI HEADER (ЗАГОЛОВОК СВЕРХУ) */}
       <div className={`map-header ${isOpen ? 'visible' : ''}`}>
-        <h2 className="ui-title">Навигатор</h2>
+        <h2 className="ui-title">{t('map.title')}</h2>
       </div>
 
       {/* СВИТОК */}
@@ -306,7 +308,7 @@ const MapSection = () => {
                           <div className="popup-info">
                               <h3>{point.title}</h3>
                               <p>{(attr?.description || point.desc)?.substring(0, 80)}...</p>
-                              <button className="popup-more-btn" onClick={() => handleOpenDetails(point)}>Подробнее</button>
+                              <button className="popup-more-btn" onClick={() => handleOpenDetails(point)}>{t('map.details')}</button>
                           </div>
                       </div>
                     </Popup>
@@ -326,7 +328,7 @@ const MapSection = () => {
       <div className={`map-ui ${isOpen ? 'visible' : ''}`}>
         <div className="ui-controls-wrapper">
           <div className="ui-section">
-            <span className="section-label">Объекты:</span>
+            <span className="section-label">{t('map.categories_label')}</span>
             <div className="ui-filters">
               {FILTERS.map(f => (
                 <button 
@@ -334,7 +336,7 @@ const MapSection = () => {
                   onClick={() => setFilter(f.id)} 
                   className={`ui-btn ${filter === f.id ? 'active' : ''}`}
                 >
-                  {f.label}
+                  {t(`filters.${f.id}`)}
                 </button>
               ))}
             </div>
@@ -342,13 +344,13 @@ const MapSection = () => {
 
           {mapRoutes.length > 0 && (
             <div className="ui-section">
-              <span className="section-label">Маршруты:</span>
+              <span className="section-label">{t('map.routes_label')}</span>
               <div className="ui-filters">
                 <button 
                   onClick={() => setActiveRouteId(activeRouteId === 'all' ? null : 'all')} 
                   className={`ui-btn ${activeRouteId === 'all' ? 'active' : ''}`}
                 >
-                  Все пути
+                  {t('map.all_routes')}
                 </button>
                 {mapRoutes.map(route => (
                   <button 

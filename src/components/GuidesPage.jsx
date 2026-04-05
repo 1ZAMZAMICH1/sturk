@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { fetchSheetData } from '../services/api';
 import './GuidesPage.css';
-import heroTextImg from '../assets/hero-text.png';
+import heroTextImgRU from '../assets/hero-text.png';
+import heroTextImgKZ from '../assets/hero-textkz.png';
+import heroTextImgEN from '../assets/hero-texten.png';
+import heroTextImgZH from '../assets/hero-textzh.png';
 
 const SPECIALTY_ICONS = {
     'История': '🏛️',
@@ -37,6 +41,7 @@ const Stars = ({ rating }) => {
 
 /* ── GUIDE MODAL ── */
 const GuideModal = ({ guide, onClose }) => {
+    const { t } = useTranslation();
     const [activeTour, setActiveTour] = useState(guide.tours && guide.tours.length > 0 ? guide.tours[0] : null);
     
     return (
@@ -52,23 +57,23 @@ const GuideModal = ({ guide, onClose }) => {
                     </div>
                     <h2 className="gp-modal-name">{guide.name}</h2>
                     <div className="gp-modal-specialty">
-                        <span>{SPECIALTY_ICONS[guide.specialty]}</span> {guide.specialty}
+                        <span>{SPECIALTY_ICONS[guide.specialty]}</span> {t(`guides_page.specialties.${guide.specialty}`)}
                     </div>
                     <Stars rating={guide.rating} />
-                    <p className="gp-modal-reviews">({guide.reviewCount} отзывов)</p>
+                    <p className="gp-modal-reviews">({t('guides_page.reviews_label', { count: guide.reviewCount })})</p>
 
                     <div className="gp-modal-stats">
                         <div className="gp-stat">
                             <span className="gp-stat-val">{guide.experience}</span>
-                            <span className="gp-stat-lbl">лет опыта</span>
+                            <span className="gp-stat-lbl">{t('guides_page.exp_label', { count: guide.experience }).split(' ')[1]} {t('guides_page.exp_label', { count: guide.experience }).split(' ')[2]}</span>
                         </div>
                         <div className="gp-stat">
                             <span className="gp-stat-val">{guide.tours?.length || 0}</span>
-                            <span className="gp-stat-lbl">маршрута</span>
+                            <span className="gp-stat-lbl">{t('guides_page.routes_label', { count: guide.tours?.length }).split(' ')[1]}</span>
                         </div>
                         <div className="gp-stat">
                             <span className="gp-stat-val">{guide.languages?.length || 0}</span>
-                            <span className="gp-stat-lbl">языка</span>
+                            <span className="gp-stat-lbl">{t('guides_page.langs_label', { count: guide.languages?.length }).split(' ')[1]}</span>
                         </div>
                     </div>
 
@@ -105,7 +110,7 @@ const GuideModal = ({ guide, onClose }) => {
                                 </div>
                             </div>
                             <p className="gp-tour-desc">{activeTour.description}</p>
-                            <h4 className="gp-highlights-title">Программа маршрута</h4>
+                            <h4 className="gp-highlights-title">{t('guides_page.route_program')}</h4>
                             <div className="gp-highlights">
                                 {activeTour.highlights?.map((h, i) => (
                                     <div key={i} className="gp-highlight-item">
@@ -114,10 +119,10 @@ const GuideModal = ({ guide, onClose }) => {
                                     </div>
                                 ))}
                             </div>
-                            <button className="gp-book-btn">Записаться к гиду</button>
+                            <button className="gp-book-btn">{t('guides_page.btn_book')}</button>
                         </div>
                     ) : (
-                        <div className="gp-no-tour">Выберите маршрут для просмотра деталей</div>
+                        <div className="gp-no-tour">{t('guides_page.no_tour')}</div>
                     )}
                 </div>
             </div>
@@ -126,51 +131,54 @@ const GuideModal = ({ guide, onClose }) => {
 };
 
 /* ── GUIDE CARD ── */
-const GuideCard = ({ guide, onClick }) => (
-    <div className="gp-card" onClick={onClick}>
-        <div className="gp-card-avatar-section">
-            <div className="gp-compass-wrap">
-                <div className="gp-compass-outer" />
-                <div className="gp-compass-middle" />
-                <img src={guide.photo || "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=300&q=60"} alt={guide.name} className="gp-avatar" />
-                <div className="gp-compass-needle" />
-            </div>
-            <div className="gp-specialty-badge">
-                {SPECIALTY_ICONS[guide.specialty]} {guide.specialty}
-            </div>
-        </div>
-
-        <div className="gp-card-body">
-            <h3 className="gp-card-name">{guide.name}</h3>
-            <Stars rating={guide.rating} />
-            <p className="gp-card-desc">{guide.description?.substring(0, 110)}…</p>
-
-            <div className="gp-card-langs">
-                {guide.languages?.slice(0, 3).map(l => (
-                    <span key={l} className="gp-lang-tag">{l}</span>
-                ))}
+const GuideCard = ({ guide, onClick }) => {
+    const { t } = useTranslation();
+    return (
+        <div className="gp-card" onClick={onClick}>
+            <div className="gp-card-avatar-section">
+                <div className="gp-compass-wrap">
+                    <div className="gp-compass-outer" />
+                    <div className="gp-compass-middle" />
+                    <img src={guide.photo || "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=300&q=60"} alt={guide.name} className="gp-avatar" />
+                    <div className="gp-compass-needle" />
+                </div>
+                <div className="gp-specialty-badge">
+                    {SPECIALTY_ICONS[guide.specialty]} {t(`guides_page.specialties.${guide.specialty}`)}
+                </div>
             </div>
 
-            <div className="gp-tour-list">
-                {guide.tours?.slice(0, 3).map(t => (
-                    <div key={t.id} className="gp-tour-row">
-                        <div className="gp-tour-dot" style={{ background: CATEGORY_COLORS[t.category] || '#8b6914' }} />
-                        <div className="gp-tour-info">
-                            <span className="gp-tour-name">{t.title}</span>
-                            <span className="gp-tour-meta-sm">{t.duration} · {t.price}</span>
+            <div className="gp-card-body">
+                <h3 className="gp-card-name">{guide.name}</h3>
+                <Stars rating={guide.rating} />
+                <p className="gp-card-desc">{guide.description?.substring(0, 110)}…</p>
+
+                <div className="gp-card-langs">
+                    {guide.languages?.slice(0, 3).map(l => (
+                        <span key={l} className="gp-lang-tag">{l}</span>
+                    ))}
+                </div>
+
+                <div className="gp-tour-list">
+                    {guide.tours?.slice(0, 3).map(t => (
+                        <div key={t.id} className="gp-tour-row">
+                            <div className="gp-tour-dot" style={{ background: CATEGORY_COLORS[t.category] || '#8b6914' }} />
+                            <div className="gp-tour-info">
+                                <span className="gp-tour-name">{t.title}</span>
+                                <span className="gp-tour-meta-sm">{t.duration} · {t.price}</span>
+                            </div>
+                            <span className="gp-tour-arrow">→</span>
                         </div>
-                        <span className="gp-tour-arrow">→</span>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
 
-            <div className="gp-card-footer">
-                <span className="gp-exp">{guide.experience} лет опыта</span>
-                <button className="gp-details-btn">Маршруты</button>
+                <div className="gp-card-footer">
+                    <span className="gp-exp">{t('guides_page.exp_label', { count: guide.experience })}</span>
+                    <button className="gp-details-btn">{t('guides_page.btn_details')}</button>
+                </div>
             </div>
         </div>
-    </div>
-);
+    );
+};
 
 /* ── PAGE ── */
 const Horizon = () => (
@@ -271,12 +279,13 @@ const Horizon = () => (
 );
 
 const GuidesPage = () => {
+    const { t, i18n } = useTranslation();
     const [guides, setGuides] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedGuide, setSelectedGuide] = useState(null);
-    const [filter, setFilter] = useState('Все');
+    const [filter, setFilter] = useState('All');
 
-    const SPECIALTIES = ['Все', 'История', 'Природа', 'Архитектура', 'Культура', 'Кулинария', 'Приключения'];
+    const SPECIALTIES = ['All', 'История', 'Природа', 'Архитектура', 'Культура', 'Кулинария', 'Приключения'];
 
     useEffect(() => {
         const loadGuides = async () => {
@@ -299,9 +308,17 @@ const GuidesPage = () => {
         loadGuides();
     }, []);
 
-    if (loading) return <div className="loading-state">Звездное небо загружается...</div>;
+    if (loading) return <div className="loading-state">{t('guides_page.loading')}</div>;
 
-    const filtered = filter === 'Все' ? guides : guides.filter(g => g.specialty === filter);
+    const filtered = filter === 'All' ? guides : guides.filter(g => g.specialty === filter);
+
+    const heroImages = {
+        ru: heroTextImgRU,
+        kz: heroTextImgKZ,
+        en: heroTextImgEN,
+        zh: heroTextImgZH
+    };
+    const currentHeroImg = heroImages[i18n.language] || heroTextImgRU;
 
     return (
         <div className="gp-root">
@@ -310,9 +327,9 @@ const GuidesPage = () => {
 
             <div className="gp-header-wrap">
                 <div className="gp-topbar">
-                    <Link to="/" className="gp-back">Назад</Link>
+                    <Link to="/" className="gp-back">{t('ui.back')}</Link>
                     <div className="gp-logo-box">
-                        <img src={heroTextImg} alt="Turkistan" className="gp-header-logo" />
+                        <img src={currentHeroImg} alt="Turkistan" className="gp-header-logo" />
                     </div>
                 </div>
                 <div className="gp-filter-bar">
@@ -323,7 +340,7 @@ const GuidesPage = () => {
                                 className={`gp-f-btn ${filter === s ? 'active' : ''}`}
                                 onClick={() => setFilter(s)}
                             >
-                                {s}
+                                {s === 'All' ? t('guides_page.all_specialties') : t(`guides_page.specialties.${s}`)}
                             </button>
                         ))}
                     </div>
@@ -331,7 +348,7 @@ const GuidesPage = () => {
             </div>
 
             <div className="gp-hero">
-                <h1 className="gp-hero-title">Гиды</h1>
+                <h1 className="gp-hero-title">{t('guides_page.hero_title')}</h1>
             </div>
 
             <div className="gp-grid-container">

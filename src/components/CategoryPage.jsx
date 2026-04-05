@@ -1,14 +1,19 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import './CategoryPage.css';
 import { fetchSheetData } from '../services/api';
 import { HotelModal } from './HotelsPage';
 import { EditorialModal } from './RestaurantsPage';
 import { Icons } from '../admin/AdminIcons';
-import heroTextImg from '../assets/hero-text.png';
+import heroTextImgRU from '../assets/hero-text.png';
+import heroTextImgKZ from '../assets/hero-textkz.png';
+import heroTextImgEN from '../assets/hero-texten.png';
+import heroTextImgZH from '../assets/hero-textzh.png';
 import { Stars } from './HotelsPage';
 
 export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos = [], guides = [] }) => {
+    const { t } = useTranslation();
     const [activeImg, setActiveImg] = useState(item.image);
     const all = [item.image, ...(item.gallery || [])];
 
@@ -57,23 +62,23 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                     <p className="cp-modal-desc">{item.fullDescription || item.description}</p>
                     <div className="cp-modal-facts">
                         <div className="cp-fact">
-                            <span className="cp-fact-label">Локация</span>
-                            <span className="cp-fact-val">{item.city || 'Туркестанская область'}</span>
+                            <span className="cp-fact-label">{t('category.location_label')}</span>
+                            <span className="cp-fact-val">{item.city || t('category.default_region')}</span>
                         </div>
                         {item.hours && (
                             <div className="cp-fact">
-                                <span className="cp-fact-label">Режим работы</span>
+                                <span className="cp-fact-label">{t('category.hours_label')}</span>
                                 <span className="cp-fact-val">{item.hours}</span>
                             </div>
                         )}
                         <button className="cp-map-btn" onClick={openMap} style={{ marginTop: '20px', width: 'fit-content' }}>
-                             <Icons.Pin style={{ width: 14 }} /> Показать на карте
+                             <Icons.Pin style={{ width: 14 }} /> {t('category.show_on_map')}
                         </button>
                     </div>
                     <div className="cp-modal-rich-sections">
                         {nearbyData.hotels.length > 0 && (
                             <div className="cp-modal-sub-section">
-                                <h4 className="cp-sub-h">Где остановиться рядом</h4>
+                                <h4 className="cp-sub-h">{t('category.nearby_hotels')}</h4>
                                 <div className="cp-mini-grid">
                                     {nearbyData.hotels.map(h => (
                                         <div key={h.id} className="cp-mini-card clickable" onClick={() => onNavigate(h)}>
@@ -86,12 +91,12 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                         )}
                         {nearbyData.restaurants.length > 0 && (
                             <div className="cp-modal-sub-section">
-                                <h4 className="cp-sub-h">Где поесть рядом</h4>
+                                <h4 className="cp-sub-h">{t('category.nearby_restaurants')}</h4>
                                 <div className="cp-mini-grid">
                                     {nearbyData.restaurants.map(r => (
                                         <div key={r.id} className="cp-mini-card clickable" onClick={() => onNavigate(r)}>
                                             <img src={r.image} alt="" />
-                                            <div><h6>{r.name}</h6><span>{r.cuisine}</span></div>
+                                            <div><h6>{r.name}</h6><span>{t(`restos_page.cuisines.${r.cuisine}`)}</span></div>
                                         </div>
                                     ))}
                                 </div>
@@ -105,6 +110,7 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
 };
 
 const CategoryPage = () => {
+    const { t, i18n } = useTranslation();
     const { id: catId } = useParams();
     const navigate = useNavigate();
     const [data, setData] = useState([]);
@@ -112,7 +118,7 @@ const CategoryPage = () => {
     const [hots, setHots] = useState([]);
     const [restos, setRestos] = useState([]);
     const [guides, setGuides] = useState([]);
-    const [activeCity, setActiveCity] = useState('все');
+    const [activeCity, setActiveCity] = useState(t('category.all_cities'));
     const [selected, setSelected] = useState(null);
     const queryId = useMemo(() => new URLSearchParams(window.location.search).get('id'), [window.location.search]);
 
@@ -144,32 +150,40 @@ const CategoryPage = () => {
 
     const cities = useMemo(() => {
         const set = new Set(data.map(i => i.city).filter(Boolean));
-        return ['все', ...set];
-    }, [data]);
+        return [t('category.all_cities'), ...set];
+    }, [data, t]);
 
     const filtered = useMemo(() =>
-        activeCity === 'все' ? data : data.filter(i => i.city === activeCity),
-        [data, activeCity]
+        activeCity === t('category.all_cities') ? data : data.filter(i => i.city === activeCity),
+        [data, activeCity, t]
     );
 
-    if (loading) return <div className="loading-state">Древние тайны раскрываются...</div>;
+    if (loading) return <div className="loading-state">{t('category.loading')}</div>;
 
     const meta = {
-        city: { title: 'Городские', sub: 'достопримечательности' },
-        spirit: { title: 'Духовные', sub: 'достопримечательности' },
-        nature: { title: 'Природные', sub: 'достопримечательности' },
+        city: { title: t('category.meta.city'), sub: t('category.meta.sub') },
+        spirit: { title: t('category.meta.spirit'), sub: t('category.meta.sub') },
+        nature: { title: t('category.meta.nature'), sub: t('category.meta.sub') },
     }[catId] || { title: 'Heritage', sub: 'Turkistan' };
+
+    const heroImages = {
+        ru: heroTextImgRU,
+        kz: heroTextImgKZ,
+        en: heroTextImgEN,
+        zh: heroTextImgZH
+    };
+    const currentHeroImg = heroImages[i18n.language] || heroTextImgRU;
 
     return (
         <div className="cp-root">
             <div className="cp-header-wrap">
                 <div className="cp-topbar">
-                    <Link to="/" className="cp-back">Назад</Link>
-                    <div className="cp-logo-container"><img src={heroTextImg} alt="Turkistan" className="cp-header-logo" /></div>
-                    <span style={{ fontSize: '0.6rem', letterSpacing: '2px', opacity: .5 }}>{filtered.length} объектов</span>
+                    <Link to="/" className="cp-back">{t('ui.back')}</Link>
+                    <div className="cp-logo-container"><img src={currentHeroImg} alt="Turkistan" className="cp-header-logo" /></div>
+                    <span style={{ fontSize: '0.6rem', letterSpacing: '2px', opacity: .5 }}>{t('category.objects_count', { count: filtered.length })}</span>
                 </div>
                 <div className="cp-loc-row">
-                    <span className="cp-loc-label">Локация</span>
+                    <span className="cp-loc-label">{t('category.location_label')}</span>
                     {cities.map(city => (
                         <button key={city} className={`cp-loc-btn ${activeCity === city ? 'active' : ''}`} onClick={() => setActiveCity(city)}>
                             <span className="cp-loc-btn-inner">{city}</span>
@@ -179,7 +193,7 @@ const CategoryPage = () => {
             </div>
 
             <div className="cp-hero">
-                <h1 className="cp-hero-h"><span>{meta.title}</span></h1>
+                <h1 className="cp-hero-h"><span>{meta.title} {meta.sub}</span></h1>
             </div>
 
             <main className="cp-mosaic-container">

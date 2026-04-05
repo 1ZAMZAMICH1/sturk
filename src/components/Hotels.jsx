@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { fetchSheetData } from '../services/api';
 import './Hotels.css';
 
 const Hotels = () => {
+    const { t } = useTranslation();
     const [hotels, setHotels] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -16,7 +18,7 @@ const Hotels = () => {
         loadHotels();
     }, []);
 
-    if (loading) return <div className="loading-state">Загрузка отелей...</div>;
+    if (loading) return <div className="loading-state">{t('hotels.loading')}</div>;
 
     const displayHotels = hotels.slice(0, 5);
 
@@ -24,16 +26,13 @@ const Hotels = () => {
         <div className="hotels-section">
             <div className="hotels-content">
                 <div className="hotels-text-block left-text">
-                    <h2 className="hotels-subtitle">Отдых Достойный Ханов</h2>
+                    <h2 className="hotels-subtitle">{t('hotels.title')}</h2>
                     <p className="hotels-description">
-                        После долгого путешествия по священным местам, обретите покой и уют в отелях Туркестана.
-                        Мы объединили современный комфорт мирового уровня с уникальным национальным колоритом.
-                        Бутик-отели в стиле древних караван-сараев или роскошные курортные комплексы —
-                        выберите идеальное место для восстановления сил в самом сердце Центральной Азии.
+                        {t('hotels.description')}
                     </p>
                     <div className="hotels-ornament"></div>
                     <Link to="/hotels" className="hotels-explore-btn">
-                        Смотреть все отели
+                        {t('hotels.btn')}
                         <span className="btn-arrow">→</span>
                     </Link>
                 </div>

@@ -1,0 +1,151 @@
+{
+  "map": {
+    "title": "Navigator",
+    "details": "More Details",
+    "categories": "Attractions",
+    "categories_label": "Attractions:",
+    "routes": "Routes",
+    "routes_label": "Routes:",
+    "all_routes": "All Routes"
+  },
+  "ui": {
+    "loading": "Loading...",
+    "error_data": "Information is coming soon.",
+    "more": "More",
+    "back": "Back"
+  },
+  "filters": {
+    "all": "All",
+    "sight": "History",
+    "nature": "Nature",
+    "hotel": "Hotels"
+  },
+  "hospitality": {
+    "loading": "The aromas of the East are filling the room...",
+    "title": "Taste of the Great Silk Road",
+    "description": "Turkestan cuisine is a living history that has absorbed the aromas of the steppe and the sophistication of Eastern cities. From traditional pilaf cooked over an open fire to modern gastronomic interpretations, every dish here tells its own legend. Feel the true Eastern hospitality in the city's finest restaurants.",
+    "btn": "Explore all venues"
+  },
+  "hotels": {
+    "loading": "Loading hotels...",
+    "title": "A Rest Worthy of Khans",
+    "description": "After a long journey through sacred places, find peace and comfort in the hotels of Turkestan. We have combined modern world-class comfort with a unique national flavor. Boutique hotels in the style of ancient caravanserais or luxury resort complexes — choose the perfect place to recharge in the heart of Central Asia.",
+    "btn": "View all hotels"
+  },
+  "guides": {
+    "title": "GUIDES",
+    "btn": "View all guides",
+    "loading": "Loading the masters of the path..."
+  },
+  "articles": {
+    "loading": "Turkestan news is loading...",
+    "title": "Chronicle",
+    "page_info": "Page {{current}} of {{total}}",
+    "read_more": "Read more",
+    "prev": "Past",
+    "next": "Future",
+    "author_label": "Author: {{name}}"
+  },
+  "categories": {
+    "title": "Gates of Turkestan"
+  },
+  "category": {
+    "loading": "Ancient secrets are being revealed...",
+    "back": "Back",
+    "location_label": "Location",
+    "hours_label": "Opening hours",
+    "show_on_map": "Show on map",
+    "nearby_hotels": "Where to stay nearby",
+    "nearby_restaurants": "Where to eat nearby",
+    "objects_count": "{{count}} objects",
+    "all_cities": "all",
+    "default_region": "Turkistan region",
+    "meta": {
+      "city": "Urban",
+      "spirit": "Spiritual",
+      "nature": "Natural",
+      "sub": "attractions"
+    }
+  },
+  "hotels_page": {
+    "loading": "Waiting halls are being prepared...",
+    "hero_title": "Hotels",
+    "all_cities": "All cities",
+    "all_types": "All types",
+    "objects_label": "Objects",
+    "tab_overview": "Overview",
+    "tab_rooms": "Rooms",
+    "tab_nearby": "Nearby",
+    "amenities_title": "Amenities",
+    "address_title": "Address",
+    "from_price": "from {{price}}",
+    "visit_website": "Visit hotel website",
+    "nearby_attractions": "Attractions",
+    "nearby_restaurants": "Restaurants",
+    "amenities": {
+      "Wi-Fi": "Wi-Fi",
+      "Завтрак": "Breakfast",
+      "Бассейн": "Pool",
+      "SPA": "SPA",
+      "Фитнес": "Fitness",
+      "Кондиционер": "A/C",
+      "Парковка": "Parking",
+      "Ресторан": "Restaurant",
+      "Вид на мавзолей": "Mausoleum View",
+      "Традиции": "Traditions"
+    },
+    "types": {
+      "Resort": "Resort",
+      "Boutique": "Boutique",
+      "Hotel": "Hotel",
+      "Hostel": "Hostel",
+      "Eco": "Eco"
+    }
+  },
+  "restos_page": {
+    "loading": "Aromas of the East fill the room...",
+    "hero_title": "Restaurants",
+    "hero_subtitle": "Taste of the Great Steppe",
+    "all_cities": "All Cities",
+    "all_cuisines": "All Cuisines",
+    "objects_label": "Establishments",
+    "recommended_label": "Recommended: {{name}}",
+    "sec_history": "History & Atmosphere",
+    "sec_gastronomy": "Gastronomy",
+    "sec_nearby_atts": "Recommend visiting nearby",
+    "sec_nearby_hots": "Nearby hotels",
+    "sec_location": "Location",
+    "sec_secret": "Culinary Secret",
+    "btn_book": "Book a table",
+    "empty_filter": "There are no offers for this filter yet.",
+    "label_attraction": "Attraction",
+    "cuisines": {
+      "Казахская": "Kazakh",
+      "Узбекская": "Uzbek",
+      "Восточная": "Oriental",
+      "Европейская": "European",
+      "Кофейня": "Coffee House"
+    }
+  },
+  "guides_page": {
+    "loading": "The starry sky is loading...",
+    "hero_title": "Guides",
+    "all_specialties": "All",
+    "reviews_label": "{{count}} reviews",
+    "exp_label": "{{count}} years of experience",
+    "routes_label": "{{count}} routes",
+    "langs_label": "{{count}} languages",
+    "route_program": "Route Program",
+    "btn_book": "Book a Guide",
+    "btn_details": "Routes",
+    "no_tour": "Select a route to see details",
+    "specialties": {
+      "История": "History",
+      "Природа": "Nature",
+      "Кулинария": "Culinary",
+      "Архитектура": "Architecture",
+      "Приключения": "Adventures",
+      "Культура": "Culture"
+    }
+  }
+}

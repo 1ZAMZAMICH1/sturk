@@ -1,6 +1,7 @@
 // src/mobile/GuidesMobile.jsx
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Canvas, useFrame } from '@react-three/fiber';
 import {
   Text,
@@ -139,6 +140,7 @@ const CLOSE_SPREAD = 4000;
 const PAUSE_DURATION = 2000;
 
 const GuidesMobile = () => {
+  const { t } = useTranslation();
   const [guides, setGuides] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -242,7 +244,7 @@ const GuidesMobile = () => {
     return () => { isMounted = false; clearAll(); };
   }, [loading, guides.length]);
 
-  if (loading) return <div className="mob-loading">Зовем мастеров пути...</div>;
+  if (loading) return <div className="mob-loading">{t('guides.loading')}</div>;
 
   return (
     <div className="guides-mob-root" ref={rootRef}>
@@ -250,7 +252,7 @@ const GuidesMobile = () => {
       <div className="vignette-guides" />
 
       <div className="guides-mob-header">
-        <h2 className="guides-mob-title">ГИДЫ</h2>
+        <h2 className="guides-mob-title">{t('guides.title')}</h2>
         {/* Текст со страницей убран */}
       </div>
 
@@ -285,7 +287,7 @@ const GuidesMobile = () => {
       {/* Hint и nav-кнопки убраны — навигация теперь автоматическая */}
 
       <Link to="/guides" className="guides-mob-link">
-        Смотреть всех гидов <span>→</span>
+        {t('guides.btn')} <span>→</span>
       </Link>
     </div>
   );

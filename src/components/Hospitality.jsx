@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { fetchSheetData } from '../services/api';
 import './Hospitality.css';
 
 const Hospitality = () => {
+  const { t } = useTranslation();
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,7 +18,7 @@ const Hospitality = () => {
     loadData();
   }, []);
 
-  if (loading) return <div className="loading-state">Ароматы востока наполняют комнату...</div>;
+  if (loading) return <div className="loading-state">{t('hospitality.loading')}</div>;
 
   const displayRestaurants = restaurants.slice(0, 5);
 
@@ -47,15 +49,13 @@ const Hospitality = () => {
         </div>
 
         <div className="hosp-text-block right-text">
-          <h2 className="hosp-subtitle">Вкус Великого Шелкового Пути</h2>
+          <h2 className="hosp-subtitle">{t('hospitality.title')}</h2>
           <p className="hosp-description">
-            Кухня Туркестана — это живая история, вобравшая в себя ароматы степи и изысканность восточных городов.
-            От традиционного плова, приготовленного на открытом огне, до современных гастрономических интерпретаций —
-            каждое блюдо здесь рассказывает свою легенду. Почувствуйте истинное восточное гостеприимство в лучших заведениях города.
+            {t('hospitality.description')}
           </p>
           <div className="hosp-ornament"></div>
           <Link to="/restaurants" className="hosp-explore-btn">
-            Смотреть все заведения
+            {t('hospitality.btn')}
             <span className="btn-arrow">→</span>
           </Link>
         </div>

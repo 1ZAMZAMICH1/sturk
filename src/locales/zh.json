@@ -1,0 +1,151 @@
+{
+  "map": {
+    "title": "导航器",
+    "details": "更多详情",
+    "categories": "项目",
+    "categories_label": "项目:",
+    "routes": "路径",
+    "routes_label": "路线:",
+    "all_routes": "全部路径"
+  },
+  "ui": {
+    "loading": "加载中...",
+    "error_data": "信息即将发布。",
+    "more": "更多",
+    "back": "返回"
+  },
+  "filters": {
+    "all": "全部",
+    "sight": "历史",
+    "nature": "自然",
+    "hotel": "酒店"
+  },
+  "hospitality": {
+    "loading": "东方香气溢满房间...",
+    "title": "丝绸之路的味道",
+    "description": "突厥斯坦美食是一部活生生的历史，吸收了草原的香气和东方城市的精致。从堆满炭火的各种传统抓饭到现代美食演绎，这里的每一道菜都有自己的传奇。在城市最好的餐厅感受真正的东方款待。",
+    "btn": "查看所有餐厅"
+  },
+  "hotels": {
+    "loading": "酒店载入中...",
+    "title": "值得可汗休息的舒适场所",
+    "description": "在圣地的漫长旅程之后，在突厥斯坦的酒店里寻找宁静和舒适。我们将现代世界级的舒适与独特的民族风情结合在一起。古老的驿站风格的精品酒店或豪华度假综合体——在受中亚心脏地带选择恢复体力的理想场所。",
+    "btn": "查看所有酒店"
+  },
+  "guides": {
+    "title": "向导",
+    "btn": "查看所有向导",
+    "loading": "路径大师载入中..."
+  },
+  "articles": {
+    "loading": "突厥斯坦新闻载入中...",
+    "title": "编年史",
+    "page_info": "第 {{current}} 页，共 {{total}} 页",
+    "read_more": "阅读更多",
+    "prev": "过去",
+    "next": "未来",
+    "author_label": "作者：{{name}}"
+  },
+  "categories": {
+    "title": "突厥斯坦之门"
+  },
+  "category": {
+    "loading": "古老的秘密正在揭晓...",
+    "back": "返回",
+    "location_label": "地点",
+    "hours_label": "营业时间",
+    "show_on_map": "在地图上显示",
+    "nearby_hotels": "附近住宿",
+    "nearby_restaurants": "附近美食",
+    "objects_count": "{{count}} 个项目",
+    "all_cities": "全部",
+    "default_region": "突厥斯坦地区",
+    "meta": {
+      "city": "城市",
+      "spirit": "精神",
+      "nature": "自然",
+      "sub": "景点"
+    }
+  },
+  "hotels_page": {
+    "loading": "候车大厅正在准备中...",
+    "hero_title": "酒店",
+    "all_cities": "所有城市",
+    "all_types": "所有类型",
+    "objects_label": "件物品",
+    "tab_overview": "概况",
+    "tab_rooms": "客房",
+    "tab_nearby": "附近",
+    "amenities_title": "设施与服务",
+    "address_title": "地址",
+    "from_price": "{{price}} 起",
+    "visit_website": "访问酒店网站",
+    "nearby_attractions": "景点",
+    "nearby_restaurants": "餐厅",
+    "amenities": {
+      "Wi-Fi": "Wi-Fi",
+      "Завтрак": "早餐",
+      "Бассейн": "游泳池",
+      "SPA": "SPA",
+      "Фитнес": "健身房",
+      "Кондиционер": "空调",
+      "Парковка": "停车场",
+      "Ресторан": "餐厅",
+      "Вид на мавзолей": "陵墓景观",
+      "Традиции": "传统风情"
+    },
+    "types": {
+      "Resort": "度假村",
+      "Boutique": "精品酒店",
+      "Hotel": "酒店",
+      "Hostel": "青年旅舍",
+      "Eco": "生态"
+    }
+  },
+  "restos_page": {
+    "loading": "东方的香气弥漫在房间里...",
+    "hero_title": "餐厅",
+    "hero_subtitle": "大草原的味道",
+    "all_cities": "所有城市",
+    "all_cuisines": "所有菜系",
+    "objects_label": "家分店",
+    "recommended_label": "推荐：{{name}}",
+    "sec_history": "历史与氛围",
+    "sec_gastronomy": "美食学",
+    "sec_nearby_atts": "推荐附近景点",
+    "sec_nearby_hots": "附近酒店",
+    "sec_location": "地点",
+    "sec_secret": "烹饪秘密",
+    "btn_book": "预订座位",
+    "empty_filter": "该筛选器尚无优惠。",
+    "label_attraction": "景点",
+    "cuisines": {
+      "Казахская": "哈萨克",
+      "Узбекская": "乌兹别克",
+      "Восточная": "东方",
+      "Европейская": "欧洲",
+      "Кофейня": "咖啡馆"
+    }
+  },
+  "guides_page": {
+    "loading": "星空正在加载...",
+    "hero_title": "导游",
+    "all_specialties": "全部",
+    "reviews_label": "{{count}} 条评论",
+    "exp_label": "{{count}} 年经验",
+    "routes_label": "{{count}} 条路线",
+    "langs_label": "{{count}} 种语言",
+    "route_program": "路线方案",
+    "btn_book": "预约导游",
+    "btn_details": "路线",
+    "no_tour": "选择路线以查看详情",
+    "specialties": {
+      "История": "历史",
+      "Природа": "自然",
+      "Кулинария": "烹饪",
+      "Архитектура": "建筑",
+      "Приключения": "冒险",
+      "Культура": "文化"
+    }
+  }
+}

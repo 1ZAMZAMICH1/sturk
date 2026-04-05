@@ -1,23 +1,35 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import './CategoryPageMobile.css';
 import { fetchSheetData } from '../services/api';
-import { HotelModal } from '../components/HotelsPage';
-import { EditorialModal } from '../components/RestaurantsPage';
+import { HotelModal } from './HotelsPageMobile';
+import { EditorialModal } from './RestaurantsPageMobile';
 import { Icons } from '../admin/AdminIcons';
-import heroTextImg from '../assets/hero-text.png';
-import { Stars } from '../components/HotelsPage';
+import { Stars } from './HotelsPageMobile';
+
+import heroTextImgRU from '../assets/hero-text.png';
+import heroTextImgKZ from '../assets/hero-textkz.png';
+import heroTextImgEN from '../assets/hero-texten.png';
+import heroTextImgZH from '../assets/hero-textzh.png';
+
+const heroImages = {
+  ru: heroTextImgRU,
+  kz: heroTextImgKZ,
+  en: heroTextImgEN,
+  zh: heroTextImgZH
+};
 
 export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos = [], guides = [] }) => {
-    const [activeImg, setActiveImg] = useState(item.image);
-    const all = [item.image, ...(item.gallery || [])];
+    const { t } = useTranslation();
+    const [activeImg, setActiveImg] = useState(item.image || item.img);
+    const all = [item.image || item.img, ...(item.gallery || [])].filter(Boolean);
 
     const nearbyData = useMemo(() => {
-        const filteredHots = (item.nearbyHotels || []).map(id => hots.find(h => h.id === id)).filter(Boolean);
-        const filteredRestos = (item.nearbyRestaurants || []).map(id => restos.find(r => r.id === id)).filter(Boolean);
+        const filteredHots = (item.nearbyHotels || []).map(id => hots.find(h => String(h.id) === String(id))).filter(Boolean);
+        const filteredRestos = (item.nearbyRestaurants || []).map(id => restos.find(r => String(r.id) === String(id))).filter(Boolean);
         
-        // Smarter keywords for guides
-        const name = item.name.toLowerCase();
+        const name = (item.name || item.title || "").toLowerCase();
         const keywords = name.replace(/мавзолей|ходжи|ахмеда|центр|визит|парк|озеро|река|пещера|комплекс|азрет|султан/g, '').trim().split(/\s+/);
         const relatedGuides = guides.filter(guide => 
             (guide.tours || []).some(tour => 
@@ -41,7 +53,7 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
             <div className="cp-modal-inner-wrapper" onClick={e => e.stopPropagation()}>
                 <button className="cp-modal-close" onClick={onClose}><Icons.Close /></button>
                 <div className="cp-modal-left">
-                    <img src={activeImg} alt={item.name} className="cp-modal-main-img" />
+                    <img src={activeImg} alt={item.name || item.title} className="cp-modal-main-img" />
                     <div className="cp-modal-bottom-fade" />
                     <div className="cp-modal-img-fade" />
                     {all.length > 1 && (
@@ -53,33 +65,33 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                     )}
                 </div>
                 <div className="cp-modal-right">
-                    <div className="cp-modal-eyebrow">{item.category}</div>
-                    <h2 className="cp-modal-title">{item.name}</h2>
+                    <div className="cp-modal-eyebrow">{item.category || t('category.meta.sub')}</div>
+                    <h2 className="cp-modal-title">{item.name || item.title}</h2>
                     <p className="cp-modal-desc">{item.fullDescription || item.description}</p>
                     <div className="cp-modal-facts">
                         <div className="cp-fact">
-                            <span className="cp-fact-label">Локация</span>
-                            <span className="cp-fact-val">{item.city || 'Туркестанская область'}</span>
+                            <span className="cp-fact-label">{t('category.location_label')}</span>
+                            <span className="cp-fact-val">{item.city || t('category.default_region')}</span>
                         </div>
                         {item.hours && (
                             <div className="cp-fact">
-                                <span className="cp-fact-label">Режим работы</span>
+                                <span className="cp-fact-label">{t('category.hours_label')}</span>
                                 <span className="cp-fact-val">{item.hours}</span>
                             </div>
                         )}
                         <button className="cp-map-btn" onClick={openMap} style={{ marginTop: '20px', width: 'fit-content' }}>
-                             <Icons.Pin style={{ width: 14 }} /> Показать на карте
+                             <Icons.Pin style={{ width: 14 }} /> {t('category.show_on_map')}
                         </button>
                     </div>
                     <div className="cp-modal-rich-sections">
                         {nearbyData.hotels.length > 0 && (
                             <div className="cp-modal-sub-section">
-                                <h4 className="cp-sub-h">Где остановиться рядом</h4>
+                                <h4 className="cp-sub-h">{t('category.nearby_hotels')}</h4>
                                 <div className="cp-mini-grid">
                                     {nearbyData.hotels.map(h => (
-                                        <div key={h.id} className="cp-mini-card clickable" onClick={() => onNavigate(h)}>
-                                            <img src={h.image} alt="" />
-                                            <div><h6>{h.name}</h6><Stars count={h.stars} /></div>
+                                        <div key={h.id} className="cp-mini-card clickable" onClick={() => onNavigate && onNavigate(h)}>
+                                            <img src={h.image || h.img} alt="" />
+                                            <div><h6>{h.name || h.title}</h6><Stars count={h.stars} /></div>
                                         </div>
                                     ))}
                                 </div>
@@ -87,12 +99,12 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                         )}
                         {nearbyData.restaurants.length > 0 && (
                             <div className="cp-modal-sub-section">
-                                <h4 className="cp-sub-h">Где поесть рядом</h4>
+                                <h4 className="cp-sub-h">{t('category.nearby_restaurants')}</h4>
                                 <div className="cp-mini-grid">
                                     {nearbyData.restaurants.map(r => (
-                                        <div key={r.id} className="cp-mini-card clickable" onClick={() => onNavigate(r)}>
-                                            <img src={r.image} alt="" />
-                                            <div><h6>{r.name}</h6><span>{r.cuisine}</span></div>
+                                        <div key={r.id} className="cp-mini-card clickable" onClick={() => onNavigate && onNavigate(r)}>
+                                            <img src={r.image || r.img} alt="" />
+                                            <div><h6>{r.name || r.title}</h6><span>{r.cuisine || r.type}</span></div>
                                         </div>
                                     ))}
                                 </div>
@@ -107,6 +119,7 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
 
 const CategoryPage = () => {
     const { id: catId } = useParams();
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -116,6 +129,8 @@ const CategoryPage = () => {
     const [activeCity, setActiveCity] = useState('все');
     const [selected, setSelected] = useState(null);
     const queryId = useMemo(() => new URLSearchParams(window.location.search).get('id'), [window.location.search]);
+
+    const currentLogo = heroImages[i18n.language] || heroImages.ru;
 
     useEffect(() => {
         const loadAll = async () => {
@@ -132,12 +147,10 @@ const CategoryPage = () => {
             setRestos(allRestos);
             setGuides(allGuides);
 
-            // Auto-open logic
             if (queryId) {
                 const item = filteredData.find(i => String(i.id) === String(queryId));
                 if (item) setSelected(item);
             }
-
             setLoading(false);
         };
         loadAll();
@@ -153,27 +166,27 @@ const CategoryPage = () => {
         [data, activeCity]
     );
 
-    if (loading) return <div className="loading-state">Древние тайны раскрываются...</div>;
+    if (loading) return <div className="loading-state">{t('category.loading')}</div>;
 
     const meta = {
-        city: { title: 'Городские', sub: 'достопримечательности' },
-        spirit: { title: 'Духовные', sub: 'достопримечательности' },
-        nature: { title: 'Природные', sub: 'достопримечательности' },
-    }[catId] || { title: 'Heritage', sub: 'Turkistan' };
+        city: { title: t('category.meta.city'), sub: t('category.meta.sub') || 'Heritage' },
+        spirit: { title: t('category.meta.history'), sub: t('category.meta.sub') || 'History' },
+        nature: { title: t('category.meta.nature'), sub: t('category.meta.sub') || 'Nature' },
+    }[catId] || { title: t('category.meta.history'), sub: t('category.meta.sub') || 'Heritage' };
 
     return (
         <div className="cp-root">
             <div className="cp-header-wrap">
                 <div className="cp-topbar">
-                    <Link to="/" className="cp-back">Назад</Link>
-                    <div className="cp-logo-container"><img src={heroTextImg} alt="Turkistan" className="cp-header-logo" /></div>
-                    <span style={{ fontSize: '0.6rem', letterSpacing: '2px', opacity: .5 }}>{filtered.length} объектов</span>
+                    <Link to="/" className="cp-back">{t('category.back')}</Link>
+                    <div className="cp-logo-container"><img src={currentLogo} alt="Turkistan" className="cp-header-logo" /></div>
+                    <span style={{ fontSize: '0.6rem', letterSpacing: '2px', opacity: .5 }}>{filtered.length} {t('category.objects_count')}</span>
                 </div>
                 <div className="cp-loc-row">
-                    <span className="cp-loc-label">Локация</span>
-                    {cities.map(city => (
-                        <button key={city} className={`cp-loc-btn ${activeCity === city ? 'active' : ''}`} onClick={() => setActiveCity(city)}>
-                            <span className="cp-loc-btn-inner">{city}</span>
+                    <span className="cp-loc-label">{t('category.location_label')}</span>
+                    {cities.map(cityItem => (
+                        <button key={cityItem} className={`cp-loc-btn ${activeCity === cityItem ? 'active' : ''}`} onClick={() => setActiveCity(cityItem)}>
+                            <span className="cp-loc-btn-inner">{cityItem === 'все' ? t('filters.all') : cityItem}</span>
                         </button>
                     ))}
                 </div>
@@ -190,11 +203,11 @@ const CategoryPage = () => {
                             <article className="cp-double-arch">
                                 <div className="cp-arch-content">
                                     <div className="cp-img-box">
-                                        <img src={item.image} alt={item.name} className="cp-img" loading="lazy" />
+                                        <img src={item.image || item.img} alt={item.name || item.title} className="cp-img" loading="lazy" />
                                         <div className="cp-img-blend" />
                                     </div>
                                     <div className="cp-text-box">
-                                        <h2 className="cp-tile-name">{item.name}</h2>
+                                        <h2 className="cp-tile-name">{item.name || item.title}</h2>
                                         <p className="cp-tile-desc">{item.description}</p>
                                     </div>
                                 </div>
@@ -206,8 +219,8 @@ const CategoryPage = () => {
 
             {selected && (
                 <>
-                    {'stars' in selected ? <HotelModal hotel={selected} onClose={() => setSelected(null)} /> :
-                     'cuisine' in selected ? <EditorialModal res={selected} onClose={() => setSelected(null)} /> :
+                    {'stars' in selected ? <HotelModal hotel={selected} atts={data} onClose={() => setSelected(null)} /> :
+                     'cuisine' in selected ? <EditorialModal res={selected} hots={hots} atts={data} onClose={() => setSelected(null)} /> :
                      <AttractionModal 
                         item={selected} 
                         hots={hots} 

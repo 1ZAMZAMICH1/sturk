@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import './Articles.css';
 import { Icons } from '../admin/AdminIcons';
 import { fetchSheetData } from '../services/api';
 
 const ArticleModal = ({ article, onClose }) => {
+  const { t } = useTranslation();
   return (
     <div className="art-modal-overlay" onClick={onClose}>
       <div className="art-modal-inner shepherd-style" onClick={e => e.stopPropagation()}>
@@ -47,7 +49,7 @@ const ArticleModal = ({ article, onClose }) => {
             )}
             
             <div className="art-modal-footer-ornament">
-              <span>Автор: {article.author}</span>
+              <span>{t('articles.author_label', { name: article.author })}</span>
             </div>
           </div>
         </div>
@@ -60,6 +62,7 @@ const ArticleModal = ({ article, onClose }) => {
 const ITEMS_PER_PAGE = 6;
 
 const Articles = () => {
+  const { t } = useTranslation();
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -75,7 +78,7 @@ const Articles = () => {
     loadArticles();
   }, []);
 
-  if (loading) return <div className="loading-state">Новости Туркестана загружаются...</div>;
+  if (loading) return <div className="loading-state">{t('articles.loading')}</div>;
 
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
@@ -111,8 +114,8 @@ const Articles = () => {
     <div className="turkic-news-container">
 
       <header className="news-header">
-        <h1 className="news-title">Шежіре</h1>
-        <p className="news-subtitle">Страница {currentPage} из {totalPages}</p>
+        <h1 className="news-title">{t('articles.title')}</h1>
+        <p className="news-subtitle">{t('articles.page_info', { current: currentPage, total: totalPages })}</p>
         <div className="header-ornament"></div>
       </header>
 
@@ -137,7 +140,7 @@ const Articles = () => {
                 <h3>{article.title}</h3>
                 <p>{article.excerpt}</p>
                 <button className="read-more-btn">
-                  Читать далее <span>&#10142;</span>
+                  {t('articles.read_more')} <span>&#10142;</span>
                 </button>
               </div>
             </div>
@@ -155,7 +158,7 @@ const Articles = () => {
           onClick={handlePrev}
           disabled={currentPage === 1}
         >
-          &#8592; Прошлое
+          &#8592; {t('articles.prev')}
         </button>
 
         <div className="page-numbers">
@@ -175,7 +178,7 @@ const Articles = () => {
           onClick={handleNext}
           disabled={currentPage === totalPages}
         >
-          Будущее &#8594;
+          {t('articles.next')} &#8594;
         </button>
       </div>
     </div>

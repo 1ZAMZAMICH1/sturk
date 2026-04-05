@@ -1,9 +1,13 @@
 import React, { useState, memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Canvas } from '@react-three/fiber';
 import { Clouds, Cloud, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import './Hero.css';
-import heroTextImg from '../assets/hero-text.png';
+import heroTextImgRU from '../assets/hero-text.png';
+import heroTextImgKZ from '../assets/hero-textkz.png';
+import heroTextImgEN from '../assets/hero-texten.png';
+import heroTextImgZH from '../assets/hero-textzh.png';
 
 const MemoizedClouds = memo(() => {
   const cloudConfig = (
@@ -32,11 +36,45 @@ const MemoizedClouds = memo(() => {
 
 const Hero = () => {
   const [isReady, setIsReady] = useState(false);
+  const { i18n } = useTranslation();
+
+  const OFFSETS = {
+    ru: { x: 0, y: 0 },
+    kz: { x: 100, y: -58 },
+    en: { x: 165, y: 9 },
+    zh: { x: 238, y: -30 }
+  };
+
+  const currentOffset = OFFSETS[i18n.language] || OFFSETS.ru;
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
+
+  const heroImages = {
+    ru: heroTextImgRU,
+    kz: heroTextImgKZ,
+    en: heroTextImgEN,
+    zh: heroTextImgZH
+  };
+  const currentHeroImg = heroImages[i18n.language] || heroTextImgRU;
 
   return (
     <div className="hero-container">
       <div className="texture-overlay"></div>
       <div className="vignette-overlay"></div>
+
+      <div className="language-selector-basic">
+        {['ru', 'kz', 'en', 'zh'].map((lng) => (
+          <button 
+            key={lng} 
+            onClick={() => changeLanguage(lng)}
+            className={`lang-btn-simple ${i18n.language === lng ? 'active' : ''}`}
+          >
+            {lng.toUpperCase()}
+          </button>
+        ))}
+      </div>
 
       <Canvas
         camera={{ position: [0, 0, 14], fov: 60, up: [0, 1, 0] }}
@@ -69,9 +107,12 @@ const Hero = () => {
 
       <div className="hero-content">
         <img
-          src={heroTextImg}
-          alt="Туркестан"
+          src={currentHeroImg}
+          alt="Turkistan"
           className={`hero-text-image ${isReady ? 'visible' : ''}`}
+          style={{
+            transform: `translate(${currentOffset.x}px, ${currentOffset.y}px)`,
+          }}
         />
       </div>
 

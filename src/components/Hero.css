@@ -45,7 +45,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 10;
+  z-index: 25; /* ТЕКСТ ТЕПЕРЬ НАД ТУМАНОМ */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -54,7 +54,7 @@
 
 /* АНИМАЦИЯ ПОЯВЛЕНИЯ */
 .hero-text-image {
-  max-width: 70%;
+  max-width: 70%; /* Возвращаю как было */
   height: auto;
   user-select: none;
   filter: drop-shadow(0px 10px 30px rgba(0, 0, 0, 0.9));
@@ -64,8 +64,8 @@
   transform: scale(0.95);
   filter: blur(10px);
 
-  /* Плавное появление */
-  transition: opacity 1.5s ease-out, transform 1.5s ease-out, filter 1.5s ease-out;
+  /* Плавное появление (только для прозрачности и блюра) */
+  transition: opacity 1.5s ease-out, filter 1.5s ease-out;
 }
 
 .hero-text-image.visible {
@@ -86,5 +86,80 @@
       rgba(26, 11, 5, 0) 0%,
       rgba(26, 11, 5, 0.4) 50%,
       #1a0b05 100%);
-  backdrop-filter: blur(2px);
+  /* УБРАЛ backdrop-filter ДЛЯ ЧЕТКОСТИ БУКВ */
+}
+
+/* ВРЕМЕННАЯ СЕТКА ДЛЯ ПРАВКИ PNG */
+.hero-alignment-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+  pointer-events: none;
+  border: 2px solid rgba(255, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid-line-vertical {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: rgba(255, 0, 0, 0.5);
+}
+
+.grid-line-horizontal {
+  position: absolute;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  background: rgba(255, 0, 0, 0.5);
+}
+
+/* LANGUAGE SELECTOR */
+.language-selector-basic {
+  position: absolute;
+  top: 40px;
+  right: 50px;
+  z-index: 1000;
+  display: flex;
+  gap: 20px;
+  pointer-events: auto; /* Важно: чтобы кнопки нажимались поверх canvas */
+}
+
+@media (max-width: 768px) {
+  .language-selector-basic {
+    right: 0;
+    left: 0;
+    top: 20px;
+    justify-content: center;
+    gap: 15px;
+  }
+}
+
+.lang-btn-simple {
+  background: none;
+  border: none;
+  color: rgba(220, 196, 142, 0.4);
+  font-family: 'Playfair Display', serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: all 0.4s ease;
+  padding: 5px;
+}
+
+.lang-btn-simple:hover {
+  color: #d4af37;
+  text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+.lang-btn-simple.active {
+  color: #f3e5ab;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.5);
 }

@@ -1,10 +1,9 @@
-// src/mobile/CategoriesMobile.jsx
-
 import React, { useState, useEffect, useRef, useMemo, useLayoutEffect } from 'react';
-import { Canvas, useFrame, extend } from '@react-three/fiber';
-import { Text, useCursor, Float, useTexture, Environment, shaderMaterial, PivotControls } from '@react-three/drei';
+import { useTranslation } from 'react-i18next';
 import * as THREE from 'three';
 import { useNavigate } from 'react-router-dom';
+import { Canvas, useFrame, extend } from '@react-three/fiber';
+import { useTexture, shaderMaterial, Environment, Float } from '@react-three/drei';
 import { fetchSheetData } from '../services/api';
 import './CategoriesMobile.css';
 
@@ -19,6 +18,21 @@ import duh1 from '../assets/duh1.png';
 import gor2 from '../assets/gor2.png';
 import ist2 from '../assets/ist2.png';
 import duh2 from '../assets/duh2.png';
+
+// Казахские подписи
+import gor2kaz from '../assets/gor2kaz.png';
+import ist2kaz from '../assets/ist2kaz.png';
+import prir2kaz from '../assets/prir2kaz.png';
+
+// Английские подписи
+import gor3en from '../assets/gor3en.png';
+import ist3en from '../assets/ist3en.png';
+import prir3en from '../assets/prir3en.png';
+
+// Китайские подписи
+import gor4zn from '../assets/gor4zn.png';
+import ist4zn from '../assets/ist4zn.png';
+import prir4zn from '../assets/prir4zn.png';
 
 import p1 from '../assets/petroglyph-1.png';
 import p2 from '../assets/petroglyph-2.png';
@@ -210,14 +224,24 @@ const createFrameRing = (width, height, border) => {
 const MobilePortalCard = ({ index, url, title, position, rotation, hoveredState, setHovered, onClick }) => {
   const groupRef = useRef();
   const labelMatRef = useRef();
+  const { i18n } = useTranslation();
   const isHovered = hoveredState === index;
 
   const archContentAssets = [gor2, ist2, duh2];
   const activeUrl = archContentAssets[index % 3];
   const texture = useTexture(activeUrl);
 
-  const labelTextures = useTexture([gor1, ist1, duh1]);
-  const activeLabel = labelTextures[index % 3];
+  const labelTexturesRU = useTexture([gor1, ist1, duh1]);
+  const labelTexturesKZ = useTexture([gor2kaz, ist2kaz, prir2kaz]);
+  const labelTexturesEN = useTexture([gor3en, ist3en, prir3en]);
+  const labelTexturesZH = useTexture([gor4zn, ist4zn, prir4zn]);
+
+  const activeLabel = useMemo(() => {
+    if (i18n.language === 'kz') return labelTexturesKZ[index % 3];
+    if (i18n.language === 'en') return labelTexturesEN[index % 3];
+    if (i18n.language === 'zh') return labelTexturesZH[index % 3];
+    return labelTexturesRU[index % 3];
+  }, [i18n.language, index, labelTexturesKZ, labelTexturesEN, labelTexturesZH, labelTexturesRU]);
 
   useFrame((state, delta) => {
     const dt = Math.min(delta, 0.1);
@@ -301,6 +325,7 @@ const MobilePortalCard = ({ index, url, title, position, rotation, hoveredState,
 };
 
 const CategoriesMobile = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [hovered, setHovered] = useState(null);
   const [archData, setArchData] = useState([]);
@@ -310,11 +335,17 @@ const CategoriesMobile = () => {
       try {
         const data = await fetchSheetData('categories');
         if (data && Array.isArray(data) && data.length >= 3) { setArchData(data); }
-        else { setArchData([{ tag: 'city', title: 'Город', url: cityImg }, { tag: 'spirit', title: 'История', url: historyImg }, { tag: 'nature', title: 'Природа', url: natureImg }]); }
+        else { 
+            setArchData([
+                { tag: 'city', title: t('category.default_region'), url: cityImg }, 
+                { tag: 'spirit', title: t('category.meta.history'), url: historyImg }, 
+                { tag: 'nature', title: t('category.meta.nature'), url: natureImg }
+            ]); 
+        }
       } catch (err) { }
     };
     loadArches();
-  }, []);
+  }, [t]);
 
   const handlePortalClick = (index) => {
     const target = archData[index]?.tag || 'city';
@@ -324,7 +355,7 @@ const CategoriesMobile = () => {
   return (
     <div className="cat-mob-root">
       <div className="cat-mob-header">
-        <h2 className="cat-mob-title">Врата Туркестана</h2>
+        <h2 className="cat-mob-title">{t('categories.title')}</h2>
       </div>
 
       <Canvas camera={{ position: [0, 0, 24], fov: 42 }} style={{ touchAction: 'pan-y' }}>

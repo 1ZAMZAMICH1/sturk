@@ -1,6 +1,7 @@
 // src/components/Guides.jsx
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useInView } from '../hooks/useInView';
 import {
@@ -174,6 +175,7 @@ const CLOSE_SPREAD = 4000;    // Разброс времени хаотично�
 const PAUSE_DURATION = 2000;  // Пауза после закрытия перед сменой страницы
 
 const Guides = () => {
+  const { t } = useTranslation();
   const [guides, setGuides] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -236,12 +238,14 @@ const Guides = () => {
 
   const { ref: sectionRef, inView: canvasReady } = useInView({ rootMargin: '400px' });
 
+  if (loading) return <div ref={sectionRef} className="guides-section loading-center">{t('guides.loading')}</div>;
+
   return (
     <div ref={sectionRef} className="guides-section">
       <div className="noise-overlay"></div>
       <div className="vignette-guides"></div>
       <div className="center-text-container">
-        <h2 className="center-title">ГИДЫ</h2>
+        <h2 className="center-title">{t('guides.title')}</h2>
       </div>
       <div className="guides-canvas-container">
         {canvasReady ? (
@@ -253,7 +257,7 @@ const Guides = () => {
         )}
       </div>
       <Link to="/guides" className="guides-explore-link">
-        Смотреть всех гидов
+        {t('guides.btn')}
       </Link>
     </div>
   );

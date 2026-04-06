@@ -1,15 +1,14 @@
 // src/mobile/LandingPageMobile.jsx
 
 import React, { useState, useEffect, useRef } from 'react';
-import HeroMobile from './HeroMobile'; 
-import CategoriesMobile from './CategoriesMobile'; 
+import HeroMobile from './HeroMobile';
+import CategoriesMobile from './CategoriesMobile';
 import MapSectionMobile from './MapSectionMobile';
 import HospitalityMobile from './HospitalityMobile';
 import HotelsMobile from './HotelsMobile';
 import GuidesMobile from './GuidesMobile';
 import Articles from '../components/Articles';
 import TransitionDivider from '../components/TransitionDivider';
-
 import HospitalityBackground from '../components/HospitalityBackground';
 
 const LandingPageMobile = () => {
@@ -65,3 +64,4 @@ const LandingPageMobile = () => {
 };
 
 export default LandingPageMobile;
+

@@ -73,7 +73,7 @@ const HeroMobile = () => {
         <Canvas
             camera={{ position: [0, 0, 14], fov: 60, up: [0, 1, 0] }}
             style={{ width: '100%', height: '100%' }}
-            dpr={[1, 2]}
+            dpr={1}
             gl={{
               antialias: true,
               powerPreference: "high-performance",

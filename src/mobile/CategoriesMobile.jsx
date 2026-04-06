@@ -358,7 +358,7 @@ const CategoriesMobile = () => {
         <h2 className="cat-mob-title">{t('categories.title')}</h2>
       </div>
 
-      <Canvas camera={{ position: [0, 0, 24], fov: 42 }} style={{ touchAction: 'pan-y' }}>
+      <Canvas camera={{ position: [0, 0, 24], fov: 42 }} style={{ touchAction: 'pan-y' }} dpr={1} gl={{ antialias: false, powerPreference: 'high-performance', stencil: false }}>
         <Environment preset="city" blur={1} />
         <color attach="background" args={['#1a0b05']} />
         <PetroglyphWall />

@@ -64,7 +64,6 @@ const MobileMapBackground = React.memo(() => (
     <ambientLight intensity={0.6} />
     <pointLight position={[10, 10, 10]} color="#ffd700" intensity={2.5} />
     <pointLight position={[-10, -5, -5]} color="#d4af37" intensity={1.5} />
-    <Sparkles count={400} scale={[40, 30, 10]} position={[0, 0, -5]} size={3} speed={0.2} opacity={0.5} color="#ffcc66" noise={1} />
     <Clouds material={THREE.MeshBasicMaterial} limit={400}>
       <Cloud seed={10} segments={40} bounds={[50, 40, 2]} volume={60} color="#3b251a" position={[0, 0, -20]} speed={0} opacity={0.9} />
       <Cloud seed={20} segments={30} bounds={[40, 30, 5]} volume={40} color="#5c4033" position={[0, 0, -16]} speed={0.02} opacity={0.8} />
@@ -129,7 +128,7 @@ const MapSectionMobile = () => {
     <div className={`map-mob-root ${isOpen ? 'open' : ''}`}>
 
       <div className="mob-hero-bg">
-        <Canvas camera={{ position:[0,0,14], fov:60 }} dpr={[1,1.5]}>
+        <Canvas camera={{ position:[0,0,14], fov:60 }} dpr={1} gl={{ antialias: false, powerPreference: 'high-performance', depth: true, stencil: false }}>
           <MobileMapBackground />
         </Canvas>
         <div className="mob-color-grade" />

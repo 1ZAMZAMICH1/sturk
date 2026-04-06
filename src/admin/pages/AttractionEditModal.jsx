@@ -3,6 +3,13 @@ import React, { useState } from 'react';
 import { Icons } from '../AdminIcons';
 import { uploadImage } from '../../services/cloudinaryService';
 
+const LANGUAGES_CONFIG = [
+    { code: 'ru', label: 'Русский' },
+    { code: 'kz', label: 'Қазақша' },
+    { code: 'en', label: 'English' },
+    { code: 'zh', label: '中文' }
+];
+
 const ImageUpload = ({ value, onChange, label, compact = false }) => {
     const [loading, setLoading] = useState(false);
 
@@ -66,12 +73,44 @@ const VisualSelect = ({ options, selectedIds, onChange, multiple = true }) => {
                     key={opt.id}
                     className={`visual-option-mini ${selectedIds.includes(opt.id) ? 'selected' : ''}`}
                     onClick={() => toggle(opt.id)}
-                    title={opt.name}
+                    title={opt.name_ru || opt.name}
                 >
                     {opt.image && <img src={opt.image} alt="" />}
-                    <span>{opt.name}</span>
+                    <span>{opt.name_ru || opt.name}</span>
                 </div>
             ))}
+        </div>
+    );
+};
+
+/**
+ * Группа полей для ввода на разных языках
+ */
+const MultilangGroup = ({ label, fieldName, formData, onChange, isTextarea = false }) => {
+    return (
+        <div className="multilang-edit-group">
+            <label className="label-mini-gold main-label">{label}</label>
+            <div className="lang-inputs-grid">
+                {LANGUAGES_CONFIG.map(lang => (
+                    <div key={lang.code} className="lang-input-item">
+                        <span className="lang-badge-mini">{lang.code.toUpperCase()}</span>
+                        {isTextarea ? (
+                            <textarea
+                                value={formData[`${fieldName}_${lang.code}`] || ''}
+                                onChange={(e) => onChange(`${fieldName}_${lang.code}`, e.target.value)}
+                                rows="2"
+                                placeholder={`Текст на ${lang.label}...`}
+                            />
+                        ) : (
+                            <input
+                                value={formData[`${fieldName}_${lang.code}`] || ''}
+                                onChange={(e) => onChange(`${fieldName}_${lang.code}`, e.target.value)}
+                                placeholder={`Текст на ${lang.label}...`}
+                            />
+                        )}
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };
@@ -82,8 +121,7 @@ const AttractionEditModal = ({ attraction, hotels, restaurants, onSave, onClose 
     const [isAddingCity, setIsAddingCity] = useState(false);
     const [newCityName, setNewCityName] = useState('');
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    const handleChange = (name, value) => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
@@ -104,7 +142,7 @@ const AttractionEditModal = ({ attraction, hotels, restaurants, onSave, onClose 
 
     const handleAddCity = () => {
         if (!newCityName.trim()) return;
-        setFormData(prev => ({ ...prev, city: newCityName.trim() }));
+        handleChange('city', newCityName.trim());
         setIsAddingCity(false);
         setNewCityName('');
     };
@@ -122,8 +160,8 @@ const AttractionEditModal = ({ attraction, hotels, restaurants, onSave, onClose 
             <div className="admin-modal-container tall refined-modal" onClick={e => e.stopPropagation()}>
                 <div className="admin-modal-header">
                     <div className="modal-title-wrap">
-                        <span className="type-badge">{formData.category === 'spirit' ? 'Духовное' : formData.category === 'nature' ? 'Природа' : 'Город'}</span>
-                        <h2>{formData.name || 'Название объекта'}</h2>
+                        <span className="type-badge">Локализация объекта</span>
+                        <h2>{formData.name_ru || 'Новый объект'}</h2>
                     </div>
                     <button className="btn-close-modal" onClick={onClose}><Icons.Close /></button>
                 </div>
@@ -131,22 +169,26 @@ const AttractionEditModal = ({ attraction, hotels, restaurants, onSave, onClose 
                 <div className="admin-modal-tabs">
                     <button className={activeTab === 'general' ? 'active' : ''} onClick={() => setActiveTab('general')}>Инфо</button>
                     <button className={activeTab === 'gallery' ? 'active' : ''} onClick={() => setActiveTab('gallery')}>Галерея</button>
-                    <button className={activeTab === 'relations' ? 'active' : ''} onClick={() => setActiveTab('relations')}>Связи & Карта</button>
+                    <button className={activeTab === 'relations' ? 'active' : ''} onClick={() => setActiveTab('relations')}>Связи</button>
                 </div>
 
                 <div className="admin-modal-body no-emoji">
                     {activeTab === 'general' && (
                         <div className="admin-form-grid compact-gap">
                             <div className="admin-form-group full">
-                                <label className="label-mini-gold">Название</label>
-                                <input name="name" value={formData.name} onChange={handleChange} />
+                                <MultilangGroup 
+                                    label="Название"
+                                    fieldName="name"
+                                    formData={formData}
+                                    onChange={handleChange}
+                                />
                             </div>
 
                             <div className="admin-form-group">
                                 <label className="label-mini-gold">Город</label>
                                 {!isAddingCity ? (
                                     <div className="inline-selector">
-                                        <select name="city" value={formData.city} onChange={handleChange}>
+                                        <select name="city" value={formData.city} onChange={(e) => handleChange('city', e.target.value)}>
                                             {cities.map(c => <option key={c} value={c}>{c}</option>)}
                                         </select>
                                         <button className="btn-inline-add" onClick={() => setIsAddingCity(true)}>
@@ -167,27 +209,54 @@ const AttractionEditModal = ({ attraction, hotels, restaurants, onSave, onClose 
                                 )}
                             </div>
 
+                            <div className="admin-form-group">
+                                <label className="label-mini-gold">Категория (ID)</label>
+                                <select name="category" value={formData.category} onChange={(e) => handleChange('category', e.target.value)}>
+                                    <option value="city">City (Город)</option>
+                                    <option value="spirit">Spirit (Духовное)</option>
+                                    <option value="nature">Nature (Природа)</option>
+                                </select>
+                            </div>
+
                             <ImageUpload
                                 label="Главное фото"
                                 value={formData.image}
-                                onChange={(url) => setFormData(p => ({ ...p, image: url }))}
+                                onChange={(url) => handleChange('image', url)}
                             />
 
                             <div className="admin-form-group full">
-                                <label className="label-mini-gold">Краткое описание</label>
-                                <textarea name="description" value={formData.description} onChange={handleChange} rows="2" />
+                                <MultilangGroup 
+                                    label="Краткое описание"
+                                    fieldName="description"
+                                    formData={formData}
+                                    onChange={handleChange}
+                                />
                             </div>
                             <div className="admin-form-group full">
-                                <label className="label-mini-gold">Полное описание (в модалке)</label>
-                                <textarea name="fullDescription" value={formData.fullDescription} onChange={handleChange} rows="4" />
+                                <MultilangGroup 
+                                    label="Полное описание"
+                                    fieldName="fullDescription"
+                                    formData={formData}
+                                    onChange={handleChange}
+                                    isTextarea={true}
+                                />
+                            </div>
+
+                            <div className="admin-form-group">
+                                <MultilangGroup 
+                                    label="Время работы"
+                                    fieldName="hours"
+                                    formData={formData}
+                                    onChange={handleChange}
+                                />
                             </div>
                             <div className="admin-form-group">
-                                <label className="label-mini-gold">Время работы</label>
-                                <input name="hours" value={formData.hours || ''} onChange={handleChange} placeholder="09:00 - 18:00" />
-                            </div>
-                            <div className="admin-form-group">
-                                <label className="label-mini-gold">Адрес</label>
-                                <input name="location" value={formData.location || ''} onChange={handleChange} />
+                                <MultilangGroup 
+                                    label="Адрес"
+                                    fieldName="location"
+                                    formData={formData}
+                                    onChange={handleChange}
+                                />
                             </div>
                         </div>
                     )}
@@ -234,11 +303,11 @@ const AttractionEditModal = ({ attraction, hotels, restaurants, onSave, onClose 
                         <div className="admin-form-grid compact-gap">
                             <div className="admin-form-group">
                                 <label>Координаты (Lat)</label>
-                                <input type="number" step="0.001" value={formData.coordinates?.lat || ''} onChange={(e) => setFormData(p => ({ ...p, coordinates: { ...p.coordinates, lat: parseFloat(e.target.value) || 0 } }))} />
+                                <input type="number" step="0.001" value={formData.coordinates?.lat || ''} onChange={(e) => handleChange('coordinates', { ...formData.coordinates, lat: parseFloat(e.target.value) || 0 })} />
                             </div>
                             <div className="admin-form-group">
                                 <label>Координаты (Lng)</label>
-                                <input type="number" step="0.001" value={formData.coordinates?.lng || ''} onChange={(e) => setFormData(p => ({ ...p, coordinates: { ...p.coordinates, lng: parseFloat(e.target.value) || 0 } }))} />
+                                <input type="number" step="0.001" value={formData.coordinates?.lng || ''} onChange={(e) => handleChange('coordinates', { ...formData.coordinates, lng: parseFloat(e.target.value) || 0 })} />
                             </div>
 
                             <div className="admin-form-group full">
@@ -246,7 +315,7 @@ const AttractionEditModal = ({ attraction, hotels, restaurants, onSave, onClose 
                                 <VisualSelect
                                     options={hotels}
                                     selectedIds={formData.nearbyHotels || []}
-                                    onChange={(ids) => setFormData(p => ({ ...p, nearbyHotels: ids }))}
+                                    onChange={(ids) => handleChange('nearbyHotels', ids)}
                                 />
                             </div>
 
@@ -255,7 +324,7 @@ const AttractionEditModal = ({ attraction, hotels, restaurants, onSave, onClose 
                                 <VisualSelect
                                     options={restaurants}
                                     selectedIds={formData.nearbyRestaurants || []}
-                                    onChange={(ids) => setFormData(p => ({ ...p, nearbyRestaurants: ids }))}
+                                    onChange={(ids) => handleChange('nearbyRestaurants', ids)}
                                 />
                             </div>
                         </div>

@@ -123,6 +123,7 @@ const TOTAL_SHIELDS = 25;
 const ITEMS_PER_PAGE = 12; // 12 гидов на страницу
 
 function GuidesScene({ page, allGuides, openSignals }) {
+  const { i18n } = useTranslation();
   const guidesData = useMemo(() => {
     if (!allGuides || allGuides.length === 0) return [];
     const startIndex = (page - 1) * ITEMS_PER_PAGE;
@@ -143,12 +144,12 @@ function GuidesScene({ page, allGuides, openSignals }) {
         id: `${page}-${i}`,
         pos,
         isReal: !!guide,
-        name: guide?.name?.toUpperCase() || "",
+        name: (guide?.[`name_${i18n.language}`] || guide?.name_ru || guide?.name || "").toUpperCase(),
         role: guide?.specialty?.toUpperCase() || "",
         img: guide?.photo || "",
       };
     });
-  }, [page, allGuides]);
+  }, [page, allGuides, i18n.language]);
 
   return (
     <>
@@ -175,7 +176,7 @@ const CLOSE_SPREAD = 4000;    // Разброс времени хаотично�
 const PAUSE_DURATION = 2000;  // Пауза после закрытия перед сменой страницы
 
 const Guides = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [guides, setGuides] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { fetchSheetData } from '../services/api';
 import { Canvas } from '@react-three/fiber';
 import { Sparkles, Float } from '@react-three/drei';
+import { HotelModal } from './HotelsPageMobile';
 import './HotelsMobile.css';
 
 // Зеркальный 3D фон для отелей (Песчаная атмосфера)
@@ -25,6 +26,7 @@ const HotelsMobile = () => {
   const { t } = useTranslation();
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedHotel, setSelectedHotel] = useState(null);
 
   useEffect(() => {
     const load = async () => {
@@ -54,7 +56,7 @@ const HotelsMobile = () => {
       {/* МОЗАИКА СНИЗУ */}
       <div className="hot-mob-mosaic">
         {hotels.slice(0, 5).map((item, index) => (
-          <div className={`khan-card-mob ${index === 4 ? 'large' : 'small'}`} key={item.id} onClick={() => window.location.href=`/hotels?id=${item.id}`}>
+          <div className={`khan-card-mob ${index === 4 ? 'large' : 'small'}`} key={item.id} onClick={() => setSelectedHotel(item)}>
             <div className="khan-img-box-mob">
               <img src={item.image || item.img} alt={item.name || item.title} />
               <div className="grain-overlay-mob" />
@@ -70,6 +72,13 @@ const HotelsMobile = () => {
           </div>
         ))}
       </div>
+      
+      {selectedHotel && (
+        <HotelModal 
+            hotel={selectedHotel} 
+            onClose={() => setSelectedHotel(null)} 
+        />
+      )}
     </div>
   );
 };

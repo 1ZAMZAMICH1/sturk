@@ -12,7 +12,7 @@ import { HotelModal } from './HotelsPage';
 import { fetchSheetData } from '../services/api';
 
 export const EditorialModal = ({ res, onClose, onOpenOther }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [mainImg, setMainImg] = useState(res.image);
 
     const nearbyAtts = (res.nearbyAttractions || []).map(id => {
@@ -33,7 +33,7 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
 
                 {/* Left Side: Immersive Photo & Gallery */}
                 <div className="rp-modal-visual">
-                    <img src={mainImg} alt={res.name} className="rp-modal-visual-img" />
+                    <img src={mainImg} alt={res[`name_${i18n.language}`] || res.name_ru || res.name} className="rp-modal-visual-img" />
                     
                     {res.gallery && res.gallery.length > 0 && (
                         <div className="rp-modal-gallery-thumbs">
@@ -55,7 +55,7 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
                 <div className="rp-modal-content">
                     <div className="rp-modal-scroll">
                         <div className="rp-modal-header">
-                            <h2 className="rp-m-title">{res.name}</h2>
+                            <h2 className="rp-m-title">{res[`name_${i18n.language}`] || res.name_ru || res.name}</h2>
                             <div className="rp-m-meta">
                                 <span>{t(`restos_page.cuisines.${res.cuisine}`)}</span>
                                 <span>·</span>
@@ -63,30 +63,33 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
                                 <span>·</span>
                                 <span>{res.city}</span>
                             </div>
-                            {res.signature && (
+                             {res[`signature_${i18n.language}`] || res.signature_ru || res.signature ? (
                                 <div className="rp-m-signature-inline">
                                     <Icons.Crown style={{ width: 14, color: 'var(--rp-sand)' }} />
-                                    <span>{t('restos_page.recommended_label', { name: res.signature })}</span>
+                                    <span>{t('restos_page.recommended_label', { name: res[`signature_${i18n.language}`] || res.signature_ru || res.signature })}</span>
                                 </div>
-                            )}
+                            ) : null}
                         </div>
 
                         <div className="rp-m-sec">
                             <div className="rp-m-sec-title">{t('restos_page.sec_history')}</div>
-                            <p className="rp-m-desc">{res.description}</p>
+                            <p className="rp-m-desc">{res[`description_${i18n.language}`] || res.description_ru || res.description}</p>
                         </div>
 
                         {res.menu && (
                             <div className="rp-m-sec">
                                 <div className="rp-m-sec-title">{t('restos_page.sec_gastronomy')}</div>
-                                <div className="rp-m-menu">
-                                    {res.menu.map(m => (
-                                        <div key={m.item} className="rp-menu-row">
-                                            <span className="rp-menu-name">{m.item}</span>
-                                            <span className="rp-menu-dots" />
-                                            <span className="rp-menu-price">{m.price}</span>
-                                        </div>
-                                    ))}
+                                 <div className="rp-m-menu">
+                                    {res.menu.map((m, idx) => {
+                                        const itemName = m[`item_${i18n.language}`] || m.item_ru || m.item;
+                                        return (
+                                            <div key={m.item + idx} className="rp-menu-row">
+                                                <span className="rp-menu-name">{itemName}</span>
+                                                <span className="rp-menu-dots" />
+                                                <span className="rp-menu-price">{m.price}</span>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             </div>
                         )}
@@ -99,7 +102,7 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
                                         <div key={att.id} className="rp-nearby-card" onClick={() => onOpenOther('attraction', att)}>
                                             <img src={att.image} alt="" />
                                             <div className="rp-nearby-info">
-                                                <strong>{att.name}</strong>
+                                                <strong>{att[`name_${i18n.language}`] || att.name_ru || att.name}</strong>
                                                 <span>{t('restos_page.label_attraction')}</span>
                                             </div>
                                         </div>
@@ -116,7 +119,7 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
                                         <div key={hot.id} className="rp-nearby-card" onClick={() => onOpenOther('hotel', hot)}>
                                             <img src={hot.image} alt="" />
                                             <div className="rp-nearby-info">
-                                                <strong>{hot.name}</strong>
+                                                <strong>{hot[`name_${i18n.language}`] || hot.name_ru || hot.name}</strong>
                                                 <span>{t(`hotels_page.types.${hot.type}`)} · {hot.stars}★</span>
                                             </div>
                                         </div>
@@ -136,19 +139,19 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
                                 </div>
                                 <div className="rp-map-address">
                                     <Icons.Pin style={{ width: 14 }} />
-                                    <span>{res.city}, {res.location}</span>
+                                    <span>{res.city}, {res[`location_${i18n.language}`] || res.location_ru || res.location}</span>
                                 </div>
                             </div>
                         </div>
 
-                        {res.specialty && (
+                        {res[`specialty_${i18n.language}`] || res.specialty_ru || res.specialty ? (
                             <div className="rp-m-sec">
                                 <div className="rp-m-sec-title">{t('restos_page.sec_secret')}</div>
                                 <div className="rp-m-special">
-                                    "{res.specialty}"
+                                    "{res[`specialty_${i18n.language}`] || res.specialty_ru || res.specialty}"
                                 </div>
                             </div>
-                        )}
+                        ) : null}
                     </div>
 
                     <div className="rp-modal-action">
@@ -161,19 +164,23 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
 };
 
 const EditorialCard = ({ res, onClick }) => {
+    const { i18n } = useTranslation();
+    const localizedName = res[`name_${i18n.language}`] || res.name_ru || res.name;
+    const localizedSig = res[`signature_${i18n.language}`] || res.signature_ru || res.signature;
+
     return (
         <div className="rp-card" onClick={onClick}>
             <div className="rp-card-img-wrap">
-                <img src={res.image} alt={res.name} className="rp-card-img" />
+                <img src={res.image} alt={localizedName} className="rp-card-img" />
                 <div className="rp-card-overlay" />
                 <div className="rp-card-badge">{res.cuisine}</div>
 
                 <div className="rp-card-content-overlay">
-                    <h3 className="rp-card-name">{res.name}</h3>
+                    <h3 className="rp-card-name">{localizedName}</h3>
                     <div className="rp-card-meta">
                         <span>{res.city}</span>
                     </div>
-                    <div className="rp-card-sig">{res.signature}</div>
+                    {localizedSig && <div className="rp-card-sig">{localizedSig}</div>}
                 </div>
             </div>
         </div>
@@ -232,7 +239,7 @@ const RestaurantsPage = () => {
                         <img src={heroTextImg} alt="Turkistan" className="rp-header-logo" />
                     </div>
                     <div className="rp-count">
-                        {finalFiltered.length} {t('restos_page.objects_label')}
+                        {t('restos_page.objects_label', { count: finalFiltered.length })}
                     </div>
                 </div>
 

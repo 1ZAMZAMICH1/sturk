@@ -69,19 +69,19 @@ export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = []
                             {res.signature && (
                                 <div className="rp-mob-m-signature-inline">
                                     <Icons.Crown style={{ width: 14, color: 'var(--rp-sand)' }} />
-                                    <span>{t('restaurants.modal.recommend')}: {res.signature}</span>
+                                    <span>{t('restos_page.recommended_label', { name: res.signature })}</span>
                                 </div>
                             )}
                         </div>
 
                         <div className="rp-mob-m-sec">
-                            <div className="rp-mob-m-sec-title">{t('restaurants.modal.history_title')}</div>
+                            <div className="rp-mob-m-sec-title">{t('restos_page.sec_history')}</div>
                             <p className="rp-mob-m-desc">{res.description}</p>
                         </div>
 
                         {res.menu && (
                             <div className="rp-mob-m-sec">
-                                <div className="rp-mob-m-sec-title">{t('restaurants.modal.gastronomy')}</div>
+                                <div className="rp-mob-m-sec-title">{t('restos_page.sec_gastronomy')}</div>
                                 <div className="rp-mob-m-menu">
                                     {res.menu.map(m => (
                                         <div key={m.item} className="rp-mob-menu-row">
@@ -96,14 +96,14 @@ export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = []
 
                         {nearbyAtts.length > 0 && (
                             <div className="rp-mob-m-sec">
-                                <div className="rp-mob-m-sec-title">{t('category.nearby_hotels_title')}</div>
+                                <div className="rp-mob-m-sec-title">{t('restos_page.sec_nearby_atts')}</div>
                                 <div className="rp-mob-nearby-modern-grid">
                                     {nearbyAtts.map(att => (
                                         <div key={att.id} className="rp-mob-nearby-card" onClick={() => onOpenOther && onOpenOther('attraction', att)}>
                                             <img src={att.image} alt="" />
                                             <div className="rp-mob-nearby-info">
                                                 <strong>{att.name}</strong>
-                                                <span>{t('category.meta.history')}</span>
+                                                <span>{t('restos_page.label_attraction')}</span>
                                             </div>
                                         </div>
                                     ))}
@@ -113,7 +113,7 @@ export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = []
 
                         {nearbyHots.length > 0 && (
                             <div className="rp-mob-m-sec">
-                                <div className="rp-mob-m-sec-title">{t('category.nearby_hotels')}</div>
+                                <div className="rp-mob-m-sec-title">{t('restos_page.sec_nearby_hots')}</div>
                                 <div className="rp-mob-nearby-modern-grid">
                                     {nearbyHots.map(hot => (
                                         <div key={hot.id} className="rp-mob-nearby-card" onClick={() => onOpenOther && onOpenOther('hotel', hot)}>
@@ -129,7 +129,7 @@ export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = []
                         )}
 
                         <div className="rp-mob-m-sec">
-                            <div className="rp-mob-m-sec-title">{t('hotels.modal.address')}</div>
+                            <div className="rp-mob-m-sec-title">{t('restos_page.sec_location')}</div>
                             <div className="rp-mob-map-placeholder">
                                 <div className="rp-mob-map-view">
                                     <div className="rp-mob-map-pin-pulse">
@@ -145,7 +145,7 @@ export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = []
 
                         {res.specialty && (
                             <div className="rp-mob-m-sec">
-                                <div className="rp-mob-m-sec-title">{t('restaurants.modal.secret_title')}</div>
+                                <div className="rp-mob-m-sec-title">{t('restos_page.sec_secret')}</div>
                                 <div className="rp-mob-m-special">
                                     "{res.specialty}"
                                 </div>
@@ -154,7 +154,7 @@ export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = []
                     </div>
 
                     <div className="rp-mob-modal-action">
-                        <button className="rp-mob-action-btn full-width">{t('restaurants.modal.book_table')}</button>
+                        <button className="rp-mob-action-btn full-width">{t('restos_page.btn_book')}</button>
                     </div>
                 </div>
             </div>
@@ -237,13 +237,13 @@ const RestaurantsPageMobile = () => {
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                             <path d="M19 12H5M12 5l-7 7 7 7" />
                         </svg>
-                        {t('category.back')}
+                        {t('ui.back')}
                     </Link>
                     <div className="rp-mob-logo-box">
                         <img src={currentLogo} alt="Turkistan" className="rp-mob-header-logo" />
                     </div>
                     <div className="rp-mob-count">
-                        {finalFiltered.length} {t('category.objects_count')}
+                        {t('restos_page.objects_label', { count: finalFiltered.length })}
                     </div>
                 </div>
 
@@ -267,8 +267,8 @@ const RestaurantsPageMobile = () => {
 
             {/* ─── HERO ─── */}
             <div className="rp-mob-hero">
-                <h1 className="rp-mob-h-main">{t('restaurants.page_title')}</h1>
-                <div className="rp-mob-h-sub">{t('restaurants.page_subtitle')}</div>
+                <h1 className="rp-mob-h-main">{t('restos_page.hero_title')}</h1>
+                <div className="rp-mob-h-sub">{t('restos_page.hero_subtitle')}</div>
             </div>
 
             {/* ─── GRID ─── */}

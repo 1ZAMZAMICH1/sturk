@@ -1,11 +1,10 @@
-// src/mobile/HospitalityMobile.jsx
-
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { fetchSheetData } from '../services/api';
 import { Canvas } from '@react-three/fiber';
 import { Cloud, Sparkles } from '@react-three/drei';
+import { EditorialModal } from './RestaurantsPageMobile';
 import './HospitalityMobile.css';
 
 // Тот же 3D-фон что и на ПК
@@ -22,6 +21,7 @@ const HospitalityMobile = () => {
   const { t } = useTranslation();
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedResto, setSelectedResto] = useState(null);
 
   useEffect(() => {
     const load = async () => {
@@ -51,7 +51,7 @@ const HospitalityMobile = () => {
       {/* Мозаичная сетка — как на ПК */}
       <div className="hosp-mob-mosaic">
         {restaurants.slice(0, 5).map((item, index) => (
-          <div className={`khan-card-mob ${index === 4 ? 'large' : 'small'}`} key={item.id} onClick={() => window.location.href=`/restaurants?id=${item.id}`}>
+          <div className={`khan-card-mob ${index === 4 ? 'large' : 'small'}`} key={item.id} onClick={() => setSelectedResto(item)}>
             <div className="khan-img-box-mob">
               <img src={item.image || item.img} alt={item.name || item.title} />
               <div className="grain-overlay-mob" />
@@ -67,6 +67,13 @@ const HospitalityMobile = () => {
           </div>
         ))}
       </div>
+      
+      {selectedResto && (
+        <EditorialModal 
+            res={selectedResto}
+            onClose={() => setSelectedResto(null)}
+        />
+      )}
     </div>
   );
 };

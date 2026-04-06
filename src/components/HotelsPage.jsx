@@ -30,7 +30,7 @@ export const Stars = ({ count }) => (
 );
 
 export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [activeTab, setActiveTab] = useState('overview');
     const [mainImage, setMainImage] = useState(hotel.image);
     const [nearbyData, setNearbyData] = useState({ attractions: [], restaurants: [] });
@@ -56,7 +56,7 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                 <div className="hp-royal-frame">
                     <button className="hp-modal-close" onClick={onClose}><Icons.Close /></button>
                     <div className="hp-royal-left">
-                        <img src={mainImage} alt={hotel.name} className="hp-royal-img" />
+                        <img src={mainImage} alt={hotel[`name_${i18n.language}`] || hotel.name_ru || hotel.name} className="hp-royal-img" />
                         <div className="hp-royal-img-gradient" />
                         <div className="hp-royal-distance-tag"><Icons.Pin /> {hotel.distance}</div>
                         <div className="hp-royal-gallery">
@@ -70,7 +70,7 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                     <div className="hp-royal-right">
                         <div className="hp-royal-header">
                             <div className="hp-royal-eyebrow">{t(`hotels_page.types.${hotel.type}`)} · {hotel.city}</div>
-                            <h2 className="hp-royal-name">{hotel.name}</h2>
+                            <h2 className="hp-royal-name">{hotel[`name_${i18n.language}`] || hotel.name_ru || hotel.name}</h2>
                             <div className="hp-royal-meta-row">
                                 <Stars count={hotel.stars} />
                                 <span className="hp-price-tag">{hotel.priceTag}</span>
@@ -84,7 +84,7 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                         <div className="hp-royal-scroll">
                             {activeTab === 'overview' && (
                                 <div className="slide-in">
-                                    <p className="hp-description">{hotel.description}</p>
+                                    <p className="hp-description">{hotel[`description_${i18n.language}`] || hotel.description_ru || hotel.description}</p>
                                     <div className="hp-royal-section">
                                         <h4 className="hp-sec-title">{t('hotels_page.amenities_title')}</h4>
                                         <div className="hp-amenities-refined">
@@ -101,7 +101,7 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                                     </div>
                                     <div className="hp-royal-section">
                                         <h4 className="hp-sec-title">{t('hotels_page.address_title')}</h4>
-                                        <p style={{ color: 'var(--hp-ink)' }}>{hotel.location}</p>
+                                        <p style={{ color: 'var(--hp-ink)' }}>{hotel[`location_${i18n.language}`] || hotel.location_ru || hotel.location}</p>
                                     </div>
                                 </div>
                             )}
@@ -110,11 +110,12 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                                     <div className="hp-rooms-list-refined">
                                         {hotel.rooms?.map(room => {
                                             const RoomIcon = Icons[room.icon] || Icons.Bed;
+                                            const roomName = room[`name_${i18n.language}`] || room.name_ru || room.name;
                                             return (
-                                                <div key={room.name} className="hp-room-card-royal">
+                                                <div key={room.name + roomName} className="hp-room-card-royal">
                                                     <div className="room-header-r">
                                                         <RoomIcon style={{ width: '20px', color: 'var(--hp-gold)' }} />
-                                                        <span className="room-name">{room.name}</span>
+                                                        <span className="room-name">{roomName}</span>
                                                     </div>
                                                     <span className="room-price">{t('hotels_page.from_price', { price: room.price })}</span>
                                                 </div>
@@ -133,7 +134,7 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                                                     {nearbyData.attractions.map(a => (
                                                         <div key={a.id} className="hp-nearby-item-royal clickable" onClick={() => onOpenOther && onOpenOther(a, 'attraction')}>
                                                             <img src={a.image} alt="" />
-                                                            <span>{a.name}</span>
+                                                            <span>{a[`name_${i18n.language}`] || a.name_ru || a.name}</span>
                                                         </div>
                                                     ))}
                                                 </div>
@@ -146,7 +147,7 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                                                     {nearbyData.restaurants.map(r => (
                                                         <div key={r.id} className="hp-nearby-item-royal clickable" onClick={() => onOpenOther && onOpenOther(r, 'restaurant')}>
                                                             <img src={r.image} alt="" />
-                                                            <span>{r.name}</span>
+                                                            <span>{r[`name_${i18n.language}`] || r.name_ru || r.name}</span>
                                                         </div>
                                                     ))}
                                                 </div>
@@ -168,30 +169,36 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
     );
 };
 
-const HotelCard = ({ hotel, onClick }) => (
-    <div className="hp-iwan-card" onClick={onClick}>
-        <div className="hp-iwan-portal">
-            <div className="hp-iwan-top">
-                <div className="hp-iwan-arch">
-                    <img src={hotel.image} alt={hotel.name} className="hp-iwan-img" loading="lazy" />
-                    <div className="hp-iwan-overlay" />
-                    <div className="hp-iwan-city-badge">{hotel.city}</div>
+const HotelCard = ({ hotel, onClick }) => {
+    const { i18n } = useTranslation();
+    const localizedName = hotel[`name_${i18n.language}`] || hotel.name_ru || hotel.name;
+    const localizedDesc = hotel[`description_${i18n.language}`] || hotel.description_ru || hotel.description;
+
+    return (
+        <div className="hp-iwan-card" onClick={onClick}>
+            <div className="hp-iwan-portal">
+                <div className="hp-iwan-top">
+                    <div className="hp-iwan-arch">
+                        <img src={hotel.image} alt={localizedName} className="hp-iwan-img" loading="lazy" />
+                        <div className="hp-iwan-overlay" />
+                        <div className="hp-iwan-city-badge">{hotel.city}</div>
+                    </div>
                 </div>
-            </div>
-            <div className="hp-iwan-body">
-                <div>
-                    <Stars count={hotel.stars} />
-                    <h3 className="hp-iwan-name">{hotel.name}</h3>
-                    <p className="hp-iwan-desc-preview">{hotel.description}</p>
-                </div>
-                <div className="hp-iwan-footer">
-                    <span className="hp-iwan-type">{hotel.type}</span>
-                    <span className="hp-iwan-price">{hotel.priceTag}</span>
+                <div className="hp-iwan-body">
+                    <div>
+                        <Stars count={hotel.stars} />
+                        <h3 className="hp-iwan-name">{localizedName}</h3>
+                        <p className="hp-iwan-desc-preview">{localizedDesc}</p>
+                    </div>
+                    <div className="hp-iwan-footer">
+                        <span className="hp-iwan-type">{hotel.type}</span>
+                        <span className="hp-iwan-price">{hotel.priceTag}</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-);
+    );
+};
 
 const HotelsPage = () => {
     const { t } = useTranslation();
@@ -240,7 +247,7 @@ const HotelsPage = () => {
                 <div className="hp-topbar">
                     <Link to="/" className="hp-back">{t('ui.back')}</Link>
                     <div className="hp-logo-box"><img src={heroTextImg} alt="Turkistan" className="hp-header-logo" /></div>
-                    <div className="hp-count-badge"><span>{filtered.length}</span> {t('hotels_page.objects_label')}</div>
+                    <div className="hp-count-badge">{t('hotels_page.objects_label', { count: filtered.length })}</div>
                 </div>
                 <div className="hp-filter-bar">
                     <div className="hp-filter-box">

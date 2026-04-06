@@ -345,11 +345,14 @@
     width: 100%;
     max-width: 1400px;
     height: 85vh;
-    background: var(--rp-espresso);
+    background: transparent !important;
+    background-color: transparent !important;
     display: flex;
     position: relative;
-    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+    overflow: visible;
     animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: none !important;
+    border: none !important;
 }
 
 @keyframes fadeUp {
@@ -406,6 +409,8 @@
     flex: 0 0 50%;
     position: relative;
     overflow: hidden;
+    background: #000;
+    box-shadow: -20px 0 50px rgba(0,0,0,0.5);
 }
 
 .rp-modal-visual-img {
@@ -447,6 +452,7 @@
     padding: 60px 80px 0 80px;
     display: flex;
     flex-direction: column;
+    background: var(--rp-espresso);
 }
 
 /* Scrollable area */

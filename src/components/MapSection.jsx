@@ -134,7 +134,7 @@ const HeroBackgroundScene = React.memo(() => {
 });
 
 const MapSection = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { ref: sectionRef, inView: canvasReady } = useInView({ rootMargin: '300px' });
   const [isOpen, setIsOpen] = useState(false);
   const [filter, setFilter] = useState('all');
@@ -182,7 +182,7 @@ const MapSection = () => {
 
     const timer = setTimeout(() => setIsOpen(true), 600);
     return () => clearTimeout(timer);
-  }, []);
+  }, [i18n.language]);
 
   // ОПТИМИЗАЦИЯ: useMemo предотвращает пересчет массива при каждом рендере (например при движении карты)
   const filteredPoints = useMemo(() => {
@@ -306,8 +306,8 @@ const MapSection = () => {
                       <div className="map-popup-card">
                           {attr?.image && <img src={attr.image} className="popup-preview-img" alt="" />}
                           <div className="popup-info">
-                              <h3>{point.title}</h3>
-                              <p>{(attr?.description || point.desc)?.substring(0, 80)}...</p>
+                              <h3>{point[`title_${i18n.language}`] || point.title_ru || point.title}</h3>
+                              <p>{(attr?.[`description_${i18n.language}`] || attr?.[`shortDescription_${i18n.language}`] || attr?.description_ru || point[`desc_${i18n.language}`] || point.desc_ru || point.desc)?.substring(0, 80)}...</p>
                               <button className="popup-more-btn" onClick={() => handleOpenDetails(point)}>{t('map.details')}</button>
                           </div>
                       </div>
@@ -358,7 +358,7 @@ const MapSection = () => {
                     onClick={() => setActiveRouteId(activeRouteId === route.id ? null : route.id)} 
                     className={`ui-btn route-btn ${activeRouteId === route.id ? 'active' : ''}`}
                   >
-                    🛤️ {route.title}
+                    🛤️ {route[`title_${i18n.language}`] || route.title_ru || route.title}
                   </button>
                 ))}
               </div>

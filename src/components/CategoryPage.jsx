@@ -13,16 +13,15 @@ import heroTextImgZH from '../assets/hero-textzh.png';
 import { Stars } from './HotelsPage';
 
 export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos = [], guides = [] }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [activeImg, setActiveImg] = useState(item.image);
     const all = [item.image, ...(item.gallery || [])];
 
     const nearbyData = useMemo(() => {
-        const filteredHots = (item.nearbyHotels || []).map(id => hots.find(h => h.id === id)).filter(Boolean);
-        const filteredRestos = (item.nearbyRestaurants || []).map(id => restos.find(r => r.id === id)).filter(Boolean);
+        const filteredHots = (item.nearbyHotels || []).map(id => hots.find(h => String(h.id) === String(id))).filter(Boolean);
+        const filteredRestos = (item.nearbyRestaurants || []).map(id => restos.find(r => String(r.id) === String(id))).filter(Boolean);
         
-        // Smarter keywords for guides
-        const name = item.name.toLowerCase();
+        const name = (item.name || "").toLowerCase();
         const keywords = name.replace(/мавзолей|ходжи|ахмеда|центр|визит|парк|озеро|река|пещера|комплекс|азрет|султан/g, '').trim().split(/\s+/);
         const relatedGuides = guides.filter(guide => 
             (guide.tours || []).some(tour => 
@@ -46,7 +45,7 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
             <div style={{ display: 'flex', width: '100%', height: '100%', position: 'relative' }} onClick={e => e.stopPropagation()}>
                 <button className="cp-modal-close" onClick={onClose}><Icons.Close /></button>
                 <div className="cp-modal-left">
-                    <img src={activeImg} alt={item.name} className="cp-modal-main-img" />
+                    <img src={activeImg} alt={item[`name_${i18n.language}`] || item.name_ru || item.name} className="cp-modal-main-img" />
                     <div className="cp-modal-img-fade" />
                     {all.length > 1 && (
                         <div className="cp-modal-thumbs">
@@ -58,17 +57,17 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                 </div>
                 <div className="cp-modal-right">
                     <div className="cp-modal-eyebrow">{item.category}</div>
-                    <h2 className="cp-modal-title">{item.name}</h2>
-                    <p className="cp-modal-desc">{item.fullDescription || item.description}</p>
+                    <h2 className="cp-modal-title">{item[`name_${i18n.language}`] || item.name_ru || item.name}</h2>
+                    <p className="cp-modal-desc">{item[`fullDescription_${i18n.language}`] || item[`description_${i18n.language}`] || item.fullDescription_ru || item.description_ru || item.fullDescription || item.description}</p>
                     <div className="cp-modal-facts">
                         <div className="cp-fact">
                             <span className="cp-fact-label">{t('category.location_label')}</span>
                             <span className="cp-fact-val">{item.city || t('category.default_region')}</span>
                         </div>
-                        {item.hours && (
+                        { (item[`hours_${i18n.language}`] || item.hours_ru || item.hours) && (
                             <div className="cp-fact">
                                 <span className="cp-fact-label">{t('category.hours_label')}</span>
-                                <span className="cp-fact-val">{item.hours}</span>
+                                <span className="cp-fact-val">{item[`hours_${i18n.language}`] || item.hours_ru || item.hours}</span>
                             </div>
                         )}
                         <button className="cp-map-btn" onClick={openMap} style={{ marginTop: '20px', width: 'fit-content' }}>
@@ -83,7 +82,7 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                                     {nearbyData.hotels.map(h => (
                                         <div key={h.id} className="cp-mini-card clickable" onClick={() => onNavigate(h)}>
                                             <img src={h.image} alt="" />
-                                            <div><h6>{h.name}</h6><Stars count={h.stars} /></div>
+                                            <div><h6>{h[`name_${i18n.language}`] || h.name_ru || h.name}</h6><Stars count={h.stars} /></div>
                                         </div>
                                     ))}
                                 </div>
@@ -96,7 +95,7 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                                     {nearbyData.restaurants.map(r => (
                                         <div key={r.id} className="cp-mini-card clickable" onClick={() => onNavigate(r)}>
                                             <img src={r.image} alt="" />
-                                            <div><h6>{r.name}</h6><span>{t(`restos_page.cuisines.${r.cuisine}`)}</span></div>
+                                            <div><h6>{r[`name_${i18n.language}`] || r.name_ru || r.name}</h6><span>{t(`restos_page.cuisines.${r.cuisine}`)}</span></div>
                                         </div>
                                     ))}
                                 </div>
@@ -198,22 +197,26 @@ const CategoryPage = () => {
 
             <main className="cp-mosaic-container">
                 <div className="cp-mosaic-grid">
-                    {filtered.map((item) => (
-                        <div key={item.id} className="cp-card-wrapper" onClick={() => setSelected(item)}>
-                            <article className="cp-double-arch">
-                                <div className="cp-arch-content">
-                                    <div className="cp-img-box">
-                                        <img src={item.image} alt={item.name} className="cp-img" loading="lazy" />
-                                        <div className="cp-img-blend" />
+                    {filtered.map((item) => {
+                        const localizedName = item[`name_${i18n.language}`] || item.name_ru || item.name;
+                        const localizedDesc = item[`description_${i18n.language}`] || item.description_ru || item.description;
+                        return (
+                            <div key={item.id} className="cp-card-wrapper" onClick={() => setSelected(item)}>
+                                <article className="cp-double-arch">
+                                    <div className="cp-arch-content">
+                                        <div className="cp-img-box">
+                                            <img src={item.image} alt={localizedName} className="cp-img" loading="lazy" />
+                                            <div className="cp-img-blend" />
+                                        </div>
+                                        <div className="cp-text-box">
+                                            <h2 className="cp-tile-name">{localizedName}</h2>
+                                            <p className="cp-tile-desc">{localizedDesc}</p>
+                                        </div>
                                     </div>
-                                    <div className="cp-text-box">
-                                        <h2 className="cp-tile-name">{item.name}</h2>
-                                        <p className="cp-tile-desc">{item.description}</p>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                    ))}
+                                </article>
+                            </div>
+                        );
+                    })}
                 </div>
             </main>
 

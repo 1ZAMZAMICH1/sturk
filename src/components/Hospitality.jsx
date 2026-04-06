@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { fetchSheetData } from '../services/api';
+import { EditorialModal } from './RestaurantsPage';
 import './Hospitality.css';
 
 const Hospitality = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedResto, setSelectedResto] = useState(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -16,7 +18,7 @@ const Hospitality = () => {
       setLoading(false);
     };
     loadData();
-  }, []);
+  }, [i18n.language]);
 
   if (loading) return <div className="loading-state">{t('hospitality.loading')}</div>;
 
@@ -27,24 +29,34 @@ const Hospitality = () => {
       <div className="hosp-content">
         <div className="mosaic-col left-mosaic">
           <div className="mosaic-grid">
-            {displayRestaurants.map((item, index) => (
-              <div className={`khan-card ${index === 4 ? 'large' : 'small'}`} key={item.id}>
-                <div className="khan-img-box">
-                  <img src={item.image} alt={item.name} />
-                  <div className="grain-overlay"></div>
+            {displayRestaurants.map((item, index) => {
+              const localizedName = item[`name_${i18n.language}`] || item.name_ru || item.name;
+              const localizedType = item[`specialty_${i18n.language}`] || item.specialty_ru || item.cuisine || item.type;
+              
+              return (
+                <div 
+                  className={`khan-card ${index === 4 ? 'large' : 'small'}`} 
+                  key={item.id}
+                  onClick={() => setSelectedResto(item)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <div className="khan-img-box">
+                    <img src={item.image} alt={localizedName} />
+                    <div className="grain-overlay"></div>
+                  </div>
+                  <div className="khan-border">
+                    <div className="corner c-tl"></div>
+                    <div className="corner c-tr"></div>
+                    <div className="corner c-bl"></div>
+                    <div className="corner c-br"></div>
+                  </div>
+                  <div className="khan-info">
+                    <span className="khan-type">{localizedType}</span>
+                    <h4 className="khan-title">{localizedName}</h4>
+                  </div>
                 </div>
-                <div className="khan-border">
-                  <div className="corner c-tl"></div>
-                  <div className="corner c-tr"></div>
-                  <div className="corner c-bl"></div>
-                  <div className="corner c-br"></div>
-                </div>
-                <div className="khan-info">
-                  <span className="khan-type">{item.cuisine || item.type}</span>
-                  <h4 className="khan-title">{item.name}</h4>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -60,6 +72,13 @@ const Hospitality = () => {
           </Link>
         </div>
       </div>
+      
+      {selectedResto && (
+        <EditorialModal 
+          res={selectedResto} 
+          onClose={() => setSelectedResto(null)} 
+        />
+      )}
     </div>
   );
 };

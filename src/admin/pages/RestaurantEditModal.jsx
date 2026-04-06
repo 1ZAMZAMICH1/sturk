@@ -4,6 +4,13 @@ import { Icons } from '../AdminIcons';
 import { uploadImage } from '../../services/cloudinaryService';
 import { attractionsData, hotelsData } from '../../data/attractionsData';
 
+const LANGUAGES = [
+    { code: 'ru', label: 'Русский' },
+    { code: 'kz', label: 'Қазақша' },
+    { code: 'en', label: 'English' },
+    { code: 'zh', label: '中文' }
+];
+
 const ImageUpload = ({ value, onChange, label, compact = false }) => {
     const [loading, setLoading] = useState(false);
 
@@ -81,6 +88,38 @@ const VisualSelect = ({ options, selectedIds, onChange, multiple = true }) => {
     );
 };
 
+/**
+ * Группа полей для ввода на разных языках
+ */
+const MultilangGroup = ({ label, fieldName, formData, onChange, isTextarea = false }) => {
+    return (
+        <div className="multilang-edit-group">
+            <label className="label-mini-gold main-label">{label}</label>
+            <div className="lang-inputs-grid">
+                {LANGUAGES.map(lang => (
+                    <div key={lang.code} className="lang-input-item">
+                        <span className="lang-badge-mini">{lang.code.toUpperCase()}</span>
+                        {isTextarea ? (
+                            <textarea
+                                value={formData[`${fieldName}_${lang.code}`] || ''}
+                                onChange={(e) => onChange(`${fieldName}_${lang.code}`, e.target.value)}
+                                rows="2"
+                                placeholder={`Текст на ${lang.label}...`}
+                            />
+                        ) : (
+                            <input
+                                value={formData[`${fieldName}_${lang.code}`] || ''}
+                                onChange={(e) => onChange(`${fieldName}_${lang.code}`, e.target.value)}
+                                placeholder={`Текст на ${lang.label}...`}
+                            />
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
 const RestaurantEditModal = ({ restaurant, onSave, onClose }) => {
     const [formData, setFormData] = useState({ 
         ...restaurant,
@@ -93,8 +132,7 @@ const RestaurantEditModal = ({ restaurant, onSave, onClose }) => {
     const [isAddingCity, setIsAddingCity] = useState(false);
     const [newCityName, setNewCityName] = useState('');
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    const handleChange = (name, value) => {
         setFormData(p => ({ ...p, [name]: value }));
     };
 
@@ -107,7 +145,10 @@ const RestaurantEditModal = ({ restaurant, onSave, onClose }) => {
     const addMenuItem = () => {
         setFormData(p => ({
             ...p,
-            menu: [...p.menu, { item: '', price: '' }]
+            menu: [...p.menu, { 
+                item_ru: '', item_kz: '', item_en: '', item_zh: '',
+                price: '' 
+            }]
         }));
     };
 
@@ -153,7 +194,7 @@ const RestaurantEditModal = ({ restaurant, onSave, onClose }) => {
 
     const handleAddCity = () => {
         if (newCityName.trim()) {
-            setFormData(p => ({ ...p, city: newCityName.trim() }));
+            handleChange('city', newCityName.trim());
             setIsAddingCity(false);
             setNewCityName('');
         }
@@ -164,8 +205,8 @@ const RestaurantEditModal = ({ restaurant, onSave, onClose }) => {
             <div className="admin-modal-container tall refined-modal" onClick={e => e.stopPropagation()}>
                 <div className="admin-modal-header">
                     <div className="modal-title-wrap">
-                        <span className="type-badge">Ресторан</span>
-                        <h2>{formData.name || 'Новый ресторан'}</h2>
+                        <span className="type-badge">Локализация Ресторана</span>
+                        <h2>{formData.name_ru || 'Новый ресторан'}</h2>
                     </div>
                     <button className="btn-close-modal" onClick={onClose}><Icons.Close /></button>
                 </div>
@@ -181,15 +222,19 @@ const RestaurantEditModal = ({ restaurant, onSave, onClose }) => {
                     {activeTab === 'general' && (
                         <div className="admin-form-grid compact-gap">
                             <div className="admin-form-group full">
-                                <label className="label-mini-gold">Название</label>
-                                <input name="name" value={formData.name} onChange={handleChange} />
+                                <MultilangGroup 
+                                    label="Название ресторана"
+                                    fieldName="name"
+                                    formData={formData}
+                                    onChange={handleChange}
+                                />
                             </div>
 
                             <div className="admin-form-group">
                                 <label className="label-mini-gold">Город</label>
                                 {!isAddingCity ? (
                                     <div className="inline-selector">
-                                        <select name="city" value={formData.city} onChange={handleChange}>
+                                        <select name="city" value={formData.city} onChange={(e) => handleChange('city', e.target.value)}>
                                             {cities.map(c => <option key={c} value={c}>{c}</option>)}
                                         </select>
                                         <button className="btn-inline-add" onClick={() => setIsAddingCity(true)}>
@@ -212,57 +257,84 @@ const RestaurantEditModal = ({ restaurant, onSave, onClose }) => {
 
                             <div className="admin-form-group">
                                 <label className="label-mini-gold">Цена ($$$$)</label>
-                                <input name="priceTag" value={formData.priceTag} onChange={handleChange} />
+                                <input name="priceTag" value={formData.priceTag} onChange={(e) => handleChange('priceTag', e.target.value)} />
                             </div>
 
                             <ImageUpload
                                 label="Главное фото"
                                 value={formData.image}
-                                onChange={(url) => setFormData(p => ({ ...p, image: url }))}
+                                onChange={(url) => handleChange('image', url)}
                             />
 
                             <div className="admin-form-group full">
-                                <label className="label-mini-gold">Фирменное блюдо</label>
-                                <input name="signature" value={formData.signature || ''} onChange={handleChange} />
+                                <MultilangGroup 
+                                    label="Фирменное блюдо (Signature)"
+                                    fieldName="signature"
+                                    formData={formData}
+                                    onChange={handleChange}
+                                />
                             </div>
 
                             <div className="admin-form-group full">
-                                <label className="label-mini-gold">Описание</label>
-                                <textarea name="description" value={formData.description} onChange={handleChange} rows="3" />
+                                <MultilangGroup 
+                                    label="Специализация (Specialty)"
+                                    fieldName="specialty"
+                                    formData={formData}
+                                    onChange={handleChange}
+                                />
                             </div>
 
                             <div className="admin-form-group full">
-                                <label className="label-mini-gold">Адрес</label>
-                                <input name="location" value={formData.location || ''} onChange={handleChange} />
+                                <MultilangGroup 
+                                    label="Адрес"
+                                    fieldName="location"
+                                    formData={formData}
+                                    onChange={handleChange}
+                                />
                             </div>
 
                             <div className="admin-form-group full">
-                                <label className="label-mini-gold">Особенность (Specialty)</label>
-                                <input name="specialty" value={formData.specialty || ''} onChange={handleChange} />
+                                <MultilangGroup 
+                                    label="Описание"
+                                    fieldName="description"
+                                    formData={formData}
+                                    onChange={handleChange}
+                                    isTextarea={true}
+                                />
                             </div>
                         </div>
                     )}
 
                     {activeTab === 'menu' && (
                         <div className="admin-rooms-editor">
-                            <label className="label-mini-gold">Меню ресторана</label>
+                            <label className="label-mini-gold">Меню ресторана (Локализация)</label>
                             <div className="gallery-rows-container">
                                 {(formData.menu || []).map((dish, idx) => (
-                                    <div key={idx} className="refined-row">
-                                        <input
-                                            placeholder="Название блюда"
-                                            value={dish.item}
-                                            onChange={(e) => handleMenuChange(idx, 'item', e.target.value)}
-                                        />
-                                        <input
-                                            placeholder="Цена"
-                                            className="price-input"
-                                            value={dish.price}
-                                            onChange={(e) => handleMenuChange(idx, 'price', e.target.value)}
-                                        />
-                                        <button className="btn-icon-delete" onClick={() => removeMenuItem(idx)}>
-                                            <Icons.Trash />
-                                        </button>
+                                    <div key={idx} className="refined-row multilang-room-row">
+                                        <div className="room-header-row">
+                                            <Icons.Restaurants style={{ opacity: 0.5 }} />
+                                            <input
+                                                placeholder="Цена"
+                                                className="room-price-input"
+                                                value={dish.price}
+                                                onChange={(e) => handleMenuChange(idx, 'price', e.target.value)}
+                                            />
+                                            <button className="btn-row-delete" onClick={() => removeMenuItem(idx)}>
+                                                <Icons.Trash />
+                                            </button>
+                                        </div>
+                                        <div className="lang-inputs-grid mini">
+                                            {LANGUAGES.map(lang => (
+                                                <div key={lang.code} className="lang-input-item">
+                                                    <span className="lang-badge-mini">{lang.code.toUpperCase()}</span>
+                                                    <input
+                                                        placeholder={`Название блюда (${lang.code})`}
+                                                        value={dish[`item_${lang.code}`] || ''}
+                                                        onChange={(e) => handleMenuChange(idx, `item_${lang.code}`, e.target.value)}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 ))}
                                 <button className="admin-add-btn compact" onClick={addMenuItem}>
@@ -301,7 +373,7 @@ const RestaurantEditModal = ({ restaurant, onSave, onClose }) => {
                                 <VisualSelect
                                     options={allAttractions}
                                     selectedIds={formData.nearbyAttractions || []}
-                                    onChange={(ids) => setFormData(p => ({ ...p, nearbyAttractions: ids }))}
+                                    onChange={(ids) => handleChange('nearbyAttractions', ids)}
                                 />
                             </div>
                             <div className="admin-form-group full">
@@ -309,7 +381,7 @@ const RestaurantEditModal = ({ restaurant, onSave, onClose }) => {
                                 <VisualSelect
                                     options={hotelsData}
                                     selectedIds={formData.nearbyHotels || []}
-                                    onChange={(ids) => setFormData(p => ({ ...p, nearbyHotels: ids }))}
+                                    onChange={(ids) => handleChange('nearbyHotels', ids)}
                                 />
                             </div>
                         </div>

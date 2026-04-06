@@ -295,9 +295,10 @@
     background-image: url('/src/assets/scroll-paper.png');
     background-size: 100% 100%;
     z-index: 30;
-    filter: drop-shadow(0 25px 40px rgba(0, 0, 0, 0.3));
     transition: 0.4s ease;
 }
+
+
 
 .hp-stars {
     display: flex;
@@ -375,14 +376,23 @@
     animation: fadeIn 0.4s ease;
 }
 
+
+
 .hp-modal-royal {
     width: 100%;
     max-width: 1250px;
     height: 85vh;
-    background-color: transparent;
+    background: none !important;
+    background-color: transparent !important;
     position: relative;
-    overflow: hidden;
-    box-shadow: 0 50px 150px rgba(0, 0, 0, 0.7);
+    overflow: visible;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.hp-modal-royal::before,
+.hp-modal-royal::after {
+    display: none !important;
 }
 
 .hp-royal-frame {
@@ -390,6 +400,10 @@
     height: 100%;
     position: relative;
     z-index: 10;
+    background: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
 .hp-royal-left {
@@ -398,6 +412,7 @@
     background: #000;
     position: relative;
     overflow: hidden;
+    box-shadow: -20px 0 50px rgba(0,0,0,0.5);
 }
 
 .hp-royal-img {
@@ -465,9 +480,13 @@
     padding: 60px 80px;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: visible;
     background-image: url('/src/assets/scroll-paper.png');
     background-size: 100% 100%;
+    background-color: transparent !important;
+    background-repeat: no-repeat;
+    position: relative;
+    box-shadow: none !important;
 }
 
 .hp-royal-header {

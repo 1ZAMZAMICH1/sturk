@@ -3,6 +3,13 @@ import React, { useState } from 'react';
 import { Icons } from '../AdminIcons';
 import { uploadImage } from '../../services/cloudinaryService';
 
+const LANGUAGES_CONFIG = [
+    { code: 'ru', label: 'Русский' },
+    { code: 'kz', label: 'Қазақша' },
+    { code: 'en', label: 'English' },
+    { code: 'zh', label: '中文' }
+];
+
 const ImageUpload = ({ value, onChange, label, compact = false }) => {
     const [loading, setLoading] = useState(false);
 
@@ -30,6 +37,38 @@ const ImageUpload = ({ value, onChange, label, compact = false }) => {
     );
 };
 
+/**
+ * Группа полей для ввода на разных языках
+ */
+const MultilangGroup = ({ label, fieldName, formData, onChange, isTextarea = false }) => {
+    return (
+        <div className="multilang-edit-group">
+            <label className="label-mini-gold main-label">{label}</label>
+            <div className="lang-inputs-grid">
+                {LANGUAGES_CONFIG.map(lang => (
+                    <div key={lang.code} className="lang-input-item">
+                        <span className="lang-badge-mini">{lang.code.toUpperCase()}</span>
+                        {isTextarea ? (
+                            <textarea
+                                value={formData[`${fieldName}_${lang.code}`] || ''}
+                                onChange={(e) => onChange(`${fieldName}_${lang.code}`, e.target.value)}
+                                rows="2"
+                                placeholder={`Текст на ${lang.label}...`}
+                            />
+                        ) : (
+                            <input
+                                value={formData[`${fieldName}_${lang.code}`] || ''}
+                                onChange={(e) => onChange(`${fieldName}_${lang.code}`, e.target.value)}
+                                placeholder={`Текст на ${lang.label}...`}
+                            />
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
 const GuideEditModal = ({ guide, onSave, onClose }) => {
     const [formData, setFormData] = useState({
         ...guide,
@@ -39,10 +78,9 @@ const GuideEditModal = ({ guide, onSave, onClose }) => {
     const [activeTab, setActiveTab] = useState('profile');
 
     const SPECIALTIES = ['История', 'Природа', 'Архитектура', 'Культура', 'Кулинария', 'Приключения'];
-    const LANGUAGES = ['Казахский', 'Русский', 'Английский', 'Турецкий', 'Французский', 'Немецкий', 'Китайский'];
+    const SPOKEN_LANGUAGES = ['Казахский', 'Русский', 'Английский', 'Турецкий', 'Китайский'];
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    const handleChange = (name, value) => {
         setFormData(p => ({ ...p, [name]: value }));
     };
 
@@ -59,12 +97,12 @@ const GuideEditModal = ({ guide, onSave, onClose }) => {
     const addTour = () => {
         const newTour = {
             id: 't' + Date.now(),
-            title: 'Новый маршрут',
-            duration: '4 часа',
-            price: '10 000 ₸',
+            title_ru: '', title_kz: '', title_en: '', title_zh: '',
+            duration_ru: '4 часа', 
+            price_ru: '10 000 ₸',
             category: 'культура',
-            highlights: [],
-            description: ''
+            highlights_ru: '', highlights_kz: '', highlights_en: '', highlights_zh: '',
+            description_ru: '', description_kz: '', description_en: '', description_zh: ''
         };
         setFormData(p => ({ ...p, tours: [...p.tours, newTour] }));
     };
@@ -80,72 +118,72 @@ const GuideEditModal = ({ guide, onSave, onClose }) => {
         setFormData(p => ({ ...p, tours: p.tours.filter(t => t.id !== id) }));
     };
 
-    const toggleHighlight = (tourId, text) => {
-        setFormData(p => ({
-            ...p,
-            tours: p.tours.map(t => {
-                if (t.id === tourId) {
-                    const exists = t.highlights.includes(text);
-                    return {
-                        ...t,
-                        highlights: exists ? t.highlights.filter(h => h !== text) : [...t.highlights, text]
-                    };
-                }
-                return t;
-            })
-        }));
-    };
-
     return (
         <div className="admin-modal-overlay" onClick={onClose}>
             <div className="admin-modal-container tall refined-modal" onClick={e => e.stopPropagation()}>
                 <div className="admin-modal-header">
                     <div className="modal-title-wrap">
-                        <span className="type-badge">Гид / Проводник</span>
-                        <h2>{formData.name || 'Новый профиль'}</h2>
+                        <span className="type-badge">Гид / Локализация</span>
+                        <h2>{formData.name_ru || 'Новый гид'}</h2>
                     </div>
                     <button className="btn-close-modal" onClick={onClose}><Icons.Close /></button>
                 </div>
 
                 <div className="admin-modal-tabs">
                     <button className={activeTab === 'profile' ? 'active' : ''} onClick={() => setActiveTab('profile')}>Профиль</button>
-                    <button className={activeTab === 'about' ? 'active' : ''} onClick={() => setActiveTab('about')}>О себе</button>
+                    <button className={activeTab === 'about' ? 'active' : ''} onClick={() => setActiveTab('about')}>Описание</button>
                     <button className={activeTab === 'tours' ? 'active' : ''} onClick={() => setActiveTab('tours')}>Маршруты ({formData.tours.length})</button>
                 </div>
 
                 <div className="admin-modal-body no-emoji">
                     {activeTab === 'profile' && (
                         <div className="admin-form-grid">
+                            <div className="admin-form-group full">
+                                <MultilangGroup 
+                                    label="ФИО Гида"
+                                    fieldName="name"
+                                    formData={formData}
+                                    onChange={handleChange}
+                                />
+                            </div>
+
                             <div className="admin-form-group full" style={{ display: 'flex', gap: '30px', alignItems: 'flex-start' }}>
                                 <ImageUpload 
-                                    label="Фото гида" 
+                                    label="Фото" 
                                     value={formData.photo} 
-                                    onChange={(url) => setFormData(p => ({ ...p, photo: url }))} 
+                                    onChange={(url) => handleChange('photo', url)} 
                                     compact={true}
                                 />
                                 <div style={{ flex: 1 }}>
-                                    <label className="label-mini-gold">ФИО</label>
-                                    <input name="name" value={formData.name || ''} onChange={handleChange} placeholder="Арасбек Джаксыбеков" />
-                                    
                                     <div className="admin-form-row">
                                         <div className="admin-form-group">
-                                            <label className="label-mini-gold">Специализация</label>
-                                            <select name="specialty" value={formData.specialty} onChange={handleChange}>
+                                            <label className="label-mini-gold">Специализация (ID)</label>
+                                            <select name="specialty" value={formData.specialty} onChange={(e) => handleChange('specialty', e.target.value)}>
                                                 {SPECIALTIES.map(s => <option key={s} value={s}>{s}</option>)}
                                             </select>
                                         </div>
                                         <div className="admin-form-group">
                                             <label className="label-mini-gold">Опыт (лет)</label>
-                                            <input type="number" name="experience" value={formData.experience || 0} onChange={handleChange} />
+                                            <input type="number" name="experience" value={formData.experience || 0} onChange={(e) => handleChange('experience', e.target.value)} />
+                                        </div>
+                                    </div>
+                                    <div className="admin-form-row" style={{ marginTop: '10px' }}>
+                                        <div className="admin-form-group">
+                                            <label className="label-mini-gold">Рейтинг</label>
+                                            <input type="number" step="0.1" name="rating" value={formData.rating || 0} onChange={(e) => handleChange('rating', e.target.value)} />
+                                        </div>
+                                        <div className="admin-form-group">
+                                            <label className="label-mini-gold">Отзывы</label>
+                                            <input type="number" name="reviewCount" value={formData.reviewCount || 0} onChange={(e) => handleChange('reviewCount', e.target.value)} />
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             
                             <div className="admin-form-group full">
-                                <label className="label-mini-gold">Языки (выберите из списка)</label>
+                                <label className="label-mini-gold">Владение языками (для фильтрации)</label>
                                 <div className="admin-tags-picker">
-                                    {LANGUAGES.map(l => (
+                                    {SPOKEN_LANGUAGES.map(l => (
                                         <button 
                                             key={l}
                                             className={`tag-btn ${formData.languages.includes(l) ? 'active' : ''}`}
@@ -162,18 +200,13 @@ const GuideEditModal = ({ guide, onSave, onClose }) => {
                     {activeTab === 'about' && (
                         <div className="admin-form-grid">
                             <div className="admin-form-group full">
-                                <label className="label-mini-gold">Биография / Описание</label>
-                                <textarea name="description" value={formData.description || ''} onChange={handleChange} rows="8" />
-                            </div>
-                            <div className="admin-form-row">
-                                <div className="admin-form-group">
-                                    <label className="label-mini-gold">Рейтинг</label>
-                                    <input type="number" step="0.1" name="rating" value={formData.rating || 0} onChange={handleChange} />
-                                </div>
-                                <div className="admin-form-group">
-                                    <label className="label-mini-gold">Кол-во отзывов</label>
-                                    <input type="number" name="reviewCount" value={formData.reviewCount || 0} onChange={handleChange} />
-                                </div>
+                                <MultilangGroup 
+                                    label="Полная биография / О себе"
+                                    fieldName="description"
+                                    formData={formData}
+                                    onChange={handleChange}
+                                    isTextarea={true}
+                                />
                             </div>
                         </div>
                     )}
@@ -181,49 +214,49 @@ const GuideEditModal = ({ guide, onSave, onClose }) => {
                     {activeTab === 'tours' && (
                         <div className="admin-tours-editor">
                             {formData.tours.map((t, idx) => (
-                                <div key={t.id} className="admin-tour-row-editor">
-                                    <ImageUpload 
-                                        label="" 
-                                        value={t.image} 
-                                        onChange={(url) => updateTour(t.id, 'image', url)} 
-                                        compact={true}
-                                    />
-                                    <div className="tour-editor-fields">
-                                        <div className="tour-card-header">
-                                            <input 
-                                                className="tour-title-input" 
-                                                value={t.title} 
-                                                onChange={(e) => updateTour(t.id, 'title', e.target.value)} 
-                                            />
-                                            <button className="btn-icon-delete" onClick={() => removeTour(t.id)}><Icons.Trash /></button>
-                                        </div>
-                                        <div className="admin-form-row">
-                                            <input placeholder="Длит-сть" value={t.duration} onChange={(e) => updateTour(t.id, 'duration', e.target.value)} />
-                                            <input placeholder="Цена" value={t.price} onChange={(e) => updateTour(t.id, 'price', e.target.value)} />
-                                            <select value={t.category} onChange={(e) => updateTour(t.id, 'category', e.target.value)}>
-                                                <option value="история">История</option>
-                                                <option value="природа">Природа</option>
-                                                <option value="кулинария">Кулинария</option>
-                                                <option value="архитектура">Архитектура</option>
-                                                <option value="приключения">Приключения</option>
-                                                <option value="культура">Культура</option>
-                                            </select>
-                                        </div>
-                                        <textarea 
-                                            className="tour-desc-input" 
-                                            placeholder="Краткое описание маршрута..." 
-                                            value={t.description} 
-                                            onChange={(e) => updateTour(t.id, 'description', e.target.value)}
-                                            rows="3"
+                                <div key={t.id} className="admin-tour-row-editor multilang-room-row">
+                                    <div className="room-header-row">
+                                        <ImageUpload 
+                                            label="" 
+                                            value={t.image} 
+                                            onChange={(url) => updateTour(t.id, 'image', url)} 
+                                            compact={true}
                                         />
-                                        <div className="admin-form-group">
-                                            <label className="label-mini-gold">Программа маршрута (через запятую)</label>
-                                            <input 
-                                                placeholder="Встреча в отеле, Посещение мавзолея, Обед..." 
-                                                value={Array.isArray(t.highlights) ? t.highlights.join(', ') : (t.highlights || '')} 
-                                                onChange={(e) => updateTour(t.id, 'highlights', e.target.value.split(',').map(s => s.trim()))} 
-                                            />
+                                        <div style={{ flex: 1 }}>
+                                            <div className="admin-form-row">
+                                                <input placeholder="Длительность (RU)" value={t.duration_ru || ''} onChange={(e) => updateTour(t.id, 'duration_ru', e.target.value)} />
+                                                <input placeholder="Цена (RU)" value={t.price_ru || ''} onChange={(e) => updateTour(t.id, 'price_ru', e.target.value)} />
+                                                <select value={t.category} onChange={(e) => updateTour(t.id, 'category', e.target.value)}>
+                                                    {SPECIALTIES.map(s => <option key={s} value={s.toLowerCase()}>{s}</option>)}
+                                                </select>
+                                            </div>
                                         </div>
+                                        <button className="btn-row-delete" onClick={() => removeTour(t.id)}><Icons.Trash /></button>
+                                    </div>
+                                    
+                                    <div className="lang-inputs-grid mini">
+                                        {LANGUAGES_CONFIG.map(lang => (
+                                            <div key={lang.code} className="lang-input-item">
+                                                <span className="lang-badge-mini">{lang.code.toUpperCase()}</span>
+                                                <input 
+                                                    style={{ marginBottom: '4px' }}
+                                                    placeholder={`Заголовок тура (${lang.code})`}
+                                                    value={t[`title_${lang.code}`] || ''} 
+                                                    onChange={(e) => updateTour(t.id, `title_${lang.code}`, e.target.value)} 
+                                                />
+                                                <textarea
+                                                    placeholder={`Описание тура (${lang.code})`}
+                                                    value={t[`description_${lang.code}`] || ''}
+                                                    onChange={(e) => updateTour(t.id, `description_${lang.code}`, e.target.value)}
+                                                    rows="2"
+                                                />
+                                                <input 
+                                                    placeholder={`Программа (через запятую) (${lang.code})`}
+                                                    value={t[`highlights_${lang.code}`] || ''} 
+                                                    onChange={(e) => updateTour(t.id, `highlights_${lang.code}`, e.target.value)} 
+                                                />
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                             ))}

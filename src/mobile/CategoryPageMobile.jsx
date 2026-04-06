@@ -170,17 +170,17 @@ const CategoryPage = () => {
 
     const meta = {
         city: { title: t('category.meta.city'), sub: t('category.meta.sub') || 'Heritage' },
-        spirit: { title: t('category.meta.history'), sub: t('category.meta.sub') || 'History' },
+        spirit: { title: t('category.meta.spirit'), sub: t('category.meta.sub') || 'Spirit' },
         nature: { title: t('category.meta.nature'), sub: t('category.meta.sub') || 'Nature' },
-    }[catId] || { title: t('category.meta.history'), sub: t('category.meta.sub') || 'Heritage' };
+    }[catId] || { title: t('category.meta.spirit'), sub: t('category.meta.sub') || 'Heritage' };
 
     return (
         <div className="cp-root">
             <div className="cp-header-wrap">
                 <div className="cp-topbar">
-                    <Link to="/" className="cp-back">{t('category.back')}</Link>
+                    <Link to="/" className="cp-back">{t('ui.back')}</Link>
                     <div className="cp-logo-container"><img src={currentLogo} alt="Turkistan" className="cp-header-logo" /></div>
-                    <span style={{ fontSize: '0.6rem', letterSpacing: '2px', opacity: .5 }}>{filtered.length} {t('category.objects_count')}</span>
+                    <span style={{ fontSize: '0.6rem', letterSpacing: '2px', opacity: .5 }}>{t('category.objects_count', { count: filtered.length })}</span>
                 </div>
                 <div className="cp-loc-row">
                     <span className="cp-loc-label">{t('category.location_label')}</span>

@@ -970,3 +970,71 @@ tr:hover td {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(200,168,75,0.2); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(200,168,75,0.4); }
+
+.multilang-edit-group {
+    background: rgba(200, 168, 75, 0.03);
+    border: 1px solid var(--adm-border);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 20px;
+}
+
+.main-label {
+    margin-bottom: 12px !important;
+    display: block;
+    color: var(--adm-accent) !important;
+    font-size: 0.75rem !important;
+    border-bottom: 1px solid var(--adm-border);
+    padding-bottom: 8px;
+}
+
+.lang-inputs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.lang-inputs-grid.mini {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 10px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+}
+
+.lang-input-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.lang-badge-mini {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--adm-accent);
+    opacity: 0.7;
+    margin-left: 5px;
+    letter-spacing: 1px;
+}
+
+.multilang-room-row {
+    flex-direction: column !important;
+    padding: 20px !important;
+    border: 1px solid var(--adm-border) !important;
+    border-radius: 12px !important;
+    margin-bottom: 15px !important;
+}
+
+.room-header-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.room-price-input {
+    width: 140px !important;
+    font-weight: 700;
+    color: var(--adm-accent) !important;
+}

@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { fetchSheetData } from '../services/api';
+import { HotelModal } from './HotelsPage';
 import './Hotels.css';
 
 const Hotels = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [hotels, setHotels] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [selectedHotel, setSelectedHotel] = useState(null);
 
     useEffect(() => {
         const loadHotels = async () => {
@@ -16,7 +18,7 @@ const Hotels = () => {
             setLoading(false);
         };
         loadHotels();
-    }, []);
+    }, [i18n.language]);
 
     if (loading) return <div className="loading-state">{t('hotels.loading')}</div>;
 
@@ -40,7 +42,12 @@ const Hotels = () => {
                 <div className="mosaic-col right-mosaic">
                     <div className="mosaic-grid">
                         {displayHotels.map((item, index) => (
-                            <div className={`khan-card ${index === 4 ? 'large' : 'small'}`} key={item.id}>
+                            <div 
+                                className={`khan-card ${index === 4 ? 'large' : 'small'}`} 
+                                key={item.id}
+                                onClick={() => setSelectedHotel(item)}
+                                style={{ cursor: 'pointer' }}
+                            >
                                 <div className="khan-img-box">
                                     <img src={item.image || item.img} alt={item.name || item.title} />
                                     <div className="grain-overlay"></div>
@@ -53,13 +60,20 @@ const Hotels = () => {
                                 </div>
                                 <div className="khan-info">
                                     <span className="khan-type">{item.type}</span>
-                                    <h4 className="khan-title">{item.name || item.title}</h4>
+                                    <h4 className="khan-title">{item[`name_${i18n.language}`] || item.name_ru || item.name_en || item.name_uz || item.name || item.title}</h4>
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
             </div>
+            
+            {selectedHotel && (
+                <HotelModal 
+                    hotel={selectedHotel} 
+                    onClose={() => setSelectedHotel(null)} 
+                />
+            )}
         </div>
     );
 };

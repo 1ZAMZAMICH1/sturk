@@ -47,10 +47,6 @@ const Hero = () => {
 
   const currentOffset = OFFSETS[i18n.language] || OFFSETS.ru;
 
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-  };
-
   const heroImages = {
     ru: heroTextImgRU,
     kz: heroTextImgKZ,
@@ -58,6 +54,11 @@ const Hero = () => {
     zh: heroTextImgZH
   };
   const currentHeroImg = heroImages[i18n.language] || heroTextImgRU;
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
+
 
   return (
     <div className="hero-container">
@@ -97,6 +98,7 @@ const Hero = () => {
         <ambientLight intensity={1.2 * (import.meta.env.PROD ? 3.0 : 1.0)} />
         <pointLight position={[10, 10, 10]} color="#ff7b00" intensity={5.0 * (import.meta.env.PROD ? 3.0 : 1.0)} />
         <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={3.0} />
+        <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={3.0} />
         <Sparkles count={800} scale={[40, 30, 2]} position={[0, 0, 10]} size={2} speed={0.4} opacity={1} color="#ffcc66" noise={1} />
 
         <MemoizedClouds />
@@ -107,6 +109,7 @@ const Hero = () => {
 
       <div className="hero-content">
         <img
+          key={`hero-text-${i18n.language}`}
           src={currentHeroImg}
           alt="Turkistan"
           className={`hero-text-image ${isReady ? 'visible' : ''}`}

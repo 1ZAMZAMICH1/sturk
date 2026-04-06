@@ -5,7 +5,7 @@ import { Icons } from '../admin/AdminIcons';
 import { fetchSheetData } from '../services/api';
 
 const ArticleModal = ({ article, onClose }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   return (
     <div className="art-modal-overlay" onClick={onClose}>
       <div className="art-modal-inner shepherd-style" onClick={e => e.stopPropagation()}>
@@ -16,7 +16,7 @@ const ArticleModal = ({ article, onClose }) => {
 
         <div className="art-modal-scroll-area">
           <div className="art-modal-hero-mini">
-            <img src={article.image} alt="" />
+            <img src={article.image} alt={article[`title_${i18n.language}`] || article.title_ru || article.title} />
             <div className="art-modal-hero-overlay" />
           </div>
 
@@ -26,7 +26,7 @@ const ArticleModal = ({ article, onClose }) => {
               <span className="art-modal-date-mini">{article.date}</span>
             </div>
             
-            <h2 className="art-modal-title-neat">{article.title}</h2>
+            <h2 className="art-modal-title-neat">{article[`title_${i18n.language}`] || article.title_ru || article.title}</h2>
             
             <div className="art-modal-divider">
               <div className="div-line"></div>
@@ -35,7 +35,7 @@ const ArticleModal = ({ article, onClose }) => {
             </div>
 
             <div className="art-modal-text-neat">
-              {article.content}
+              {article[`content_${i18n.language}`] || article.content_ru || article.content}
             </div>
 
             {article.gallery && article.gallery.length > 0 && (
@@ -62,7 +62,7 @@ const ArticleModal = ({ article, onClose }) => {
 const ITEMS_PER_PAGE = 6;
 
 const Articles = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -122,30 +122,34 @@ const Articles = () => {
       <div className="timeline-wrapper">
         <div className="timeline-line"></div>
 
-        {currentArticles.map((article, index) => (
-          <div key={article.id} className={`article-card ${index % 2 === 0 ? 'left' : 'right'}`} onClick={() => setSelectedArticle(article)}>
-            <div className="timeline-node">
-              <div className="node-inner"></div>
-            </div>
+        {currentArticles.map((article, index) => {
+          const localizedTitle = article[`title_${i18n.language}`] || article.title_ru || article.title;
+          const localizedExcerpt = article[`excerpt_${i18n.language}`] || article.excerpt_ru || article.excerpt;
+          return (
+            <div key={article.id} className={`article-card ${index % 2 === 0 ? 'left' : 'right'}`} onClick={() => setSelectedArticle(article)}>
+              <div className="timeline-node">
+                <div className="node-inner"></div>
+              </div>
 
-            <div className="card-content">
-              <div className="card-date-wrapper">
-                <span className="card-date">{article.date}</span>
-              </div>
-              <div className="card-body">
-                <div className="image-container">
-                  <img src={article.image} alt={article.title} />
-                  <span className="category-tag">{article.category}</span>
+              <div className="card-content">
+                <div className="card-date-wrapper">
+                  <span className="card-date">{article.date}</span>
                 </div>
-                <h3>{article.title}</h3>
-                <p>{article.excerpt}</p>
-                <button className="read-more-btn">
-                  {t('articles.read_more')} <span>&#10142;</span>
-                </button>
+                <div className="card-body">
+                  <div className="image-container">
+                    <img src={article.image} alt={localizedTitle} />
+                    <span className="category-tag">{article.category}</span>
+                  </div>
+                  <h3>{localizedTitle}</h3>
+                  <p>{localizedExcerpt}</p>
+                  <button className="read-more-btn">
+                    {t('articles.read_more')} <span>&#10142;</span>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {selectedArticle && (
           <ArticleModal article={selectedArticle} onClose={() => setSelectedArticle(null)} />

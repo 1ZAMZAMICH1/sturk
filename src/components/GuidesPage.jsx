@@ -41,7 +41,7 @@ const Stars = ({ rating }) => {
 
 /* ── GUIDE MODAL ── */
 const GuideModal = ({ guide, onClose }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [activeTour, setActiveTour] = useState(guide.tours && guide.tours.length > 0 ? guide.tours[0] : null);
     
     return (
@@ -52,10 +52,10 @@ const GuideModal = ({ guide, onClose }) => {
                 {/* LEFT: Guide Profile */}
                 <div className="gp-modal-left">
                     <div className="gp-modal-avatar-wrap">
-                        <img src={guide.photo || "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=300&q=60"} alt={guide.name} className="gp-modal-avatar" />
+                        <img src={guide.photo || "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=300&q=60"} alt={guide[`name_${i18n.language}`] || guide.name_ru || guide.name} className="gp-modal-avatar" />
                         <div className="gp-modal-compass-ring" />
                     </div>
-                    <h2 className="gp-modal-name">{guide.name}</h2>
+                    <h2 className="gp-modal-name">{guide[`name_${i18n.language}`] || guide.name_ru || guide.name}</h2>
                     <div className="gp-modal-specialty">
                         <span>{SPECIALTY_ICONS[guide.specialty]}</span> {t(`guides_page.specialties.${guide.specialty}`)}
                     </div>
@@ -77,7 +77,7 @@ const GuideModal = ({ guide, onClose }) => {
                         </div>
                     </div>
 
-                    <p className="gp-modal-desc">{guide.description}</p>
+                    <p className="gp-modal-desc">{guide[`description_${i18n.language}`] || guide.description_ru || guide.description}</p>
 
                     <div className="gp-modal-langs">
                         {guide.languages?.map(l => <span key={l} className="gp-lang-chip">{l}</span>)}
@@ -85,16 +85,20 @@ const GuideModal = ({ guide, onClose }) => {
 
                     {/* Tour picker */}
                     <div className="gp-tour-picker">
-                        {guide.tours?.map(t => (
-                            <button
-                                key={t.id}
-                                className={`gp-tour-pick-btn ${activeTour?.id === t.id ? 'active' : ''}`}
-                                onClick={() => setActiveTour(t)}
-                            >
-                                {t.title}
-                                <span style={{ marginLeft: 'auto', fontSize: '0.7rem', opacity: 0.7 }}>{t.price}</span>
-                            </button>
-                        ))}
+                        {guide.tours?.map(t => {
+                            const tourTitle = t[`title_${i18n.language}`] || t.title_ru || t.title;
+                            const tourPrice = t[`price_${i18n.language}`] || t.price_ru || t.price;
+                            return (
+                                <button
+                                    key={t.id}
+                                    className={`gp-tour-pick-btn ${activeTour?.id === t.id ? 'active' : ''}`}
+                                    onClick={() => setActiveTour(t)}
+                                >
+                                    {tourTitle}
+                                    <span style={{ marginLeft: 'auto', fontSize: '0.7rem', opacity: 0.7 }}>{tourPrice}</span>
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
 
@@ -103,19 +107,24 @@ const GuideModal = ({ guide, onClose }) => {
                     {activeTour ? (
                         <div className="gp-tour-detail">
                             <div className="gp-tour-header">
-                                <h3 className="gp-tour-title">{activeTour.title}</h3>
+                                <h3 className="gp-tour-title">{activeTour[`title_${i18n.language}`] || activeTour.title_ru || activeTour.title}</h3>
                                 <div className="gp-tour-meta">
-                                    <span className="gp-tour-duration">⏱ {activeTour.duration}</span>
-                                    <span className="gp-tour-price">{activeTour.price}</span>
+                                    <span className="gp-tour-duration">⏱ {activeTour[`duration_${i18n.language}`] || activeTour.duration_ru || activeTour.duration}</span>
+                                    <span className="gp-tour-price">{activeTour[`price_${i18n.language}`] || activeTour.price_ru || activeTour.price}</span>
                                 </div>
                             </div>
-                            <p className="gp-tour-desc">{activeTour.description}</p>
+                            <p className="gp-tour-desc">{activeTour[`description_${i18n.language}`] || activeTour.description_ru || activeTour.description}</p>
                             <h4 className="gp-highlights-title">{t('guides_page.route_program')}</h4>
                             <div className="gp-highlights">
-                                {activeTour.highlights?.map((h, i) => (
+                                {activeTour[`highlights_${i18n.language}`]?.split(',').map((h, i) => (
                                     <div key={i} className="gp-highlight-item">
                                         <div className="gp-hl-dot">{i + 1}</div>
-                                        <span>{h}</span>
+                                        <span>{h.trim()}</span>
+                                    </div>
+                                )) || (Array.isArray(activeTour.highlights) ? activeTour.highlights : (activeTour.highlights_ru || activeTour.highlights || '').split(',')).map((h, i) => (
+                                    <div key={i} className="gp-highlight-item">
+                                        <div className="gp-hl-dot">{i + 1}</div>
+                                        <span>{String(h).trim()}</span>
                                     </div>
                                 ))}
                             </div>
@@ -132,14 +141,17 @@ const GuideModal = ({ guide, onClose }) => {
 
 /* ── GUIDE CARD ── */
 const GuideCard = ({ guide, onClick }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const localizedName = guide[`name_${i18n.language}`] || guide.name_ru || guide.name;
+    const localizedDesc = guide[`description_${i18n.language}`] || guide.description_ru || guide.description;
+
     return (
         <div className="gp-card" onClick={onClick}>
             <div className="gp-card-avatar-section">
                 <div className="gp-compass-wrap">
                     <div className="gp-compass-outer" />
                     <div className="gp-compass-middle" />
-                    <img src={guide.photo || "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=300&q=60"} alt={guide.name} className="gp-avatar" />
+                    <img src={guide.photo || "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=300&q=60"} alt={localizedName} className="gp-avatar" />
                     <div className="gp-compass-needle" />
                 </div>
                 <div className="gp-specialty-badge">
@@ -148,9 +160,9 @@ const GuideCard = ({ guide, onClick }) => {
             </div>
 
             <div className="gp-card-body">
-                <h3 className="gp-card-name">{guide.name}</h3>
+                <h3 className="gp-card-name">{localizedName}</h3>
                 <Stars rating={guide.rating} />
-                <p className="gp-card-desc">{guide.description?.substring(0, 110)}…</p>
+                <p className="gp-card-desc">{localizedDesc?.substring(0, 110)}…</p>
 
                 <div className="gp-card-langs">
                     {guide.languages?.slice(0, 3).map(l => (
@@ -159,16 +171,21 @@ const GuideCard = ({ guide, onClick }) => {
                 </div>
 
                 <div className="gp-tour-list">
-                    {guide.tours?.slice(0, 3).map(t => (
-                        <div key={t.id} className="gp-tour-row">
-                            <div className="gp-tour-dot" style={{ background: CATEGORY_COLORS[t.category] || '#8b6914' }} />
-                            <div className="gp-tour-info">
-                                <span className="gp-tour-name">{t.title}</span>
-                                <span className="gp-tour-meta-sm">{t.duration} · {t.price}</span>
+                    {guide.tours?.slice(0, 3).map(tour => {
+                        const tourTitle = tour[`title_${i18n.language}`] || tour.title_ru || tour.title;
+                        const tourDur = tour[`duration_${i18n.language}`] || tour.duration_ru || tour.duration;
+                        const tourPrice = tour[`price_${i18n.language}`] || tour.price_ru || tour.price;
+                        return (
+                            <div key={tour.id} className="gp-tour-row">
+                                <div className="gp-tour-dot" style={{ background: CATEGORY_COLORS[tour.category] || '#8b6914' }} />
+                                <div className="gp-tour-info">
+                                    <span className="gp-tour-name">{tourTitle}</span>
+                                    <span className="gp-tour-meta-sm">{tourDur} · {tourPrice}</span>
+                                </div>
+                                <span className="gp-tour-arrow">→</span>
                             </div>
-                            <span className="gp-tour-arrow">→</span>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 <div className="gp-card-footer">

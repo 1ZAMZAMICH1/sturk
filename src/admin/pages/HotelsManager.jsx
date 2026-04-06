@@ -21,7 +21,8 @@ const HotelsManager = () => {
         if (success) {
             setHotels(prev => prev.map(h => h.id === updatedHotel.id ? updatedHotel : h));
             setSelectedHotel(null);
-            alert(`Отель "${updatedHotel.name}" сохранен в Google Таблице`);
+            const savedName = updatedHotel.name_ru || updatedHotel.name || 'Отель';
+            alert(`Отель "${savedName}" сохранен в Google Таблице`);
         } else {
             alert('Ошибка при сохранении в Google Таблицу');
         }
@@ -53,7 +54,7 @@ const HotelsManager = () => {
                         {hotels.map(h => (
                             <tr key={h.id}>
                                 <td><img src={h.image} alt="" className="admin-table-img" /></td>
-                                <td><strong>{h.name}</strong></td>
+                                <td><strong>{h.name_ru || h.name}</strong></td>
                                 <td>
                                     <div className="type-badge">{h.type}</div>
                                     <br />

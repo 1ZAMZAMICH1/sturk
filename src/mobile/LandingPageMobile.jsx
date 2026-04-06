@@ -1,7 +1,7 @@
 // src/mobile/LandingPageMobile.jsx
 
 import React, { useState, useEffect, useRef } from 'react';
-import Hero from '../components/Hero'; 
+import HeroMobile from './HeroMobile'; 
 import CategoriesMobile from './CategoriesMobile'; 
 import MapSectionMobile from './MapSectionMobile';
 import HospitalityMobile from './HospitalityMobile';
@@ -17,7 +17,7 @@ const LandingPageMobile = () => {
         <div className="App-mobile">
             {/* 1. HERO */}
             <section style={{ minHeight: '100vh', width: '100%', position: 'relative' }}>
-                <Hero />
+                <HeroMobile />
             </section>
 
             <TransitionDivider type="ornament" nextBg="#1a0b05" />

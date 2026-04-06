@@ -3,6 +3,13 @@ import React, { useState } from 'react';
 import { Icons } from '../AdminIcons';
 import { uploadImage } from '../../services/cloudinaryService';
 
+const LANGUAGES_CONFIG = [
+    { code: 'ru', label: 'Русский' },
+    { code: 'kz', label: 'Қазақша' },
+    { code: 'en', label: 'English' },
+    { code: 'zh', label: '中文' }
+];
+
 const ImageUpload = ({ value, onChange, label, compact = false }) => {
     const [loading, setLoading] = useState(false);
 
@@ -30,6 +37,38 @@ const ImageUpload = ({ value, onChange, label, compact = false }) => {
     );
 };
 
+/**
+ * Группа полей для ввода на разных языках
+ */
+const MultilangGroup = ({ label, fieldName, formData, onChange, isTextarea = false, rows = "2" }) => {
+    return (
+        <div className="multilang-edit-group">
+            <label className="label-mini-gold main-label">{label}</label>
+            <div className="lang-inputs-grid">
+                {LANGUAGES_CONFIG.map(lang => (
+                    <div key={lang.code} className="lang-input-item">
+                        <span className="lang-badge-mini">{lang.code.toUpperCase()}</span>
+                        {isTextarea ? (
+                            <textarea
+                                value={formData[`${fieldName}_${lang.code}`] || ''}
+                                onChange={(e) => onChange(`${fieldName}_${lang.code}`, e.target.value)}
+                                rows={rows}
+                                placeholder={`Текст на ${lang.label}...`}
+                            />
+                        ) : (
+                            <input
+                                value={formData[`${fieldName}_${lang.code}`] || ''}
+                                onChange={(e) => onChange(`${fieldName}_${lang.code}`, e.target.value)}
+                                placeholder={`Текст на ${lang.label}...`}
+                            />
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
 const ArticleEditModal = ({ article, onSave, onClose }) => {
     const [formData, setFormData] = useState({
         ...article,
@@ -38,8 +77,7 @@ const ArticleEditModal = ({ article, onSave, onClose }) => {
     });
     const [activeTab, setActiveTab] = useState('main');
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    const handleChange = (name, value) => {
         setFormData(p => ({ ...p, [name]: value }));
     };
 
@@ -67,15 +105,15 @@ const ArticleEditModal = ({ article, onSave, onClose }) => {
             <div className="admin-modal-container tall refined-modal" onClick={e => e.stopPropagation()}>
                 <div className="admin-modal-header">
                     <div className="modal-title-wrap">
-                        <span className="type-badge">Публикация</span>
-                        <h2>{formData.title || 'Новая статья'}</h2>
+                        <span className="type-badge">Шежіре / Локализация</span>
+                        <h2>{formData.title_ru || 'Новая статья'}</h2>
                     </div>
                     <button className="btn-close-modal" onClick={onClose}><Icons.Close /></button>
                 </div>
 
                 <div className="admin-modal-tabs">
                     <button className={activeTab === 'main' ? 'active' : ''} onClick={() => setActiveTab('main')}>Основное</button>
-                    <button className={activeTab === 'content' ? 'active' : ''} onClick={() => setActiveTab('content')}>Контент</button>
+                    <button className={activeTab === 'content' ? 'active' : ''} onClick={() => setActiveTab('content')}>Текст статьи</button>
                     <button className={activeTab === 'media' ? 'active' : ''} onClick={() => setActiveTab('media')}>Медиа</button>
                 </div>
 
@@ -83,16 +121,20 @@ const ArticleEditModal = ({ article, onSave, onClose }) => {
                     {activeTab === 'main' && (
                         <div className="admin-form-grid">
                             <div className="admin-form-group full">
-                                <label className="label-mini-gold">Заголовок</label>
-                                <input name="title" value={formData.title || ''} onChange={handleChange} placeholder="Как Мавзолей Ясави изменил мир..." />
+                                <MultilangGroup 
+                                    label="Заголовок статьи"
+                                    fieldName="title"
+                                    formData={formData}
+                                    onChange={handleChange}
+                                />
                             </div>
                             <div className="admin-form-group">
                                 <label className="label-mini-gold">Автор</label>
-                                <input name="author" value={formData.author || ''} onChange={handleChange} />
+                                <input name="author" value={formData.author || ''} onChange={(e) => handleChange('author', e.target.value)} />
                             </div>
                             <div className="admin-form-group">
-                                <label className="label-mini-gold">Категория</label>
-                                <select name="category" value={formData.category} onChange={handleChange}>
+                                <label className="label-mini-gold">Категория (ID)</label>
+                                <select name="category" value={formData.category} onChange={(e) => handleChange('category', e.target.value)}>
                                     <option value="История">История</option>
                                     <option value="Культура">Культура</option>
                                     <option value="Туризм">Туризм</option>
@@ -100,21 +142,27 @@ const ArticleEditModal = ({ article, onSave, onClose }) => {
                                 </select>
                             </div>
                             <div className="admin-form-group full">
-                                <label className="label-mini-gold">Краткий анонс (excerpt)</label>
-                                <textarea name="excerpt" value={formData.excerpt || ''} onChange={handleChange} rows="2" />
+                                <MultilangGroup 
+                                    label="Краткий анонс ( excerpt )"
+                                    fieldName="excerpt"
+                                    formData={formData}
+                                    onChange={handleChange}
+                                    isTextarea={true}
+                                    rows="2"
+                                />
                             </div>
                         </div>
                     )}
 
                     {activeTab === 'content' && (
                         <div className="admin-form-group full">
-                            <label className="label-mini-gold">Текст статьи</label>
-                            <textarea 
-                                name="content" 
-                                value={formData.content || ''} 
-                                onChange={handleChange} 
-                                rows="15" 
-                                style={{ fontFamily: 'var(--rp-serif)', fontSize: '1rem', lineHeight: '1.6' }} 
+                            <MultilangGroup 
+                                label="Основное содержание статьи"
+                                fieldName="content"
+                                formData={formData}
+                                onChange={handleChange}
+                                isTextarea={true}
+                                rows="15"
                             />
                         </div>
                     )}
@@ -124,7 +172,7 @@ const ArticleEditModal = ({ article, onSave, onClose }) => {
                             <ImageUpload 
                                 label="Превью (Главное фото)" 
                                 value={formData.image} 
-                                onChange={(url) => setFormData(p => ({ ...p, image: url }))} 
+                                onChange={(url) => handleChange('image', url)} 
                             />
                             
                             <label className="label-mini-gold" style={{ marginTop: '20px', display: 'block' }}>Галерея в тексте</label>
@@ -148,7 +196,7 @@ const ArticleEditModal = ({ article, onSave, onClose }) => {
                 </div>
 
                 <div className="admin-modal-footer refined-footer">
-                    <button className="admin-add-btn" onClick={() => onSave(formData)}>Опубликовать</button>
+                    <button className="admin-add-btn" onClick={() => onSave(formData)}>Опубликовать на 4 языках</button>
                 </div>
             </div>
         </div>

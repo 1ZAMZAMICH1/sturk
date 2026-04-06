@@ -1,0 +1,120 @@
+/* src/mobile/HeroMobile.css */
+
+.hero-container-mob {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: #1a0b05;
+  overflow: hidden;
+}
+
+.hero-container-mob canvas {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.texture-overlay-mob {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/7/76/Noise_texture.png");
+  background-size: 200px 200px;
+}
+
+.vignette-overlay-mob {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 6;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0) 50%, rgba(26, 11, 5, 0.9) 100%);
+}
+
+.hero-content-mob {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 25;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.hero-text-mob {
+  max-width: 90%;
+  height: auto;
+  user-select: none;
+  filter: drop-shadow(0px 10px 30px rgba(0, 0, 0, 0.9));
+  opacity: 0;
+  transform: scale(0.95);
+  filter: blur(10px);
+  transition: opacity 1.5s ease-out, filter 1.5s ease-out;
+}
+
+.hero-text-mob.visible {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px);
+}
+
+.hero-trans-bottom-mob {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 250px;
+  z-index: 20;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+      rgba(26, 11, 5, 0) 0%,
+      rgba(26, 11, 5, 0.4) 50%,
+      #1a0b05 100%);
+}
+
+/* LANGUAGE SELECTOR MOB */
+.language-selector-mob {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  pointer-events: auto;
+}
+
+.lang-btn-mob {
+  background: none;
+  border: none;
+  color: rgba(220, 196, 142, 0.4);
+  font-family: 'Playfair Display', serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: all 0.4s ease;
+  padding: 5px;
+}
+
+.lang-btn-mob:hover {
+  color: #d4af37;
+  text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+.lang-btn-mob.active {
+  color: #f3e5ab;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.5);
+}

@@ -257,33 +257,31 @@ const GuidesMobile = () => {
       </div>
 
       <div className="guides-mob-canvas">
-        {inView && (
-          <React.Suspense fallback={null}>
-            <Canvas
-              camera={{ position: [0, 0, 16], fov: 60 }}
-              dpr={[1, 1.5]}
-              gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-            >
-              <ambientLight intensity={1.2} color="#ffdcb3" />
-              <pointLight position={[5, 10, 10]} intensity={3} color="#ffaa00" />
-              <Environment preset="sunset" />
-              <Sparkles count={50} scale={[25, 25, 10]} size={2} speed={0.3} opacity={0.4} color="#ffaa00" />
-              <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.2}>
-                <group>
-                  {guidesData.map((g, i) => (
-                    <ShieldItemMobile
-                      key={g.id}
-                      data={g}
-                      index={i}
-                      openSignal={openSignals[i] || false}
-                    />
-                  ))}
-                </group>
-              </Float>
-              <fog attach="fog" args={['#1a0b05', 10, 45]} />
-            </Canvas>
-          </React.Suspense>
-        )}
+        <React.Suspense fallback={null}>
+          <Canvas
+            camera={{ position: [0, 0, 16], fov: 60 }}
+            dpr={[1, 1.5]}
+            gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+          >
+            <ambientLight intensity={1.2} color="#ffdcb3" />
+            <pointLight position={[5, 10, 10]} intensity={3} color="#ffaa00" />
+            <Environment preset="sunset" />
+            <Sparkles count={50} scale={[25, 25, 10]} size={2} speed={0.3} opacity={0.4} color="#ffaa00" />
+            <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.2}>
+              <group>
+                {guidesData.map((g, i) => (
+                  <ShieldItemMobile
+                    key={g.id}
+                    data={g}
+                    index={i}
+                    openSignal={openSignals[i] || false}
+                  />
+                ))}
+              </group>
+            </Float>
+            <fog attach="fog" args={['#1a0b05', 10, 45]} />
+          </Canvas>
+        </React.Suspense>
       </div>
 
       {/* Hint и nav-кнопки убраны — навигация теперь автоматическая */}

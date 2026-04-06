@@ -50,11 +50,10 @@ const getIcon = (type) => {
 const MapResizeController = () => {
   const map = useMap();
   useEffect(() => {
-    let id;
-    const start = Date.now();
-    const tick = () => { if (Date.now() - start < 3000) { map.invalidateSize(); id = requestAnimationFrame(tick); } };
-    tick();
-    return () => cancelAnimationFrame(id);
+    const timers = [100, 300, 600, 1000].map(delay => 
+      setTimeout(() => map.invalidateSize(), delay)
+    );
+    return () => timers.forEach(clearTimeout);
   }, [map]);
   return null;
 };

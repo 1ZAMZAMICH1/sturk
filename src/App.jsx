@@ -11,6 +11,8 @@ import RestaurantsPage from './components/RestaurantsPage';
 import RestaurantsPageMobile from './mobile/RestaurantsPageMobile';
 import GuidesPage from './components/GuidesPage';
 import AdminPanel from './admin/AdminPanel';
+import RegionalHistory from './components/RegionalHistory';
+import RegionalHistoryMobile from './mobile/RegionalHistoryMobile';
 
 function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -30,6 +32,7 @@ function App() {
         <Route path="/restaurants" element={isMobile ? <RestaurantsPageMobile /> : <RestaurantsPage />} />
         <Route path="/guides" element={<GuidesPage />} />
         <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/history" element={isMobile ? <RegionalHistoryMobile /> : <RegionalHistory />} />
       </Routes>
     </Router>
   );

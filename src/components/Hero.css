@@ -74,6 +74,37 @@
   filter: blur(0px);
 }
 
+.hero-history-btn {
+  margin-top: 40px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: #fff;
+  padding: 12px 30px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  backdrop-filter: blur(5px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: auto;
+}
+
+.hero-history-btn.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.8s;
+}
+
+.hero-history-btn:hover {
+  background: rgba(212, 175, 55, 0.3);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+  transform: translateY(-2px);
+}
+
 .hero-transition-bottom {
   position: absolute;
   bottom: 0;

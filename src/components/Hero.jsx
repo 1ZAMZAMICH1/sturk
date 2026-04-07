@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Canvas } from '@react-three/fiber';
 import { Clouds, Cloud, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
+import { useNavigate } from 'react-router-dom';
 import './Hero.css';
 import heroTextImgRU from '../assets/hero-text.png';
 import heroTextImgKZ from '../assets/hero-textkz.png';
@@ -37,6 +38,7 @@ const MemoizedClouds = memo(() => {
 const Hero = () => {
   const [isReady, setIsReady] = useState(false);
   const { i18n } = useTranslation();
+  const navigate = useNavigate();
 
   const OFFSETS = {
     ru: { x: 0, y: 0 },
@@ -107,7 +109,7 @@ const Hero = () => {
         <fog attach="fog" args={['#1a0b05', 5, 40]} />
       </Canvas>
 
-      <div className="hero-content">
+      <div className="hero-content" style={{ flexDirection: 'column' }}>
         <img
           key={`hero-text-${i18n.language}`}
           src={currentHeroImg}
@@ -117,6 +119,14 @@ const Hero = () => {
             transform: `translate(${currentOffset.x}px, ${currentOffset.y}px)`,
           }}
         />
+
+        {/* Кнопка перехода к презентации Истории */}
+        <button 
+          className={`hero-history-btn ${isReady ? 'visible' : ''}`}
+          onClick={() => navigate('/history')}
+        >
+          История Региона
+        </button>
       </div>
 
       <div className="hero-transition-bottom"></div>

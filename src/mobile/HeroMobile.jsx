@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Canvas } from '@react-three/fiber';
 import { Clouds, Cloud, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
+import { useNavigate } from 'react-router-dom';
 import './HeroMobile.css';
 import heroTextImgRU from '../assets/hero-text.png';
 import heroTextImgKZ from '../assets/hero-textkz.png';
@@ -31,6 +32,7 @@ const HeroMobile = () => {
   const [isReady, setIsReady] = useState(false);
   const { i18n } = useTranslation();
   const currentLang = i18n.language;
+  const navigate = useNavigate();
   
   // Идеальные координаты для мобильной версии, которые мы настроили
   const OFFSETS = {
@@ -97,8 +99,8 @@ const HeroMobile = () => {
         </Canvas>
       </div>
 
-      {/* 🖼 КАРТИНКА - ПОСЕРЕДИНЕ */}
-      <div className="hero-content-mob" style={{ zIndex: 10, pointerEvents: 'none' }}>
+      {/* 🖼 КАРТИНКА И КНОПКА - ПОСЕРЕДИНЕ */}
+      <div className="hero-content-mob" style={{ zIndex: 10, pointerEvents: 'none', flexDirection: 'column' }}>
         <img
           key={currentLang}
           src={currentHeroImg}
@@ -108,6 +110,14 @@ const HeroMobile = () => {
             transform: `translate(${currentOffset.x}px, ${currentOffset.y}px)`
           }}
         />
+
+        <button 
+          className={`hero-history-btn ${isReady ? 'visible' : ''}`}
+          style={{ pointerEvents: 'auto', marginTop: '20px' }}
+          onClick={() => navigate('/history')}
+        >
+          История Региона
+        </button>
       </div>
 
       <div className="texture-overlay-mob" style={{ zIndex: 20 }}></div>

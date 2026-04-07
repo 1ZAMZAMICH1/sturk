@@ -1,0 +1,135 @@
+/* src/mobile/RegionalHistoryMobile.css */
+
+.reg-hist-root {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  background-color: #0a0502;
+  overflow: hidden;
+  font-family: 'Outfit', sans-serif;
+  color: #fff;
+}
+
+/* 3D CANVAS FULLSCREEN */
+.reg-hist-canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* POST PROCESSING ПЛЕНКА И ВИНЬЕТКА */
+.reg-hist-overlay-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 30%, rgba(5, 2, 0, 0.98) 100%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.reg-hist-overlay-grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/7/76/Noise_texture.png");
+  opacity: 0.05;
+  background-size: 250px;
+  pointer-events: none;
+  z-index: 11;
+  animation: grainShift 0.5s infinite steps(2);
+}
+
+@keyframes grainShift {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(10px, -10px); }
+  100% { transform: translate(-10px, 10px); }
+}
+
+/* UI LAYER OVER 3D */
+.reg-hist-ui-safe-area {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 25px 20px; /* Идеально для телефона */
+  box-sizing: border-box;
+}
+
+.reg-hist-back-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  margin-bottom: 20px;
+  display: inline-block;
+  backdrop-filter: blur(5px);
+  pointer-events: auto; 
+  transition: all 0.2s ease;
+}
+
+.reg-hist-back-btn:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.reg-hist-ui-header {
+  text-align: left;
+}
+
+.reg-hist-ui-subtitle {
+  font-size: 0.65rem; 
+  letter-spacing: 5px;
+  color: #d4af37;
+  text-transform: uppercase;
+  margin: 0 0 5px;
+  opacity: 0.8;
+}
+
+.reg-hist-ui-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem; 
+  margin: 0;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 5px 20px rgba(0,0,0,1);
+}
+
+/* PROGRESS BAR & STATUS */
+.reg-hist-ui-footer {
+  width: 100%;
+}
+
+.reg-hist-playback-status {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.6rem; 
+  color: #fff;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  height: 18px; 
+}
+
+.reg-hist-progress-bar-container {
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.reg-hist-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #d4af37, #fff);
+  box-shadow: 0 0 10px #d4af37;
+  transition: width 0.1s linear;
+}

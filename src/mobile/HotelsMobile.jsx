@@ -23,7 +23,7 @@ const SandsOfTimeAtmosphere = () => (
 );
 
 const HotelsMobile = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedHotel, setSelectedHotel] = useState(null);
@@ -35,7 +35,7 @@ const HotelsMobile = () => {
       setLoading(false);
     };
     load();
-  }, []);
+  }, [i18n.language]);
 
   if (loading) return <div className="mob-loading">{t('hotels.loading')}</div>;
 
@@ -55,22 +55,27 @@ const HotelsMobile = () => {
 
       {/* МОЗАИКА СНИЗУ */}
       <div className="hot-mob-mosaic">
-        {hotels.slice(0, 5).map((item, index) => (
-          <div className={`khan-card-mob ${index === 4 ? 'large' : 'small'}`} key={item.id} onClick={() => setSelectedHotel(item)}>
-            <div className="khan-img-box-mob">
-              <img src={item.image || item.img} alt={item.name || item.title} />
-              <div className="grain-overlay-mob" />
+        {hotels.slice(0, 5).map((item, index) => {
+          const localizedName = item[`name_${i18n.language}`] || item.name_ru || item.name || item.title;
+          const localizedType = item[`type_${i18n.language}`] || item.type_ru || item.type;
+          
+          return (
+            <div className={`khan-card-mob ${index === 4 ? 'large' : 'small'}`} key={item.id} onClick={() => setSelectedHotel(item)}>
+              <div className="khan-img-box-mob">
+                <img src={item.image || item.img} alt={localizedName} />
+                <div className="grain-overlay-mob" />
+              </div>
+              <div className="khan-border-mob">
+                <div className="corner c-tl" /><div className="corner c-tr" />
+                <div className="corner c-bl" /><div className="corner c-br" />
+              </div>
+              <div className="khan-info-mob">
+                 <span className="khan-type-mob">{localizedType}</span>
+                 <h4 className="khan-title-mob">{localizedName}</h4>
+              </div>
             </div>
-            <div className="khan-border-mob">
-              <div className="corner c-tl" /><div className="corner c-tr" />
-              <div className="corner c-bl" /><div className="corner c-br" />
-            </div>
-            <div className="khan-info-mob">
-               <span className="khan-type-mob">{item.type}</span>
-               <h4 className="khan-title-mob">{item.name || item.title}</h4>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       
       {selectedHotel && (

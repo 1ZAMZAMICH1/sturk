@@ -133,7 +133,20 @@ const MapSectionMobile = () => {
         <div className="mob-color-grade" />
       </div>
 
-      <h2 className={`mob-ui-title ${isOpen ? 'visible' : ''}`}>{t('map.title')}</h2>
+      <h2 
+        className={`mob-ui-title ${isOpen ? 'visible' : ''}`}
+        style={{ 
+          whiteSpace: 'nowrap', 
+          textAlign: 'center', 
+          width: '100%', 
+          padding: '0 10px', 
+          boxSizing: 'border-box',
+          fontSize: 'clamp(1.2rem, 6.5vw, 2.2rem)', /* Адаптивный размер: сожмется под экран, но не обрежется */
+          display: 'block'
+        }}
+      >
+        {t('map.title')}
+      </h2>
 
       <div className="mob-scroll-frame">
         <div className={`mob-scroll-wrap ${isOpen ? 'open' : ''}`}>

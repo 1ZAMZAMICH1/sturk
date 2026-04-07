@@ -18,7 +18,7 @@ const DarkAtmosphere = () => (
 );
 
 const HospitalityMobile = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedResto, setSelectedResto] = useState(null);
@@ -30,7 +30,7 @@ const HospitalityMobile = () => {
       setLoading(false);
     };
     load();
-  }, []);
+  }, [i18n.language]);
 
   if (loading) return <div className="mob-loading">{t('hospitality.loading')}</div>;
 
@@ -50,22 +50,27 @@ const HospitalityMobile = () => {
 
       {/* Мозаичная сетка — как на ПК */}
       <div className="hosp-mob-mosaic">
-        {restaurants.slice(0, 5).map((item, index) => (
-          <div className={`khan-card-mob ${index === 4 ? 'large' : 'small'}`} key={item.id} onClick={() => setSelectedResto(item)}>
-            <div className="khan-img-box-mob">
-              <img src={item.image || item.img} alt={item.name || item.title} />
-              <div className="grain-overlay-mob" />
+        {restaurants.slice(0, 5).map((item, index) => {
+          const localizedName = item[`name_${i18n.language}`] || item.name_ru || item.name || item.title;
+          const localizedType = item[`cuisine_${i18n.language}`] || item[`specialty_${i18n.language}`] || item.cuisine_ru || item.specialty_ru || item.cuisine || item.type;
+          
+          return (
+            <div className={`khan-card-mob ${index === 4 ? 'large' : 'small'}`} key={item.id} onClick={() => setSelectedResto(item)}>
+              <div className="khan-img-box-mob">
+                <img src={item.image || item.img} alt={localizedName} />
+                <div className="grain-overlay-mob" />
+              </div>
+              <div className="khan-border-mob">
+                <div className="corner c-tl" /><div className="corner c-tr" />
+                <div className="corner c-bl" /><div className="corner c-br" />
+              </div>
+              <div className="khan-info-mob">
+                <span className="khan-type-mob">{localizedType}</span>
+                <h4 className="khan-title-mob">{localizedName}</h4>
+              </div>
             </div>
-            <div className="khan-border-mob">
-              <div className="corner c-tl" /><div className="corner c-tr" />
-              <div className="corner c-bl" /><div className="corner c-br" />
-            </div>
-            <div className="khan-info-mob">
-              <span className="khan-type-mob">{item.cuisine || item.type}</span>
-              <h4 className="khan-title-mob">{item.name || item.title}</h4>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       
       {selectedResto && (

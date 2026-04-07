@@ -8,9 +8,10 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between; /* Распределяем верх, центр и низ */
   align-items: center;
-  padding-top: 2vh; /* Прижали заголовок к самому верху */
+  padding: 2vh 0 4vh; /* Зазоры сверху и снизу */
+  box-sizing: border-box;
 }
 
 /* ── 3D ФОН ────────────────── */
@@ -25,14 +26,15 @@
 .mob-ui-title {
   color: #d4af37;
   font-family: 'Playfair Display', serif;
-  font-size: 2.2rem;
-  letter-spacing: 5px;
+  font-size: clamp(1.8rem, 8vw, 2.5rem);
+  letter-spacing: 4px;
   text-transform: uppercase;
   text-shadow: 0 4px 15px rgba(0, 0, 0, 1);
   z-index: 100;
   opacity: 0;
   transition: all 1s ease 1s;
-  margin-bottom: 2vh; /* Зазор до свитка */
+  margin: 0;
+  flex-shrink: 0;
 }
 .mob-ui-title.visible { opacity: 1; }
 
@@ -43,11 +45,12 @@
 .mob-scroll-frame {
   position: relative;
   width: 100%;
-  height: 70vh; /* Визуальная высота всего свитка */
+  flex-grow: 1; /* Занимает всё доступное место между заголовком и кнопками */
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
+  min-height: 0; /* Важно для flex-grow */
 }
 
 .mob-scroll-wrap {
@@ -101,22 +104,44 @@
 
 /* ── UI ────────────────────── */
 .mob-map-ui {
-  position: absolute;
-  bottom: 2vh;
+  position: relative; /* Ушел от absolute, чтобы не наползать */
   width: 100%;
   z-index: 50;
   opacity: 0;
   transition: opacity 1s ease 2s;
-  display: flex; flex-direction: column; align-items: center; gap: 15px;
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  gap: 12px;
+  flex-shrink: 0;
+  padding-bottom: env(safe-area-inset-bottom, 20px);
 }
 .mob-map-ui.visible { opacity: 1; }
 .mob-ui-section { display: flex; flex-direction: column; align-items: center; width: 100%; }
 .mob-section-label { color: rgba(220, 196, 142, 0.4); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; font-family: serif; margin-bottom: 8px; }
-.mob-ui-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 95vw; }
+.mob-ui-grid { 
+  display: flex; 
+  flex-wrap: wrap; 
+  justify-content: center; 
+  gap: 8px; 
+  max-width: 95vw;
+  width: 100%;
+}
 
 .mob-ui-btn {
-  background: rgba(10, 5, 2, 0.8); border: 1px solid #8c7853; color: #dcc48e; padding: 8px 16px; border-radius: 4px;
-  font-family: 'Playfair Display', serif; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px;
+  background: rgba(10, 5, 2, 0.8); 
+  border: 1px solid #8c7853; 
+  color: #dcc48e; 
+  padding: 8px 12px; 
+  border-radius: 4px;
+  font-family: 'Playfair Display', serif; 
+  text-transform: uppercase; 
+  font-size: 0.65rem; 
+  letter-spacing: 1px;
+  max-width: 45%; /* Чтобы два в ряд влезали даже если текст длинный */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .mob-ui-btn.active { background: #d4af37; color: #1a0b05; border-color: #d4af37; }
 

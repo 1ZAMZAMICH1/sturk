@@ -21,7 +21,7 @@ const heroImages = {
 };
 
 export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos = [], guides = [] }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [activeImg, setActiveImg] = useState(item.image || item.img);
     const all = [item.image || item.img, ...(item.gallery || [])].filter(Boolean);
 
@@ -65,9 +65,9 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                     )}
                 </div>
                 <div className="cp-modal-right">
-                    <div className="cp-modal-eyebrow">{item.category || t('category.meta.sub')}</div>
-                    <h2 className="cp-modal-title">{item.name || item.title}</h2>
-                    <p className="cp-modal-desc">{item.fullDescription || item.description}</p>
+                    <div className="cp-modal-eyebrow">{item[`category_${i18n.language}`] || item.category || t('category.meta.sub')}</div>
+                    <h2 className="cp-modal-title">{item[`name_${i18n.language}`] || item.name_ru || item.name || item.title}</h2>
+                    <p className="cp-modal-desc">{item[`fullDescription_${i18n.language}`] || item.fullDescription_ru || item.fullDescription || item[`description_${i18n.language}`] || item.description_ru || item.description}</p>
                     <div className="cp-modal-facts">
                         <div className="cp-fact">
                             <span className="cp-fact-label">{t('category.location_label')}</span>
@@ -193,7 +193,15 @@ const CategoryPage = () => {
             </div>
 
             <div className="cp-hero">
-                <h1 className="cp-hero-h"><span>{meta.title}</span></h1>
+                <h1 className="cp-hero-h">
+                    <span style={{ 
+                        whiteSpace: 'nowrap', 
+                        display: 'block', 
+                        overflow: 'hidden', 
+                        textOverflow: 'ellipsis', 
+                        width: '100%' 
+                    }}>{meta.title}</span>
+                </h1>
             </div>
 
             <main className="cp-mosaic-container">
@@ -207,8 +215,8 @@ const CategoryPage = () => {
                                         <div className="cp-img-blend" />
                                     </div>
                                     <div className="cp-text-box">
-                                        <h2 className="cp-tile-name">{item.name || item.title}</h2>
-                                        <p className="cp-tile-desc">{item.description}</p>
+                                        <h2 className="cp-tile-name">{item[`name_${i18n.language}`] || item.name_ru || item.name || item.title}</h2>
+                                        <p className="cp-tile-desc">{item[`description_${i18n.language}`] || item.description_ru || item.description}</p>
                                     </div>
                                 </div>
                             </article>

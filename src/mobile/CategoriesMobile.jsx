@@ -355,10 +355,10 @@ const CategoriesMobile = () => {
   return (
     <div className="cat-mob-root">
       <div className="cat-mob-header">
-        <h2 className="cat-mob-title">{t('categories.title')}</h2>
+        <h2 className="cat-mob-title" style={{ whiteSpace: 'nowrap' }}>{t('categories.title')}</h2>
       </div>
 
-      <Canvas camera={{ position: [0, 0, 24], fov: 42 }} style={{ touchAction: 'pan-y' }}>
+      <Canvas camera={{ position: [0, 0, 24], fov: 42 }} style={{ touchAction: 'pan-y' }} dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: 'high-performance', stencil: false }}>
         <Environment preset="city" blur={1} />
         <color attach="background" args={['#1a0b05']} />
         <PetroglyphWall />

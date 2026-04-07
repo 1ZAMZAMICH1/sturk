@@ -1,6 +1,6 @@
 {
   "map": {
-    "title": "Navigator",
+    "title": "Discovery Map",
     "details": "More Details",
     "categories": "Attractions",
     "categories_label": "Attractions:",
@@ -39,7 +39,7 @@
   },
   "articles": {
     "loading": "Turkestan news is loading...",
-    "title": "Chronicle",
+    "title": "Regional Pulse",
     "page_info": "Page {{current}} of {{total}}",
     "read_more": "Read more",
     "prev": "Past",

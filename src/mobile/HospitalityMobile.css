@@ -92,9 +92,15 @@
 .hosp-mob-desc {
   font-size: 0.85rem;
   color: #e0d0c0;
-  line-height: 1.7;
+  line-height: 1.6;
   opacity: 0.9;
   margin: 0 auto 20px;
+  /* Ограничиваем описание, если оно слишком длинное (например на китайском или казахском) */
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 5.8rem; /* Чтобы высота не прыгала при смене языка */
 }
 
 .hosp-mob-ornament {
@@ -189,6 +195,32 @@
   display: flex; flex-direction: column;
 }
 
-.khan-type-mob { font-size: 0.55rem; color: #d4af37; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 3px; opacity: 0.8; }
-.khan-title-mob { color: #fff; font-family: 'Playfair Display', serif; font-size: 0.85rem; margin: 0; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 8px rgba(0,0,0,1); }
-.khan-card-mob.large .khan-title-mob { font-size: 1.2rem; }
+.khan-type-mob { 
+  font-size: 0.55rem; 
+  color: #d4af37; 
+  text-transform: uppercase; 
+  letter-spacing: 2px; 
+  margin-bottom: 3px; 
+  opacity: 0.8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.khan-title-mob { 
+  color: #fff; 
+  font-family: 'Playfair Display', serif; 
+  font-size: 0.85rem; 
+  margin: 0; 
+  text-transform: uppercase; 
+  letter-spacing: 1px; 
+  text-shadow: 0 2px 8px rgba(0,0,0,1);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.2;
+}
+.khan-card-mob.large .khan-title-mob { 
+  font-size: 1.1rem;
+  -webkit-line-clamp: 3;
+}

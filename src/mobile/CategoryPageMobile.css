@@ -121,8 +121,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 18px 60px;
+    padding: 12px 15px; /* Уменьшил паддинги для мобилки */
     border-bottom: 1px solid var(--gold-dim);
+    gap: 10px;
+}
+.cp-topbar > span {
+    white-space: nowrap; /* Счетчик не переносим */
 }
 
 .cp-modal-map {
@@ -210,6 +214,8 @@
 .cp-header-logo {
     height: 100%;
     width: auto;
+    max-width: 120px; /* Чтобы длинная надпись i18n не выдавила лого */
+    object-fit: contain;
 }
 
 /* Вторая строка: фильтры категорий — как медальоны */
@@ -270,12 +276,13 @@
 .cp-loc-row {
     display: flex;
     align-items: center;
-    justify-content: center;
-    /* ← центр */
+    justify-content: flex-start; /* На мобилке лучше от левого края */
     gap: 8px;
-    padding: 14px 60px;
-    flex-wrap: wrap;
+    padding: 10px 15px;
+    overflow-x: auto; /* Позволяем скроллить если городов много */
+    -webkit-overflow-scrolling: touch;
 }
+.cp-loc-row::-webkit-scrollbar { display: none; } /* Прячем скроллбар */
 
 .cp-loc-label {
     font-size: 0.6rem;
@@ -362,27 +369,27 @@
 
 .cp-hero-h span {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-size: clamp(1.4rem, 7vw, 3.2rem); /* Уменьшил базу для казахского */
     color: var(--ivory);
     text-transform: uppercase;
-    letter-spacing: 4px;
-    /* Ультра-тени: создают четкий контур вокруг букв */
-    text-shadow:
-        0 0 10px rgba(0, 0, 0, 1),
-        0 0 25px rgba(0, 0, 0, 0.9),
-        0 0 45px rgba(0, 0, 0, 0.8);
+    letter-spacing: 1px; /* Плотнее для длинных слов */
+    line-height: 1.1;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 1), 0 0 25px rgba(0, 0, 0, 0.9);
+    max-width: 95vw;
+    display: block;
+    white-space: nowrap; /* ЗАПРЕТ ПЕРЕНОСА */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Если совсем не влезет - многоточие */
 }
 
 .cp-hero-sub {
     font-family: 'Playfair Display', serif;
     color: var(--gold);
     font-style: italic;
-    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    font-size: clamp(1.2rem, 5vw, 2.8rem);
     opacity: 0.95;
-    /* Глубокая тень для курсива */
-    text-shadow:
-        1px 1px 15px rgba(0, 0, 0, 1),
-        0 0 30px rgba(0, 0, 0, 0.8);
+    margin-top: 10px;
+    text-shadow: 1px 1px 15px rgba(0, 0, 0, 1);
 }
 
 .cp-mosaic-grid-mobile {

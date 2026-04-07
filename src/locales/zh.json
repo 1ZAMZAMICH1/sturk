@@ -1,6 +1,6 @@
 {
   "map": {
-    "title": "导航器",
+    "title": "探索地图",
     "details": "更多详情",
     "categories": "项目",
     "categories_label": "项目:",
@@ -39,7 +39,7 @@
   },
   "articles": {
     "loading": "突厥斯坦新闻载入中...",
-    "title": "编年史",
+    "title": "地区脉搏",
     "page_info": "第 {{current}} 页，共 {{total}} 页",
     "read_more": "阅读更多",
     "prev": "过去",

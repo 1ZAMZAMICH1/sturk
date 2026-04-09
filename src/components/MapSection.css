@@ -336,3 +336,21 @@
 .map-label-tooltip::before {
   border-top-color: rgba(10, 5, 2, 0.7) !important;
 }
+
+/* --- СТИЛИ ПОДСКАЗОК ДЛЯ МАРШРУТОВ --- */
+.route-tooltip {
+  background: rgba(18, 10, 5, 0.95) !important;
+  border: 1px solid #d4af37 !important;
+  color: #fff !important;
+  font-family: 'Playfair Display', serif !important;
+  font-size: 0.9rem !important;
+  padding: 8px 15px !important;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.8), 0 0 10px rgba(212, 175, 55, 0.3) !important;
+  border-radius: 4px !important;
+  text-transform: none !important;
+  letter-spacing: 0.5px !important;
+}
+
+.route-tooltip::before {
+  display: none !important; /* Убираем стандартный клювик для чистоты */
+}

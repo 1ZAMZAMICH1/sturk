@@ -251,12 +251,23 @@ const AttractionEditModal = ({ attraction, hotels, restaurants, onSave, onClose 
                                 />
                             </div>
                             <div className="admin-form-group">
+                                <label className="label-mini-gold">Адрес</label>
                                 <MultilangGroup 
-                                    label="Адрес"
+                                    label=""
                                     fieldName="location"
                                     formData={formData}
                                     onChange={handleChange}
                                 />
+                            </div>
+
+                            <div className="admin-form-group">
+                                <label className="label-mini-gold">Широта (Lat)</label>
+                                <input type="number" step="any" value={formData.lat || ''} onChange={(e) => handleChange('lat', e.target.value)} placeholder="43.2974" />
+                            </div>
+
+                            <div className="admin-form-group">
+                                <label className="label-mini-gold">Долгота (Lng)</label>
+                                <input type="number" step="any" value={formData.lng || ''} onChange={(e) => handleChange('lng', e.target.value)} placeholder="68.2710" />
                             </div>
                         </div>
                     )}
@@ -301,14 +312,7 @@ const AttractionEditModal = ({ attraction, hotels, restaurants, onSave, onClose 
 
                     {activeTab === 'relations' && (
                         <div className="admin-form-grid compact-gap">
-                            <div className="admin-form-group">
-                                <label>Координаты (Lat)</label>
-                                <input type="number" step="0.001" value={formData.coordinates?.lat || ''} onChange={(e) => handleChange('coordinates', { ...formData.coordinates, lat: parseFloat(e.target.value) || 0 })} />
-                            </div>
-                            <div className="admin-form-group">
-                                <label>Координаты (Lng)</label>
-                                <input type="number" step="0.001" value={formData.coordinates?.lng || ''} onChange={(e) => handleChange('coordinates', { ...formData.coordinates, lng: parseFloat(e.target.value) || 0 })} />
-                            </div>
+
 
                             <div className="admin-form-group full">
                                 <label>Ближайшие отели</label>

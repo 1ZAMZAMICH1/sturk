@@ -276,11 +276,11 @@
 .cp-loc-row {
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* На мобилке лучше от левого края */
+    justify-content: center;
     gap: 8px;
     padding: 10px 15px;
-    overflow-x: auto; /* Позволяем скроллить если городов много */
-    -webkit-overflow-scrolling: touch;
+    flex-wrap: wrap;
+    width: 100%;
 }
 .cp-loc-row::-webkit-scrollbar { display: none; } /* Прячем скроллбар */
 
@@ -634,7 +634,7 @@
 .cp-modal-overlay {
     position: fixed;
     inset: 0;
-    z-index: 2000;
+    z-index: 13000;
     background: rgba(0, 0, 0, 0.97);
     display: flex;
     animation: modalIn 0.5s ease;
@@ -652,27 +652,30 @@
 
 .cp-modal-close {
     position: absolute;
-    top: 30px;
-    right: 30px;
-    z-index: 100;
-    background: none;
-    border: 1px solid var(--gold-border);
-    color: var(--gold);
-    width: 48px;
-    height: 48px;
-    font-size: 1.6rem;
-    cursor: pointer;
+    top: 20px;
+    right: 20px;
+    background: #1a1410;
+    border: 2px solid #d4ac6b;
+    color: #d4ac6b;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s;
-    clip-path: polygon(50% 0%, 90% 8%, 100% 30%, 100% 100%, 0% 100%, 0% 30%, 10% 8%);
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .cp-modal-close:hover {
-    background: var(--gold);
-    color: var(--bg);
+    transform: rotate(90deg) scale(1.1);
+    background: #d4ac6b;
+    color: #1a1410;
 }
+
+
 
 .cp-map-btn {
     background: none;
@@ -885,3 +888,43 @@
 }
 
 /* RESPONSIVENESS */
+@media (max-width: 900px) {
+    .cp-modal-inner-wrapper {
+        flex-direction: column;
+        width: 95%;
+        height: 90vh;
+        overflow-y: auto;
+        border-radius: 20px;
+    }
+
+    .cp-modal-left {
+        width: 100%;
+        height: 35vh;
+        flex: 0 0 35vh;
+    }
+
+    .cp-modal-right {
+        width: 100%;
+        padding: 40px 25px;
+    }
+
+    .cp-modal-img-fade {
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.97) 20%, transparent 100%);
+    }
+
+    .cp-modal-title {
+        font-size: 2.2rem;
+        margin-bottom: 25px;
+    }
+
+    .cp-modal-close {
+        top: 15px;
+        right: 15px;
+        width: 36px;
+        height: 36px;
+    }
+
+    .cp-mini-grid {
+        grid-template-columns: 1fr;
+    }
+}

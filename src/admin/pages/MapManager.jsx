@@ -67,10 +67,53 @@ const getAdminMarkerIcon = (type, customIconUrl) => {
     return adminIconCache[type] || adminIconCache.sight;
 };
 
+// Алгоритм Дугласа-Пекера для упрощения кривой (чтобы не ломать БД)
+const simplifyPolyline = (points, tolerance) => {
+    if (points.length <= 2) return points;
+    
+    const sqTolerance = tolerance * tolerance;
+    
+    const getSqDist = (p1, p2) => {
+        const dx = p1[0] - p2[0], dy = p1[1] - p2[1];
+        return dx * dx + dy * dy;
+    };
+    
+    const getSqSegDist = (p, p1, p2) => {
+        let x = p1[0], y = p1[1], dx = p2[0] - x, dy = p2[1] - y;
+        if (dx !== 0 || dy !== 0) {
+            let t = ((p[0] - x) * dx + (p[1] - y) * dy) / (dx * dx + dy * dy);
+            if (t > 1) { x = p2[0]; y = p2[1]; }
+            else if (t > 0) { x += dx * t; y += dy * t; }
+        }
+        dx = p[0] - x; dy = p[1] - y;
+        return dx * dx + dy * dy;
+    };
+
+    const simplifyStep = (points, first, last, sqTolerance, simplified) => {
+        let maxSqDist = sqTolerance, index;
+        for (let i = first + 1; i < last; i++) {
+            let sqDist = getSqSegDist(points[i], points[first], points[last]);
+            if (sqDist > maxSqDist) { index = i; maxSqDist = sqDist; }
+        }
+        if (maxSqDist > sqTolerance) {
+            if (index - first > 1) simplifyStep(points, first, index, sqTolerance, simplified);
+            simplified.push(points[index]);
+            if (last - index > 1) simplifyStep(points, index, last, sqTolerance, simplified);
+        }
+    };
+
+    let simplified = [points[0]];
+    simplifyStep(points, 0, points.length - 1, sqTolerance, simplified);
+    simplified.push(points[points.length - 1]);
+    return simplified;
+};
+
 const MapManager = () => {
     const [points, setPoints] = useState([]);
     const [routes, setRoutes] = useState([]);
     const [attractions, setAttractions] = useState([]);
+    const [hotels, setHotels] = useState([]);
+    const [restaurants, setRestaurants] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('points');
     const [editingItem, setEditingItem] = useState(null);
@@ -81,18 +124,35 @@ const MapManager = () => {
     const loadData = async () => {
         setLoading(true);
         try {
-            const [pData, rData, aData] = await Promise.all([
+            const [pData, rData, aData, hData, resData] = await Promise.all([
                 fetchSheetData('map_points'),
                 fetchSheetData('map_routes'),
-                fetchSheetData('attractions')
+                fetchSheetData('attractions'),
+                fetchSheetData('hotels'),
+                fetchSheetData('restaurants')
             ]);
             
-            // Мапим данные, чтобы координаты были объектом
             setAttractions((aData || []).map(attr => ({
                 ...attr,
                 coordinates: {
                     lat: parseFloat(attr.lat) || 0,
                     lng: parseFloat(attr.lng) || 0
+                }
+            })));
+
+            setHotels((hData || []).map(h => ({
+                ...h,
+                coordinates: {
+                    lat: parseFloat(h.lat) || 0,
+                    lng: parseFloat(h.lng) || 0
+                }
+            })));
+
+            setRestaurants((resData || []).map(r => ({
+                ...r,
+                coordinates: {
+                    lat: parseFloat(r.lat) || 0,
+                    lng: parseFloat(r.lng) || 0
                 }
             })));
             
@@ -118,27 +178,30 @@ const MapManager = () => {
         loadData();
     }, []);
 
-    // Синхронизация достопримечательности с картой
-    const syncAttractionToMap = async (attr) => {
-        const lat = attr.coordinates?.lat;
-        const lng = attr.coordinates?.lng;
+    // Синхронизация объекта с картой
+    const syncObjectToMap = async (item, type) => {
+        const lat = item.coordinates?.lat || item.lat;
+        const lng = item.coordinates?.lng || item.lng;
+        
         if (!lat || !lng) {
-            alert('У достопримечательности не указаны координаты! Добавь их во вкладке "Связи & Карта".');
+            alert('У объекта не указаны координаты! Сначала добавь их в карточке редактирования объекта.');
             return;
         }
         
         const newPoint = {
-            attractionId: attr.id,
-            title: attr.name,
-            desc: attr.description || '',
+            attractionId: type === 'sight' ? item.id : '',
+            hotelId: type === 'hotel' ? item.id : '',
+            restaurantId: type === 'restaurant' ? item.id : '',
+            title: item.name,
+            desc: item.description || item.shortDescription || '',
             pos: [parseFloat(lat), parseFloat(lng)].join(','),
             icon: '',
-            type: attr.category === 'nature' ? 'nature' : 'sight'
+            type: type
         };
         
         const success = await updateSheetData('map_points', 'add', newPoint);
         if (success) {
-            alert(`"${attr.name}" добавлена на карту!`);
+            alert(`"${item.name}" добавлен на карту!`);
             loadData();
         }
     };
@@ -161,14 +224,8 @@ const MapManager = () => {
         useMapEvents({
             async click(e) {
                 const newPos = [e.latlng.lat, e.latlng.lng];
-                if (isDrawing) {
-                    if (snapToRoads && newRouteNodes.length > 0) {
-                        const lastPos = newRouteNodes[newRouteNodes.length - 1];
-                        const roadNodes = await fetchRoute(lastPos, newPos);
-                        setNewRouteNodes(prev => [...prev, ...roadNodes]);
-                    } else {
-                        setNewRouteNodes(prev => [...prev, newPos]);
-                    }
+                if (isDrawing && !snapToRoads) {
+                    setNewRouteNodes(prev => [...prev, newPos]);
                 } else if (activeTab === 'points' && !editingItem) {
                     setEditingItem({
                         title: 'Новая точка',
@@ -181,6 +238,21 @@ const MapManager = () => {
             },
         });
         return null;
+    };
+
+    const handlePointClickForRoute = async (point) => {
+        if (!isDrawing) return;
+        
+        const newPos = point.pos;
+        if (snapToRoads && newRouteNodes.length > 0) {
+            const lastPos = newRouteNodes[newRouteNodes.length - 1];
+            const roadNodes = await fetchRoute(lastPos, newPos);
+            // Упрощаем полученный кусок дороги перед добавлением
+            const simplified = simplifyPolyline(roadNodes, 0.00005);
+            setNewRouteNodes(prev => [...prev, ...simplified]);
+        } else {
+            setNewRouteNodes(prev => [...prev, newPos]);
+        }
     };
 
     const handleSavePoint = async () => {
@@ -213,21 +285,32 @@ const MapManager = () => {
     };
 
     const handleSaveRoute = async () => {
-        const title = prompt('Название маршрута:', 'Новый маршрут');
+        const title = editingItem?.id ? editingItem.title : prompt('Название маршрута:', 'Новый маршрут');
         if (!title) return;
         
-        const routeData = {
-            title: title,
-            nodes: newRouteNodes.map(n => n.join(',')).join(';'),
-            color: '#00e5ff'
-        };
+        let payload = {};
+        if (editingItem?.id) {
+            // Редактирование существующего
+            payload = { ...editingItem, title };
+        } else {
+            // Создание нового
+            const solidRoute = simplifyPolyline(newRouteNodes, 0.00002);
+            const nodesStr = solidRoute.map(n => [n[0].toFixed(6), n[1].toFixed(6)].join(',')).join(';');
+            if (nodesStr.length > 45000) {
+                alert('Маршрут все еще слишком длинный!');
+                return;
+            }
+            payload = { title, nodes: nodesStr, color: '#00e5ff' };
+        }
         
-        const success = await updateSheetData('map_routes', 'add', routeData);
+        const action = editingItem?.id ? 'update' : 'add';
+        const success = await updateSheetData('map_routes', action, payload);
         if (success) {
             alert('Маршрут сохранен');
             loadData();
             setIsDrawing(false);
             setNewRouteNodes([]);
+            setEditingItem(null);
         }
     };
 
@@ -250,6 +333,8 @@ const MapManager = () => {
                 <div className="tabs">
                     <button className={activeTab === 'points' ? 'active' : ''} onClick={() => { setActiveTab('points'); setEditingItem(null); setIsDrawing(false); }}>Точки</button>
                     <button className={activeTab === 'attractions' ? 'active' : ''} onClick={() => { setActiveTab('attractions'); setEditingItem(null); setIsDrawing(false); }}>Достопримечательности</button>
+                    <button className={activeTab === 'hotels' ? 'active' : ''} onClick={() => { setActiveTab('hotels'); setEditingItem(null); setIsDrawing(false); }}>Отели</button>
+                    <button className={activeTab === 'restaurants' ? 'active' : ''} onClick={() => { setActiveTab('restaurants'); setEditingItem(null); setIsDrawing(false); }}>Рестораны</button>
                     <button className={activeTab === 'routes' ? 'active' : ''} onClick={() => { setActiveTab('routes'); setEditingItem(null); }}>Маршруты</button>
                 </div>
                 
@@ -281,59 +366,170 @@ const MapManager = () => {
                                 key={`point-${p.id || p.articleId || p.title}`} 
                                 position={p.pos} 
                                 icon={getAdminMarkerIcon(p.type, p.icon)}
-                                eventHandlers={{ click: () => { setEditingItem(p); setActiveTab('points'); } }}
+                                eventHandlers={{ 
+                                    click: (e) => { 
+                                        if (isDrawing) {
+                                            handlePointClickForRoute(p);
+                                        } else {
+                                            setEditingItem(p); 
+                                            setActiveTab('points'); 
+                                        }
+                                    } 
+                                }}
                             />
                         ))}
 
                         {!loading && routes.filter(r => r.nodes && r.nodes.length > 0).map(r => (
-                            <Polyline key={`route-${r.id || r.title}`} positions={r.nodes} color={r.color} weight={5} opacity={0.7} />
+                            <Polyline 
+                                key={`route-${r.id || r.title}`} 
+                                positions={r.nodes} 
+                                color={editingItem?.id === r.id ? '#ff3d00' : (r.color || '#00e5ff')} 
+                                weight={editingItem?.id === r.id ? 8 : 5} 
+                                opacity={0.7} 
+                                eventHandlers={{ click: () => { setEditingItem(r); setActiveTab('routes'); } }}
+                            />
                         ))}
                         {isDrawing && <Polyline positions={newRouteNodes} color="#ff3d00" weight={4} dashArray="5, 10" />}
+                        {isDrawing && <div className="drawing-mode-hint">Режим маршрута: Кликай по иконкам на карте для связи</div>}
                     </MapContainer>
                 </div>
 
                 <div className="map-sidebar-refined">
                     <div className="sidebar-header-box">
-                        <h3>{activeTab === 'attractions' ? 'Синхронизация' : 'Управление'}</h3>
-                        <p className="dim-text">{activeTab === 'attractions' ? 'Добавление объектов с сайта' : 'Список элементов на карте'}</p>
+                        <h3>{['attractions', 'hotels', 'restaurants'].includes(activeTab) ? 'Синхронизация' : 'Управление'}</h3>
+                        <p className="dim-text">{['attractions', 'hotels', 'restaurants'].includes(activeTab) ? 'Добавление объектов с сайта' : 'Список элементов на карте'}</p>
                     </div>
 
                     <div className="sidebar-body-scroll">
                         {activeTab === 'attractions' && (
                             <div className="articles-map-list">
-                                {attractions.filter(a => a.coordinates?.lat && a.coordinates?.lng).map(attr => {
-                                    const isOnMap = points.some(p => String(p.attractionId || p.articleId) === String(attr.id));
+                                {attractions.map(attr => {
+                                    const isOnMap = points.some(p => String(p.attractionId) === String(attr.id));
+                                    const hasCoords = attr.coordinates?.lat && attr.coordinates?.lng;
                                     return (
-                                        <div key={attr.id} className={`art-map-item ${isOnMap ? 'on-map' : 'ready'}`}>
+                                        <div key={attr.id} className={`art-map-item ${isOnMap ? 'on-map' : (hasCoords ? 'ready' : 'disabled')}`}>
                                             <div className="art-img-wrap">
                                                 <img src={attr.image || ''} alt="" />
                                                 {isOnMap && <div className="on-map-badge">✓</div>}
                                             </div>
                                             <div className="art-info">
                                                 <span className="art-title-text">{attr.name}</span>
-                                                <small className="art-coords-text">{parseFloat(attr.coordinates.lat).toFixed(4)}, {parseFloat(attr.coordinates.lng).toFixed(4)}</small>
+                                                <small className={hasCoords ? "art-coords-text" : "error-text"}>{hasCoords ? `${parseFloat(attr.coordinates.lat).toFixed(4)}, ${parseFloat(attr.coordinates.lng).toFixed(4)}` : 'Координаты не заданы'}</small>
                                             </div>
-                                            {!isOnMap && (
-                                                <button className="btn-sync-action" title="Добавить на карту" onClick={() => syncAttractionToMap(attr)}>
+                                            {!isOnMap && hasCoords && (
+                                                <button className="btn-sync-action" title="Добавить на карту" onClick={() => syncObjectToMap(attr, attr.category === 'nature' ? 'nature' : 'sight')}>
                                                     <Icons.Plus />
                                                 </button>
                                             )}
                                         </div>
                                     );
                                 })}
+                            </div>
+                        )}
 
-                                <div className="art-group-label warning">Без координат (добавь на листе Category):</div>
-                                {attractions.filter(a => !a.coordinates?.lat || !a.coordinates?.lng).map(attr => (
-                                    <div key={attr.id} className="art-map-item disabled">
-                                        <div className="art-img-wrap grayscale">
-                                            <img src={attr.image || ''} alt="" />
+                        {activeTab === 'hotels' && (
+                            <div className="articles-map-list">
+                                {hotels.map(hotel => {
+                                    const isOnMap = points.some(p => String(p.hotelId) === String(hotel.id));
+                                    const hasCoords = hotel.lat && hotel.lng;
+                                    return (
+                                        <div key={hotel.id} className={`art-map-item ${isOnMap ? 'on-map' : (hasCoords ? 'ready' : 'disabled')}`}>
+                                            <div className="art-img-wrap">
+                                                <img src={hotel.image || ''} alt="" />
+                                                {isOnMap && <div className="on-map-badge">✓</div>}
+                                            </div>
+                                            <div className="art-info">
+                                                <span className="art-title-text">{hotel.name}</span>
+                                                <small className={hasCoords ? "art-coords-text" : "error-text"}>{hasCoords ? `${parseFloat(hotel.lat).toFixed(4)}, ${parseFloat(hotel.lng).toFixed(4)}` : 'Координаты не заданы'}</small>
+                                            </div>
+                                            {!isOnMap && hasCoords && (
+                                                <button className="btn-sync-action" title="Добавить на карту" onClick={() => syncObjectToMap(hotel, 'hotel')}>
+                                                    <Icons.Plus />
+                                                </button>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                        {activeTab === 'restaurants' && (
+                            <div className="articles-map-list">
+                                {restaurants.map(resto => {
+                                    const isOnMap = points.some(p => String(p.restaurantId) === String(resto.id));
+                                    const hasCoords = resto.lat && resto.lng;
+                                    return (
+                                        <div key={resto.id} className={`art-map-item ${isOnMap ? 'on-map' : (hasCoords ? 'ready' : 'disabled')}`}>
+                                            <div className="art-img-wrap">
+                                                <img src={resto.image || ''} alt="" />
+                                                {isOnMap && <div className="on-map-badge">✓</div>}
+                                            </div>
+                                            <div className="art-info">
+                                                <span className="art-title-text">{resto.name}</span>
+                                                <small className={hasCoords ? "art-coords-text" : "error-text"}>{hasCoords ? `${parseFloat(resto.lat).toFixed(4)}, ${parseFloat(resto.lng).toFixed(4)}` : 'Координаты не заданы'}</small>
+                                            </div>
+                                            {!isOnMap && hasCoords && (
+                                                <button className="btn-sync-action" title="Добавить на карту" onClick={() => syncObjectToMap(resto, 'restaurant')}>
+                                                    <Icons.Plus />
+                                                </button>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+
+                        {activeTab === 'routes' && !isDrawing && !editingItem && (
+                            <div className="points-list-view">
+                                <div className="art-group-label">Список маршрутов:</div>
+                                {routes.map(r => (
+                                    <div key={r.id} className="art-map-item ready clickable" onClick={() => setEditingItem(r)}>
+                                        <div className="art-img-wrap" style={{ background: r.color || '#00e5ff', opacity: 0.5 }}>
+                                            <div className="placeholder-icon">🛤️</div>
                                         </div>
                                         <div className="art-info">
-                                            <span className="art-title-text">{attr.name}</span>
-                                            <small className="error-text">Координаты не заданы</small>
+                                            <span className="art-title-text">{r.title}</span>
+                                            <small className="dim-text">{r.nodes?.length} точек</small>
                                         </div>
                                     </div>
                                 ))}
+                            </div>
+                        )}
+
+                        {activeTab === 'routes' && editingItem && (
+                            <div className="item-edit-panel">
+                                <div className="art-group-label">Редактирование маршрута</div>
+                                <div className="form-group">
+                                    <label className="label-mini-gold">Название</label>
+                                    <input 
+                                        value={editingItem.title || ''} 
+                                        onChange={e => setEditingItem({...editingItem, title: e.target.value})} 
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label className="label-mini-gold">Цвет маршрута</label>
+                                    <div className="color-picker-grid">
+                                        {['#00e5ff', '#ffeb3b', '#ff5722', '#4caf50', '#e91e63', '#9c27b0', '#ffffff'].map(c => (
+                                            <div 
+                                                key={c} 
+                                                className={`color-swatch ${editingItem.color === c ? 'active' : ''}`}
+                                                style={{ background: c }}
+                                                onClick={() => setEditingItem({...editingItem, color: c})}
+                                            />
+                                        ))}
+                                    </div>
+                                    <input 
+                                        type="text" 
+                                        value={editingItem.color || ''} 
+                                        onChange={e => setEditingItem({...editingItem, color: e.target.value})}
+                                        placeholder="#hex color"
+                                        style={{ marginTop: '10px' }}
+                                    />
+                                </div>
+                                <div className="edit-actions">
+                                    <button className="admin-save-btn" onClick={handleSaveRoute}>Сохранить</button>
+                                    <button className="admin-cancel-btn" onClick={() => setEditingItem(null)}>Отмена</button>
+                                </div>
+                                <button className="btn-delete-full" onClick={() => handleDelete('route', editingItem.id)}>Удалить маршрут</button>
                             </div>
                         )}
 
@@ -391,9 +587,28 @@ const MapManager = () => {
                                         <option value="sight">История</option>
                                         <option value="nature">Природа</option>
                                         <option value="hotel">Отель</option>
+                                        <option value="restaurant">Ресторан</option>
                                         <option value="city">Город</option>
                                     </select>
                                 </div>
+
+                                {(editingItem.type === 'hotel' || editingItem.type === 'restaurant') && (
+                                    <div className="form-group">
+                                        <label className="label-mini-gold">Привязать к объекту</label>
+                                        <select 
+                                            value={editingItem.type === 'hotel' ? editingItem.hotelId : editingItem.restaurantId}
+                                            onChange={e => {
+                                                const field = editingItem.type === 'hotel' ? 'hotelId' : 'restaurantId';
+                                                setEditingItem({...editingItem, [field]: e.target.value});
+                                            }}
+                                        >
+                                            <option value="">-- Выбери объект --</option>
+                                            {(editingItem.type === 'hotel' ? hotels : restaurants).map(obj => (
+                                                <option key={obj.id} value={obj.id}>{obj.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                )}
 
                                 <div className="edit-actions">
                                     <button className="admin-save-btn" onClick={handleSavePoint}>Сохранить</button>
@@ -443,6 +658,16 @@ const MapManager = () => {
                 .admin-save-btn { background: #c59d5f; color: #fff; border: none; padding: 14px; border-radius: 10px; font-weight: 700; cursor: pointer; }
                 .admin-cancel-btn { background: #f5f5f5; color: #666; border: none; padding: 14px; border-radius: 10px; font-weight: 700; cursor: pointer; }
                 .btn-delete-full { width: 100%; margin-top: 15px; background: #fff5f5; color: #e74c3c; border: 1px solid #ffeded; padding: 12px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+                .drawing-mode-hint { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); background: #c59d5f; color: white; padding: 10px 20px; border-radius: 30px; font-size: 0.8rem; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.2); pointer-events: none; }
+                
+                .sub-tab-nav { display: flex; gap: 4px; margin-top: 10px; background: #eee; padding: 2px; border-radius: 6px; }
+                .sub-tab-nav button { flex: 1; padding: 6px; border: none; background: transparent; font-size: 0.7rem; font-weight: 700; color: #666; cursor: pointer; border-radius: 4px; }
+                .sub-tab-nav button.active { background: #fff; color: #c59d5f; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+                
+                .color-picker-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 5px; }
+                .color-swatch { aspect-ratio: 1; border-radius: 4px; cursor: pointer; border: 2px solid #ddd; transition: 0.2s; }
+                .color-swatch:hover { scale: 1.1; }
+                .color-swatch.active { border-color: #c59d5f; scale: 1.1; box-shadow: 0 0 10px rgba(197, 157, 95, 0.4); }
             `}</style>
         </div>
     );

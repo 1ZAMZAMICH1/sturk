@@ -332,9 +332,9 @@
 .rp-modal-overlay {
     position: fixed;
     inset: 0;
-    z-index: 2000;
-    background: rgba(15, 12, 10, 0.9);
-    backdrop-filter: blur(8px);
+    z-index: 12000;
+    background: rgba(10, 8, 6, 0.98);
+    backdrop-filter: blur(12px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -452,7 +452,7 @@
     padding: 60px 80px 0 80px;
     display: flex;
     flex-direction: column;
-    background: var(--rp-espresso);
+    background: #1a1614; /* Явный сплошной фон */
 }
 
 /* Scrollable area */

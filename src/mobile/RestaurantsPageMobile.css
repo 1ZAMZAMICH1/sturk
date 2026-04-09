@@ -23,6 +23,27 @@
 }
 
 /* src/mobile/RestaurantsPageMobile.css */
+.rp-mob-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    background: #1a1614;
+    border: 2px solid var(--rp-sand);
+    color: var(--rp-sand);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+}
+
+.rp-mob-modal-close:hover {
+    transform: rotate(90deg) scale(1.1);
+}
 
 * {
     box-sizing: border-box !important;
@@ -293,9 +314,9 @@
 .rp-mob-modal-overlay {
     position: fixed;
     inset: 0;
-    z-index: 2000;
-    background: rgba(15, 12, 10, 0.95);
-    backdrop-filter: blur(10px);
+    z-index: 13000;
+    background: rgba(10, 8, 6, 0.98);
+    backdrop-filter: blur(12px);
     display: flex;
     align-items: flex-end;
 }
@@ -323,19 +344,19 @@
 
 .rp-mob-modal-close {
     position: absolute;
-    top: 15px;
-    right: 15px;
-    z-index: 100;
-    background: rgba(26, 22, 20, 0.5);
-    backdrop-filter: blur(5px);
-    border: 1px solid var(--rp-sand-dim);
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: #1a1614; /* Сплошной темный фон */
+    border: 2px solid var(--rp-sand);
     color: var(--rp-sand);
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
 
 /* Left Side: Photo (Top on mobile) */
@@ -369,6 +390,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    background: #1a1614; /* Сплошной фон */
 }
 
 .rp-mob-modal-scroll {
@@ -439,9 +461,20 @@
 
 .rp-mob-action-btn {
     width: 100%;
-    padding: 16px;
-    font-size: 0.75rem;
-    letter-spacing: 2px;
+    background: var(--rp-sand); /* Золотой фон */
+    color: var(--rp-espresso); /* Темный текст */
+    padding: 18px;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 700;
+    border: none;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
 }
 
 /* Thumbs */

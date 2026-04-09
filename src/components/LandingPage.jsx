@@ -38,10 +38,10 @@ const LandingPage = () => {
             {/* 4. HOSPITALITY & HOTELS */}
             <div className="hospitality-hotels-wrapper" style={{ position: 'relative' }}>
                 <HospitalityBackground />
-                <section style={{ height: '100vh', position: 'relative', zIndex: 1 }}>
+                <section style={{ height: '100vh', position: 'relative' }}>
                     <Hospitality />
                 </section>
-                <section style={{ height: '100vh', position: 'relative', zIndex: 1 }}>
+                <section style={{ height: '100vh', position: 'relative' }}>
                     <Hotels />
                 </section>
             </div>

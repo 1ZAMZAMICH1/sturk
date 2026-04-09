@@ -267,11 +267,12 @@
 .cp-loc-row {
     display: flex;
     align-items: center;
-    justify-content: center;
-    /* ← центр */
-    gap: 8px;
-    padding: 14px 60px;
+    justify-content: center !important;
+    gap: 15px;
+    padding: 15px 40px;
     flex-wrap: wrap;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .cp-loc-label {
@@ -559,7 +560,7 @@
 .cp-modal-overlay {
     position: fixed;
     inset: 0;
-    z-index: 2000;
+    z-index: 12000;
     background: rgba(0, 0, 0, 0.97);
     display: flex;
     animation: modalIn 0.5s ease;
@@ -580,8 +581,8 @@
     top: 30px;
     right: 30px;
     z-index: 100;
-    background: none;
-    border: 1px solid var(--gold-border);
+    background: var(--bg);
+    border: 2px solid var(--gold);
     color: var(--gold);
     width: 48px;
     height: 48px;
@@ -592,6 +593,7 @@
     justify-content: center;
     transition: all 0.3s;
     clip-path: polygon(50% 0%, 90% 8%, 100% 30%, 100% 100%, 0% 100%, 0% 30%, 10% 8%);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 
 .cp-modal-close:hover {
@@ -819,4 +821,34 @@
         width: 100%;
         padding: 60px 30px;
     }
+}
+
+/* Integrated Map Block for Category Modal */
+.cp-map-placeholder {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--gold-border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+.cp-map-view {
+    height: 200px;
+    width: 100%;
+    position: relative;
+    background: #000;
+}
+
+.cp-map-address {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.85rem;
+    color: var(--ivory60);
+    border-top: 1px solid var(--gold-dim);
+}
+
+.cp-map-address svg {
+    color: var(--gold);
 }

@@ -4,6 +4,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Text, Float, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import './RegionalHistoryMobile.css';
 
 import petro1 from '../assets/petroglyph-1.png';
@@ -116,6 +117,7 @@ const CinematicAtmosphereMobile = React.memo(() => {
 });
 
 const SlideMarkerMobile = ({ data }) => {
+    const { i18n } = useTranslation();
     const { size } = useThree();
     const texture = useTexture(data.image);
     const groupRef = useRef();
@@ -125,7 +127,11 @@ const SlideMarkerMobile = ({ data }) => {
     const vh = 20.7846; 
     const aspect = size.width / size.height;
     const vw = vh * aspect; 
-    
+
+    // Жесткие ссылки на NPM-пакеты Fontsource (самый стабильный вариант для WebGL)
+    const fontUrl = i18n.language === 'zh'
+        ? "https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc/files/noto-serif-sc-chinese-simplified-400-normal.woff"
+        : "https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond/files/cormorant-garamond-cyrillic-400-normal.woff";
     const widthScale = (vw * 0.9) / 12; 
     const heightScale = (vh * 0.55) / 20; // Вмещаем блок высотой в 20 юнитов
     const contentScale = Math.min(widthScale, heightScale);
@@ -154,13 +160,53 @@ const SlideMarkerMobile = ({ data }) => {
             </group>
 
             <group position={[0, txtY, 0]}>
-                <Text fontSize={1.4} color="#d4af37" anchorX="center" anchorY="bottom" outlineWidth={0.04} outlineColor="#000" depthTest={false} renderOrder={1} fog={false} maxWidth={12} textAlign="center" lineHeight={1.1}>
+                <Text 
+                    font={fontUrl}
+                    fontSize={1.4} 
+                    color="#d4af37" 
+                    anchorX="center" 
+                    anchorY="bottom" 
+                    outlineWidth={0.04} 
+                    outlineColor="#000" 
+                    depthTest={false} 
+                    renderOrder={1} 
+                    fog={false} 
+                    maxWidth={12} 
+                    textAlign="center" 
+                    lineHeight={1.1}
+                >
                     {data.title}
                 </Text>
-                <Text position={[0, -0.8, 0]} fontSize={0.85} color="#ffffff" anchorX="center" anchorY="top" maxWidth={12} textAlign="center" depthTest={false} renderOrder={1} fog={false}>
+                <Text 
+                    font={fontUrl}
+                    position={[0, -0.8, 0]} 
+                    fontSize={0.85} 
+                    color="#ffffff" 
+                    anchorX="center" 
+                    anchorY="top" 
+                    maxWidth={12} 
+                    textAlign="center" 
+                    depthTest={false} 
+                    renderOrder={1} 
+                    fog={false}
+                >
                     {data.subtitle}
                 </Text>
-                <Text position={[0, -2.4, 0]} fontSize={0.7} color="#cccccc" anchorX="center" anchorY="top" maxWidth={14} textAlign="center" opacity={0.8} lineHeight={1.2} depthTest={false} renderOrder={1} fog={false}>
+                <Text 
+                    font={fontUrl}
+                    position={[0, -2.4, 0]} 
+                    fontSize={0.7} 
+                    color="#cccccc" 
+                    anchorX="center" 
+                    anchorY="top" 
+                    maxWidth={14} 
+                    textAlign="center" 
+                    opacity={0.8} 
+                    lineHeight={1.2} 
+                    depthTest={false} 
+                    renderOrder={1} 
+                    fog={false}
+                >
                     {data.description}
                 </Text>
             </group>

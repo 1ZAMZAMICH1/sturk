@@ -1,7 +1,30 @@
-/* ============================================================
+/* ============================================================ 
    HotelsPage.css — CONCEPT: «TURKIC PORTALS»
    Refined per user feedback: Perfect Centering & Synchronized Arches.
    ============================================================ */
+
+.hp-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #1a1410;
+    border: 2px solid var(--hp-gold);
+    color: var(--hp-gold);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+}
+
+.hp-modal-close:hover {
+    transform: rotate(90deg) scale(1.1);
+}
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair Display:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap');
 
@@ -10,6 +33,7 @@
     --hp-ink: #1a1410;
     --hp-ink-dim: rgba(26, 20, 16, 0.65);
     --hp-gold: #b8920f;
+    --hp-gold-deep: #7a5f0a;
     --hp-gold-w: #d4a420;
     --hp-terr: #8b4513;
     --hp-obsidian: #130f0c;
@@ -365,8 +389,8 @@
 .hp-modal-overlay {
     position: fixed;
     inset: 0;
-    z-index: 2000;
-    background: rgba(15, 12, 10, 0.85);
+    z-index: 12000;
+    background: rgba(10, 8, 6, 0.98);
     backdrop-filter: blur(15px);
     display: flex;
     align-items: center;
@@ -379,7 +403,8 @@
     width: 100%;
     max-width: 1250px;
     height: 85vh;
-    background-color: transparent;
+    background: transparent !important;
+    background-color: transparent !important;
     position: relative;
     overflow: hidden;
     box-shadow: 0 50px 150px rgba(0, 0, 0, 0.7);
@@ -451,7 +476,8 @@
         width: 100% !important;
         padding: 30px 20px !important;
         flex: none !important;
-        background: #fdfaf2 !important;
+        background-color: #130f0c !important; /* Глубокий черный */
+        background-image: none !important;
     }
     .hp-royal-name { font-size: 2.2rem !important; }
 }
@@ -537,6 +563,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    background-color: transparent !important;
     background-image: url('/src/assets/scroll-paper.png');
     background-size: 100% 100%;
 }
@@ -549,15 +576,22 @@
     font-size: 0.7rem;
     letter-spacing: 4px;
     text-transform: uppercase;
-    color: var(--hp-terr);
+    color: #8b4513; /* Терракота */
     margin-bottom: 5px;
+    font-weight: 600;
 }
 
 .hp-royal-name {
     font-family: 'Playfair Display', serif;
     font-size: 3.5rem;
-    color: #1a1410;
+    color: #fff; /* Белый на черном */
     margin-bottom: 10px;
+}
+
+.hp-price-tag {
+    color: var(--hp-gold-w); /* Яркое золото */
+    font-weight: 700;
+    font-size: 1.1rem;
 }
 
 .hp-royal-meta-row {
@@ -580,13 +614,14 @@
     font-size: 0.8rem;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: #666;
+    color: #a89a85; /* Песочный */
     cursor: pointer;
     position: relative;
+    font-weight: 500;
 }
 
 .hp-info-tabs button.active {
-    color: #1a1410;
+    color: var(--hp-gold-w); /* Яркое золото */
     font-weight: 600;
 }
 
@@ -607,9 +642,9 @@
 }
 
 .hp-description {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     line-height: 1.8;
-    color: var(--hp-ink);
+    color: #dcd3c1; /* Светлый основной текст */
     margin-bottom: 40px;
     font-weight: 400;
 }
@@ -622,8 +657,9 @@
     font-size: 0.75rem;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: var(--hp-gold);
+    color: var(--hp-gold-w); /* Яркое золото */
     margin-bottom: 15px;
+    font-weight: 700;
 }
 
 .hp-amenities-refined {
@@ -636,7 +672,13 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    color: #dcd3c1; /* Светлый */
+}
+
+.room-name {
+    color: #fff;
+    font-weight: 600;
 }
 
 .hp-amenity-pill .dot {
@@ -662,7 +704,7 @@
 }
 
 .hp-room-price {
-    color: var(--hp-gold);
+    color: var(--hp-gold-w); /* Яркое золото */
     font-weight: 700;
 }
 
@@ -683,8 +725,10 @@
     align-items: center;
     gap: 15px;
     padding: 10px;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.08); /* Очень легкая плашка */
+    border-radius: 8px;
     transition: 0.3s;
+    color: #dcd3c1; /* Светлый текст */
 }
 
 .hp-nearby-item-royal.clickable {
@@ -692,9 +736,9 @@
 }
 
 .hp-nearby-item-royal.clickable:hover {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.15);
     transform: translateX(5px);
-    border-left: 3px solid var(--hp-gold);
+    border-left: 3px solid var(--hp-gold-w);
 }
 
 .hp-nearby-item-royal img {
@@ -712,31 +756,39 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
-    background: #1a1410;
-    color: #fff;
+    gap: 10px;
+    background: var(--hp-gold); /* Золотая кнопка */
+    color: #1a1410; /* Темный текст */
     padding: 20px;
     text-transform: uppercase;
     letter-spacing: 4px;
     font-weight: 700;
     text-decoration: none;
     transition: 0.3s;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .hp-book-btn-royal:hover {
-    background: var(--hp-gold);
+    background: var(--hp-gold-w);
 }
 
 .hp-modal-close {
     position: absolute;
-    top: 30px;
-    right: 40px;
-    background: none;
-    border: none;
-    font-size: 2.5rem;
-    color: #1a1410;
+    top: 25px;
+    right: 25px;
+    background: #1a1410; /* Сплошной темный фон */
+    border: 2px solid var(--hp-gold);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--hp-gold);
     cursor: pointer;
-    z-index: 100;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
 @keyframes fadeIn {

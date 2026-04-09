@@ -1,8 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import './HotelsPage.css';
 import { Icons } from '../admin/AdminIcons';
+import LeafletMapWidget from './LeafletMapWidget';
 import { AttractionModal } from './CategoryPage';
 import { EditorialModal } from './RestaurantsPage';
 import { fetchSheetData } from '../services/api';
@@ -42,15 +44,50 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                 fetchSheetData('restaurants')
             ]);
             
-            const filteredAtts = (hotel.nearbyAttractions || []).map(id => atts.find(a => a.id === id)).filter(Boolean);
-            const filteredRestos = (hotel.nearbyRestaurants || []).map(id => restos.find(r => r.id === id)).filter(Boolean);
+            // Парсинг ID ближайших объектов
+            const parseIds = (val) => {
+                if (!val) return [];
+                if (Array.isArray(val)) return val;
+                if (typeof val === 'string') {
+                    if (val.startsWith('[')) {
+                        try { return JSON.parse(val); } catch(e) { return []; }
+                    }
+                    return val.split(',').map(s => s.trim()).filter(Boolean);
+                }
+                return [];
+            };
+
+            const attIds = parseIds(hotel.nearbyAttractions);
+            const resIds = parseIds(hotel.nearbyRestaurants);
+            
+            const filteredAtts = atts.filter(a => attIds.some(id => String(id) === String(a.id || a.ID || a.rowid)));
+            const filteredRestos = restos.filter(r => resIds.some(id => String(id) === String(r.id || r.ID || r.rowid)));
             
             setNearbyData({ attractions: filteredAtts, restaurants: filteredRestos });
         };
         loadNearby();
     }, [hotel]);
 
-    return (
+    // Парсинг JSON-полей отеля
+    const parsedGallery = useMemo(() => {
+        if (!hotel.gallery) return [hotel.image];
+        if (Array.isArray(hotel.gallery)) return hotel.gallery;
+        try { return JSON.parse(hotel.gallery); } catch(e) { return [hotel.image]; }
+    }, [hotel.gallery, hotel.image]);
+
+    const parsedRooms = useMemo(() => {
+        if (!hotel.rooms) return [];
+        if (Array.isArray(hotel.rooms)) return hotel.rooms;
+        try { return JSON.parse(hotel.rooms); } catch(e) { return []; }
+    }, [hotel.rooms]);
+
+    const parsedAmenities = useMemo(() => {
+        if (!hotel.amenities) return [];
+        if (Array.isArray(hotel.amenities)) return hotel.amenities;
+        try { return JSON.parse(hotel.amenities); } catch(e) { return []; }
+    }, [hotel.amenities]);
+
+    return createPortal(
         <div className="hp-modal-overlay" onClick={onClose}>
             <div className="hp-modal-royal" onClick={e => e.stopPropagation()}>
                 <div className="hp-royal-frame">
@@ -61,7 +98,7 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                         <div className="hp-royal-distance-tag"><Icons.Pin /> {hotel.distance}</div>
                         <div className="hp-royal-gallery">
                             <div className="hp-gallery-scroll-mini">
-                                {(hotel.gallery && hotel.gallery.length > 0 ? hotel.gallery : [hotel.image]).map((img, i) => (
+                                {parsedGallery.map((img, i) => (
                                     <img key={i} src={img} alt="" className={`hp-gal-thumb ${mainImage === img ? 'active' : ''}`} onClick={() => setMainImage(img)} />
                                 ))}
                             </div>
@@ -88,7 +125,7 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                                     <div className="hp-royal-section">
                                         <h4 className="hp-sec-title">{t('hotels_page.amenities_title')}</h4>
                                         <div className="hp-amenities-refined">
-                                            {hotel.amenities?.map(a => {
+                                            {parsedAmenities.map(a => {
                                                 const Icon = AMENITY_MAP[a] || Icons.Star;
                                                 return (
                                                     <div key={a} className="hp-amenity-pill">
@@ -100,19 +137,29 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                                         </div>
                                     </div>
                                     <div className="hp-royal-section">
-                                        <h4 className="hp-sec-title">{t('hotels_page.address_title')}</h4>
-                                        <p style={{ color: 'var(--hp-ink)' }}>{hotel[`location_${i18n.language}`] || hotel.location_ru || hotel.location}</p>
+                                        <h4 className="hp-sec-title">{t('restos_page.sec_location')}</h4>
+                                        <div className="hp-mini-map-container" style={{ height: '220px', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(26,20,16,0.1)', marginBottom: '15px' }}>
+                                            <LeafletMapWidget 
+                                                lat={hotel.lat ? parseFloat(hotel.lat) : 0} 
+                                                lng={hotel.lng ? parseFloat(hotel.lng) : 0} 
+                                                title={hotel.name} 
+                                            />
+                                        </div>
+                                        <div className="hp-location-text" style={{ fontSize: '0.9rem', color: 'var(--hp-ink)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <Icons.Pin style={{ width: '14px' }} />
+                                            <span>{hotel.city}, {hotel[`location_${i18n.language}`] || hotel.location_ru || hotel.location}</span>
+                                        </div>
                                     </div>
                                 </div>
                             )}
-                            {activeTab === 'rooms' && (
+                             {activeTab === 'rooms' && (
                                 <div className="slide-in">
                                     <div className="hp-rooms-list-refined">
-                                        {hotel.rooms?.map(room => {
+                                        {parsedRooms.map((room, idx) => {
                                             const RoomIcon = Icons[room.icon] || Icons.Bed;
                                             const roomName = room[`name_${i18n.language}`] || room.name_ru || room.name;
                                             return (
-                                                <div key={room.name + roomName} className="hp-room-card-royal">
+                                                <div key={idx} className="hp-room-card-royal">
                                                     <div className="room-header-r">
                                                         <RoomIcon style={{ width: '20px', color: 'var(--hp-gold)' }} />
                                                         <span className="room-name">{roomName}</span>
@@ -165,7 +212,8 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 

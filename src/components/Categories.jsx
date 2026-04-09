@@ -273,6 +273,14 @@ const PortalCard = ({ index, url, title, color, position, rotation, hoveredState
   const { i18n } = useTranslation();
   const isHovered = hoveredState === index;
 
+  // ФИНАЛЬНЫЕ КООРДИНАТЫ
+  const debugState = {
+    0: { zoom: 0.9, offsetX: -0.33, offsetY: 0.02 },
+    1: { zoom: 0.85, offsetX: -0.21, offsetY: -0.03 },
+    2: { zoom: 0.95, offsetX: -0.31, offsetY: 0.02 }
+  };
+  const { zoom = 1, offsetX = 0, offsetY = 0 } = debugState[index] || {};
+
   // Изображения контента из ассетов
   const archContentAssets = [gor2, ist2, duh2];
   const activeUrl = archContentAssets[index % 3];
@@ -309,19 +317,23 @@ const PortalCard = ({ index, url, title, color, position, rotation, hoveredState
 
       texture.center.set(0.5, 0.5);
       
+      const finalZoom = zoom;
+      
       if (imageAspect > archAspect) {
-        texture.repeat.set(archAspect / imageAspect, 1);
-        texture.offset.x = (1 - texture.repeat.x) / 2;
+        texture.repeat.set((archAspect / imageAspect) * finalZoom, 1 * finalZoom);
+        texture.offset.x = ((1 - (archAspect / imageAspect) * finalZoom) / 2) + offsetX;
+        texture.offset.y = ((1 - finalZoom) / 2) + offsetY;
       } else {
-        texture.repeat.set(1, imageAspect / archAspect);
-        texture.offset.y = (1 - texture.repeat.y) / 2;
+        texture.repeat.set(1 * finalZoom, (imageAspect / archAspect) * finalZoom);
+        texture.offset.x = ((1 - finalZoom) / 2) + offsetX;
+        texture.offset.y = ((1 - (imageAspect / archAspect) * finalZoom) / 2) + offsetY;
       }
 
       texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
       texture.minFilter = THREE.LinearFilter;
       texture.needsUpdate = true;
     }
-  }, [texture]);
+  }, [texture, zoom, offsetX, offsetY]);
 
 
   const { frameGeometry, imageGeometry } = useMemo(() => {
@@ -484,7 +496,7 @@ const Categories = () => {
   const { ref: sectionRef, inView: canvasReady } = useInView({ rootMargin: '300px' });
 
   return (
-    <div ref={sectionRef} className="categories-container">
+    <div ref={sectionRef} className="categories-container" style={{ position: 'relative' }}>
       <div className="categories-transition-top"></div>
 
       <div className="categories-header">

@@ -10,6 +10,7 @@
     --hp-ink: #1a1410;
     --hp-ink-dim: rgba(26, 20, 16, 0.65);
     --hp-gold: #b8920f;
+    --hp-gold-deep: #7a5f0a; /* Темнее для текста на бумаге */
     --hp-gold-w: #d4a420;
     --hp-terr: #8b4513;
     --hp-obsidian: #130f0c;
@@ -366,8 +367,8 @@
 .hp-modal-overlay {
     position: fixed;
     inset: 0;
-    z-index: 2000;
-    background: rgba(15, 12, 10, 0.85);
+    z-index: 12000;
+    background: rgba(10, 8, 6, 0.98);
     backdrop-filter: blur(15px);
     display: flex;
     align-items: center;
@@ -382,7 +383,7 @@
     width: 100%;
     max-width: 1250px;
     height: 85vh;
-    background: none !important;
+    background: transparent !important;
     background-color: transparent !important;
     position: relative;
     overflow: visible;
@@ -400,7 +401,7 @@
     height: 100%;
     position: relative;
     z-index: 10;
-    background: none !important;
+    background: transparent !important;
     background-color: transparent !important;
     box-shadow: none !important;
     border: none !important;
@@ -481,9 +482,9 @@
     display: flex;
     flex-direction: column;
     overflow: visible;
+    background-color: transparent !important;
     background-image: url('/src/assets/scroll-paper.png');
     background-size: 100% 100%;
-    background-color: transparent !important;
     background-repeat: no-repeat;
     position: relative;
     box-shadow: none !important;
@@ -497,15 +498,22 @@
     font-size: 0.7rem;
     letter-spacing: 4px;
     text-transform: uppercase;
-    color: var(--hp-terr);
+    color: #8b4513; /* Явно терракотовый */
     margin-bottom: 5px;
+    font-weight: 600;
 }
 
 .hp-royal-name {
     font-family: 'Playfair Display', serif;
     font-size: 3.5rem;
-    color: #1a1410;
+    color: #000; /* Чистый черный для контраста */
     margin-bottom: 10px;
+}
+
+.hp-price-tag {
+    color: var(--hp-gold-deep);
+    font-weight: 700;
+    font-size: 1.2rem;
 }
 
 .hp-royal-meta-row {
@@ -528,9 +536,10 @@
     font-size: 0.8rem;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: #666;
+    color: #4a3b30; /* Более темный, чем #666 */
     cursor: pointer;
     position: relative;
+    font-weight: 500;
 }
 
 .hp-info-tabs button.active {
@@ -555,11 +564,11 @@
 }
 
 .hp-description {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     line-height: 1.8;
-    color: var(--hp-ink);
+    color: #000; /* Максимальный контраст на бумаге */
     margin-bottom: 40px;
-    font-weight: 400;
+    font-weight: 500; /* Чуть плотнее */
 }
 
 .hp-royal-section {
@@ -570,8 +579,9 @@
     font-size: 0.75rem;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: var(--hp-gold);
+    color: var(--hp-gold-deep); /* Темное золото */
     margin-bottom: 15px;
+    font-weight: 700;
 }
 
 .hp-amenities-refined {
@@ -585,6 +595,8 @@
     align-items: center;
     gap: 10px;
     font-size: 0.95rem;
+    color: #1a1410; /* Темнее для читаемости */
+    font-weight: 400;
 }
 
 .hp-amenity-pill .dot {
@@ -602,15 +614,21 @@
 
 .hp-room-card-royal {
     padding: 20px;
-    border: 1px solid rgba(26, 20, 16, 0.1);
-    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(26, 20, 16, 0.15);
+    background: rgba(255, 255, 255, 0.4);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-radius: 4px;
+}
+
+.room-name {
+    color: #1a1410;
+    font-weight: 600;
 }
 
 .hp-room-price {
-    color: var(--hp-gold);
+    color: var(--hp-gold-deep); /* Темное золото */
     font-weight: 700;
 }
 
@@ -677,14 +695,27 @@
 
 .hp-modal-close {
     position: absolute;
-    top: 30px;
-    right: 40px;
-    background: none;
-    border: none;
-    font-size: 2.5rem;
-    color: #1a1410;
+    top: 25px;
+    right: 25px;
+    background: #1a1410;
+    border: 2px solid var(--hp-gold);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--hp-gold);
     cursor: pointer;
-    z-index: 100;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.hp-modal-close:hover {
+    transform: rotate(90deg) scale(1.1);
+    background: var(--hp-gold);
+    color: #1a1410;
 }
 
 @keyframes fadeIn {

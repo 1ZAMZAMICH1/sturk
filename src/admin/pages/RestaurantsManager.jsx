@@ -8,29 +8,39 @@ const RestaurantsManager = () => {
     const [loading, setLoading] = useState(true);
     const [selectedRes, setSelectedRes] = useState(null);
 
+    const [allHotels, setAllHotels] = useState([]);
+    const [allAttractions, setAllAttractions] = useState([]);
+
     useEffect(() => {
-        const loadRestaurants = async () => {
-            const data = await fetchSheetData('restaurants');
-            setRestaurants(data);
+        const loadAll = async () => {
+            const [resData, hotData, attData] = await Promise.all([
+                fetchSheetData('restaurants'),
+                fetchSheetData('hotels'),
+                fetchSheetData('attractions')
+            ]);
+            setRestaurants(resData);
+            setAllHotels(hotData);
+            setAllAttractions(attData);
             setLoading(false);
         };
-        loadRestaurants();
+        loadAll();
     }, []);
 
     const handleSave = async (updated) => {
-        const success = await updateSheetData('restaurants', 'update', updated);
+        const action = updated.id ? 'update' : 'add';
+        const success = await updateSheetData('restaurants', action, updated);
         if (success) {
-            setRestaurants(prev => {
-                const exists = prev.find(r => r.id === updated.id);
-                if (exists) {
-                    return prev.map(r => r.id === updated.id ? updated : r);
-                }
-                return [...prev, updated];
-            });
+            // Если это было добавление, перезагружаем список, чтобы получить ID от сервера (или просто перезагружаем)
+            if (action === 'add') {
+                const data = await fetchSheetData('restaurants');
+                setRestaurants(data);
+            } else {
+                setRestaurants(prev => prev.map(r => r.id === updated.id ? updated : r));
+            }
             setSelectedRes(null);
-            alert(`Заведение "${updated.name}" сохранено в Google Таблицу`);
+            alert(`Заведение "${updated.name_ru || updated.name}" сохранено`);
         } else {
-            alert('Ошибка при сохранении в Таблицу');
+            alert('Ошибка при сохранении');
         }
     };
 
@@ -95,6 +105,8 @@ const RestaurantsManager = () => {
                     restaurant={selectedRes}
                     onSave={handleSave}
                     onClose={() => setSelectedRes(null)}
+                    allHotels={allHotels}
+                    allAttractions={allAttractions}
                 />
             )}
         </div>

@@ -3,6 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Text, Float, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import './RegionalHistory.css';
 
 import petro1 from '../assets/petroglyph-1.png';
@@ -130,11 +131,18 @@ const CinematicAtmosphere = React.memo(() => {
 // 2. СЛАЙД — без useState в useFrame!
 // ------------------------------------------------------------------
 const SlideMarker = ({ data }) => {
+    const { i18n } = useTranslation();
     const texture = useTexture(data.image);
     const groupRef = useRef();
     const imgX = data.align === 'right' ? 8.5 : -8.5;
     const txtX = data.align === 'right' ? -1.5 : 1.5;
     const anchorX = data.align === 'right' ? 'right' : 'left';
+    const textAlign = data.align === 'right' ? 'right' : 'left';
+
+    // Жесткие ссылки на NPM-пакеты Fontsource (самый стабильный вариант для WebGL)
+    const fontUrl = i18n.language === 'zh'
+        ? "https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc/files/noto-serif-sc-chinese-simplified-400-normal.woff"
+        : "https://cdn.jsdelivr.net/npm/@fontsource/cormorant-garamond/files/cormorant-garamond-cyrillic-400-normal.woff";
 
     useFrame((state) => {
         if (!groupRef.current) return;
@@ -156,15 +164,54 @@ const SlideMarker = ({ data }) => {
                 </group>
             </Float>
 
-            {/* Текст слегка уменьшен для вмещения огромных новых абзацев без наслоений */}
+            {/* Текст: исправлена верстка textAlign для правых слайдов и добавлен шрифт */}
             <group position={[txtX, 1.5, 0]}>
-                <Text fontSize={1.8} color="#d4af37" anchorX={anchorX} anchorY="bottom" outlineWidth={0.04} outlineColor="#000" depthTest={false} renderOrder={1} fog={false} maxWidth={12}>
+                <Text 
+                    font={fontUrl}
+                    fontSize={2.0} 
+                    color="#d4af37" 
+                    anchorX={anchorX} 
+                    anchorY="bottom" 
+                    textAlign={textAlign}
+                    outlineWidth={0.04} 
+                    outlineColor="#000" 
+                    depthTest={false} 
+                    renderOrder={1} 
+                    fog={false} 
+                    maxWidth={12}
+                >
                     {data.title}
                 </Text>
-                <Text position={[0, -1.0, 0]} fontSize={0.9} color="#ffffff" anchorX={anchorX} anchorY="top" maxWidth={12} depthTest={false} renderOrder={1} fog={false}>
+                <Text 
+                    font={fontUrl}
+                    position={[0, -1.0, 0]} 
+                    fontSize={1.0} 
+                    color="#ffffff" 
+                    anchorX={anchorX} 
+                    anchorY="top" 
+                    textAlign={textAlign}
+                    maxWidth={12} 
+                    depthTest={false} 
+                    renderOrder={1} 
+                    fog={false}
+                >
                     {data.subtitle}
                 </Text>
-                <Text position={[0, -2.8, 0]} fontSize={0.75} color="#cccccc" anchorX={anchorX} anchorY="top" maxWidth={14} opacity={0.8} lineHeight={1.2} depthTest={false} renderOrder={1} fog={false}>
+                <Text 
+                    font={fontUrl}
+                    position={[0, -2.8, 0]} 
+                    fontSize={0.8} 
+                    color="#cccccc" 
+                    anchorX={anchorX} 
+                    anchorY="top" 
+                    textAlign={textAlign}
+                    maxWidth={14} 
+                    opacity={0.8} 
+                    lineHeight={1.2} 
+                    depthTest={false} 
+                    renderOrder={1} 
+                    fog={false}
+                >
                     {data.description}
                 </Text>
             </group>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import './RestaurantsPage.css';
 import { Icons } from '../admin/AdminIcons';
+import LeafletMapWidget from './LeafletMapWidget';
 import heroTextImg from '../assets/hero-text.png';
 
 // We need access to Attractions & Hotels for cross-modal linking
@@ -15,16 +17,60 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
     const { t, i18n } = useTranslation();
     const [mainImg, setMainImg] = useState(res.image);
 
-    const nearbyAtts = (res.nearbyAttractions || []).map(id => {
-        const all = [...attractionsData.city, ...attractionsData.spirit, ...attractionsData.nature];
-        return all.find(a => a.id === id);
-    }).filter(Boolean);
+    const [nearbyAtts, setNearbyAtts] = useState([]);
+    const [nearbyHots, setNearbyHots] = useState([]);
 
-    const nearbyHots = (res.nearbyHotels || []).map(id => {
-        return hotelsData.find(h => h.id === id);
-    }).filter(Boolean);
+    useEffect(() => {
+        const loadNearby = async () => {
+            try {
+                const [allAt, allHo] = await Promise.all([
+                    fetchSheetData('attractions'),
+                    fetchSheetData('hotels')
+                ]);
 
-    return (
+                // Вспомогательная функция для получения ID из объекта (проверяет разные регистры)
+                const getObjId = (obj) => {
+                    const id = obj.id || obj.ID || obj.Id || obj.rowid || '';
+                    return String(id).trim();
+                };
+
+                const parseIds = (val) => {
+                    if (!val) return [];
+                    let raw = [];
+                    if (Array.isArray(val)) {
+                        raw = val;
+                    } else {
+                        // Чистим строку от скобок и кавычек, если они пришли из базы как текст
+                        const cleaned = String(val).replace(/[\[\]"]/g, '');
+                        raw = cleaned.split(',').map(s => s.trim());
+                    }
+                    return raw.map(id => String(id).trim()).filter(id => id.length > 0);
+                };
+
+                const targetAttIds = parseIds(res.nearbyAttractions || res.nearbyatts || res.nearby_attractions);
+                const targetHotIds = parseIds(res.nearbyHotels || res.nearbyhots || res.nearby_hotels);
+
+                // Собираем результаты
+                const finalAtts = (allAt || []).filter(a => {
+                    const aid = getObjId(a);
+                    return aid && targetAttIds.some(tid => aid === tid || aid.includes(tid) || tid.includes(aid));
+                });
+
+                const finalHots = (allHo || []).filter(h => {
+                    const hid = getObjId(h);
+                    return hid && targetHotIds.some(tid => hid === tid || hid.includes(tid) || tid.includes(hid));
+                });
+
+                setNearbyAtts(finalAtts);
+                setNearbyHots(finalHots);
+            } catch (err) {
+                console.error("Debug Relations:", err);
+            }
+        };
+        loadNearby();
+    }, [res]);
+
+    return createPortal(
         <div className="rp-modal-overlay" onClick={onClose}>
             <div className="rp-modal-container" onClick={e => e.stopPropagation()}>
                 <button className="rp-modal-close" onClick={onClose}>
@@ -61,8 +107,14 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
                                 <span>·</span>
                                 <span>{res.priceTag}</span>
                                 <span>·</span>
-                                <span>{res.city}</span>
+                                <span>{res[`city_${i18n.language}`] || res.city_ru || res.city}</span>
                             </div>
+                            {(res[`hours_${i18n.language}`] || res.hours_ru || res.hours) && (
+                                <div className="rp-m-meta" style={{ marginTop: '5px', opacity: 0.8 }}>
+                                    <Icons.Clock style={{ width: 12, marginRight: 5 }} />
+                                    <span>{res[`hours_${i18n.language}`] || res.hours_ru || res.hours}</span>
+                                </div>
+                            )}
                              {res[`signature_${i18n.language}`] || res.signature_ru || res.signature ? (
                                 <div className="rp-m-signature-inline">
                                     <Icons.Crown style={{ width: 14, color: 'var(--rp-sand)' }} />
@@ -80,7 +132,7 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
                             <div className="rp-m-sec">
                                 <div className="rp-m-sec-title">{t('restos_page.sec_gastronomy')}</div>
                                  <div className="rp-m-menu">
-                                    {res.menu.map((m, idx) => {
+                                    {(typeof res.menu === 'string' ? JSON.parse(res.menu) : res.menu).map((m, idx) => {
                                         const itemName = m[`item_${i18n.language}`] || m.item_ru || m.item;
                                         return (
                                             <div key={m.item + idx} className="rp-menu-row">
@@ -132,10 +184,11 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
                             <div className="rp-m-sec-title">{t('restos_page.sec_location')}</div>
                             <div className="rp-map-placeholder">
                                 <div className="rp-map-view">
-                                    {/* Mock map visual */}
-                                    <div className="rp-map-pin-pulse">
-                                        <Icons.Pin />
-                                    </div>
+                                    <LeafletMapWidget 
+                                        lat={res.lat ? parseFloat(res.lat) : 0} 
+                                        lng={res.lng ? parseFloat(res.lng) : 0} 
+                                        title={res.name} 
+                                    />
                                 </div>
                                 <div className="rp-map-address">
                                     <Icons.Pin style={{ width: 14 }} />
@@ -159,7 +212,8 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 
@@ -220,7 +274,20 @@ const RestaurantsPage = () => {
 
     const finalFiltered = (restaurants || []).filter(isFiltered);
 
-    const handleOpenOther = (type, data) => {
+    const handleOpenOther = (type, rawData) => {
+        // Подготавливаем данные, чтобы модалка не "сломалась" от сырых строк из БД
+        const data = { ...rawData };
+        
+        // Парсим галерею, если это строка
+        if (data.gallery && typeof data.gallery === 'string') {
+            try { data.gallery = JSON.parse(data.gallery); } catch(e) { data.gallery = []; }
+        }
+        
+        // Создаем объект coordinates для совместимости
+        if (data.lat && data.lng) {
+            data.coordinates = { lat: parseFloat(data.lat), lng: parseFloat(data.lng) };
+        }
+
         setOtherModal({ type, data });
     };
 

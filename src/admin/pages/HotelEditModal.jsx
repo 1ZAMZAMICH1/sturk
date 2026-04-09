@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { Icons } from '../AdminIcons';
 import { uploadImage } from '../../services/cloudinaryService';
-import { attractionsData, restaurantsData } from '../../data/attractionsData';
+import { fetchSheetData } from '../../services/api';
+import { useEffect } from 'react';
 
 const AMENITIES = [
     { id: 'Wi-Fi', name: 'Wi-Fi', icon: 'WiFi' },
@@ -144,10 +145,37 @@ const MultilangGroup = ({ label, fieldName, formData, onChange, isTextarea = fal
 };
 
 const HotelEditModal = ({ hotel, onSave, onClose }) => {
-    const [formData, setFormData] = useState({ ...hotel });
+    const parseJSON = (val, fallback = []) => {
+        if (!val) return fallback;
+        if (typeof val !== 'string') return val;
+        try { return JSON.parse(val); } catch(e) { return fallback; }
+    };
+
+    const [formData, setFormData] = useState({ 
+        ...hotel,
+        rooms: parseJSON(hotel.rooms),
+        amenities: parseJSON(hotel.amenities),
+        gallery: parseJSON(hotel.gallery),
+        nearbyAttractions: parseJSON(hotel.nearbyAttractions),
+        nearbyRestaurants: parseJSON(hotel.nearbyRestaurants)
+    });
     const [activeTab, setActiveTab] = useState('general');
     const [isAddingCity, setIsAddingCity] = useState(false);
     const [newCityName, setNewCityName] = useState('');
+    const [allAtts, setAllAtts] = useState([]);
+    const [allRestos, setAllRestos] = useState([]);
+
+    useEffect(() => {
+        const loadAll = async () => {
+            const [atts, restos] = await Promise.all([
+                fetchSheetData('attractions'),
+                fetchSheetData('restaurants')
+            ]);
+            setAllAtts(atts.map(a => ({ ...a, name: a.name_ru || a.name })));
+            setAllRestos(restos.map(r => ({ ...r, name: r.name_ru || r.name })));
+        };
+        loadAll();
+    }, []);
 
     const handleChange = (name, value) => {
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -201,7 +229,6 @@ const HotelEditModal = ({ hotel, onSave, onClose }) => {
     };
 
     const cities = ['Туркестан', 'Отрар', 'Сауран', 'Кентау'];
-    const allAttractions = [...attractionsData.city, ...attractionsData.spirit, ...attractionsData.nature];
 
     return (
         <div className="admin-modal-overlay" onClick={onClose}>
@@ -277,6 +304,16 @@ const HotelEditModal = ({ hotel, onSave, onClose }) => {
                             <div className="admin-form-group">
                                 <label className="label-mini-gold">Ценовая категория ($$$$)</label>
                                 <input name="priceTag" value={formData.priceTag} onChange={(e) => handleChange('priceTag', e.target.value)} />
+                            </div>
+
+                            <div className="admin-form-group">
+                                <label className="label-mini-gold">Широта (Lat)</label>
+                                <input type="number" step="any" name="lat" value={formData.lat || ''} onChange={(e) => handleChange('lat', e.target.value)} placeholder="Напр. 43.2974" />
+                            </div>
+
+                            <div className="admin-form-group">
+                                <label className="label-mini-gold">Долгота (Lng)</label>
+                                <input type="number" step="any" name="lng" value={formData.lng || ''} onChange={(e) => handleChange('lng', e.target.value)} placeholder="Напр. 68.2710" />
                             </div>
 
                             <ImageUpload
@@ -413,7 +450,7 @@ const HotelEditModal = ({ hotel, onSave, onClose }) => {
                             <div className="admin-form-group full">
                                 <label className="label-mini-gold">Ближайшие достопримечательности</label>
                                 <VisualSelect
-                                    options={allAttractions}
+                                    options={allAtts}
                                     selectedIds={formData.nearbyAttractions || []}
                                     onChange={(ids) => handleChange('nearbyAttractions', ids)}
                                 />
@@ -421,7 +458,7 @@ const HotelEditModal = ({ hotel, onSave, onClose }) => {
                             <div className="admin-form-group full">
                                 <label className="label-mini-gold">Ближайшие рестораны</label>
                                 <VisualSelect
-                                    options={restaurantsData}
+                                    options={allRestos}
                                     selectedIds={formData.nearbyRestaurants || []}
                                     onChange={(ids) => handleChange('nearbyRestaurants', ids)}
                                 />

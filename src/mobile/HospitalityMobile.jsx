@@ -5,6 +5,8 @@ import { fetchSheetData } from '../services/api';
 import { Canvas } from '@react-three/fiber';
 import { Cloud, Sparkles } from '@react-three/drei';
 import { EditorialModal } from './RestaurantsPageMobile';
+import { AttractionModal } from './CategoryPageMobile';
+import { HotelModal } from './HotelsPageMobile';
 import './HospitalityMobile.css';
 
 // Тот же 3D-фон что и на ПК
@@ -20,13 +22,33 @@ const DarkAtmosphere = () => (
 const HospitalityMobile = () => {
   const { t, i18n } = useTranslation();
   const [restaurants, setRestaurants] = useState([]);
+  const [atts, setAtts] = useState([]);
+  const [hots, setHots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedResto, setSelectedResto] = useState(null);
+  const [otherModal, setOtherModal] = useState(null);
+
+  const handleOpenOther = (type, rawData) => {
+    const data = { ...rawData };
+    if (data.gallery && typeof data.gallery === 'string') {
+        try { data.gallery = JSON.parse(data.gallery); } catch(e) { data.gallery = []; }
+    }
+    if (data.lat && data.lng) {
+        data.coordinates = { lat: parseFloat(data.lat), lng: parseFloat(data.lng) };
+    }
+    setOtherModal({ type, data });
+  };
 
   useEffect(() => {
     const load = async () => {
-      const data = await fetchSheetData('restaurants');
-      setRestaurants(Array.isArray(data) && data.length > 0 ? data : []);
+      const [rData, aData, hData] = await Promise.all([
+        fetchSheetData('restaurants'),
+        fetchSheetData('attractions'),
+        fetchSheetData('hotels')
+      ]);
+      setRestaurants(Array.isArray(rData) && rData.length > 0 ? rData : []);
+      setAtts(aData || []);
+      setHots(hData || []);
       setLoading(false);
     };
     load();
@@ -76,8 +98,25 @@ const HospitalityMobile = () => {
       {selectedResto && (
         <EditorialModal 
             res={selectedResto}
+            atts={atts}
+            hots={hots}
             onClose={() => setSelectedResto(null)}
+            onOpenOther={handleOpenOther}
         />
+      )}
+
+      {otherModal?.type === 'attraction' && (
+          <AttractionModal
+              item={otherModal.data}
+              onClose={() => setOtherModal(null)}
+          />
+      )}
+
+      {otherModal?.type === 'hotel' && (
+          <HotelModal
+              hotel={otherModal.data}
+              onClose={() => setOtherModal(null)}
+          />
       )}
     </div>
   );

@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { fetchSheetData } from '../services/api';
 import { HotelModal } from './HotelsPage';
+import { AttractionModal } from './CategoryPage';
+import { EditorialModal } from './RestaurantsPage';
 import './Hotels.css';
 
 const Hotels = () => {
@@ -10,14 +12,20 @@ const Hotels = () => {
     const [hotels, setHotels] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedHotel, setSelectedHotel] = useState(null);
+    const [selectedOther, setSelectedOther] = useState(null);
+    const [restos, setRestos] = useState([]);
 
     useEffect(() => {
-        const loadHotels = async () => {
-            const data = await fetchSheetData('hotels');
-            setHotels(data.length > 0 ? data : []);
+        const loadAll = async () => {
+            const [hots, rs] = await Promise.all([
+                fetchSheetData('hotels'),
+                fetchSheetData('restaurants')
+            ]);
+            setHotels(hots.length > 0 ? hots : []);
+            setRestos(rs);
             setLoading(false);
         };
-        loadHotels();
+        loadAll();
     }, [i18n.language]);
 
     if (loading) return <div className="loading-state">{t('hotels.loading')}</div>;
@@ -72,6 +80,25 @@ const Hotels = () => {
                 <HotelModal 
                     hotel={selectedHotel} 
                     onClose={() => setSelectedHotel(null)} 
+                    onOpenOther={(item, type) => setSelectedOther({ item, type })}
+                />
+            )}
+
+            {selectedOther?.type === 'attraction' && (
+                <AttractionModal 
+                    item={selectedOther.item} 
+                    hots={hotels} 
+                    restos={restos} 
+                    onClose={() => setSelectedOther(null)} 
+                    onNavigate={(newItem) => setSelectedOther({ ...selectedOther, item: newItem })} 
+                />
+            )}
+
+            {selectedOther?.type === 'restaurant' && (
+                <EditorialModal 
+                    res={selectedOther.item} 
+                    onClose={() => setSelectedOther(null)} 
+                    onOpenOther={(item, type) => setSelectedOther({ item, type })}
                 />
             )}
         </div>

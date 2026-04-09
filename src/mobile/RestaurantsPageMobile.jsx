@@ -1,9 +1,11 @@
 // src/mobile/RestaurantsPageMobile.jsx — МОБИЛЬНАЯ ВЕРСИЯ «НОМАДИЧЕСКАЯ ЭЛЕГАНТНОСТЬ» 
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import './RestaurantsPageMobile.css';
 import { Icons } from '../admin/AdminIcons';
+import LeafletMapWidget from '../components/LeafletMapWidget';
 import { AttractionModal } from '../mobile/CategoryPageMobile';
 import { HotelModal } from '../mobile/HotelsPageMobile'; 
 import { fetchSheetData } from '../services/api';
@@ -21,13 +23,40 @@ const heroImages = {
 };
 
 export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = [] }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [mainImg, setMainImg] = useState(res.image);
 
-    const nearbyAtts = (res.nearbyAttractions || []).map(id => atts.find(a => a.id === id)).filter(Boolean);
-    const nearbyHots = (res.nearbyHotels || []).map(id => hots.find(h => h.id === id)).filter(Boolean);
+    const getObjId = (obj) => {
+        const id = obj.id || obj.ID || obj.Id || obj.rowid || '';
+        return String(id).trim();
+    };
 
-    return (
+    const parseIds = (val) => {
+        if (!val) return [];
+        let raw = [];
+        if (Array.isArray(val)) {
+            raw = val;
+        } else {
+            const cleaned = String(val).replace(/[\[\]"]/g, '');
+            raw = cleaned.split(',').map(s => s.trim());
+        }
+        return raw.map(id => String(id).trim()).filter(id => id.length > 0);
+    };
+
+    const targetAttIds = parseIds(res.nearbyAttractions || res.nearbyatts || res.nearby_attractions);
+    const targetHotIds = parseIds(res.nearbyHotels || res.nearbyhots || res.nearby_hotels);
+
+    const nearbyAtts = (atts || []).filter(a => {
+        const aid = getObjId(a);
+        return aid && targetAttIds.some(tid => aid === tid || aid.includes(tid) || tid.includes(aid));
+    });
+    
+    const nearbyHots = (hots || []).filter(h => {
+        const hid = getObjId(h);
+        return hid && targetHotIds.some(tid => hid === tid || hid.includes(tid) || tid.includes(hid));
+    });
+
+    return createPortal(
         <div className="rp-mob-modal-overlay" onClick={onClose}>
             <div className="rp-mob-modal-container" onClick={e => e.stopPropagation()}>
                 <button className="rp-mob-modal-close" onClick={onClose}>
@@ -58,38 +87,47 @@ export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = []
                 <div className="rp-mob-modal-content">
                     <div className="rp-mob-modal-scroll">
                         <div className="rp-mob-modal-header">
-                            <h2 className="rp-mob-m-title">{res.name}</h2>
+                            <h2 className="rp-mob-m-title">{res[`name_${i18n.language}`] || res.name_ru || res.name}</h2>
                             <div className="rp-mob-m-meta">
-                                <span>{res.cuisine}</span>
+                                <span>{t(`restos_page.cuisines.${res.cuisine}`, { defaultValue: res.cuisine })}</span>
                                 <span>·</span>
                                 <span>{res.priceTag}</span>
                                 <span>·</span>
-                                <span>{res.city || t('category.default_region')}</span>
+                                <span>{res[`city_${i18n.language}`] || res.city_ru || res.city || t('category.default_region')}</span>
                             </div>
-                            {res.signature && (
+                            {(res[`hours_${i18n.language}`] || res.hours_ru || res.hours) && (
+                                <div className="rp-mob-m-meta" style={{ marginTop: '5px', opacity: 0.8 }}>
+                                    <Icons.Clock style={{ width: 12, marginRight: 5 }} />
+                                    <span>{res[`hours_${i18n.language}`] || res.hours_ru || res.hours}</span>
+                                </div>
+                            )}
+                            {(res[`signature_${i18n.language}`] || res.signature_ru || res.signature) && (
                                 <div className="rp-mob-m-signature-inline">
                                     <Icons.Crown style={{ width: 14, color: 'var(--rp-sand)' }} />
-                                    <span>{t('restos_page.recommended_label', { name: res.signature })}</span>
+                                    <span>{t('restos_page.recommended_label', { name: res[`signature_${i18n.language}`] || res.signature_ru || res.signature })}</span>
                                 </div>
                             )}
                         </div>
 
                         <div className="rp-mob-m-sec">
                             <div className="rp-mob-m-sec-title">{t('restos_page.sec_history')}</div>
-                            <p className="rp-mob-m-desc">{res.description}</p>
+                            <p className="rp-mob-m-desc">{res[`description_${i18n.language}`] || res.description_ru || res.description}</p>
                         </div>
 
                         {res.menu && (
                             <div className="rp-mob-m-sec">
                                 <div className="rp-mob-m-sec-title">{t('restos_page.sec_gastronomy')}</div>
                                 <div className="rp-mob-m-menu">
-                                    {res.menu.map(m => (
-                                        <div key={m.item} className="rp-mob-menu-row">
-                                            <span className="rp-mob-menu-name">{m.item}</span>
-                                            <span className="rp-mob-menu-dots" />
-                                            <span className="rp-mob-menu-price">{m.price}</span>
-                                        </div>
-                                    ))}
+                                    {(typeof res.menu === 'string' ? JSON.parse(res.menu) : res.menu).map((m, idx) => {
+                                        const itemName = m[`item_${i18n.language}`] || m.item_ru || m.item;
+                                        return (
+                                            <div key={idx} className="rp-mob-menu-row">
+                                                <span className="rp-mob-menu-name">{itemName}</span>
+                                                <span className="rp-mob-menu-dots" />
+                                                <span className="rp-mob-menu-price">{m.price}</span>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             </div>
                         )}
@@ -116,7 +154,7 @@ export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = []
                                 <div className="rp-mob-m-sec-title">{t('restos_page.sec_nearby_hots')}</div>
                                 <div className="rp-mob-nearby-modern-grid">
                                     {nearbyHots.map(hot => (
-                                        <div key={hot.id} className="rp-mob-nearby-card" onClick={() => onOpenOther && onOpenOther('hotel', hot)}>
+                                        <div key={hot.id} className="rp-mob-nearby-card" onClick={() => onOpenOther && onOpenOther(hot, 'hotel')}>
                                             <img src={hot.image} alt="" />
                                             <div className="rp-mob-nearby-info">
                                                 <strong>{hot.name}</strong>
@@ -132,9 +170,11 @@ export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = []
                             <div className="rp-mob-m-sec-title">{t('restos_page.sec_location')}</div>
                             <div className="rp-mob-map-placeholder">
                                 <div className="rp-mob-map-view">
-                                    <div className="rp-mob-map-pin-pulse">
-                                        <Icons.Pin />
-                                    </div>
+                                    <LeafletMapWidget 
+                                        lat={res.lat ? parseFloat(res.lat) : 0} 
+                                        lng={res.lng ? parseFloat(res.lng) : 0} 
+                                        title={res.name} 
+                                    />
                                 </div>
                                 <div className="rp-mob-map-address">
                                     <Icons.Pin style={{ width: 14 }} />
@@ -158,7 +198,8 @@ export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = []
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 
@@ -224,7 +265,14 @@ const RestaurantsPageMobile = () => {
 
     const finalFiltered = (restaurants || []).filter(isFiltered);
 
-    const handleOpenOther = (type, data) => {
+    const handleOpenOther = (rawData, type) => {
+        const data = { ...rawData };
+        if (data.gallery && typeof data.gallery === 'string') {
+            try { data.gallery = JSON.parse(data.gallery); } catch(e) { data.gallery = []; }
+        }
+        if (data.lat && data.lng) {
+            data.coordinates = { lat: parseFloat(data.lat), lng: parseFloat(data.lng) };
+        }
         setOtherModal({ type, data });
     };
 
@@ -295,7 +343,7 @@ const RestaurantsPageMobile = () => {
 
             {otherModal?.type === 'attraction' && (
                 <AttractionModal
-                    attraction={otherModal.data}
+                    item={otherModal.data}
                     onClose={() => setOtherModal(null)}
                 />
             )}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import './CategoryPageMobile.css';
@@ -7,6 +8,7 @@ import { HotelModal } from './HotelsPageMobile';
 import { EditorialModal } from './RestaurantsPageMobile';
 import { Icons } from '../admin/AdminIcons';
 import { Stars } from './HotelsPageMobile';
+import LeafletMapWidget from '../components/LeafletMapWidget';
 
 import heroTextImgRU from '../assets/hero-text.png';
 import heroTextImgKZ from '../assets/hero-textkz.png';
@@ -48,7 +50,7 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
         }
     };
 
-    return (
+    return createPortal(
         <div className="cp-modal-overlay" onClick={onClose}>
             <div className="cp-modal-inner-wrapper" onClick={e => e.stopPropagation()}>
                 <button className="cp-modal-close" onClick={onClose}><Icons.Close /></button>
@@ -68,21 +70,19 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                     <div className="cp-modal-eyebrow">{item[`category_${i18n.language}`] || item.category || t('category.meta.sub')}</div>
                     <h2 className="cp-modal-title">{item[`name_${i18n.language}`] || item.name_ru || item.name || item.title}</h2>
                     <p className="cp-modal-desc">{item[`fullDescription_${i18n.language}`] || item.fullDescription_ru || item.fullDescription || item[`description_${i18n.language}`] || item.description_ru || item.description}</p>
-                    <div className="cp-modal-facts">
-                        <div className="cp-fact">
-                            <span className="cp-fact-label">{t('category.location_label')}</span>
-                            <span className="cp-fact-val">{item.city || t('category.default_region')}</span>
+                        <div className="cp-modal-map" style={{ display: 'block', visibility: 'visible', opacity: 1 }}>
+                             <div className="cp-sub-h" style={{ color: 'var(--gold)', marginBottom: '10px' }}>{t('restos_page.sec_location')}</div>
+                             <div style={{ height: '220px', borderRadius: '12px', background: '#0a1628', marginTop: '10px', position: 'relative', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                 <LeafletMapWidget 
+                                    lat={item.lat || item.latitude} 
+                                    lng={item.lng || item.longitude} 
+                                    title={item.name || item.title} 
+                                 />
+                             </div>
+                             <p style={{ marginTop: '15px', fontSize: '0.9rem', color: '#f3e5c3', opacity: 1, fontWeight: '400' }}>
+                                {item.city || t('category.default_region')}, {item.location}
+                             </p>
                         </div>
-                        {item.hours && (
-                            <div className="cp-fact">
-                                <span className="cp-fact-label">{t('category.hours_label')}</span>
-                                <span className="cp-fact-val">{item.hours}</span>
-                            </div>
-                        )}
-                        <button className="cp-map-btn" onClick={openMap} style={{ marginTop: '20px', width: 'fit-content' }}>
-                             <Icons.Pin style={{ width: 14 }} /> {t('category.show_on_map')}
-                        </button>
-                    </div>
                     <div className="cp-modal-rich-sections">
                         {nearbyData.hotels.length > 0 && (
                             <div className="cp-modal-sub-section">
@@ -113,7 +113,8 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 
@@ -134,21 +135,21 @@ const CategoryPage = () => {
 
     useEffect(() => {
         const loadAll = async () => {
-            const [allAtts, allHots, allRestos, allGuides] = await Promise.all([
-                fetchSheetData('attractions'),
+            const [allHots, allRestos, allGuides, allAtts] = await Promise.all([
                 fetchSheetData('hotels'),
                 fetchSheetData('restaurants'),
-                fetchSheetData('guides')
+                fetchSheetData('guides'),
+                fetchSheetData('attractions')
             ]);
             
-            const filteredData = allAtts.filter(a => a.category_tag === catId || a.type === catId);
+            const filteredData = (allAtts || []).filter(a => a.category_tag === catId || a.type === catId);
             setData(filteredData);
-            setHots(allHots);
-            setRestos(allRestos);
-            setGuides(allGuides);
+            setHots(allHots || []);
+            setRestos(allRestos || []);
+            setGuides(allGuides || []);
 
             if (queryId) {
-                const item = filteredData.find(i => String(i.id) === String(queryId));
+                const item = (filteredData || []).find(i => String(i.id).trim() === String(queryId).trim());
                 if (item) setSelected(item);
             }
             setLoading(false);
@@ -227,16 +228,31 @@ const CategoryPage = () => {
 
             {selected && (
                 <>
-                    {'stars' in selected ? <HotelModal hotel={selected} atts={data} onClose={() => setSelected(null)} /> :
-                     'cuisine' in selected ? <EditorialModal res={selected} hots={hots} atts={data} onClose={() => setSelected(null)} /> :
-                     <AttractionModal 
-                        item={selected} 
-                        hots={hots} 
-                        restos={restos} 
-                        guides={guides}
-                        onClose={() => setSelected(null)} 
-                        onNavigate={(newItem) => setSelected(newItem)} 
-                     />}
+                    {'stars' in selected ? (
+                        <HotelModal 
+                            hotel={selected} 
+                            atts={data} 
+                            onClose={() => setSelected(null)} 
+                            onOpenOther={(type, item) => setSelected(item)}
+                        />
+                    ) : 'cuisine' in selected ? (
+                        <EditorialModal 
+                            res={selected} 
+                            hots={hots} 
+                            atts={data} 
+                            onClose={() => setSelected(null)} 
+                            onOpenOther={(type, item) => setSelected(item)}
+                        />
+                    ) : (
+                        <AttractionModal 
+                            item={selected} 
+                            hots={hots} 
+                            restos={restos} 
+                            guides={guides}
+                            onClose={() => setSelected(null)} 
+                            onNavigate={(newItem) => setSelected(newItem)} 
+                        />
+                    )}
                 </>
             )}
         </div>

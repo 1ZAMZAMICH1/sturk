@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import './CategoryPage.css';
@@ -11,6 +12,7 @@ import heroTextImgKZ from '../assets/hero-textkz.png';
 import heroTextImgEN from '../assets/hero-texten.png';
 import heroTextImgZH from '../assets/hero-textzh.png';
 import { Stars } from './HotelsPage';
+import LeafletMapWidget from './LeafletMapWidget';
 
 export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos = [], guides = [] }) => {
     const { t, i18n } = useTranslation();
@@ -40,7 +42,7 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
         }
     };
 
-    return (
+    return createPortal(
         <div className="cp-modal-overlay" onClick={onClose}>
             <div style={{ display: 'flex', width: '100%', height: '100%', position: 'relative' }} onClick={e => e.stopPropagation()}>
                 <button className="cp-modal-close" onClick={onClose}><Icons.Close /></button>
@@ -60,19 +62,29 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                     <h2 className="cp-modal-title">{item[`name_${i18n.language}`] || item.name_ru || item.name}</h2>
                     <p className="cp-modal-desc">{item[`fullDescription_${i18n.language}`] || item[`description_${i18n.language}`] || item.fullDescription_ru || item.description_ru || item.fullDescription || item.description}</p>
                     <div className="cp-modal-facts">
-                        <div className="cp-fact">
-                            <span className="cp-fact-label">{t('category.location_label')}</span>
-                            <span className="cp-fact-val">{item.city || t('category.default_region')}</span>
+                         <div className="cp-modal-sub-section" style={{ marginTop: '0' }}>
+                            <div className="cp-sub-h">{t('restos_page.sec_location')}</div>
+                            <div className="cp-map-placeholder">
+                                <div className="cp-map-view">
+                                    <LeafletMapWidget 
+                                        lat={item.lat ? parseFloat(item.lat) : 0} 
+                                        lng={item.lng ? parseFloat(item.lng) : 0} 
+                                        title={item[`name_${i18n.language}`] || item.name_ru || item.name} 
+                                    />
+                                </div>
+                                <div className="cp-map-address">
+                                    <Icons.Pin style={{ width: 14 }} />
+                                    <span>{item.city || t('category.default_region')}, {item[`location_${i18n.language}`] || item.location_ru || item.location}</span>
+                                </div>
+                            </div>
                         </div>
+
                         { (item[`hours_${i18n.language}`] || item.hours_ru || item.hours) && (
-                            <div className="cp-fact">
+                            <div className="cp-fact" style={{ marginTop: '20px' }}>
                                 <span className="cp-fact-label">{t('category.hours_label')}</span>
                                 <span className="cp-fact-val">{item[`hours_${i18n.language}`] || item.hours_ru || item.hours}</span>
                             </div>
                         )}
-                        <button className="cp-map-btn" onClick={openMap} style={{ marginTop: '20px', width: 'fit-content' }}>
-                             <Icons.Pin style={{ width: 14 }} /> {t('category.show_on_map')}
-                        </button>
                     </div>
                     <div className="cp-modal-rich-sections">
                         {nearbyData.hotels.length > 0 && (
@@ -104,7 +116,8 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 

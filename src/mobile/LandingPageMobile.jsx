@@ -38,10 +38,10 @@ const LandingPageMobile = () => {
             {/* 4 & 5. HOSPITALITY & HOTELS (SHARED BACKGROUND) */}
             <div className="hospitality-hotels-wrapper-mob" style={{ position: 'relative' }}>
                 <HospitalityBackground />
-                <section style={{ width: '100%', position: 'relative', zIndex: 1 }}>
+                <section style={{ width: '100%', position: 'relative' }}>
                     <HospitalityMobile />
                 </section>
-                <section style={{ width: '100%', position: 'relative', zIndex: 1 }}>
+                <section style={{ width: '100%', position: 'relative' }}>
                     <HotelsMobile />
                 </section>
             </div>

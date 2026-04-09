@@ -267,19 +267,34 @@ const MobilePortalCard = ({ index, url, title, position, rotation, hoveredState,
     if (texture && texture.image) {
       const imageAspect = texture.image.width / texture.image.height;
       const archAspect = ARCH_WIDTH / ARCH_HEIGHT;
+
+      // ФИНАЛЬНЫЕ КООРДИНАТЫ
+      const debugState = {
+        0: { zoom: 0.9, offsetX: -0.33, offsetY: 0.02 },
+        1: { zoom: 0.85, offsetX: -0.21, offsetY: -0.03 },
+        2: { zoom: 0.95, offsetX: -0.31, offsetY: 0.02 }
+      };
+      const { zoom, offsetX, offsetY } = debugState[index];
+
       texture.center.set(0.5, 0.5);
+      
+      const finalZoom = zoom;
+      
       if (imageAspect > archAspect) {
-        texture.repeat.set(archAspect / imageAspect, 1);
-        texture.offset.x = (1 - texture.repeat.x) / 2;
+        texture.repeat.set((archAspect / imageAspect) * finalZoom, 1 * finalZoom);
+        texture.offset.x = ((1 - (archAspect / imageAspect) * finalZoom) / 2) + offsetX;
+        texture.offset.y = ((1 - finalZoom) / 2) + offsetY;
       } else {
-        texture.repeat.set(1, imageAspect / archAspect);
-        texture.offset.y = (1 - texture.repeat.y) / 2;
+        texture.repeat.set(1 * finalZoom, (imageAspect / archAspect) * finalZoom);
+        texture.offset.x = ((1 - finalZoom) / 2) + offsetX;
+        texture.offset.y = ((1 - (imageAspect / archAspect) * finalZoom) / 2) + offsetY;
       }
+
       texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
       texture.minFilter = THREE.LinearFilter;
       texture.needsUpdate = true;
     }
-  }, [activeLabel, texture]);
+  }, [activeLabel, texture, index]);
 
   const { frameGeometry, imageGeometry } = useMemo(() => {
     const BORDER = 0.05;

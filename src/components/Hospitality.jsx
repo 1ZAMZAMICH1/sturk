@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { fetchSheetData } from '../services/api';
 import { EditorialModal } from './RestaurantsPage';
+import { AttractionModal } from './CategoryPage';
+import { HotelModal } from './HotelsPage';
 import './Hospitality.css';
 
 const Hospitality = () => {
@@ -10,6 +12,18 @@ const Hospitality = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedResto, setSelectedResto] = useState(null);
+  const [otherModal, setOtherModal] = useState(null);
+
+  const handleOpenOther = (type, rawData) => {
+    const data = { ...rawData };
+    if (data.gallery && typeof data.gallery === 'string') {
+        try { data.gallery = JSON.parse(data.gallery); } catch(e) { data.gallery = []; }
+    }
+    if (data.lat && data.lng) {
+        data.coordinates = { lat: parseFloat(data.lat), lng: parseFloat(data.lng) };
+    }
+    setOtherModal({ type, data });
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -77,7 +91,22 @@ const Hospitality = () => {
         <EditorialModal 
           res={selectedResto} 
           onClose={() => setSelectedResto(null)} 
+          onOpenOther={handleOpenOther}
         />
+      )}
+
+      {otherModal?.type === 'attraction' && (
+          <AttractionModal
+              item={otherModal.data}
+              onClose={() => setOtherModal(null)}
+          />
+      )}
+
+      {otherModal?.type === 'hotel' && (
+          <HotelModal
+              hotel={otherModal.data}
+              onClose={() => setOtherModal(null)}
+          />
       )}
     </div>
   );

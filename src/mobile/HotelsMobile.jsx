@@ -5,6 +5,8 @@ import { fetchSheetData } from '../services/api';
 import { Canvas } from '@react-three/fiber';
 import { Sparkles, Float } from '@react-three/drei';
 import { HotelModal } from './HotelsPageMobile';
+import { AttractionModal } from './CategoryPageMobile';
+import { EditorialModal } from './RestaurantsPageMobile';
 import './HotelsMobile.css';
 
 // Зеркальный 3D фон для отелей (Песчаная атмосфера)
@@ -27,11 +29,17 @@ const HotelsMobile = () => {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedHotel, setSelectedHotel] = useState(null);
+  const [selectedOther, setSelectedOther] = useState(null);
+  const [restos, setRestos] = useState([]);
 
   useEffect(() => {
     const load = async () => {
-      const data = await fetchSheetData('hotels');
+      const [data, allRestos] = await Promise.all([
+          fetchSheetData('hotels'),
+          fetchSheetData('restaurants')
+      ]);
       setHotels(Array.isArray(data) && data.length > 0 ? data : []);
+      setRestos(allRestos);
       setLoading(false);
     };
     load();
@@ -82,7 +90,26 @@ const HotelsMobile = () => {
         <HotelModal 
             hotel={selectedHotel} 
             onClose={() => setSelectedHotel(null)} 
+            onOpenOther={(item, type) => setSelectedOther({ item, type })}
         />
+      )}
+
+      {selectedOther?.type === 'attraction' && (
+          <AttractionModal 
+              item={selectedOther.item} 
+              hots={hotels} 
+              restos={restos} 
+              onClose={() => setSelectedOther(null)} 
+              onNavigate={(newItem) => setSelectedOther({ ...selectedOther, item: newItem })} 
+          />
+      )}
+
+      {selectedOther?.type === 'restaurant' && (
+          <EditorialModal 
+              res={selectedOther.item} 
+              onClose={() => setSelectedOther(null)} 
+              onOpenOther={(item, type) => setSelectedOther({ item, type })}
+          />
       )}
     </div>
   );

@@ -42,9 +42,16 @@ const FILTERS = [
   { id: 'sight', label: 'История' },
   { id: 'nature', label: 'Природа' },
   { id: 'hotel', label: 'Отели' },
+  { id: 'restaurant', label: 'Рестораны' },
 ];
 
-const TYPE_COLORS = { sight: '#00ffff', nature: '#00ff7f', hotel: '#da70d6', city: '#ffd700' };
+const TYPE_COLORS = { 
+  sight: '#00ffff', 
+  nature: '#00ff7f', 
+  hotel: '#ff9800', 
+  restaurant: '#e91e63',
+  city: '#ffd700' 
+};
 
 // ОПТИМИЗАЦИЯ: Кэш иконок, чтобы не создавать L.divIcon каждый рендер
 const iconsCache = {};
@@ -142,18 +149,24 @@ const MapSection = () => {
   const [mapPoints, setMapPoints] = useState([]);
   const [mapRoutes, setMapRoutes] = useState([]);
   const [attractions, setAttractions] = useState([]);
+  const [hotels, setHotels] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
   const [activeRouteId, setActiveRouteId] = useState(null); // Новый стейт для выбора маршрута
   const navigate = useNavigate();
 
   useEffect(() => {
     const loadData = async () => {
-      const [points, routes, atts] = await Promise.all([
+      const [points, routes, atts, hots, restos] = await Promise.all([
           fetchSheetData('map_points'),
           fetchSheetData('map_routes'),
-          fetchSheetData('attractions')
+          fetchSheetData('attractions'),
+          fetchSheetData('hotels'),
+          fetchSheetData('restaurants')
       ]);
       
       setAttractions(atts || []);
+      setHotels(hots || []);
+      setRestaurants(restos || []);
 
       // Проверяем наличие валидных точек
       const hasValidPoints = points && Array.isArray(points) && points.length > 0 && points.some(p => p.pos);
@@ -191,28 +204,34 @@ const MapSection = () => {
   }, [filter, mapPoints]);
 
   const handleOpenDetails = (point) => {
-      console.log('Клик по точке на карте:', point.title);
+      console.log('Клик по точке на карте:', point.title, 'Тип:', point.type);
       
-      // Ищем привязанный объект: сначала по ID, затем по названию (как запасной вариант)
-      let attr = null;
-      if (point.attractionId) {
-          attr = attractions.find(a => String(a.id) === String(point.attractionId));
-      } 
-      
-      if (!attr) {
-          // Если ID нет или не нашли, пробуем найти по точному совпадению названия
-          attr = attractions.find(a => a.name === point.title);
-          if (attr) console.log('Объект найден по названию:', attr.name);
+      let targetUrl = null;
+
+      if (point.type === 'hotel') {
+          const hotelId = point.hotelId || point.attractionId || point.articleId;
+          const hotel = hotels.find(h => String(h.id) === String(hotelId)) || hotels.find(h => h.name === point.title);
+          if (hotel) targetUrl = `/hotels?id=${hotel.id}`;
+      } else if (point.type === 'restaurant') {
+          const restoId = point.restaurantId || point.attractionId || point.articleId;
+          const resto = restaurants.find(r => String(r.id) === String(restoId)) || restaurants.find(r => r.name === point.title);
+          if (resto) targetUrl = `/restaurants?id=${resto.id}`;
+      } else {
+          // По умолчанию считаем достопримечательностью (sight, nature, city)
+          const attrId = point.attractionId || point.articleId;
+          const attr = attractions.find(a => String(a.id) === String(attrId)) || attractions.find(a => a.name === point.title);
+          if (attr) {
+              const cat = attr.category_tag || attr.type || 'history';
+              targetUrl = `/category/${cat}?id=${attr.id}`;
+          }
       }
 
-      if (attr) {
-          const cat = attr.category_tag || attr.type || 'history';
-          const targetUrl = `/category/${cat}?id=${attr.id}`;
+      if (targetUrl) {
           console.log('Переход к объекту:', targetUrl);
           navigate(targetUrl);
       } else {
-          console.warn('Не удалось найти данные для этой точки в списке достопримечательностей.');
-          alert('Данные для этого объекта еще не заполнены в разделе категорий.');
+          console.warn('Не удалось найти данные для этой точки.');
+          alert('Данные для этого объекта еще не заполнены или объект не найден.');
       }
   };
 
@@ -276,20 +295,42 @@ const MapSection = () => {
                 if (activeRouteId === null) return null; 
 
                 return (
-                  <Polyline 
-                    key={route.id} 
-                    positions={route.nodes} 
-                    color={route.color || '#00e5ff'} 
-                    weight={5}
-                    opacity={0.9}
-                    lineJoin="round"
-                    dashArray={activeRouteId === route.id ? 'none' : '10, 10'}
-                  />
+                  <React.Fragment key={route.id}>
+                    {/* Линия свечения (Blur/Glow) */}
+                    <Polyline 
+                      positions={route.nodes} 
+                      color={route.color || '#00e5ff'} 
+                      weight={activeRouteId === route.id ? 12 : 8}
+                      opacity={0.3}
+                      lineJoin="round"
+                    />
+                    {/* Основная яркая линия */}
+                    <Polyline 
+                      positions={route.nodes} 
+                      color={route.color || '#00e5ff'} 
+                      weight={activeRouteId === route.id ? 5 : 3}
+                      opacity={1}
+                      lineJoin="round"
+                      dashArray={activeRouteId === route.id ? 'none' : '12, 12'}
+                    >
+                        <Tooltip sticky direction="top" className="route-tooltip">
+                            {route[`title_${i18n.language}`] || route.title_ru || route.title}
+                        </Tooltip>
+                    </Polyline>
+                  </React.Fragment>
                 );
               })}
 
               {filteredPoints.map(point => {
-                const attr = attractions.find(a => String(a.id) === String(point.attractionId || point.articleId) || a.name === point.title);
+                let attr = null;
+                if (point.type === 'hotel') {
+                    attr = hotels.find(h => String(h.id) === String(point.hotelId || point.attractionId) || h.name === point.title);
+                } else if (point.type === 'restaurant') {
+                    attr = restaurants.find(r => String(r.id) === String(point.restaurantId || point.attractionId) || r.name === point.title);
+                } else {
+                    attr = attractions.find(a => String(a.id) === String(point.attractionId || point.articleId) || a.name === point.title);
+                }
+                
                 return (
                   <Marker
                     key={point.id}

@@ -80,7 +80,7 @@ const VisualSelect = ({ options, selectedIds, onChange, multiple = true }) => {
                     >
                         {opt.image && <img src={opt.image} alt="" />}
                         {IconComp && <IconComp style={{ width: '18px', height: '18px' }} />}
-                        {opt.name && <span>{opt.name}</span>}
+                        <span>{opt.name_ru || opt.name || opt.title || opt.id}</span>
                     </div>
                 );
             })}
@@ -120,7 +120,7 @@ const MultilangGroup = ({ label, fieldName, formData, onChange, isTextarea = fal
     );
 };
 
-const RestaurantEditModal = ({ restaurant, onSave, onClose }) => {
+const RestaurantEditModal = ({ restaurant, onSave, onClose, allAttractions = [], allHotels = [] }) => {
     const [formData, setFormData] = useState({ 
         ...restaurant,
         gallery: restaurant.gallery || [],
@@ -131,6 +131,8 @@ const RestaurantEditModal = ({ restaurant, onSave, onClose }) => {
     const [activeTab, setActiveTab] = useState('general');
     const [isAddingCity, setIsAddingCity] = useState(false);
     const [newCityName, setNewCityName] = useState('');
+    const [isAddingCuisine, setIsAddingCuisine] = useState(false);
+    const [newCuisineName, setNewCuisineName] = useState('');
 
     const handleChange = (name, value) => {
         setFormData(p => ({ ...p, [name]: value }));
@@ -184,13 +186,16 @@ const RestaurantEditModal = ({ restaurant, onSave, onClose }) => {
         }));
     };
 
-    const allAttractions = [
-        ...attractionsData.city,
-        ...attractionsData.spirit,
-        ...attractionsData.nature
-    ];
+    const cities = [...new Set([...allAttractions.map(a => a.city), 'Туркестан', 'Кентау', 'Отрар', 'Сауран', formData.city])].filter(Boolean);
+    const cuisines = [...new Set(['Казахская', 'Узбекская', 'Восточная', 'Европейская', formData.cuisine])].filter(Boolean);
 
-    const cities = [...new Set([...allAttractions.map(a => a.city), 'Туркестан', 'Кентау', 'Отрар'])];
+    const handleAddCuisine = () => {
+        if (newCuisineName.trim()) {
+            handleChange('cuisine', newCuisineName.trim());
+            setIsAddingCuisine(false);
+            setNewCuisineName('');
+        }
+    };
 
     const handleAddCity = () => {
         if (newCityName.trim()) {
@@ -260,6 +265,41 @@ const RestaurantEditModal = ({ restaurant, onSave, onClose }) => {
                                 <input name="priceTag" value={formData.priceTag} onChange={(e) => handleChange('priceTag', e.target.value)} />
                             </div>
 
+                            <div className="admin-form-group">
+                                <label className="label-mini-gold">Широта (Lat)</label>
+                                <input type="number" step="any" name="lat" value={formData.lat || ''} onChange={(e) => handleChange('lat', e.target.value)} placeholder="Напр. 43.2974" />
+                            </div>
+
+                            <div className="admin-form-group">
+                                <label className="label-mini-gold">Кухня</label>
+                                {!isAddingCuisine ? (
+                                    <div className="inline-selector">
+                                        <select name="cuisine" value={formData.cuisine} onChange={(e) => handleChange('cuisine', e.target.value)}>
+                                            {cuisines.map(c => <option key={c} value={c}>{c}</option>)}
+                                        </select>
+                                        <button className="btn-inline-add" onClick={() => setIsAddingCuisine(true)}>
+                                            <Icons.Plus />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="inline-selector">
+                                        <input
+                                            autoFocus
+                                            value={newCuisineName}
+                                            onChange={(e) => setNewCuisineName(e.target.value)}
+                                            placeholder="Новая кухня..."
+                                        />
+                                        <button className="btn-inline-confirm" onClick={handleAddCuisine}><Icons.Plus /></button>
+                                        <button className="btn-inline-confirm cancel" onClick={() => setIsAddingCuisine(false)}><Icons.Close /></button>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="admin-form-group">
+                                <label className="label-mini-gold">Долгота (Lng)</label>
+                                <input type="number" step="any" name="lng" value={formData.lng || ''} onChange={(e) => handleChange('lng', e.target.value)} placeholder="Напр. 68.2710" />
+                            </div>
+
                             <ImageUpload
                                 label="Главное фото"
                                 value={formData.image}
@@ -288,6 +328,15 @@ const RestaurantEditModal = ({ restaurant, onSave, onClose }) => {
                                 <MultilangGroup 
                                     label="Адрес"
                                     fieldName="location"
+                                    formData={formData}
+                                    onChange={handleChange}
+                                />
+                            </div>
+
+                            <div className="admin-form-group full">
+                                <MultilangGroup 
+                                    label="Часы работы"
+                                    fieldName="hours"
                                     formData={formData}
                                     onChange={handleChange}
                                 />
@@ -379,7 +428,7 @@ const RestaurantEditModal = ({ restaurant, onSave, onClose }) => {
                             <div className="admin-form-group full">
                                 <label className="label-mini-gold">Ближайшие отели</label>
                                 <VisualSelect
-                                    options={hotelsData}
+                                    options={allHotels}
                                     selectedIds={formData.nearbyHotels || []}
                                     onChange={(ids) => handleChange('nearbyHotels', ids)}
                                 />

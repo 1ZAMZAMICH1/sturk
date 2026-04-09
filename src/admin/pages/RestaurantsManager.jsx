@@ -18,7 +18,23 @@ const RestaurantsManager = () => {
                 fetchSheetData('hotels'),
                 fetchSheetData('attractions')
             ]);
-            setRestaurants(resData);
+            const parseSafe = (val) => {
+                if (!val) return [];
+                if (Array.isArray(val)) return val;
+                try {
+                    const parsed = JSON.parse(val);
+                    return Array.isArray(parsed) ? parsed : [];
+                } catch (e) {
+                    return [];
+                }
+            };
+
+            setRestaurants((resData || []).map(r => ({
+                ...r,
+                gallery: parseSafe(r.gallery),
+                nearbyAttractions: parseSafe(r.nearbyAttractions),
+                nearbyHotels: parseSafe(r.nearbyHotels)
+            })));
             setAllHotels(hotData);
             setAllAttractions(attData);
             setLoading(false);
@@ -28,7 +44,14 @@ const RestaurantsManager = () => {
 
     const handleSave = async (updated) => {
         const action = updated.id ? 'update' : 'add';
-        const success = await updateSheetData('restaurants', action, updated);
+        const payload = {
+            ...updated,
+            gallery: JSON.stringify(updated.gallery || []),
+            nearbyAttractions: JSON.stringify(updated.nearbyAttractions || []),
+            nearbyHotels: JSON.stringify(updated.nearbyHotels || [])
+        };
+
+        const success = await updateSheetData('restaurants', action, payload);
         if (success) {
             // Если это было добавление, перезагружаем список, чтобы получить ID от сервера (или просто перезагружаем)
             if (action === 'add') {

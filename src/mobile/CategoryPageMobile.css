@@ -928,3 +928,75 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   ФИКС БЛИЗНЕЦОВ (ОДОБРЕННАЯ ВЕРСИЯ)
+════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+    .cp-mosaic-grid-mobile {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important; /* Уменьшил зазор */
+        padding: 5px !important; /* Уменьшил паддинги по бокам */
+        align-items: start;
+    }
+
+    .cp-card-wrapper-mobile {
+        transform: none !important;
+    }
+
+    .cp-double-arch {
+        height: 360px !important; /* Та самая высота, которая понравилась */
+        padding: 3px;
+        background: var(--gold);
+        clip-path: polygon(50% 0%, 88% 8%, 100% 20%, 100% 80%, 88% 92%, 50% 100%, 12% 92%, 0% 80%, 0% 20%, 12% 8%);
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .cp-arch-content {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        background: var(--stone);
+        clip-path: polygon(50% 0%, 88% 8%, 100% 20%, 100% 80%, 88% 92%, 50% 100%, 12% 92%, 0% 80%, 0% 20%, 12% 8%);
+    }
+
+    .cp-img-box {
+        height: 150px !important;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .cp-text-box {
+        padding: 8px 12px 25px !important;
+        text-align: center;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .cp-tile-name {
+        font-family: 'Playfair Display', serif !important;
+        font-size: 0.9rem !important;
+        color: var(--ivory);
+        margin: 0 0 6px;
+        line-height: 1.2;
+        height: 2.4em;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .cp-tile-desc {
+        font-size: 0.65rem !important;
+        color: var(--ivory60);
+        line-height: 1.4;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+    }
+}

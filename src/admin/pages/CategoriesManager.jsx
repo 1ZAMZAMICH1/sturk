@@ -22,14 +22,34 @@ const CategoriesManager = () => {
                 fetchSheetData('restaurants'),
                 fetchSheetData('categories')
             ]);
-            setAttractions((atts || []).map(a => ({
-                ...a,
-                // Восстанавливаем объект координат из плоских полей таблицы
-                coordinates: a.coordinates || { 
-                    lat: parseFloat(a.lat) || 0, 
-                    lng: parseFloat(a.lng) || 0 
+            const parseSafe = (val) => {
+                if (!val) return [];
+                if (Array.isArray(val)) return val;
+                try {
+                    const parsed = JSON.parse(val);
+                    return Array.isArray(parsed) ? parsed : [];
+                } catch (e) {
+                    // Если это просто строка с разделителем (запятая или точка с запятой)
+                    if (typeof val === 'string' && val.includes('http')) {
+                        return val.split(/[;,]/).map(s => s.trim()).filter(Boolean);
+                    }
+                    return [];
                 }
-            })));
+            };
+
+            setAttractions((atts || []).map(a => {
+                const lat = parseFloat(a.lat) || 0;
+                const lng = parseFloat(a.lng) || 0;
+                return {
+                    ...a,
+                    lat,
+                    lng,
+                    coordinates: { lat, lng },
+                    gallery: parseSafe(a.gallery),
+                    nearbyHotels: parseSafe(a.nearbyHotels),
+                    nearbyRestaurants: parseSafe(a.nearbyRestaurants)
+                };
+            }));
             setHotels(hots || []);
             setRestaurants(restos || []);
             setCategoryArches(arches || []);
@@ -63,8 +83,11 @@ const CategoriesManager = () => {
         // Сплющиваем координаты для Google Таблиц (одна колонка - одна цифра)
         const payload = {
             ...updatedItem,
-            lat: updatedItem.coordinates?.lat || 0,
-            lng: updatedItem.coordinates?.lng || 0
+            lat: parseFloat(updatedItem.lat || updatedItem.coordinates?.lat || 0),
+            lng: parseFloat(updatedItem.lng || updatedItem.coordinates?.lng || 0),
+            gallery: JSON.stringify(updatedItem.gallery || []),
+            nearbyHotels: JSON.stringify(updatedItem.nearbyHotels || []),
+            nearbyRestaurants: JSON.stringify(updatedItem.nearbyRestaurants || [])
         };
         
         // Убираем сложный объект, чтобы не путать Apps Script
@@ -74,9 +97,12 @@ const CategoriesManager = () => {
 
         const success = await updateSheetData('attractions', 'update', payload);
         if (success) {
-            loadAllData();
-            setSelectedItem(null);
-            alert(`Объект "${updatedItem.name}" сохранен`);
+            // Даем Google Таблицам 2 секунды на запись, прежде чем обновлять список
+            setTimeout(() => {
+                loadAllData();
+                setSelectedItem(null);
+            }, 2000);
+            alert(`Объект "${updatedItem.name}" отправлен на сохранение. Данные обновятся через 2 сек.`);
         } else {
             alert('Ошибка при сохранении');
         }
@@ -124,6 +150,13 @@ const CategoriesManager = () => {
                                 <div className="arch-card-header">
                                     <span className="tag-badge">{tag.toUpperCase()}</span>
                                     <h4>{tag === 'city' ? 'Город' : tag === 'spirit' ? 'История' : 'Природа'}</h4>
+                                    <div className="item-thumbnail">
+                                        {arch.url ? (
+                                            <img src={arch.url} alt={arch.title} />
+                                        ) : (
+                                            <div className="no-image-placeholder">No photo</div>
+                                        )}
+                                    </div>
                                 </div>
                                 <div className="form-group">
                                     <label>Заголовок арки</label>

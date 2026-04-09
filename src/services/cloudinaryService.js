@@ -17,11 +17,13 @@ export const uploadImage = async (file) => {
         const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
             method: 'POST',
             body: formData,
+            mode: 'cors' // Явно указываем CORS
         });
 
         if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || 'Ошибка загрузки изображения');
+            const errorText = await response.text();
+            console.error('Cloudinary raw error:', errorText);
+            throw new Error('Ошибка сервера Cloudinary');
         }
 
         const data = await response.json();

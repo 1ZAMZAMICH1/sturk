@@ -18,7 +18,8 @@
     "all": "All",
     "sight": "History",
     "nature": "Nature",
-    "hotel": "Hotels"
+    "hotel": "Hotels",
+    "restaurant": "Restaurants"
   },
   "hospitality": {
     "loading": "The aromas of the East are filling the room...",

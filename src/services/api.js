@@ -26,15 +26,9 @@ export const fetchSheetData = async (sheetName) => {
 /**
  * Запись/обновление данных в Google Sheets через JSONP-трюк (обход CORS).
  * Apps Script не поддерживает CORS для POST: мы отправляем через GET с параметрами.
- *
- * @param {string} sheetName - имя листа
- * @param {string} action    - 'add' | 'update' | 'delete'
- * @param {object} payload   - объект данных
- * @returns {Promise<boolean>}
  */
 export const updateSheetData = async (sheetName, action, payload) => {
     try {
-        // Кодируем payload в base64, чтобы безопасно передать через URL
         const encoded = encodeURIComponent(JSON.stringify(payload));
         const url = `${SCRIPT_URL}?sheet=${sheetName}&action=${action}&data=${encoded}`;
 

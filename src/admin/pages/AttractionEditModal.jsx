@@ -12,6 +12,7 @@ const LANGUAGES_CONFIG = [
 
 const ImageUpload = ({ value, onChange, label, compact = false }) => {
     const [loading, setLoading] = useState(false);
+    const fileInputRef = React.useRef(null);
 
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
@@ -33,7 +34,7 @@ const ImageUpload = ({ value, onChange, label, compact = false }) => {
             {label && <label className="label-mini-gold">{label}</label>}
             <div
                 className={`premium-image-container ${compact ? 'small-box' : ''}`}
-                onClick={() => document.getElementById(`file-${label}-${compact}`).click()}
+                onClick={() => fileInputRef.current?.click()}
             >
                 {value ? <img src={value} alt="Превью" /> : (
                     <div className="upload-placeholder">
@@ -43,7 +44,7 @@ const ImageUpload = ({ value, onChange, label, compact = false }) => {
                 )}
                 {loading && <div className="upload-loading-overlay">...</div>}
                 <input
-                    id={`file-${label}-${compact}`}
+                    ref={fileInputRef}
                     type="file"
                     style={{ display: 'none' }}
                     onChange={handleFileChange}

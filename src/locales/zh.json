@@ -18,7 +18,8 @@
     "all": "全部",
     "sight": "历史",
     "nature": "自然",
-    "hotel": "酒店"
+    "hotel": "酒店",
+    "restaurant": "餐厅"
   },
   "hospitality": {
     "loading": "东方香气溢满房间...",

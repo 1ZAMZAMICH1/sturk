@@ -29,9 +29,16 @@ const FILTERS = [
   { id: 'sight' },
   { id: 'nature' },
   { id: 'hotel' },
+  { id: 'restaurant' },
 ];
 
-const TYPE_COLORS = { sight: '#00ffff', nature: '#00ff7f', hotel: '#da70d6', city: '#ffd700' };
+const TYPE_COLORS = { 
+  sight: '#00ffff', 
+  nature: '#00ff7f', 
+  hotel: '#ff9800', 
+  restaurant: '#e91e63',
+  city: '#ffd700' 
+};
 
 const iconsCache = {};
 const getIcon = (type) => {
@@ -81,17 +88,23 @@ const MapSectionMobile = () => {
   const [mapPoints, setMapPoints] = useState([]);
   const [mapRoutes, setMapRoutes] = useState([]);
   const [attractions, setAttractions] = useState([]);
+  const [hotels, setHotels] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
   const [activeRouteId, setActiveRouteId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
-      const [pts, rts, atts] = await Promise.all([
+      const [pts, rts, atts, hots, rests] = await Promise.all([
           fetchSheetData('map_points'),
           fetchSheetData('map_routes'),
-          fetchSheetData('attractions')
+          fetchSheetData('attractions'),
+          fetchSheetData('hotels'),
+          fetchSheetData('restaurants')
       ]);
       setAttractions(atts || []);
+      setHotels(hots || []);
+      setRestaurants(rests || []);
       const parsed = (pts && Array.isArray(pts) ? pts : FALLBACK_POINTS)
         .map(p => ({ ...p, pos: Array.isArray(p.pos) ? p.pos : (typeof p.pos === 'string' ? p.pos.split(',').map(Number) : [0,0]) }))
         .filter(p => !isNaN(p.pos[0]) && p.pos[0] !== 0);
@@ -108,19 +121,20 @@ const MapSectionMobile = () => {
 
   const handleOpenDetails = (point) => {
       let attr = null;
-      if (point.attractionId || point.articleId) {
-          attr = attractions.find(a => String(a.id) === String(point.attractionId || point.articleId));
-      } 
-      if (!attr) {
-          attr = attractions.find(a => a.name === point.title);
-      }
-
-      if (attr) {
-          const cat = attr.category_tag || attr.type || 'history';
-          navigate(`/category/${cat}?id=${attr.id}`);
+      if (point.type === 'hotel') {
+          attr = hotels.find(h => String(h.id) === String(point.hotelId || point.attractionId) || h.name === point.title);
+          if (attr) return navigate(`/hotels?id=${attr.id}`);
+      } else if (point.type === 'restaurant') {
+          attr = restaurants.find(r => String(r.id) === String(point.restaurantId || point.attractionId) || r.name === point.title);
+          if (attr) return navigate(`/restaurants?id=${attr.id}`);
       } else {
-          alert('Информация об этом объекте скоро появится!');
+          attr = attractions.find(a => String(a.id) === String(point.attractionId || point.articleId) || a.name === point.title);
+          if (attr) {
+              const cat = attr.category_tag || attr.type || 'history';
+              return navigate(`/category/${cat}?id=${attr.id}`);
+          }
       }
+      alert('Информация об этом объекте скоро появится!');
   };
 
   return (
@@ -183,7 +197,14 @@ const MapSectionMobile = () => {
                 })}
 
                 {filteredPoints.map(p => {
-                  const attr = attractions.find(a => String(a.id) === String(p.attractionId || p.articleId) || a.name === p.title);
+                  let attr = null;
+                  if (p.type === 'hotel') {
+                    attr = hotels.find(h => String(h.id) === String(p.hotelId || p.attractionId) || h.name === p.title);
+                  } else if (p.type === 'restaurant') {
+                    attr = restaurants.find(r => String(r.id) === String(p.restaurantId || p.attractionId) || r.name === p.title);
+                  } else {
+                    attr = attractions.find(a => String(a.id) === String(p.attractionId || p.articleId) || a.name === p.title);
+                  }
                   return (
                     <Marker key={p.id} position={p.pos}
                       icon={p.icon ? L.icon({ iconUrl:p.icon, iconSize:[45,45], iconAnchor:[22,22], className: 'premium-map-icon' }) : getIcon(p.type)}

@@ -19,23 +19,8 @@ import rollerRightImg from '../assets/scroll-right.png';
 import paperTextureImg from '../assets/scroll-paper.png';
 
 // Данные будут загружаться из API. Оставлено как образец структуры.
-const FALLBACK_POINTS = [
-  { id: 1, type: 'sight', pos: [43.296, 68.277], title: 'Мавзолей Ясави', desc: 'Святыня Тюркского мира' },
-  { id: 2, type: 'city', pos: [43.516, 67.767], title: 'Сауран', desc: 'Древнее городище' },
-  { id: 3, type: 'nature', pos: [43.033, 69.310], title: 'Акмешит', desc: 'Пещера дракона' },
-  { id: 4, type: 'sight', pos: [42.855, 68.300], title: 'Отырар', desc: 'Великая библиотека' },
-  { id: 5, type: 'nature', pos: [42.333, 70.433], title: 'Аксу-Жабагылы', desc: 'Тюльпаны Грейга' },
-  { id: 6, type: 'hotel', pos: [43.290, 68.285], title: 'Rixos', desc: '5 звезд в степи' },
-];
-
-const FALLBACK_ROUTES = [
-  { 
-    id: 'f1', 
-    title: 'Демо: Шелковый путь', 
-    nodes: [[43.296, 68.277], [43.300, 68.280], [43.310, 68.290]], 
-    color: '#00e5ff' 
-  }
-];
+const FALLBACK_POINTS = [];
+const FALLBACK_ROUTES = [];
 
 const FILTERS = [
   { id: 'all', label: 'Всё' },

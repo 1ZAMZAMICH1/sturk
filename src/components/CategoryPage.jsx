@@ -67,8 +67,8 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                             <div className="cp-map-placeholder">
                                 <div className="cp-map-view">
                                     <LeafletMapWidget 
-                                        lat={item.lat ? parseFloat(item.lat) : 0} 
-                                        lng={item.lng ? parseFloat(item.lng) : 0} 
+                                        lat={item.coordinates?.lat || item.lat || item.latitude || 0} 
+                                        lng={item.coordinates?.lng || item.lng || item.longitude || 0} 
                                         title={item[`name_${i18n.language}`] || item.name_ru || item.name} 
                                     />
                                 </div>

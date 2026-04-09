@@ -10,14 +10,41 @@ const HotelsManager = () => {
     useEffect(() => {
         const loadHotels = async () => {
             const data = await fetchSheetData('hotels');
-            setHotels(data);
+            const parseSafe = (val) => {
+                if (!val) return [];
+                if (Array.isArray(val)) return val;
+                try {
+                    const parsed = JSON.parse(val);
+                    return Array.isArray(parsed) ? parsed : [];
+                } catch (e) {
+                    return [];
+                }
+            };
+
+            setHotels((data || []).map(h => ({
+                ...h,
+                rooms: parseSafe(h.rooms),
+                gallery: parseSafe(h.gallery),
+                amenities: parseSafe(h.amenities),
+                nearbyAttractions: parseSafe(h.nearbyAttractions),
+                nearbyRestaurants: parseSafe(h.nearbyRestaurants)
+            })));
             setLoading(false);
         };
         loadHotels();
     }, []);
 
     const handleSave = async (updatedHotel) => {
-        const success = await updateSheetData('hotels', 'update', updatedHotel);
+        const payload = {
+            ...updatedHotel,
+            rooms: JSON.stringify(updatedHotel.rooms || []),
+            amenities: JSON.stringify(updatedHotel.amenities || []),
+            gallery: JSON.stringify(updatedHotel.gallery || []),
+            nearbyAttractions: JSON.stringify(updatedHotel.nearbyAttractions || []),
+            nearbyRestaurants: JSON.stringify(updatedHotel.nearbyRestaurants || [])
+        };
+
+        const success = await updateSheetData('hotels', 'update', payload);
         if (success) {
             setHotels(prev => prev.map(h => h.id === updatedHotel.id ? updatedHotel : h));
             setSelectedHotel(null);

@@ -425,22 +425,18 @@ const PortalCard = ({ index, url, title, color, position, rotation, hoveredState
 // --- СЦЕНА ---
 function CategoriesScene({ onSelectCategory }) {
   const [hovered, setHovered] = useState(null);
-  const [archData, setArchData] = useState([]);
+  const [archData, setArchData] = useState([
+    { tag: 'city', title: 'Городские', url: cityImg, color: '#40e0d0' },
+    { tag: 'spirit', title: 'Исторические', url: historyImg, color: '#ffd700' },
+    { tag: 'nature', title: 'Духовные', url: natureImg, color: '#50c878' }
+  ]);
 
   useEffect(() => {
     const loadArches = async () => {
       try {
         const data = await fetchSheetData('categories');
-        console.log('--- ARCH DATA FROM SHEETS ---', data);
         if (data && Array.isArray(data) && data.length >= 3) {
           setArchData(data);
-        } else {
-          console.warn('Using FALLBACK ARCHES because sheets data is missing or incomplete');
-          setArchData([
-            { tag: 'city', title: 'Городские', url: cityImg, color: '#40e0d0' },
-            { tag: 'spirit', title: 'Исторические', url: historyImg, color: '#ffd700' },
-            { tag: 'nature', title: 'Духовные', url: natureImg, color: '#50c878' }
-          ]);
         }
       } catch (err) {
         console.error('Error loading arches:', err);

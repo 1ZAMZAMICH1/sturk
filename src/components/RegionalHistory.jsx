@@ -6,22 +6,24 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './RegionalHistory.css';
 
-import petro1 from '../assets/petroglyph-1.png';
-import petro2 from '../assets/petroglyph-2.png';
-import petro3 from '../assets/petroglyph-3.png';
-import petro4 from '../assets/petroglyph-4.png';
+import petro1 from '../assets/1kar.png';
+import petro2 from '../assets/2kar.png';
+import petro3 from '../assets/3kar.png';
+import petro4 from '../assets/4kar.png';
+import petro5 from '../assets/5kar.png';
+import petro6 from '../assets/6kar.png';
 import ozrusAudio from '../assets/ozrus.mp3';
 
 // ------------------------------------------------------------------
 // КОНТЕНТ ПРЕЗЕНТАЦИИ
 // ------------------------------------------------------------------
 const SCENE_TIMELINE = [
-    { id: 1, z: -20, title: 'Истоки Великой Степи', subtitle: 'Зарождение', description: 'Туркестанская область — колыбель древних цивилизаций. Здесь, среди петроглифов Боралдая, застыла история первых кочевников и могущественного государства Кангюй.', image: petro1, color: '#d4af37', align: 'right', pauseDuration: 10, transitionSpeed: 0.1 },
-    { id: 2, z: -80, title: 'Отрар: Маяк Мудрости', subtitle: 'Центр Науки', description: 'Древний город, ставший центром мировой науки. Родина великого мыслителя Аль-Фараби и место, где хранилась вторая по величине библиотека древнего мира.', image: petro2, color: '#ffaa00', align: 'left', pauseDuration: 10, transitionSpeed: 0.25 },
-    { id: 3, z: -140, title: 'Путь Паломника', subtitle: 'Духовное Сердце', description: 'Священная преемственность от учителя Арыстан-Баба до Ходжи Ахмеда Ясави. Духовное сердце тюркского мира, притягивающее миллионы сердец на протяжении веков.', image: petro3, color: '#ff8800', align: 'right', pauseDuration: 10, transitionSpeed: 0.15 },
-    { id: 4, z: -200, title: 'Непокоренный Дух', subtitle: 'Стойкость', description: 'Стены, видевшие нашествие Чингисхана и героическую оборону. История стойкости народа, который возрождался из пепла, как степной пожар.', image: petro4, color: '#d4af37', align: 'left', pauseDuration: 10, transitionSpeed: 0.08 },
-    { id: 5, z: -260, title: 'Столица Казахского Ханства', subtitle: 'Величие', description: 'Политический центр Великой степи. Здесь принимались судьбоносные решения и обрели вечный покой великие ханы, бии и батыры нашего народа.', image: petro1, color: '#c2a679', align: 'right', pauseDuration: 10, transitionSpeed: 0.12 },
-    { id: 6, z: -320, title: 'Возрождение Легенды', subtitle: 'Мост в Будущее', description: 'Древний Туркестан сегодня — это мост между прошлым и будущим. Город, который сохранил свою душу, становясь современным центром мирового туризма.', image: petro2, color: '#d2b48c', align: 'left', pauseDuration: 10, transitionSpeed: 0.15 },
+    { id: 1, z: -20, title: 'Истоки Великой Степи', subtitle: 'Зарождение', description: 'Туркестанская область — колыбель древних цивилизаций. Здесь, среди петроглифов Боралдая, застыла история первых кочевников и могущественного государства Кангюй.', image: petro1, color: '#d4af37', align: 'right', pauseDuration: 40, transitionSpeed: 0.1 },
+    { id: 2, z: -80, title: 'Отрар: Маяк Мудрости', subtitle: 'Центр Науки', description: 'Древний город, ставший центром мировой науки. Родина великого мыслителя Аль-Фараби и место, где хранилась вторая по величине библиотека древнего мира.', image: petro2, color: '#ffaa00', align: 'left', pauseDuration: 40, transitionSpeed: 0.25 },
+    { id: 3, z: -140, title: 'Путь Паломника', subtitle: 'Духовное Сердце', description: 'Священная преемственность от учителя Арыстан-Баба до Ходжи Ахмеда Ясави. Духовное сердце тюркского мира, притягивающее миллионы сердец на протяжении веков.', image: petro3, color: '#ff8800', align: 'right', pauseDuration: 40, transitionSpeed: 0.15 },
+    { id: 4, z: -200, title: 'Непокоренный Дух', subtitle: 'Стойкость', description: 'Стены, видевшие нашествие Чингисхана и героическую оборону. История стойкости народа, который возрождался из пепла, как степной пожар.', image: petro4, color: '#d4af37', align: 'left', pauseDuration: 40, transitionSpeed: 0.08 },
+    { id: 5, z: -260, title: 'Столица Казахского Ханства', subtitle: 'Величие', description: 'Политический центр Великой степи. Здесь принимались судьбоносные решения и обрели вечный покой великие ханы, бии и батыры нашего народа.', image: petro5, color: '#c2a679', align: 'right', pauseDuration: 40, transitionSpeed: 0.12 },
+    { id: 6, z: -320, title: 'Возрождение Легенды', subtitle: 'Мост в Будущее', description: 'Древний Туркестан сегодня — это мост между прошлым и будущим. Город, который сохранил свою душу, становясь современным центром мирового туризма.', image: petro6, color: '#d2b48c', align: 'left', pauseDuration: 40, transitionSpeed: 0.15 },
 ];
 
 const START_Z = 10;
@@ -139,6 +141,62 @@ const SlideMarker = ({ data }) => {
     const anchorX = data.align === 'right' ? 'right' : 'left';
     const textAlign = data.align === 'right' ? 'right' : 'left';
 
+    const [aspect, setAspect] = useState(1);
+
+    useEffect(() => {
+        if (texture.image) {
+            setAspect(texture.image.width / texture.image.height);
+        }
+    }, [texture]);
+
+    // Шейдер для старинного эффекта
+    const vintageMaterial = useMemo(() => {
+        return new THREE.ShaderMaterial({
+            uniforms: {
+                uTexture: { value: texture },
+                uColor: { value: new THREE.Color(data.color) },
+                uVignette: { value: 0.5 },
+                uExposure: { value: 1.1 }
+            },
+            vertexShader: `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform sampler2D uTexture;
+                uniform vec3 uColor;
+                uniform float uVignette;
+                uniform float uExposure;
+                varying vec2 vUv;
+                void main() {
+                    vec4 tex = texture2D(uTexture, vUv);
+                    if (tex.a < 0.05) discard;
+                    
+                    // Эффект сепии / старой бумаги
+                    vec3 gray = vec4(dot(tex.rgb, vec3(0.299, 0.587, 0.114))).rgb;
+                    vec3 sepia = mix(gray, uColor, 0.35);
+                    
+                    // Виньетка
+                    float dist = distance(vUv, vec2(0.5));
+                    float vignette = smoothstep(0.8, 0.2, dist * uVignette + 0.3);
+                    
+                    vec3 final = sepia * vignette * uExposure;
+                    
+                    // Добавляем чуть зернистости для "старости"
+                    float noise = fract(sin(dot(vUv, vec2(12.9898, 78.233))) * 43758.5453);
+                    final += (noise - 0.5) * 0.04;
+                    
+                    gl_FragColor = vec4(final, tex.a);
+                }
+            `,
+            transparent: true,
+            side: THREE.DoubleSide
+        });
+    }, [texture, data.color]);
+
     // Жесткие ссылки на NPM-пакеты Fontsource (самый стабильный вариант для WebGL)
     const fontUrl = i18n.language === 'zh'
         ? "https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-sc/files/noto-serif-sc-chinese-simplified-400-normal.woff"
@@ -152,14 +210,13 @@ const SlideMarker = ({ data }) => {
 
     return (
         <group ref={groupRef} position={[0, 0, data.z]}>
-            <pointLight position={[imgX, 1, 5]} intensity={6} color={data.color} distance={40} decay={1.5} />
-            <pointLight position={[txtX, 0, 5]} intensity={2} color="#ffffff" distance={40} decay={2} />
+            <pointLight position={[imgX, 1, 5]} intensity={6} color={data.color} distance={60} decay={1.5} />
+            <pointLight position={[txtX, 0, 5]} intensity={2} color="#ffffff" distance={60} decay={2} />
 
             <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.4}>
                 <group position={[imgX, 1, -2]}>
-                    <mesh>
-                        <planeGeometry args={[11, 11]} />
-                        <meshBasicMaterial map={texture} transparent side={THREE.DoubleSide} alphaTest={0.05} fog={false} />
+                    <mesh material={vintageMaterial}>
+                        <planeGeometry args={[16 * aspect, 16]} />
                     </mesh>
                 </group>
             </Float>

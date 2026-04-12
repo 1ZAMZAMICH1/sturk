@@ -347,9 +347,9 @@
 }
 
 .hp-iwan-price {
-    color: var(--hp-gold);
+    color: #1a1410 !important; /* Жесткий черный/коричневый вместо золота */
     font-weight: 800;
-    font-size: 1.1rem;
+    font-size: 1.25rem;
 }
 
 .hp-iwan-card:hover .hp-iwan-portal {
@@ -471,7 +471,7 @@
 }
 
 .hp-gal-thumb.active {
-    border-color: var(--hp-gold);
+    border-color: #1a1410;
     opacity: 1;
     transform: scale(1.05);
 }
@@ -488,6 +488,7 @@
     background-repeat: no-repeat;
     position: relative;
     box-shadow: none !important;
+    color: #111 !important; /* Force base text color */
 }
 
 .hp-royal-header {
@@ -498,7 +499,7 @@
     font-size: 0.7rem;
     letter-spacing: 4px;
     text-transform: uppercase;
-    color: #8b4513; /* Явно терракотовый */
+    color: #8b4513 !important; /* Явно терракотовый */
     margin-bottom: 5px;
     font-weight: 600;
 }
@@ -506,14 +507,14 @@
 .hp-royal-name {
     font-family: 'Playfair Display', serif;
     font-size: 3.5rem;
-    color: #000; /* Чистый черный для контраста */
+    color: #0a0a0a !important; /* Возвращаю четкий черный! */
     margin-bottom: 10px;
 }
 
 .hp-price-tag {
-    color: var(--hp-gold-deep);
-    font-weight: 700;
-    font-size: 1.2rem;
+    color: #4a2a10 !important; /* Темно-коричневый вместо желтого */
+    font-weight: 800;
+    font-size: 1.3rem;
 }
 
 .hp-royal-meta-row {
@@ -525,7 +526,7 @@
 .hp-info-tabs {
     display: flex;
     gap: 40px;
-    border-bottom: 1px solid rgba(26, 20, 16, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     margin-bottom: 30px;
 }
 
@@ -533,18 +534,24 @@
     background: none;
     border: none;
     padding: 15px 0;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: #4a3b30; /* Более темный, чем #666 */
+    color: rgba(0, 0, 0, 0.5) !important;
     cursor: pointer;
     position: relative;
-    font-weight: 500;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.hp-info-tabs button:hover {
+    color: #333 !important;
 }
 
 .hp-info-tabs button.active {
-    color: #1a1410;
-    font-weight: 600;
+    color: #000 !important;
+    font-weight: 800;
+    letter-spacing: 2px;
 }
 
 .hp-info-tabs button.active::after {
@@ -553,8 +560,8 @@
     bottom: -1px;
     left: 0;
     width: 100%;
-    height: 2px;
-    background: var(--hp-gold);
+    height: 3px;
+    background: #000;
 }
 
 .hp-royal-scroll {
@@ -566,9 +573,9 @@
 .hp-description {
     font-size: 1.15rem;
     line-height: 1.8;
-    color: #000; /* Максимальный контраст на бумаге */
+    color: #111 !important; /* Максимальный контраст на бумаге */
     margin-bottom: 40px;
-    font-weight: 500; /* Чуть плотнее */
+    font-weight: 500;
 }
 
 .hp-royal-section {
@@ -576,33 +583,47 @@
 }
 
 .hp-sec-title {
-    font-size: 0.75rem;
-    letter-spacing: 3px;
+    font-size: 0.85rem;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    color: var(--hp-gold-deep); /* Темное золото */
-    margin-bottom: 15px;
-    font-weight: 700;
+    color: #000 !important; /* Жесткий черный */
+    margin-bottom: 20px;
+    font-weight: 800;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 8px;
 }
 
 .hp-amenities-refined {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-wrap: wrap;
     gap: 12px;
 }
 
 .hp-amenity-pill {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 0.95rem;
-    color: #1a1410; /* Темнее для читаемости */
-    font-weight: 400;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #111 !important;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.85) !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    padding: 8px 16px;
+    border-radius: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: 0.3s;
+}
+
+.hp-amenity-pill:hover {
+    background: #fff !important;
+    border-color: #000 !important;
+    transform: translateY(-2px);
 }
 
 .hp-amenity-pill .dot {
     width: 6px;
     height: 6px;
-    background: var(--hp-gold);
+    background: #4a2a10 !important;
     border-radius: 50%;
 }
 
@@ -613,23 +634,47 @@
 }
 
 .hp-room-card-royal {
-    padding: 20px;
-    border: 1px solid rgba(26, 20, 16, 0.15);
-    background: rgba(255, 255, 255, 0.4);
+    padding: 20px 25px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.8) !important;
+    border-radius: 8px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    transition: 0.3s;
+}
+
+.hp-room-card-royal:hover {
+    background: #fff !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.room-header-r {
+    display: flex;
     align-items: center;
-    border-radius: 4px;
+    gap: 12px;
+    margin-bottom: 5px;
 }
 
 .room-name {
-    color: #1a1410;
-    font-weight: 600;
+    color: #000 !important;
+    font-weight: 700;
+    font-size: 1.1rem;
 }
 
-.hp-room-price {
-    color: var(--hp-gold-deep); /* Темное золото */
-    font-weight: 700;
+.room-beds {
+    color: #444 !important;
+    font-size: 0.85rem;
+    margin-left: 32px; 
+    font-weight: 500;
+}
+
+.room-price {
+    font-size: 1.25rem;
+    margin-top: 15px;
+    margin-left: 32px;
+    color: #4a2a10 !important; /* Коричневый вместо золотого */
+    font-weight: 800;
 }
 
 .hp-nearby-grid-royal {

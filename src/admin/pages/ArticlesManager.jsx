@@ -18,22 +18,23 @@ const ArticlesManager = () => {
     }, []);
 
     const handleSave = async (updated) => {
-        // Если это новый объект без ID, создаем его
-        if (!updated.id) {
+        const isNew = !updated.id;
+        if (isNew) {
             updated.id = Date.now().toString();
         }
 
-        const success = await updateSheetData('articles', 'update', updated);
+        const action = isNew ? 'add' : 'update';
+        const success = await updateSheetData('articles', action, updated);
+        
         if (success) {
             setArticles(prev => {
-                const exists = prev.find(a => a.id === updated.id);
-                if (exists) {
-                    return prev.map(a => a.id === updated.id ? updated : a);
+                if (isNew) {
+                    return [updated, ...prev];
                 }
-                return [updated, ...prev];
+                return prev.map(a => a.id === updated.id ? updated : a);
             });
             setSelectedArt(null);
-            alert(`Статья "${updated.title}" сохранена в Google Таблицу`);
+            alert(`Статья "${updated.title_ru || updated.title}" успешно сохранена!`);
         } else {
             alert('Ошибка при сохранении в Таблицу. Проверь консоль.');
         }

@@ -120,6 +120,8 @@ const MapManager = () => {
     const [isDrawing, setIsDrawing] = useState(false);
     const [newRouteNodes, setNewRouteNodes] = useState([]);
     const [snapToRoads, setSnapToRoads] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
+
 
     const loadData = async () => {
         setLoading(true);
@@ -187,17 +189,41 @@ const MapManager = () => {
             alert('У объекта не указаны координаты! Сначала добавь их в карточке редактирования объекта.');
             return;
         }
+
+        // Удаляем все спецсимволы и пробелы для надежного сравнения ("Каньон Аксу" -> "каньонаксу")
+        const cleanItemName = (item.name_ru || item.name || '').replace(/[^\w\а-яА-ЯёЁ]/g, '').trim().toLowerCase();
         
+        const isAlreadyOnMap = points.some(p => {
+            const pidMatch = (type === 'sight' && String(p.attractionId) === String(item.id)) ||
+                           (type === 'hotel' && String(p.hotelId) === String(item.id)) ||
+                           (type === 'restaurant' && String(p.restaurantId) === String(item.id));
+            
+            const cleanPTitle = (p.title_ru || p.title || '').replace(/[^\w\а-яА-ЯёЁ]/g, '').trim().toLowerCase();
+            const nameMatch = cleanPTitle === cleanItemName && cleanPTitle.length > 0;
+
+            return pidMatch || nameMatch;
+        });
+
+        if (isAlreadyOnMap) {
+            alert('Этот объект уже есть на карте!');
+            return;
+        }
+
         const newPoint = {
             attractionId: type === 'sight' ? item.id : '',
             hotelId: type === 'hotel' ? item.id : '',
             restaurantId: type === 'restaurant' ? item.id : '',
-            title: item.name,
-            desc: item.description || item.shortDescription || '',
+            title_ru: item.name_ru || item.name || '',
+            title_kz: item.name_kz || '',
+            title_en: item.name_en || '',
+            desc_ru: item.description_ru || item.description || '',
+            desc_kz: item.description_kz || '',
+            desc_en: item.description_en || '',
             pos: [parseFloat(lat), parseFloat(lng)].join(','),
             icon: '',
             type: type
         };
+
         
         const success = await updateSheetData('map_points', 'add', newPoint);
         if (success) {
@@ -256,33 +282,43 @@ const MapManager = () => {
     };
 
     const handleSavePoint = async () => {
-        if (!editingItem) return;
+        if (!editingItem || isSaving) return;
+        setIsSaving(true);
         
-        const action = editingItem.id ? 'update' : 'add';
-        let posStr = '';
-        if (Array.isArray(editingItem.pos)) {
-            posStr = editingItem.pos.join(',');
-        } else if (typeof editingItem.pos === 'string') {
-            posStr = editingItem.pos;
-        }
+        try {
+            const action = editingItem.id ? 'update' : 'add';
+            let posStr = '';
+            if (Array.isArray(editingItem.pos)) {
+                posStr = editingItem.pos.join(',');
+            } else if (typeof editingItem.pos === 'string') {
+                posStr = editingItem.pos;
+            }
 
-        const payload = {
-            ...editingItem,
-            pos: posStr,
-            icon: editingItem.icon || '',
-            title: editingItem.title || '',
-            desc: editingItem.desc || ''
-        };
-        
-        const success = await updateSheetData('map_points', action, payload);
-        if (success) {
-            alert('Изменения сохранены на карте');
-            loadData();
-            setEditingItem(null);
-        } else {
-            alert('Ошибка при сохранении. Проверь консоль.');
+            const payload = {
+                ...editingItem,
+                pos: posStr,
+                icon: editingItem.icon || '',
+                title_ru: editingItem.title_ru || editingItem.title || '',
+                title_kz: editingItem.title_kz || '',
+                title_en: editingItem.title_en || '',
+                desc_ru: editingItem.desc_ru || editingItem.desc || '',
+                desc_kz: editingItem.desc_kz || '',
+                desc_en: editingItem.desc_en || ''
+            };
+            
+            const success = await updateSheetData('map_points', action, payload);
+            if (success) {
+                console.log('Маркер сохранен');
+                await loadData();
+                setEditingItem(null);
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setIsSaving(false);
         }
     };
+
 
     const handleSaveRoute = async () => {
         const title = editingItem?.id ? editingItem.title : prompt('Название маршрута:', 'Новый маршрут');
@@ -315,13 +351,32 @@ const MapManager = () => {
     };
 
     const handleDelete = async (type, id) => {
-        if (!window.confirm('Удалить этот элемент?')) return;
+        if (!window.confirm('Удалить этот элемент навсегда?')) return;
+        
+        // Находим элемент для удаления по ID или по заголовку (если ID нет)
+        const itemToDelete = type === 'point' 
+            ? points.find(p => p.id === id || (!p.id && p.title === id))
+            : routes.find(r => r.id === id || (!r.id && r.title === id));
+
+        const identifier = itemToDelete?.id || itemToDelete?.title;
+
+        // ОПТИМИЗАЦИЯ: Мгновенно убираем из списка на экране
+        if (type === 'point') {
+            setPoints(prev => prev.filter(p => (p.id && p.id !== identifier) || (p.title !== identifier)));
+        } else {
+            setRoutes(prev => prev.filter(r => (r.id && r.id !== identifier) || (r.title !== identifier)));
+        }
+
         const sheet = type === 'point' ? 'map_points' : 'map_routes';
-        const success = await updateSheetData(sheet, 'delete', { id });
+        const success = await updateSheetData(sheet, 'delete', itemToDelete);
+        
         if (success) {
-            alert('Удалено');
-            loadData();
+            console.log('Удаление на сервере успешно');
+            setTimeout(() => loadData(), 1000);
             setEditingItem(null);
+        } else {
+            alert('Ошибка при удалении на сервере.');
+            loadData();
         }
     };
 
@@ -361,9 +416,9 @@ const MapManager = () => {
                         <MapEvents />
                         <MapResizeManager />
                         
-                        {!loading && points.filter(p => p.pos && !isNaN(p.pos[0]) && !isNaN(p.pos[1])).map(p => (
+                        {!loading && points.filter(p => p.pos && !isNaN(p.pos[0]) && !isNaN(p.pos[1])).map((p, idx) => (
                             <Marker 
-                                key={`point-${p.id || p.articleId || p.title}`} 
+                                key={`point-${p.id || p.title || idx}-${p.pos.join('-')}`} 
                                 position={p.pos} 
                                 icon={getAdminMarkerIcon(p.type, p.icon)}
                                 eventHandlers={{ 
@@ -404,7 +459,12 @@ const MapManager = () => {
                         {activeTab === 'attractions' && (
                             <div className="articles-map-list">
                                 {attractions.map(attr => {
-                                    const isOnMap = points.some(p => String(p.attractionId) === String(attr.id));
+                                    const cleanAttrName = (attr.name_ru || attr.name || '').replace(/[^\w\а-яА-ЯёЁ]/g, '').trim().toLowerCase();
+                                    const isOnMap = points.some(p => {
+                                        const idMatch = String(p.attractionId) === String(attr.id);
+                                        const cleanPTitle = (p.title_ru || p.title || '').replace(/[^\w\а-яА-ЯёЁ]/g, '').trim().toLowerCase();
+                                        return idMatch || (cleanPTitle === cleanAttrName && cleanPTitle.length > 0);
+                                    });
                                     const hasCoords = attr.coordinates?.lat && attr.coordinates?.lng;
                                     return (
                                         <div key={attr.id} className={`art-map-item ${isOnMap ? 'on-map' : (hasCoords ? 'ready' : 'disabled')}`}>
@@ -542,9 +602,17 @@ const MapManager = () => {
                                             {p.icon ? <img src={p.icon} alt="" /> : <div className="placeholder-icon"><Icons.Pin /></div>}
                                         </div>
                                         <div className="art-info">
-                                            <span className="art-title-text">{p.title}</span>
+                                            <span className="art-title-text">{p.title_ru || p.title}</span>
                                             <small className="dim-text">{p.type}</small>
                                         </div>
+                                        <button 
+                                            className="btn-quick-delete" 
+                                            onClick={(e) => { e.stopPropagation(); handleDelete('point', p.id); }}
+                                            title="Удалить с карты"
+                                        >
+                                            <Icons.Trash />
+                                        </button>
+
                                     </div>
                                 ))}
                             </div>
@@ -554,24 +622,55 @@ const MapManager = () => {
                             <div className="item-edit-panel">
                                 <div className="art-group-label">Редактирование маркера</div>
                                 
-                                <div className="form-group">
-                                    <label className="label-mini-gold">Заголовок</label>
-                                    <input 
-                                        value={editingItem.title || ''} 
-                                        onChange={e => setEditingItem({...editingItem, title: e.target.value})} 
-                                        placeholder="Название..."
-                                    />
+                                <div className="form-row-multi">
+                                    <div className="form-group">
+                                        <label className="label-mini-gold">Заголовок (RU)</label>
+                                        <input 
+                                            value={editingItem.title_ru || editingItem.title || ''} 
+                                            onChange={e => setEditingItem({...editingItem, title_ru: e.target.value})} 
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="label-mini-gold">Заголовок (KZ)</label>
+                                        <input 
+                                            value={editingItem.title_kz || ''} 
+                                            onChange={e => setEditingItem({...editingItem, title_kz: e.target.value})} 
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="label-mini-gold">Заголовок (EN)</label>
+                                        <input 
+                                            value={editingItem.title_en || ''} 
+                                            onChange={e => setEditingItem({...editingItem, title_en: e.target.value})} 
+                                        />
+                                    </div>
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="label-mini-gold">Описание</label>
+                                    <label className="label-mini-gold">Описание (RU)</label>
                                     <textarea 
-                                        value={editingItem.desc || ''} 
-                                        onChange={e => setEditingItem({...editingItem, desc: e.target.value})} 
-                                        rows="4"
-                                        placeholder="Инфо для туриста..."
+                                        value={editingItem.desc_ru || editingItem.desc || ''} 
+                                        onChange={e => setEditingItem({...editingItem, desc_ru: e.target.value})} 
+                                        rows="2"
                                     />
                                 </div>
+                                <div className="form-group">
+                                    <label className="label-mini-gold">Описание (KZ)</label>
+                                    <textarea 
+                                        value={editingItem.desc_kz || ''} 
+                                        onChange={e => setEditingItem({...editingItem, desc_kz: e.target.value})} 
+                                        rows="2"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label className="label-mini-gold">Описание (EN)</label>
+                                    <textarea 
+                                        value={editingItem.desc_en || ''} 
+                                        onChange={e => setEditingItem({...editingItem, desc_en: e.target.value})} 
+                                        rows="2"
+                                    />
+                                </div>
+
 
                                 <div className="form-group">
                                     <label className="label-mini-gold">Иконка (PNG)</label>
@@ -579,6 +678,24 @@ const MapManager = () => {
                                         value={editingItem.icon} 
                                         onChange={(url) => setEditingItem({...editingItem, icon: url})} 
                                     />
+                                    
+                                    {/* БИБЛИОТЕКА СУЩЕСТВУЮЩИХ ИКОНОК */}
+                                    {points.some(p => p.icon) && (
+                                        <div className="existing-icons-gallery">
+                                            <p className="dim-text-small">Выбрать из уже загруженных:</p>
+                                            <div className="icons-grid-mini">
+                                                {[...new Set(points.map(p => p.icon).filter(Boolean))].map((url, idx) => (
+                                                    <div 
+                                                        key={idx} 
+                                                        className={`mini-icon-item ${editingItem.icon === url ? 'active' : ''}`}
+                                                        onClick={() => setEditingItem({...editingItem, icon: url})}
+                                                    >
+                                                        <img src={url} alt="icon" />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="form-group">
@@ -611,9 +728,12 @@ const MapManager = () => {
                                 )}
 
                                 <div className="edit-actions">
-                                    <button className="admin-save-btn" onClick={handleSavePoint}>Сохранить</button>
-                                    <button className="admin-cancel-btn" onClick={() => setEditingItem(null)}>Отмена</button>
+                                    <button className="admin-save-btn" onClick={handleSavePoint} disabled={isSaving}>
+                                        {isSaving ? 'Сохранение...' : 'Сохранить'}
+                                    </button>
+                                    <button className="admin-cancel-btn" onClick={() => setEditingItem(null)} disabled={isSaving}>Отмена</button>
                                 </div>
+
 
                                 {editingItem.id && (
                                     <button className="btn-delete-full" onClick={() => handleDelete('point', editingItem.id)}>
@@ -657,7 +777,12 @@ const MapManager = () => {
                 .edit-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
                 .admin-save-btn { background: #c59d5f; color: #fff; border: none; padding: 14px; border-radius: 10px; font-weight: 700; cursor: pointer; }
                 .admin-cancel-btn { background: #f5f5f5; color: #666; border: none; padding: 14px; border-radius: 10px; font-weight: 700; cursor: pointer; }
-                .btn-delete-full { width: 100%; margin-top: 15px; background: #fff5f5; color: #e74c3c; border: 1px solid #ffeded; padding: 12px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+                .btn-delete-full { width: 100%; margin-top: 30px; background: #ff4d4d; color: #fff; border: none; padding: 16px; border-radius: 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3); }
+                .btn-delete-full:hover { background: #ff1a1a; box-shadow: 0 6px 20px rgba(255, 77, 77, 0.5); }
+                
+                .btn-quick-delete { margin-left: auto; background: transparent; border: none; color: #ffbfbf; cursor: pointer; padding: 8px; transition: 0.2s; }
+                .btn-quick-delete:hover { color: #ff4d4d; scale: 1.2; }
+
                 .drawing-mode-hint { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); background: #c59d5f; color: white; padding: 10px 20px; border-radius: 30px; font-size: 0.8rem; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.2); pointer-events: none; }
                 
                 .sub-tab-nav { display: flex; gap: 4px; margin-top: 10px; background: #eee; padding: 2px; border-radius: 6px; }
@@ -668,7 +793,18 @@ const MapManager = () => {
                 .color-swatch { aspect-ratio: 1; border-radius: 4px; cursor: pointer; border: 2px solid #ddd; transition: 0.2s; }
                 .color-swatch:hover { scale: 1.1; }
                 .color-swatch.active { border-color: #c59d5f; scale: 1.1; box-shadow: 0 0 10px rgba(197, 157, 95, 0.4); }
+
+                .existing-icons-gallery { margin-top: 12px; padding: 10px; background: #f9f9f9; border-radius: 8px; border: 1px dashed #ddd; }
+                .dim-text-small { font-size: 0.65rem; color: #999; margin-bottom: 8px; }
+                .icons-grid-mini { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+                .mini-icon-item { aspect-ratio: 1; border: 2px solid transparent; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: #fff; transition: 0.2s; padding: 4px; }
+                .mini-icon-item img { width: 100%; height: 100%; object-fit: contain; }
+                .mini-icon-item:hover { border-color: #c59d5f; background: #fdfaf5; }
+                .mini-icon-item.active { border-color: #c59d5f; box-shadow: 0 0 8px rgba(197, 157, 95, 0.3); }
+
+                .form-row-multi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
             `}</style>
+
         </div>
     );
 };

@@ -103,9 +103,13 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
                         <div className="rp-modal-header">
                             <h2 className="rp-m-title">{res[`name_${i18n.language}`] || res.name_ru || res.name}</h2>
                             <div className="rp-m-meta">
-                                <span>{t(`restos_page.cuisines.${res.cuisine}`)}</span>
+                                <span>{
+                                    t(`restos_page.cuisines.${res.cuisine || res.type}`, { 
+                                        defaultValue: res.cuisine || res.type || '...' 
+                                    })
+                                }</span>
                                 <span>·</span>
-                                <span>{res.priceTag}</span>
+                                <span>{res.priceTag || res.priceLevel}</span>
                                 <span>·</span>
                                 <span>{res[`city_${i18n.language}`] || res.city_ru || res.city}</span>
                             </div>
@@ -227,7 +231,7 @@ const EditorialCard = ({ res, onClick }) => {
             <div className="rp-card-img-wrap">
                 <img src={res.image} alt={localizedName} className="rp-card-img" />
                 <div className="rp-card-overlay" />
-                <div className="rp-card-badge">{res.cuisine}</div>
+                <div className="rp-card-badge">{res.cuisine || res.type}</div>
 
                 <div className="rp-card-content-overlay">
                     <h3 className="rp-card-name">{localizedName}</h3>
@@ -267,7 +271,8 @@ const RestaurantsPage = () => {
     const TYPES = ['All', 'Казахская', 'Узбекская', 'Восточная', 'Европейская', 'Кофейня'];
 
     const isFiltered = (r) => {
-        const matchesFilter = filter === 'All' || r.cuisine === filter;
+        const rCuisine = r.cuisine || r.type;
+        const matchesFilter = filter === 'All' || rCuisine === filter;
         const matchesCity = city === 'All' || r.city === city;
         return matchesFilter && matchesCity;
     };

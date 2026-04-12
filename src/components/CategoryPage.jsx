@@ -17,22 +17,60 @@ import LeafletMapWidget from './LeafletMapWidget';
 export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos = [], guides = [] }) => {
     const { t, i18n } = useTranslation();
     const [activeImg, setActiveImg] = useState(item.image);
-    const all = [item.image, ...(item.gallery || [])];
+    const all = useMemo(() => {
+        const parseGallery = (val) => {
+            if (!val) return [];
+            if (Array.isArray(val)) return val;
+            try { return JSON.parse(val); } catch (e) { return []; }
+        };
+        const gallery = parseGallery(item.gallery);
+        return [item.image, ...gallery].filter(Boolean);
+    }, [item.image, item.gallery]);
 
     const nearbyData = useMemo(() => {
-        const filteredHots = (item.nearbyHotels || []).map(id => hots.find(h => String(h.id) === String(id))).filter(Boolean);
-        const filteredRestos = (item.nearbyRestaurants || []).map(id => restos.find(r => String(r.id) === String(id))).filter(Boolean);
+        const parseIds = (val) => {
+            if (!val) return [];
+            if (Array.isArray(val)) return val;
+            try { return JSON.parse(val); } catch (e) { return []; }
+        };
+
+        const hotelIds = parseIds(item.nearbyHotels);
+        const restoIds = parseIds(item.nearbyRestaurants);
+
+        const filteredHots = (hotelIds || []).map(id => hots.find(h => String(h.id) === String(id))).filter(Boolean);
+        const filteredRestos = (restoIds || []).map(id => restos.find(r => String(r.id) === String(id))).filter(Boolean);
         
         const name = (item.name || "").toLowerCase();
         const keywords = name.replace(/мавзолей|ходжи|ахмеда|центр|визит|парк|озеро|река|пещера|комплекс|азрет|султан/g, '').trim().split(/\s+/);
-        const relatedGuides = guides.filter(guide => 
-            (guide.tours || []).some(tour => 
-                tour.highlights?.some(h => keywords.some(k => k.length > 3 && h.toLowerCase().includes(k))) ||
-                tour.title?.toLowerCase().includes(name)
-            )
-        );
+        
+        const relatedGuides = guides.filter(guide => {
+            // Гарантируем, что туры — это массив
+            let toursArr = [];
+            if (Array.isArray(guide.tours)) toursArr = guide.tours;
+            else if (typeof guide.tours === 'string') {
+                try { toursArr = JSON.parse(guide.tours); } catch(e) { toursArr = []; }
+            }
+
+            return (toursArr || []).some(tour => {
+                // Проверяем хайлайты (они тоже могут быть строкой или массивом)
+                let highlightsArr = [];
+                if (Array.isArray(tour.highlights)) highlightsArr = tour.highlights;
+                else if (typeof tour.highlights === 'string') {
+                    try { highlightsArr = JSON.parse(tour.highlights); } 
+                    catch(e) { highlightsArr = tour.highlights.split(',').map(s => s.trim()); }
+                }
+
+                const hasMatchInHighlights = highlightsArr.some(h => 
+                    keywords.some(k => k.length > 3 && String(h).toLowerCase().includes(k))
+                );
+                const hasMatchInTitle = String(tour[`title_${i18n.language}`] || tour.title_ru || tour.title || "").toLowerCase().includes(name);
+                
+                return hasMatchInHighlights || hasMatchInTitle;
+            });
+        });
         return { hotels: filteredHots, restaurants: filteredRestos, guides: relatedGuides };
-    }, [item, hots, restos, guides]);
+    }, [item, hots, restos, guides, i18n.language]);
+
 
     const openMap = () => {
         if (item.coordinates && item.coordinates.lat) {

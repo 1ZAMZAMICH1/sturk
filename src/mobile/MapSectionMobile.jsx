@@ -82,7 +82,7 @@ const MobileMapBackground = React.memo(() => (
 ));
 
 const MapSectionMobile = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen]       = useState(false);
   const [filter, setFilter]       = useState('all');
   const [mapPoints, setMapPoints] = useState([]);
@@ -115,9 +115,14 @@ const MapSectionMobile = () => {
     return () => clearTimeout(t);
   }, []);
 
-  const filteredPoints = useMemo(() =>
-    mapPoints.filter(p => filter === 'all' || p.type === filter),
-  [filter, mapPoints]);
+  const filteredPoints = useMemo(() => {
+    if (filter === 'all') return mapPoints;
+    return mapPoints.filter(p => {
+      if (filter === 'nature') return p.type === 'nature' || p.type === 'sight';
+      if (filter === 'sight') return p.type === 'sight' || p.type === 'nature';
+      return p.type === filter;
+    });
+  }, [filter, mapPoints]);
 
   const handleOpenDetails = (point) => {
       let attr = null;
@@ -185,6 +190,9 @@ const MapSectionMobile = () => {
                 center={[43.0, 68.5]} zoom={8}
                 zoomControl={false} attributionControl={false}
                 className="mob-leaflet" preferCanvas={true}
+                dragging={true}
+                touchZoom={'center'} /* Зум от центра, чтобы не дергало при скролле */
+                scrollWheelZoom={false}
               >
                 <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
                 <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}" />
@@ -198,24 +206,56 @@ const MapSectionMobile = () => {
 
                 {filteredPoints.map(p => {
                   let attr = null;
+                  const pid = String(p.attractionId || p.articleId || p.hotelId || p.restaurantId || '').trim();
+                  const ptitle = String(p.title_ru || p.title || '').trim().toLowerCase();
+
                   if (p.type === 'hotel') {
-                    attr = hotels.find(h => String(h.id) === String(p.hotelId || p.attractionId) || h.name === p.title);
+                    attr = hotels.find(h => String(h.id) === pid);
+                    if (!attr) attr = hotels.find(h => String(h.name || '').trim().toLowerCase() === ptitle);
                   } else if (p.type === 'restaurant') {
-                    attr = restaurants.find(r => String(r.id) === String(p.restaurantId || p.attractionId) || r.name === p.title);
+                    attr = restaurants.find(r => String(r.id) === pid);
+                    if (!attr) attr = restaurants.find(r => String(r.name || '').trim().toLowerCase() === ptitle);
                   } else {
-                    attr = attractions.find(a => String(a.id) === String(p.attractionId || p.articleId) || a.name === p.title);
+                    let allAtts = [];
+                    if (Array.isArray(attractions)) {
+                      allAtts = attractions;
+                    } else {
+                      allAtts = [
+                        ...(attractions.city || []),
+                        ...(attractions.spirit || []),
+                        ...(attractions.nature || [])
+                      ];
+                    }
+                    attr = allAtts.find(a => String(a.id) === pid);
+                    if (!attr) {
+                      attr = allAtts.find(a => {
+                        const cleanA = (a.name_ru || a.name || '').replace(/[^\w\а-яА-ЯёЁ]/g, '').trim().toLowerCase();
+                        const cleanP = ptitle.replace(/[^\w\а-яА-ЯёЁ]/g, '').trim().toLowerCase();
+                        return cleanP === cleanA && cleanP.length > 0;
+                      });
+                    }
                   }
                   return (
                     <Marker key={p.id} position={p.pos}
-                      icon={p.icon ? L.icon({ iconUrl:p.icon, iconSize:[45,45], iconAnchor:[22,22], className: 'premium-map-icon' }) : getIcon(p.type)}
+                      icon={L.divIcon({
+                        className: 'premium-marker-wrapper',
+                        html: `
+                          <div class="marker-combo">
+                            ${p.icon ? `<img src="${p.icon}" class="combo-icon" style="width: 42px !important; height: auto !important;" />` : ''}
+                          </div>
+                        `,
+                        iconSize: [42, 50],
+                        iconAnchor: [21, 50]
+                      })}
                       eventHandlers={{ click: () => {} }}
                     >
                       <Popup className="glass-popup" closeButton={false} autoPan={true}>
                         <div className="map-popup-card">
                             {attr?.image && <img src={attr.image} className="popup-preview-img" alt="" />}
                             <div className="popup-info">
-                                <h3>{p.title}</h3>
-                                <button className="popup-more-btn" onClick={() => handleOpenDetails(p)}>{t('map.details')}</button>
+                              <h3>{attr?.[`name_${i18n.language}`] || p[`title_${i18n.language}`] || attr?.name_ru || attr?.name || p.title_ru || p.title}</h3>
+                              <p>{(attr?.[`description_${i18n.language}`] || attr?.[`shortDescription_${i18n.language}`] || p[`desc_${i18n.language}`] || attr?.description_ru || p.desc_ru || p.desc)?.substring(0, 80)}...</p>
+                              <button className="popup-more-btn" onClick={() => handleOpenDetails(p)}>{t('map.details')}</button>
                             </div>
                         </div>
                       </Popup>

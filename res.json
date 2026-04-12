@@ -1,0 +1,1417 @@
+[
+  {
+    "id": "179943530",
+    "name_ru": "AQ miniHOTEL",
+    "name_en": "AQ miniHOTEL",
+    "name_kz": "AQ miniHOTEL",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/696094309.jpg?k=02154d2913ffad50c31428fafe22eb443dc6ce1780a82c0de7f08b08cb9c4a07&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 9.5",
+    "priceTag": "KZT 10 578",
+    "lat": 42.30429546219991,
+    "lng": 69.61676435431978,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/696094309.jpg?k=02154d2913ffad50c31428fafe22eb443dc6ce1780a82c0de7f08b08cb9c4a07&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/677269222.jpg?k=e20cfaeabb1da14487559ab0551b9080955db2e5128dcee58a67d663387d4756&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/687140462.jpg?k=5b62f38d052ef98b0dc0ca5d276be51d4620d19e475019649dff2ff2e7410d2e&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/687140455.jpg?k=796860df901217e32e0be01bea32074bacfe7c07981c69c77b32b8a4461d548c&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/687140449.jpg?k=468d4e6355b1d143977c2fa32a8463bb0aef37740600ed5c6f4bde4da5ebb991&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/687140437.jpg?k=feed9e82eb60434ac5274079d748e5cf5353c4229e9cad8cf474796afd93781d&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/687138703.jpg?k=b5eb053b0e43a1ade7a94631057686c42b1d977927cd0116b6e346ec6e163655&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/688978476.jpg?k=72b76618bd327c3534185ea85a8826548d482d83997a5b8551e61bf881434cac&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/696094309.jpg?k=02154d2913ffad50c31428fafe22eb443dc6ce1780a82c0de7f08b08cb9c4a07&o=&hp=1"
+    ],
+    "description_ru": "AQ miniHOTEL — это современный отель в самом сердце Туркестана. К услугам гостей уютные номера, общий лаундж и великолепная терраса для отдыха.",
+    "description_en": "AQ miniHOTEL is a modern boutique hotel in the heart of Turkistan. It offers cozy rooms, a shared lounge, and a stunning terrace for relaxation.",
+    "description_kz": "AQ miniHOTEL — Түркістанның қақ ортасында орналасқан заманауи қонақ үй. Қонақтарға жайлы нөмірлер, ортақ демалыс орны және демалысқа арналған тамаша терраса ұсынылады.",
+    "description_zh": "AQ miniHOTEL是位于突厥斯坦中心的一家现代精品酒店。提供舒适的客房、公共休息室和极佳的休闲露台。",
+    "amenities": [
+      "Бесплатная частная парковка в отеле",
+      "Может быть доступна скидка"
+    ],
+    "rooms": [
+      {
+        "title": "Одноместный номер с общим душем и туалетом",
+        "priceText": "KZT 10 578",
+        "beds": "1 односпальная кровать"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "170032601",
+    "name_ru": "Qazaq Hotel Premium",
+    "name_en": "Qazaq Hotel Premium",
+    "name_kz": "Qazaq Hotel Premium",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/608848026.jpg?k=0b9aa510427ae8b9bd20e45e56fdcbed1be59607f343c3119d4d1645f02cc95f&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 9.2",
+    "priceTag": "KZT 26 000",
+    "lat": 42.351370227365,
+    "lng": 69.627712582803,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/608848026.jpg?k=0b9aa510427ae8b9bd20e45e56fdcbed1be59607f343c3119d4d1645f02cc95f&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/608847872.jpg?k=04100e56d627373aa27f566fab983e5f7f9f78eeab9626a1ee46f9894f094e81&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/608847830.jpg?k=e9d3034abeb50e27a2386f06b2c09eb4fea3119997a64fbbc3a5b231f383498b&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/571662651.jpg?k=f9829849bd61f7fae5aa6b092f1073af2aa7c56c2f724318db906b2fe1ca544e&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/571662736.jpg?k=7d2a8b4538a308d46ac1f8aaf3972ae857463171b09b36e3299317ca12611649&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/568735379.jpg?k=fed145a6a41a56f228f663c8a20a6e44bfaab140003445e6a18fbf78289bc599&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/571662599.jpg?k=e8de40a51481bc9e4911f51ca98e50dcb8a3103be6a69a51f798396cd04b9b57&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/571662726.jpg?k=0ed63fd62d4aa041709b2b315cb1d85d4cfc2425e12951f694517848eebc1f19&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/608848026.jpg?k=0b9aa510427ae8b9bd20e45e56fdcbed1be59607f343c3119d4d1645f02cc95f&o=&hp=1"
+    ],
+    "description_ru": "Qazaq Hotel Premium — это отель премиум-класса, сочетающий восточное гостеприимство и современный комфорт. К услугам гостей изысканный ресторан, бар и бесплатный Wi-Fi на всей территории.",
+    "description_en": "Qazaq Hotel Premium is a high-end hotel blending traditional hospitality with modern comfort. Features an exquisite restaurant, a bar, and high-speed Wi-Fi throughout.",
+    "description_kz": "Qazaq Hotel Premium — шығыс қонақжайлылығы мен заманауи жайлылықты біріктіретін премиум класты қонақ үй. Мұнда талғампаз мейрамхана, бар және барлық жерде тегін Wi-Fi бар.",
+    "description_zh": "Qazaq Hotel Premium是一家融合了传统款待与现代舒适的高端酒店。设有精致的餐厅、酒吧和覆盖全境的免费Wi-Fi。",
+    "amenities": [
+      "Бесплатная парковка в отеле",
+      "Превосходный завтрак включен"
+    ],
+    "rooms": [
+      {
+        "title": "Стандартный номер с кроватью размера «king-size»",
+        "priceText": "KZT 26 000",
+        "beds": "1 большая двуспальная кровать"
+      },
+      {
+        "title": "Номер Делюкс с кроватью размера «king-size»",
+        "priceText": "KZT 35 000",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Улучшенный номер с кроватью размера «king-size»",
+        "priceText": "KZT 28 000",
+        "beds": "1 большая двуспальная кровать"
+      },
+      {
+        "title": "Люкс с 1 спальней",
+        "priceText": "KZT 50 000",
+        "beds": "1 большая двуспальная кровать"
+      },
+      {
+        "title": "Улучшенный двухместный номер с 2 отдельными кроватями",
+        "priceText": "KZT 33 000",
+        "beds": "2 односпальные кровати"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "170119032",
+    "name_ru": "Sweet Home Art Boutique",
+    "name_en": "Sweet Home Art Boutique",
+    "name_kz": "Sweet Home Art Boutique",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/742367308.jpg?k=2f3abacfc43d23489bb9fddff3404eec19a9bbba07e2ab93a62eff08034b30d9&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 9",
+    "priceTag": "KZT 6 800",
+    "lat": 42.30850227485496,
+    "lng": 69.64498900156165,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/742367308.jpg?k=2f3abacfc43d23489bb9fddff3404eec19a9bbba07e2ab93a62eff08034b30d9&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/711967860.jpg?k=44acbb927fed37944442676f3adb71714c93e10c34022eab01f70ed2b76c33f8&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/734422453.jpg?k=9efefadfe9fabf19c00ee2086bcf590e10c8d914d32725b3bc3ae1b96d5d8e16&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/570002914.jpg?k=7cd9003a3e7fd3ac1a8cdd0484009756d819381f302ac0ed3cd2c403f2e2bb52&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/827143694.jpg?k=831f688205471239a945897cd12d7563db63910bb8f496b0fe515aeac8074e48&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/570005439.jpg?k=99113dd2c7c4c53d190ab363de24f02503c71acb4f023ed4fc0117d97d682aba&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/729494580.jpg?k=112f744e765aae6904fdba45135237c424fe3b6b48667fc1630f20f70f256415&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/745159829.jpg?k=fbe61aad6eb3c980bb262022371c07767c7028d87974f2248d9f7e3103691884&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/742367308.jpg?k=2f3abacfc43d23489bb9fddff3404eec19a9bbba07e2ab93a62eff08034b30d9&o=&hp=1"
+    ],
+    "description_ru": "Уникальный бутик-отель Sweet Home Art Boutique предлагает атмосферу уюта и творчества. Сад, терраса и стильный дизайн сделают ваш отдых незабываемым.",
+    "description_en": "Sweet Home Art Boutique offers a unique atmosphere of comfort and creativity. Its garden, terrace, and stylish design ensure an unforgettable stay.",
+    "description_kz": "Sweet Home Art Boutique бірегей бутик-қонақ үйі жайлылық пен шығармашылық атмосферасын ұсынады. Бақша, терраса және стильді дизайн демалысыңызды ұмытылмас етеді.",
+    "description_zh": "Sweet Home Art Boutique提供舒适与创意并存的独特氛围。其花园、露台和时尚设计确保您拥有难忘的住宿体验。",
+    "amenities": [
+      "Стоимость не возвращается",
+      "•\nОплата объекту размещения до прибытия",
+      "Бесплатная отмена до 22 апреля 2026 г."
+    ],
+    "rooms": [
+      {
+        "title": "Односпальная кровать в общем мужском номере",
+        "priceText": "KZT 6 800",
+        "beds": "1 односпальная кровать"
+      },
+      {
+        "title": "Односпальная кровать в общем номере для женщин",
+        "priceText": "KZT 6 800",
+        "beds": "1 односпальная кровать"
+      },
+      {
+        "title": "Бюджетный двухместный номер с 1 кроватью",
+        "priceText": "KZT 13 500",
+        "beds": "1 двуспальная кровать"
+      },
+      {
+        "title": "Двухместный номер Делюкс с 1 кроватью",
+        "priceText": "KZT 13 500",
+        "beds": "1 большая двуспальная кровать"
+      },
+      {
+        "title": "Бюджетный двухместный номер с 2 отдельными кроватями",
+        "priceText": "KZT 13 500",
+        "beds": "2 односпальные кровати"
+      },
+      {
+        "title": "Классический трехместный номер",
+        "priceText": "KZT 15 000",
+        "beds": "1 большая двуспальная кровать"
+      },
+      {
+        "title": "Люкс с 1 спальней",
+        "priceText": "KZT 17 500",
+        "beds": "Спальня 1: 1 двуспальная кровать  Гостиная: 1 диван-кровать"
+      },
+      {
+        "title": "Семейный номер",
+        "priceText": "KZT 22 000",
+        "beds": "2 односпальные кровати  и 1 большая двуспальная кровать"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "170194633",
+    "name_ru": "Cosmopolitan Hotel",
+    "name_en": "Cosmopolitan Hotel",
+    "name_kz": "Cosmopolitan Hotel",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/825568985.jpg?k=016718ac3a9ae5ab6b0d6bb2fa262c8bfb0dc94c26a1c83adefbd2e714699a3a&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 9.4",
+    "priceTag": "KZT 30 000",
+    "lat": 42.323331142473,
+    "lng": 69.603346040723,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/825568985.jpg?k=016718ac3a9ae5ab6b0d6bb2fa262c8bfb0dc94c26a1c83adefbd2e714699a3a&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/825566715.jpg?k=ed147d93fb6948fa8e21af6ea0b7996a11c23cc5551078f5afb04be168f26209&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/498835462.jpg?k=df1325b6bc07a8f8940ece40f8841d75d4bf118cb3cb989646794c39a6c65d21&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/825568651.jpg?k=01c3ea22e50746eff37494bbb6ef7969c3a6822676df111be0717001f558ed25&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/489652119.jpg?k=02233161fa434e726f719c411527568fc716d7326e28aedc3229792308be7dfb&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/498835242.jpg?k=06bb100dbda34eb54ea5c35991c254c83e5e5ba81bc1cc8e3f654cb3d2efdd62&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/825566708.jpg?k=94d1a13b1c81a810ccce1422caf76bce0a2bb9dffb3ef3d1661032436882930b&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/825567740.jpg?k=e666662f24db69846ed33d1146514acfdb47a24793a507ad654f4942e3d48454&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/825568985.jpg?k=016718ac3a9ae5ab6b0d6bb2fa262c8bfb0dc94c26a1c83adefbd2e714699a3a&o=&hp=1"
+    ],
+    "description_ru": "4-звездочный отель Cosmopolitan предлагает первоклассный сервис в Туркестане. Ресторан, круглосуточная доставка еды и просторные номера для вашего удобства.",
+    "description_en": "The 4-star Cosmopolitan Hotel provides first-class service in Turkistan. Featuring an on-site restaurant, 24-hour room service, and spacious rooms.",
+    "description_kz": "4 жұлдызды Cosmopolitan қонақ үйі Түркістанда жоғары деңгейлі қызмет ұсынады. Мейрамхана, тәулік бойы ас жеткізу және кең нөмірлер сіздің игілігіңіз үшін.",
+    "description_zh": "四星级的科斯莫波利坦酒店为突厥斯坦提供一流的服务。设有餐厅、24小时送餐服务和宽敞的客房。",
+    "amenities": [
+      "Бесплатная частная парковка в отеле",
+      "Потрясающий завтрак включен",
+      "Банковская карта не нужна",
+      "Может быть доступна скидка"
+    ],
+    "rooms": [
+      {
+        "title": "Большой двухместный номер с 1 кроватью или 2 отдельными кроватями",
+        "priceText": "KZT 30 000",
+        "beds": "1 большая двуспальная кровать"
+      },
+      {
+        "title": "Двухместный номер с 1 кроватью или 2 отдельными кроватями и балконом",
+        "priceText": "KZT 33 000",
+        "beds": "1 большая двуспальная кровать"
+      },
+      {
+        "title": "Двухместный номер Делюкс с 1 кроватью и балконом",
+        "priceText": "KZT 45 000",
+        "beds": "1 большая двуспальная кровать"
+      },
+      {
+        "title": "Семейный номер",
+        "priceText": "KZT 55 000",
+        "beds": "2 большие двуспальные кровати"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "170269214",
+    "name_ru": "Stela Hotel",
+    "name_en": "Stela Hotel",
+    "name_kz": "Stela Hotel",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/653825838.jpg?k=50d2b6c822cdee2cf1f2ea9ad042567189428f1a4efa65ca572afc858bb798bd&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 7.9",
+    "priceTag": "KZT 21 000",
+    "lat": 42.32949727555011,
+    "lng": 69.59246433404908,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/653825838.jpg?k=50d2b6c822cdee2cf1f2ea9ad042567189428f1a4efa65ca572afc858bb798bd&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/653826815.jpg?k=627654638a1f7ed220fb6a539f0bf58588260de5c69a6effdcb98ba87335106d&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/536829161.jpg?k=9a7e72a725114a0e7c95cb3f68d0212685bdbbe09f4e7f1f42bdc52b755b1252&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/653828553.jpg?k=e0e97a56805120866b5132524d33844b07d81db1cb6e510c4de25a6da4b70b60&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/653826918.jpg?k=addfec40ea167fa4aa0502abee9dad9581ff48fb5665ddee3cd4ec7a3306ede6&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/553361137.jpg?k=4fe302d549124b396be8f318bdddb3ff3ccd4d59589cafd002eb7baa1e2c268a&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/653826805.jpg?k=6ceaf82617e95ab3d1784b05afe0a1cd66ff568ae6509823be838b2d3aba9b27&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/536830445.jpg?k=e48899f8f54776694a53831449de36150fe1e7b90b5492623748c61a51d5dc72&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/653825838.jpg?k=50d2b6c822cdee2cf1f2ea9ad042567189428f1a4efa65ca572afc858bb798bd&o=&hp=1"
+    ],
+    "description_ru": "Отель Stela предлагает комфортный отдых в Туркестане. К вашим услугам стильный бар, уютные номера и бесплатная парковка.",
+    "description_en": "Stela Hotel offers comfortable accommodation in Turkistan. Enjoy its stylish bar, cozy rooms, and free private parking.",
+    "description_kz": "Stela қонақ үйі Түркістанда жайлы демалысты ұсынады. Сіздің игілігіңіз үшін стильді бар, жайлы нөмірлер және тегін тұрақ қарастырылған.",
+    "description_zh": "斯特拉酒店在突厥斯坦提供舒适的住宿。享受其时尚的酒吧、舒适的客房和免费私人停车场。",
+    "amenities": [
+      "Бесплатная частная парковка в отеле",
+      "Хороший завтрак включен",
+      "•\nОплата объекту размещения до прибытия",
+      "Банковская карта не нужна"
+    ],
+    "rooms": [
+      {
+        "title": "Стандартный двухместный номер с 1 кроватью",
+        "priceText": "KZT 21 000",
+        "beds": "1 двуспальная кровать"
+      },
+      {
+        "title": "Люкс",
+        "priceText": "KZT 23 000",
+        "beds": "2 односпальные кровати  и 1 двуспальная кровать"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "170350185",
+    "name_ru": "DoubleTree by Hilton Shymkent",
+    "name_en": "DoubleTree by Hilton Shymkent",
+    "name_kz": "DoubleTree by Hilton Shymkent",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/487341035.jpg?k=49ca63da69c42dd8c8a410dfe420cfbe53cd44edf11aaadb68ba6303408ee412&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 8.8",
+    "priceTag": "KZT 55 383",
+    "lat": 42.32736726073147,
+    "lng": 69.58387792110443,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/487341035.jpg?k=49ca63da69c42dd8c8a410dfe420cfbe53cd44edf11aaadb68ba6303408ee412&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/490860718.jpg?k=74eb0abda1e3083118e15f80c1fd6610378437f0dbe6cfc80dad8b082e1c40a1&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/490860720.jpg?k=46cf2c489c657c6a8f7f35b194cc5dd9d79358a13abdbc457640982edd9c2be9&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/490860682.jpg?k=42b2b0b1e9c1ec6a5ea8453396c685bcf660e898a018ef9060cc73bf212f88a0&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/490860751.jpg?k=96a33eddc392b257bdfdc4b31e2fb915c83855d1cfb6a0fea07ff9b6fc48cd53&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/490860708.jpg?k=0e1e2e67fd47b3dfbb60628af3a5a976665ae49019f20379080cb6d20ba94861&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/490860671.jpg?k=9f39f54f1248536a364f5459ffaf8d9d551414eea363deb2d29b762d7c4f7d25&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/490860676.jpg?k=8fb4dc8a70a6c80dc7c957063172521d0ac6814096dd997e5f3978c07e2d286c&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/487341035.jpg?k=49ca63da69c42dd8c8a410dfe420cfbe53cd44edf11aaadb68ba6303408ee412&o=&hp=1"
+    ],
+    "description_ru": "DoubleTree by Hilton — это эталон гостеприимства. Наслаждайтесь первоклассным сервисом, современным фитнес-центром и изысканной кухней во время вашего путешествия.",
+    "description_en": "DoubleTree by Hilton is a hallmark of hospitality. Enjoy world-class service, a modern fitness center, and fine dining during your journey.",
+    "description_kz": "DoubleTree by Hilton — қонақжайлылықтың эталоны. Саяхатыңыз кезінде жоғары деңгейлі қызметтен, заманауи фитнес-орталықтан және талғампаз тағамдардан ләззат алыңыз.",
+    "description_zh": "希尔顿逸林酒店是款待业的典范。在您的旅途中享受世界一流的服务、现代化的健身中心和精美的餐饮。",
+    "amenities": [
+      "Бесплатная парковка в отеле",
+      "Стоимость не возвращается",
+      "Очень хороший завтрак включен",
+      "•\nОплата объекту размещения до прибытия",
+      "Очень хороший завтрак по цене KZT 9 000"
+    ],
+    "rooms": [
+      {
+        "title": "Номер с кроватью размера «queen-size» - Оборудован для гостей с ограниченными физическими возможностями",
+        "priceText": "KZT 55 383",
+        "beds": "1 большая двуспальная кровать"
+      },
+      {
+        "title": "Номер с кроватью размера «king-size»",
+        "priceText": "KZT 56 288",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Номер с кроватью размера «queen-size»",
+        "priceText": "KZT 56 288",
+        "beds": "1 большая двуспальная кровать"
+      },
+      {
+        "title": "Номер с кроватью размера queen-size и видом на город",
+        "priceText": "KZT 58 180",
+        "beds": "1 большая двуспальная кровать"
+      },
+      {
+        "title": "Номер Делюкс с кроватью размера «queen-size»",
+        "priceText": "KZT 64 802",
+        "beds": "1 большая двуспальная кровать"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "170426286",
+    "name_ru": "Aurum Garden Hotel",
+    "name_en": "Aurum Garden Hotel",
+    "name_kz": "Aurum Garden Hotel",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/597892576.jpg?k=73b642b4ed6e2d8eeb41e52a3e0701b0d0aadc6d9b33357017a319651d2ee1f6&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 9.6",
+    "priceTag": "KZT 30 000",
+    "lat": 42.3145904,
+    "lng": 69.6183712,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/597892576.jpg?k=73b642b4ed6e2d8eeb41e52a3e0701b0d0aadc6d9b33357017a319651d2ee1f6&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/643787835.jpg?k=86feec9046d8dabe9eeedc6dcf6ca0b635c85ff3ff921bf7bf302753cce7c704&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/597893034.jpg?k=27f4de596f75f2563020a6964279022a6590605c3a5ef70203b4b135db5b55a7&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/597893128.jpg?k=1ced34a317d2c778e3789fdddc58e805ae6a95128bfb7091d9db485a16b434e2&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/597892969.jpg?k=1d0d2273697db948360756390ba1c9470dfc23c5f8465d6f8e621c6ed7c8395f&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/597892987.jpg?k=75c8d97f5f736476b9e9149c8c7eab1243d889721eb03b109759726fbe53d24b&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/643785597.jpg?k=df0453e5174f19dd83f55bfc2d4183f7cd3f4b17e3bb7f52cebafd65291153da&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/597892998.jpg?k=5143db7c73e877d09dacfa97bd709f575c573ee6c164b53b9e1065802e64efee&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/597892576.jpg?k=73b642b4ed6e2d8eeb41e52a3e0701b0d0aadc6d9b33357017a319651d2ee1f6&o=&hp=1"
+    ],
+    "description_ru": "Aurum Garden Hotel — это оазис спокойствия и уюта. Красивый сад, превосходные завтраки и внимательный персонал сделают ваш визит особенным.",
+    "description_en": "Aurum Garden Hotel is an oasis of peace and comfort. Its beautiful garden, excellent breakfasts, and attentive staff will make your visit truly special.",
+    "description_kz": "Aurum Garden Hotel — тыныштық пен жайлылықтың мекені. Әдемі бақша, тамаша таңғы астар және ілтипатты қызметкерлер сіздің келуіңізді ерекше етеді.",
+    "description_zh": "奥鲁姆花园酒店是和平与舒适的绿洲。其美丽的花园、绝佳的早餐和细致的服务将让您的访问倍感特别。",
+    "amenities": [
+      "Бесплатная частная парковка в отеле",
+      "Потрясающий завтрак включен",
+      "Банковская карта не нужна",
+      "Может быть доступна скидка"
+    ],
+    "rooms": [
+      {
+        "title": "Одноместный номер",
+        "priceText": "KZT 30 000",
+        "beds": "1 односпальная кровать"
+      },
+      {
+        "title": "Двухместный номер Делюкс с 1 кроватью",
+        "priceText": "KZT 45 000",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Двухместный номер с 1 кроватью",
+        "priceText": "KZT 40 000",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Двухместный номер с 2 отдельными кроватями",
+        "priceText": "KZT 40 000",
+        "beds": "2 односпальные кровати"
+      },
+      {
+        "title": "Семейный номер",
+        "priceText": "KZT 65 000",
+        "beds": "2 очень большие двуспальные кровати"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "170500557",
+    "name_ru": "Aidana Plaza Hotel",
+    "name_en": "Aidana Plaza Hotel",
+    "name_kz": "Aidana Plaza Hotel",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/114467917.jpg?k=c2471140c90b3e426b64bfeb480698ae515e9ec3da61404acab12d2b7b2a838e&o=",
+    "stars": "4",
+    "booking_rating": "Оценка 9.1",
+    "priceTag": "KZT 29 000",
+    "lat": 42.3215916823552,
+    "lng": 69.5828662253916,
+    "gallery": "[\"https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/114467917.jpg?k=c2471140c90b3e426b64bfeb480698ae515e9ec3da61404acab12d2b7b2a838e&o=\",\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/110688920.jpg?k=612a7c7b3f50ded6aaf8325022f1ed59e46e61b75bdf64aecdcab2b78570c63e&o=\",\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/110688930.jpg?k=00efbbb20823557267a246a2a72549a66db157f347add5ded69c6e6ae68b2d4f&o=\",\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/114467881.jpg?k=2fe633fc3e5502771b113035607dd77c1a1bbd3c28216fb802784917dada9540&o=\",\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/110830521.jpg?k=b9e6caa82ede0da5257a93d2cac5319646fbdf7559c10d15ab4edad2a08491e0&o=\",\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/110688929.jpg?k=23ac1f79976b63b6c9e81cc78e01476549dc24d6d1e23ae24516b40c99d0f55b&o=\",\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/114467901.jpg?k=d67e93872c687df434dc8fd54c643f054d2c5f5ce38b566f7b183591cf964a68&o=\",\"https://cf.bstatic.com/xdata/images/hotel/max1024x768/110688937.jpg?k=be47b0481cd309e43104e09a2fa03dfc15bf1b04da9a53d1d874f7265643bd95&o=\",\"https://cf.bstatic.com/xdata/images/hotel/max500/114467917.jpg?k=c2471140c90b3e426b64bfeb480698ae515e9ec3da61404acab12d2b7b2a838e&o=&hp=1\"]",
+    "description_ru": "4-звездочный отель Aidana Plaza расположен в центре деловой активности. Современные удобства, бар и высокий уровень комфорта для каждого гостя.",
+    "description_en": "The 4-star Aidana Plaza Hotel is located in the heart of business activities. Offering modern amenities, an on-site bar, and high-level comfort for every guest.",
+    "description_kz": "4 жұлдызды Aidana Plaza қонақ үйі іскерлік белсенділік орталығында орналасқан. Әрбір қонақ үшін заманауи қолайлылықтар, бар және жоғары жайлылық деңгейі қарастырылған.",
+    "description_zh": "四星级的艾达纳广场酒店位于商务活动中心。为每位客人提供现代化设施、酒店内酒吧和高水平的舒适体验。",
+    "amenities": "[\"Очень хороший завтрак включен\",\"Включен высокоскоростной интернет\",\"Банковская карта не нужна\"]",
+    "rooms": "[{\"title\":\"Стандартный двухместный номер с 1 кроватью\",\"priceText\":\"KZT 29 000\",\"beds\":\"1 двуспальная кровать\"},{\"title\":\"Улучшенный двухместный номер с 1 кроватью\",\"priceText\":\"KZT 31 000\",\"beds\":\"1 двуспальная кровать\"},{\"title\":\"Улучшенный люкс\",\"priceText\":\"KZT 39 000\",\"beds\":\"Спальня 1: 1 большая двуспальная кровать  Гостиная: 1 диван-кровать\"},{\"title\":\"Двухместный номер Делюкс с 2 отдельными кроватями\",\"priceText\":\"KZT 36 000\",\"beds\":\"2 односпальные кровати\"}]",
+    "nearbyAttractions": "[]",
+    "nearbyRestaurants": "[]"
+  },
+  {
+    "id": "170581158",
+    "name_ru": "Rixos Khadisha Shymkent",
+    "name_en": "Rixos Khadisha Shymkent",
+    "name_kz": "Rixos Khadisha Shymkent",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/39122817.jpg?k=5cb0382f80581fa302784d6cfbdffa9dd3221dea6d5190991ec494945c398015&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 8.5",
+    "priceTag": "KZT 98 268",
+    "lat": 42.324932,
+    "lng": 69.59600799999998,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/39122817.jpg?k=5cb0382f80581fa302784d6cfbdffa9dd3221dea6d5190991ec494945c398015&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/281138002.jpg?k=6b2ea781deb80511cf2836dc7e2ae4baccf00f678573a29c3d8b41f3b573427d&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/354868273.jpg?k=3538cc15e9137c895dd85168a81ae40b10ab5c080117714c346375e8431f7615&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/41004558.jpg?k=034012373098c9c3c80f99eacf69803ab7167f753960fc530a18a5c75349ed50&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/39600739.jpg?k=f416e923d6e7f1315b78516319efb4fd5706e25263b8c4d3db1375e187289857&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/354890336.jpg?k=a308236eb0691bac0159f3572dd833d61dc7a146f0fe76f850a128c100cbc35f&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/38760953.jpg?k=9735da3bcb16fb515180c9b97115ea3892b2318cbc73ef581c3fae291b9b7e30&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/41005219.jpg?k=6cc095f49553863f48a1f4df7d09b6411ebe90c51942dc2941560c6b6590703f&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/39122817.jpg?k=5cb0382f80581fa302784d6cfbdffa9dd3221dea6d5190991ec494945c398015&o=&hp=1"
+    ],
+    "description_ru": "Роскошный отель Rixos Khadisha предлагает гостям просторные номера и великолепный спа-комплекс с сауной, хаммамом и снежной комнатой.",
+    "description_en": "The luxurious Rixos Khadisha Shymkent features spacious rooms and an exceptional spa center with a sauna, Turkish hammam, and snow room.",
+    "description_kz": "Rixos Khadisha сәнді қонақ үйі қонақтарға кең нөмірлерді және саунасы, хаммамы мен қар бөлмесі бар керемет спа-кешенін ұсынады.",
+    "description_zh": "豪华的希姆肯特哈迪莎瑞享酒店拥有宽敞的客房和卓越的水疗中心，设有桑拿浴室、土耳其浴室和雪屋。",
+    "amenities": [
+      "Бесплатная парковка в отеле",
+      "Стоимость не возвращается",
+      "Превосходный завтрак включен",
+      "•\nОплата заранее",
+      "•\nОплата объекту размещения до прибытия",
+      "Может быть доступна скидка"
+    ],
+    "rooms": [
+      {
+        "title": "Улучшенный номер",
+        "priceText": "KZT 98 268",
+        "beds": ""
+      },
+      {
+        "title": "Улучшенный номер с кроватью размера «king-size»",
+        "priceText": "KZT 130 000",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Улучшенный двухместный номер с 2 отдельными кроватями",
+        "priceText": "KZT 130 000",
+        "beds": "2 односпальные кровати"
+      },
+      {
+        "title": "Полулюкс",
+        "priceText": "KZT 160 000",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Роскошный люкс",
+        "priceText": "KZT 350 000",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Семейный люкс",
+        "priceText": "KZT 200 000",
+        "beds": "2 односпальные кровати  и 1 очень большая двуспальная кровать  и 1 диван-кровать"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "170655759",
+    "name_ru": "MirOtel",
+    "name_en": "MirOtel",
+    "name_kz": "MirOtel",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/529428830.jpg?k=846882d44c4b971537cd34a6b99126576827ea3e20b69d5fe30cd1657a12396d&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 9.1",
+    "priceTag": "KZT 36 000",
+    "lat": 42.316395871675,
+    "lng": 69.613358893607,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/529428830.jpg?k=846882d44c4b971537cd34a6b99126576827ea3e20b69d5fe30cd1657a12396d&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/533446929.jpg?k=e3913ec7e1677523649210fae35ae08a7e2a733f12b2fd0f58eb30f3b4727cff&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/610909387.jpg?k=f210e454ee75f6c7a9402323e6ef2d4fc6c49256830a724c45d2592b036e711a&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/533445344.jpg?k=72ea16773414a74ccf0f7c7aaf5f2252126a52ab093b059ef9b5b2c2600a3483&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/529428847.jpg?k=ebd601db622464fbc49ce24c16cbe2027bcc593dacfcb140f8e800087ac62ad7&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/529428853.jpg?k=41fb87b6e1f20bf7eb2bfd991fbb7a073d81367979b65ce2818da0db11914eef&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/529428876.jpg?k=31f5fa808346e633ede131b874c8ca6b507a4bc62b7f21a06da126e9471644b2&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/529428841.jpg?k=7c9f92cf9b037d73ac133d3b7b430db4a8263a2414cb57facc6ffd084772ecbb&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/529428830.jpg?k=846882d44c4b971537cd34a6b99126576827ea3e20b69d5fe30cd1657a12396d&o=&hp=1"
+    ],
+    "description_ru": "MirOtel — это современная гостиница в Туркестане. Уютные интерьеры, внимательный персонал и удобное расположение для вашего отдыха.",
+    "description_en": "MirOtel is a contemporary hotel in Turkistan. Offering cozy interiors, attentive staff, and a convenient location for your stay.",
+    "description_kz": "MirOtel — Түркістандағы заманауи қонақ үй. Сіздің демалысыңыз үшін жайлы интерьер, ілтипатты қызметкерлер және қолайлы орналасу.",
+    "description_zh": "MirOtel是位于突厥斯坦的一家现代酒店。提供舒适的内饰、周到的员工以及便利的地理位置。",
+    "amenities": [
+      "Бесплатная парковка в отеле",
+      "Хороший завтрак включен",
+      "Банковская карта не нужна",
+      "Может быть доступна скидка"
+    ],
+    "rooms": [
+      {
+        "title": "Стандартный двухместный номер с 1 кроватью",
+        "priceText": "KZT 36 000",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Улучшенный двухместный номер с 1 кроватью или 2 отдельными кроватями, вид на город",
+        "priceText": "KZT 40 000",
+        "beds": "2 односпальные кровати"
+      },
+      {
+        "title": "Двухместный номер Делюкс с 1 кроватью и балконом",
+        "priceText": "KZT 60 000",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Большой двухместный номер с 1 кроватью",
+        "priceText": "KZT 80 000",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Трехместный номер",
+        "priceText": "KZT 48 000",
+        "beds": "3 односпальные кровати"
+      },
+      {
+        "title": "Четырехместный номер",
+        "priceText": "KZT 65 000",
+        "beds": "4 односпальные кровати"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "1707409310",
+    "name_ru": "Ramada by Wyndham Shymkent",
+    "name_en": "Ramada by Wyndham Shymkent",
+    "name_kz": "Ramada by Wyndham Shymkent",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/833051256.jpg?k=f59f084befa55cee33ee5d85c97c82b61531e7ebbb28eb09c3e6360a3d458c7a&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 9",
+    "priceTag": "KZT 49 500",
+    "lat": 42.345701,
+    "lng": 69.610542,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/833051256.jpg?k=f59f084befa55cee33ee5d85c97c82b61531e7ebbb28eb09c3e6360a3d458c7a&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/648796358.jpg?k=06af3e421ef49e94251d0d28026c4be4889c18b4abcba12be7ab0b1f2e33d2e0&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/648796368.jpg?k=85a9b77a0373acfcf339678d6350f990780f728d6c3e4a3fd77a5431210789cd&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/247495082.jpg?k=60248fe117493f6648ea3da339ff15c13ebecfd50ca00befb88cd37e75183c29&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/648796376.jpg?k=5dab62ffe5e583d712de5b4f876d413858e16edd4d060ba1aa747eae53bf5c84&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/648796379.jpg?k=b63f14ab98b5b069c24c46540f0d26efa7aa23fa08807d2a20705671d0ce3598&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/648796393.jpg?k=cac00ac5485e25649f14d3b5e95188ce20ef21af0cef52aeb0410a7ca1ae0c76&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/648796397.jpg?k=ca35084be4d363c67f7fb2f90ef0395206bdef02a7550f8c3c5a06775769385d&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/833051256.jpg?k=f59f084befa55cee33ee5d85c97c82b61531e7ebbb28eb09c3e6360a3d458c7a&o=&hp=1"
+    ],
+    "description_ru": "Отель Ramada by Wyndham гарантирует высокие стандарты комфорта. Наслаждайтесь бесплатным Wi-Fi и отличным сервисом в самом сердце города.",
+    "description_en": "Ramada by Wyndham Shymkent ensures high standards of comfort. Enjoy free Wi-Fi and excellent service in the heart of the city.",
+    "description_kz": "Ramada by Wyndham қонақ үйі жайлылықтың жоғары стандарттарына кепілдік береді. Қала орталығында тегін Wi-Fi мен тамаша қызметтен ләззат алыңыз.",
+    "description_zh": "希姆肯特华美达温德姆酒店确保高标准的舒适度。在市中心享受免费Wi-Fi和卓越服务。",
+    "amenities": [
+      "БЕСПЛАТНАЯ частная парковка!",
+      "Потрясающий завтрак включен"
+    ],
+    "rooms": [
+      {
+        "title": "Номер с кроватью размера \"king-size\" - Для некурящих",
+        "priceText": "KZT 49 500",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Улучшенный номер для некурящих с 1 кроватью размера \"king-size\"",
+        "priceText": "KZT 59 400",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Двухместный номер с 2 отдельными кроватями - Для некурящих",
+        "priceText": "KZT 49 500",
+        "beds": "2 односпальные кровати"
+      },
+      {
+        "title": "Представительский люкс с кроватью размера «king-size» - Для некурящих",
+        "priceText": "KZT 118 800",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Люкс VIP с кроватью размера «king-size»",
+        "priceText": "KZT 148 500",
+        "beds": "1 очень большая двуспальная кровать"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "1708131311",
+    "name_ru": "Dostar Inn",
+    "name_en": "Dostar Inn",
+    "name_kz": "Dostar Inn",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/506520810.jpg?k=1e5d1139b18ea1b76e70ac669c7da94fbbd94b49460082248571d8a122c40fc3&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 8.4",
+    "priceTag": "KZT 12 320",
+    "lat": 42.3042137744781,
+    "lng": 69.57364302377323,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/506520810.jpg?k=1e5d1139b18ea1b76e70ac669c7da94fbbd94b49460082248571d8a122c40fc3&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/486888691.jpg?k=4733f37b8cfb7aa4f8120808156f2fbcfe291835040dcc7b14f9a00facbaf27f&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/215893958.jpg?k=32bbcb47f43e618d0a4840ba9123c8684f37d06704a6f73a82eb10523e60b353&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/215621766.jpg?k=e8d0167180a95512ae691ae733444245978ab7ab1a1a47d63f2cd82d4b5c2f40&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/215622929.jpg?k=6b6c43561eddcd32f226ddf174d1c59e6d6de4a10605b0a224fabd7cb04bf8f7&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/215621170.jpg?k=4ef4a216a3bb68828670fb0c1c8ccf6bb235a44b02d8a71a403505e86dfa9803&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/486888389.jpg?k=019aaae1df77dc0e6dd21043319feae66be8c2c6f1010216f31ffa58d91dfd78&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/486888369.jpg?k=5eb00ee8515b95e7dd6bf8724607880180c97907178ecef185e9b895dc2ff4a6&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/506520810.jpg?k=1e5d1139b18ea1b76e70ac669c7da94fbbd94b49460082248571d8a122c40fc3&o=&hp=1"
+    ],
+    "description_ru": "Dostar Inn предлагает великолепный вид на город и уютные 3-звездочные номера. Это идеальный выбор для путешественников, ценящих гостеприимство.",
+    "description_en": "Dostar Inn offers splendid city views and cozy 3-star accommodations. An ideal choice for travelers who value warm hospitality.",
+    "description_kz": "Dostar Inn қалаға тамаша көрініс пен жайлы 3 жұлдызды нөмірлерді ұсынады. Бұл қонақжайлылықты бағалайтын саяхатшылар үшін өте қолайлы таңдау.",
+    "description_zh": "多斯塔尔客栈提供壮丽的城市景观和舒适的三星级住宿。是注重热情款待的旅行者的理想选择。",
+    "amenities": [
+      "Банковская карта не нужна"
+    ],
+    "rooms": [
+      {
+        "title": "Двухместный номер Делюкс с 1 кроватью или 2 отдельными кроватями",
+        "priceText": "KZT 12 320",
+        "beds": "Выберите тип кровати (при наличии) \t1 односпальная кровать  \t1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Люкс с 1 спальней",
+        "priceText": "KZT 16 120",
+        "beds": "Спальня 1: 4 односпальные кровати  Гостиная: 2 дивана-кровати"
+      },
+      {
+        "title": "Семейный люкс",
+        "priceText": "KZT 23 520",
+        "beds": "2 односпальные кровати  и 2 двуспальные кровати"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "1708883612",
+    "name_ru": "Luxury House",
+    "name_en": "Luxury House",
+    "name_kz": "Luxury House",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/93681523.jpg?k=7afff0955a6113f044f27e3b8836da11042e8b8ea2db65c24999335134b0bd1e&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 8.9",
+    "priceTag": "KZT 26 100",
+    "lat": 42.3109996,
+    "lng": 69.6149808,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/93681523.jpg?k=7afff0955a6113f044f27e3b8836da11042e8b8ea2db65c24999335134b0bd1e&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/192871080.jpg?k=f6add902667ee3d3ce70ecc53414fa20f15e80aa14807a1e4055863c702cbf77&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/93681486.jpg?k=950ab7d60baa425c096567ca6f2a4f9c4027514806311a43a9f693820fc8bfa2&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/93681482.jpg?k=0e0d5155b81a3f687674084e414221dc3e83fd03496159a0b84757b6ab098d13&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/192877007.jpg?k=817dfacb0899dcb39da8972501af0bb05eb4e0501df6ae1538df749120eb2910&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/93681510.jpg?k=b2c6a53aee2e9d27c358b30629fcc873301aff5bf17b57ec67f5bc18a3e27b8d&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/93681502.jpg?k=ed99e6650aa4acea5809d3884e54a2cfd53f7a69be9d7fe4ba80d3c61e5eaa07&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/192876376.jpg?k=268f62e969b8b9daa8f7b9d686b3b4f40e21580de36d7dd1934e5be5529248c7&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/93681523.jpg?k=7afff0955a6113f044f27e3b8836da11042e8b8ea2db65c24999335134b0bd1e&o=&hp=1"
+    ],
+    "description_ru": "В Luxury House вас ждут домашний уют и высокий сервис. Общий лаундж, терраса и изысканный ресторан сделают ваше пребывание незабываемым.",
+    "description_en": "Experience home comfort and high-level service at Luxury House. Its shared lounge, terrace, and exquisite restaurant ensure a memorable stay.",
+    "description_kz": "Luxury House-та сізді үй жайлылығы мен жоғары қызмет күтеді. Ортақ демалыс орны, терраса және талғампаз мейрамхана сіздің келуіңізді ұмытылмас етеді.",
+    "description_zh": "在豪宅商务宾馆（Luxury House）体验如家般的舒适和高水平的服务。公共休息室、露台和精致的餐厅为您带来难忘的住宿体验。",
+    "amenities": [
+      "Очень хороший завтрак включен",
+      "Банковская карта не нужна",
+      "Может быть доступна скидка"
+    ],
+    "rooms": [
+      {
+        "title": "Двухместный номер с 1 кроватью и балконом",
+        "priceText": "KZT 26 100",
+        "beds": "1 большая двуспальная кровать"
+      },
+      {
+        "title": "Двухместный номер с 1 кроватью и собственной ванной комнатой",
+        "priceText": "KZT 21 000",
+        "beds": "Выберите тип кровати (при наличии) \t1 большая двуспальная кровать  \t2 односпальные кровати"
+      },
+      {
+        "title": "Двухместный номер Делюкс с 2 отдельными кроватями",
+        "priceText": "KZT 24 300",
+        "beds": "3 односпальные кровати"
+      },
+      {
+        "title": "Двухместный номер с 2 отдельными кроватями и балконом",
+        "priceText": "KZT 26 100",
+        "beds": "1 односпальная кровать  и 1 двуспальная кровать"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "1709660413",
+    "name_ru": "ИксаОтель",
+    "name_en": "ИксаОтель",
+    "name_kz": "ИксаОтель",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/790883034.jpg?k=a2d563c88247ae91db1578bf69c0879d007f28c823a88b4ec4694e0f146368c2&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 8.8",
+    "priceTag": "KZT 20 400",
+    "lat": 42.330981485512,
+    "lng": 69.6073349188196,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/790883034.jpg?k=a2d563c88247ae91db1578bf69c0879d007f28c823a88b4ec4694e0f146368c2&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/799730890.jpg?k=a6d012cb8822efc7ba9a28dab0bd9f5e69007556ae15e846f3e29f494beae91a&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/503415691.jpg?k=3874c07fd6f0092f7f92bd5d04e14e31c5ce68056812dda48c280b6d33dff8ce&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/518225599.jpg?k=303c90095565b0959d161f2d6b18afd5cef3cabe165ec8d6aee445a164b3cb88&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/784362211.jpg?k=71ff725e42ff57dda81ff77ee13501fb3fa7ad503858575948680e119c35b430&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/768577963.jpg?k=cd3476c3b9c452ac58b2cedbce618e765a2d99a5d4b8a94c81d7c5f9ad448877&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/799722021.jpg?k=bdb34ae2444f9b8ef66ce8b6f5fe2b2e11dc47ba51c674a653f79fe80a83d857&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/783915886.jpg?k=a72611775ff46509d3083829de1f731a533a71d50a6d79780e80c3e10de9fb2c&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/790883034.jpg?k=a2d563c88247ae91db1578bf69c0879d007f28c823a88b4ec4694e0f146368c2&o=&hp=1"
+    ],
+    "description_ru": "ИксаОтель — это стильная мини-гостиница, где внимание уделено каждой детали. Идеальное место для спокойного и комфортного отдыха в центре.",
+    "description_en": "Iksa Hotel is a stylish boutique hotel where every detail counts. A perfect spot for a quiet and comfortable stay in the city center.",
+    "description_kz": "ИксаОтель — әрбір бөлшекке мән берілген стильді шағын қонақ үй. Орталықта тыныш және жайлы демалыс үшін тамаша орын.",
+    "description_zh": "Iksa Hotel是一家注重每个细节的时尚精品酒店。是城市中心安静舒适住宿的理想场所。",
+    "amenities": [
+      "Банковская карта не нужна",
+      "Может быть доступна скидка"
+    ],
+    "rooms": [
+      {
+        "title": "Бюджетный двухместный номер с 1 кроватью",
+        "priceText": "KZT 20 400",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Двухместный номер с 2 отдельными кроватями и ванной комнатой",
+        "priceText": "KZT 24 000",
+        "beds": "2 односпальные кровати"
+      },
+      {
+        "title": "Двухместный номер Делюкс с 1 кроватью",
+        "priceText": "KZT 27 600",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Трехместный номер с собственной ванной комнатой",
+        "priceText": "KZT 25 200",
+        "beds": "3 односпальные кровати"
+      },
+      {
+        "title": "Стандартный семейный номер",
+        "priceText": "KZT 30 500",
+        "beds": "1 односпальная кровать  и 1 очень большая двуспальная кровать"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "1710384014",
+    "name_ru": "Shymkent Grand Hotel",
+    "name_en": "Shymkent Grand Hotel",
+    "name_kz": "Shymkent Grand Hotel",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/742381230.jpg?k=9372a0f10bb8a4e80c034f805ba0155cc3745255ef5fc61ef093235dabd97d01&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 9",
+    "priceTag": "KZT 30 000",
+    "lat": 42.31898661753904,
+    "lng": 69.58222568035126,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/742381230.jpg?k=9372a0f10bb8a4e80c034f805ba0155cc3745255ef5fc61ef093235dabd97d01&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/541024908.jpg?k=34ab8cfa3a246d70b22d065a422da9add8fab4d460227aec43e015d218b9c39d&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/180954705.jpg?k=80201eb63342d833b9cd6facbfd83770d3b436c3fa5f955a11fb72d402e06ef7&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/541028890.jpg?k=9ce878c86d0be7960301c8fba2c286b18748e481ba6542c0a1bebce59dd0185d&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/70794723.jpg?k=8adb94bab6604512426c09bafeadbe87f8066ed321879a900a7e91960cb11018&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/207079189.jpg?k=53282b83ed1036535eb3b97fa9618cb8d5238c4b19037129d26a22083a9255c8&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/70794810.jpg?k=a74827d6dd979df447d32c9b74fb8c2dd8886aaa22ceddbafefb64e589714f6a&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/541024537.jpg?k=a8731c4608e46d8e6dd0d12fdd26ccff74c761df71eaa34f441891448da93b3e&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/742381230.jpg?k=9372a0f10bb8a4e80c034f805ba0155cc3745255ef5fc61ef093235dabd97d01&o=&hp=1"
+    ],
+    "description_ru": "Shymkent Grand Hotel — это символ элегантности и традиций. К услугам гостей бассейн, бизнес-центр и безупречный сервис.",
+    "description_en": "Shymkent Grand Hotel is a symbol of elegance and tradition. It features a swimming pool, a business center, and impeccable service.",
+    "description_kz": "Shymkent Grand Hotel — талғампаздық пен дәстүрдің символы. Қонақтарға бассейн, бизнес-орталық және мінсіз қызмет көрсетіледі.",
+    "description_zh": "希姆肯特大酒店是优雅与传统的象征。设有游泳池、商务中心和无微不至的服务。",
+    "amenities": [
+      "Очень хороший завтрак включен",
+      "Включен высокоскоростной интернет"
+    ],
+    "rooms": [
+      {
+        "title": "Двухместный номер Делюкс с 1 кроватью",
+        "priceText": "KZT 30 000",
+        "beds": "1 большая двуспальная кровать"
+      },
+      {
+        "title": "Люкс",
+        "priceText": "KZT 33 000",
+        "beds": "1 большая двуспальная кровать"
+      },
+      {
+        "title": "Двухместный номер с 2 отдельными кроватями",
+        "priceText": "KZT 35 000",
+        "beds": "2 односпальные кровати"
+      },
+      {
+        "title": "Стандартный трехместный номер",
+        "priceText": "KZT 41 000",
+        "beds": "3 односпальные кровати"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "1711122115",
+    "name_ru": "Express City Hotel",
+    "name_en": "Express City Hotel",
+    "name_kz": "Express City Hotel",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/136689877.jpg?k=12378f905dc5df6c445dfd54dcafbf5ee1f0a02754718f7a922faccabca9d97e&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 8.8",
+    "priceTag": "KZT 25 000",
+    "lat": 42.3222814348577,
+    "lng": 69.5855340797623,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/136689877.jpg?k=12378f905dc5df6c445dfd54dcafbf5ee1f0a02754718f7a922faccabca9d97e&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/136689900.jpg?k=b973032d883a7e33f9a14ed97e105c2b6aaaa198050aca05ed9f78022f90ea14&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/136689921.jpg?k=ecda72b0be98518e014549bfb08d455742100d7a85ef647c0d30b081c5ce0768&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/137861930.jpg?k=7dfd6a61c28f4bef28573c838d78ef361a9f1ef877f53c352b441e2580f0a861&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/137861943.jpg?k=385f39569014c015a299288e0047d290b95403dec61f9b021602ac924e758eeb&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/136689874.jpg?k=699beeadc0c7bdc414a5e4a0f8f79563eda6fafbeec7e949961a70901270ab88&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/314624861.jpg?k=b5895a3bfce464490acae129ec128824e43e79bf4824b5c45f06a35b34bf4959&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/136690949.jpg?k=26d88ec1923a49f3ebafb964503deeffd79d7e943a0474af2dd7a00a0d3e1c16&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/136689877.jpg?k=12378f905dc5df6c445dfd54dcafbf5ee1f0a02754718f7a922faccabca9d97e&o=&hp=1"
+    ],
+    "description_ru": "Express City Hotel — современный 3-звездочный отель. К услугам гостей общий лаундж, ресторан и бар. Отличное соотношение цены и качества.",
+    "description_en": "Express City Hotel is a modern 3-star hotel featuring a shared lounge, a restaurant, and a bar. Great value for your money.",
+    "description_kz": "Express City Hotel — заманауи 3 жұлдызды қонақ үй. Мұнда ортақ демалыс орны, мейрамхана және бар бар. Баға мен сапаның тамаша үйлесімі.",
+    "description_zh": "快捷城市酒店是一家现代化的三星级酒店，设有公共休息室、餐厅和酒吧。物超所值。",
+    "amenities": [
+      "Потрясающий завтрак включен",
+      "Включен высокоскоростной интернет",
+      "Банковская карта не нужна"
+    ],
+    "rooms": [
+      {
+        "title": "Стандартный двухместный номер с 1 кроватью или 2 отдельными кроватями",
+        "priceText": "KZT 25 000",
+        "beds": "Выберите тип кровати (при наличии) \t1 большая двуспальная кровать  \t2 односпальные кровати"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "1711834916",
+    "name_ru": "Гостиница АСКАР",
+    "name_en": "Askar Hotel",
+    "name_kz": "АСКАР қонақ үйі",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/307117432.jpg?k=5e943e0b40dee318c57bfcc38cd9e5dfa2fb9e68f1d482a03d2045fe7450c9dd&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 7.1",
+    "priceTag": "KZT 20 988",
+    "lat": 42.31766700366471,
+    "lng": 69.59012782209015,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/307117432.jpg?k=5e943e0b40dee318c57bfcc38cd9e5dfa2fb9e68f1d482a03d2045fe7450c9dd&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/236937377.jpg?k=de019d079ed702fdd9c5cc29e8f3410c94f2533ba73f59ad396186bdc37a4451&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/236937380.jpg?k=cfbe7445867f527874d8b87195b35aa199ced93b0ea995aa3cfe04e94fd4578e&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/236937398.jpg?k=dd0a83026971be018ceff86ecbf7279a6d45e2d80d19388b8d6c643924bc2793&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/307121217.jpg?k=4f87fe642ca99d05f042a38457426c87ccdaca9869a542c5bb5908ad18ee470f&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/307120446.jpg?k=252d0fb1fe3e3fa82746b7c3f232768cd5a5f419459516ba811b986e1c919951&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/307120796.jpg?k=e83e2c254564ed894189d357189a87f611c8af3d84e00e9b6a7e77977b1cf94c&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/236937378.jpg?k=9858c93dc94a89fcfe346c64cd39c75e5a08e42461004bdd1740538f27bf4d80&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/307117432.jpg?k=5e943e0b40dee318c57bfcc38cd9e5dfa2fb9e68f1d482a03d2045fe7450c9dd&o=&hp=1"
+    ],
+    "description_ru": "Гостиница АСКАР предлагает комфортные номера с видом на город. Доброжелательный персонал и уютная атмосфера ждут вас.",
+    "description_en": "Askar Hotel offers comfortable rooms with city views. Friendly staff and a welcoming atmosphere await you.",
+    "description_kz": "АСКАР қонақ үйі қалаға көрінісі бар жайлы нөмірлерді ұсынады. Сізді ақжарқын қызметкерлер мен жайлы атмосфера күтеді.",
+    "description_zh": "阿斯卡酒店提供带城市景观的舒适客房。友好的员工和温馨的氛围恭候您的光临。",
+    "amenities": [
+      "Хороший завтрак включен",
+      "Банковская карта не нужна",
+      "Может быть доступна скидка"
+    ],
+    "rooms": [
+      {
+        "title": "Двухместный номер Делюкс с 1 кроватью",
+        "priceText": "KZT 20 988",
+        "beds": "1 двуспальная кровать"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "1712650117",
+    "name_ru": "Kainar Hotel",
+    "name_en": "Kainar Hotel",
+    "name_kz": "Kainar Hotel",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/763456757.jpg?k=8b2776da93eeeb360e4e404a9b888724374edc9217ab69f279aa100b4c519aa7&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 9.1",
+    "priceTag": "KZT 43 420",
+    "lat": 42.386666160984724,
+    "lng": 69.62874054908752,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/763456757.jpg?k=8b2776da93eeeb360e4e404a9b888724374edc9217ab69f279aa100b4c519aa7&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/623645411.jpg?k=c740165cc7ae6161b57406046f4971edf696544b0dacbc4501cb3293903d7498&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/156923048.jpg?k=302a5c5a876c5fa028fb96a014382131408f04c4c0f44c2050be5604fb7bf26a&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/637012181.jpg?k=2676896d9c15f3bc421beaadc8d557aa2fcdf624ddde522dea8d76bf08818b75&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/766291458.jpg?k=c4ef06aaafc893ab64b6c8d6fd947dbabc28d4b54f0acf968f75c888f0d6fab6&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/623646421.jpg?k=057a9595947be38f6b78fe9393981ca187473724590d2462152b76eeb59c4624&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/766256891.jpg?k=711c99a580b8d0dd6ae7aab2aecdfdf4ec9fb54f2af89e8aa555f83ecabab7b1&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/763393952.jpg?k=59b91859666e4b6d9c86fb9f2fd460381a9975d33370f35889bad79c19a0e751&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/763456757.jpg?k=8b2776da93eeeb360e4e404a9b888724374edc9217ab69f279aa100b4c519aa7&o=&hp=1"
+    ],
+    "description_ru": "Отель Kainar расположен в самой высокой точке города. Крытый бассейн, спа-центр и панорамные виды сделают ваш отдых незабываемым.",
+    "description_en": "Kainar Hotel is situated at the city's highest point. Featuring an indoor pool, a spa center, and panoramic views for an unforgettable stay.",
+    "description_kz": "Kainar қонақ үйі қаланың ең биік нүктесінде орналасқан. Жабық бассейн, спа-орталық және панорамалық көріністер демалысыңызды ұмытылмас етеді.",
+    "description_zh": "凯纳尔酒店坐落在城市的最高点。设有室内游泳池、水疗中心和全景景观，为您带来难忘的住宿体验。",
+    "amenities": [
+      "Потрясающий завтрак включен",
+      "•\nОплата заранее",
+      "•\nОплата объекту размещения до прибытия",
+      "Банковская карта не нужна",
+      "Может быть доступна скидка",
+      "Стоимость не возвращается"
+    ],
+    "rooms": [
+      {
+        "title": "Стандартный номер",
+        "priceText": "KZT 43 420",
+        "beds": ""
+      },
+      {
+        "title": "Стандартный номер с кроватью размера \"queen-size\"",
+        "priceText": "KZT 55 000",
+        "beds": "1 большая двуспальная кровать"
+      },
+      {
+        "title": "Улучшенный двухместный номер с 1 кроватью",
+        "priceText": "KZT 47 381",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Улучшенный двухместный номер с 1 кроватью или 2 отдельными кроватями",
+        "priceText": "KZT 75 000",
+        "beds": "Выберите тип кровати (при наличии) \t1 очень большая двуспальная кровать  \t2 односпальные кровати"
+      },
+      {
+        "title": "Полулюкс",
+        "priceText": "KZT 80 750",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Стандартный двухместный номер с 2 отдельными кроватями",
+        "priceText": "KZT 51 343",
+        "beds": "2 односпальные кровати"
+      },
+      {
+        "title": "Люкс",
+        "priceText": "KZT 123 500",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Полулюкс Делюкс",
+        "priceText": "KZT 130 000",
+        "beds": "1 очень большая двуспальная кровать"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "1713443718",
+    "name_ru": "Альтаир Отель",
+    "name_en": "Altair Hotel",
+    "name_kz": "Альтаир қонақ үйі",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/64687668.jpg?k=f02940550c77a5d30f51557da3ad3873ab6d72ed09302f45eae570ac3c3812e2&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 8.5",
+    "priceTag": "KZT 28 000",
+    "lat": 42.3216520449043,
+    "lng": 69.57095503807068,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/64687668.jpg?k=f02940550c77a5d30f51557da3ad3873ab6d72ed09302f45eae570ac3c3812e2&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/595342401.jpg?k=af8565263e0bbe751ad54ea5820adc89993addb1361fa267973f5d12f1f796c7&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/600658189.jpg?k=06882c31700204f97be2bea0e9d9ffec3f4056f5011304e96d4f6035be866858&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/600658310.jpg?k=8a173772308b1fceda08f0e9af0f498b24e173305691abc35b7fb5b0ca62d843&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/600658308.jpg?k=564ea318bd72864df2535eda0621bd2ad65bd2d6a58ff15d88750aaf783a9aa6&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/600658321.jpg?k=ac0b74893712bf04b8d2dcaceee90403d725e8b654e4ef373f6e093c5ad4c4f4&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/80963987.jpg?k=45f920105636a7b69b955d47b275c49f94564a010527f337dff22f3ecf4974ca&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/600658372.jpg?k=627368d9719adceb4f64a6e054be6f2fe013c7c2c16b353c0a6131d7b2a88dc7&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/64687668.jpg?k=f02940550c77a5d30f51557da3ad3873ab6d72ed09302f45eae570ac3c3812e2&o=&hp=1"
+    ],
+    "description_ru": "Альтаир — это современный отель в шаговой доступности от центральной площади. Идеально подходит для туристов и деловых людей.",
+    "description_en": "Altair Hotel is a modern property within walking distance of the central square. Perfect for both tourists and business travelers.",
+    "description_kz": "Альтаир — орталық алаңнан бірнеше қадам жерде орналасқан заманауи қонақ үй. Туристер мен іскер адамдар үшін өте қолайлы.",
+    "description_zh": "阿尔泰尔酒店是一类现代化酒店，步行即可抵达中心广场。非常适合游客和商务人士。",
+    "amenities": [
+      "Великолепный завтрак включен",
+      "Банковская карта не нужна",
+      "Может быть доступна скидка"
+    ],
+    "rooms": [
+      {
+        "title": "Улучшенный двухместный номер с 2 отдельными кроватями",
+        "priceText": "KZT 28 000",
+        "beds": "2 односпальные кровати"
+      },
+      {
+        "title": "Люкс",
+        "priceText": "KZT 32 000",
+        "beds": "Спальня 1: 1 очень большая двуспальная кровать  Гостиная: 1 диван-кровать"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "1714226719",
+    "name_ru": "City Hotel Shymkent",
+    "name_en": "City Hotel Shymkent",
+    "name_kz": "City Hotel Shymkent",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/318322009.jpg?k=cdb2441591f03173a053ea17b950b7c044c419c18d4398899f90bb20590c8195&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 8.8",
+    "priceTag": "KZT 25 000",
+    "lat": 42.320602,
+    "lng": 69.585428,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/318322009.jpg?k=cdb2441591f03173a053ea17b950b7c044c419c18d4398899f90bb20590c8195&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/819833810.jpg?k=98f9b2a46eb3a724080c80740fa9a35518263fb449f2ae7a9665ecb2cf62b7f1&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/318322217.jpg?k=f838bcc12ee9e394067d2b41e947eefba26b714fd204a0993c13211aac6b452f&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/316882124.jpg?k=f914e77c050ea5dc328147d056e8947fee4c597eb960fde1bd4b5e8fcb4320b8&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/318328096.jpg?k=7d372a17f78ed24f608c695fbf633d00a1c7829b6734d74a84c6fbe9ad0a4943&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/654318636.jpg?k=d6d7fd5490aeab505708eecfa6070be1d8248aa9d26b880f8e1fac98c246c045&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/579135352.jpg?k=c5b4eebbe879a022ada35845b337b23c097f7fdcaa2deb66858bb1bc32114ef7&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/318322409.jpg?k=8c034bece16d2c5c34e4a958ddc98505660c47c73111f092e6aaae248f2b7cc7&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/318322009.jpg?k=cdb2441591f03173a053ea17b950b7c044c419c18d4398899f90bb20590c8195&o=&hp=1"
+    ],
+    "description_ru": "City Hotel в Шымкенте — это выбор тех, кто ценит комфорт и сервис. Уютный бар и современные номера обеспечат приятное пребывание.",
+    "description_en": "City Hotel Shymkent is the choice for those who value comfort and service. A cozy bar and modern rooms ensure a pleasant stay.",
+    "description_kz": "Шымкенттегі City Hotel — жайлылық пен қызметті бағалайтындардың таңдауы. Жайлы бар мен заманауи нөмірлер жағымды демалысты қамтамасыз етеді.",
+    "description_zh": "奇姆肯特城市酒店是追求舒适与服务的理想选择。舒适的酒吧和现代化的客房将确保您度过一段愉快的时光。",
+    "amenities": [
+      "Хороший завтрак включен",
+      "Банковская карта не нужна"
+    ],
+    "rooms": [
+      {
+        "title": "Стандартный двухместный номер с 1 кроватью или 2 отдельными кроватями",
+        "priceText": "KZT 25 000",
+        "beds": "1 двуспальная кровать"
+      },
+      {
+        "title": "Двухместный номер эконом-класса с 1 кроватью",
+        "priceText": "KZT 22 000",
+        "beds": "1 двуспальная кровать"
+      },
+      {
+        "title": "Двухместный номер Делюкс с 1 кроватью",
+        "priceText": "KZT 31 000",
+        "beds": "2 односпальные кровати"
+      },
+      {
+        "title": "Люкс",
+        "priceText": "KZT 37 000",
+        "beds": "Спальня 1: 1 большая двуспальная кровать  Гостиная: 1 диван-кровать"
+      },
+      {
+        "title": "Улучшенный двухместный номер с 1 кроватью или 2 отдельными кроватями",
+        "priceText": "KZT 31 000",
+        "beds": "2 односпальные кровати"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "1714955820",
+    "name_ru": "Megapolis Hotel Shymkent",
+    "name_en": "Megapolis Hotel Shymkent",
+    "name_kz": "Megapolis Hotel Shymkent",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/306410992.jpg?k=646f3f3932f04042235079d4229dd6680a57ee7c0af84af38551f862fd7c9f22&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 9.3",
+    "priceTag": "KZT 39 560",
+    "lat": 42.32158473840237,
+    "lng": 69.60263775816657,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/306410992.jpg?k=646f3f3932f04042235079d4229dd6680a57ee7c0af84af38551f862fd7c9f22&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/114297406.jpg?k=8e6e8f9ad3ede51d60da3d4260cb6cdc7e257a90f7cd132a1855f8f7150b0fa4&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/88832537.jpg?k=fc5e0dbb77429b8cf4df0fe227309f31d735647f9b4cb30d84954c32b638df11&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/114311177.jpg?k=70d032c3f4e727d73f15b6a7ff06f893fdfdf64e699b8526524ca3b2c1afa1fa&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/114297382.jpg?k=4b6025da04698ffbf58808b6839fc5601fb3ac1a66c008c47afb129f76e6cc38&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/306947293.jpg?k=89dc2b032a19bfeefc9977279edf7319231bc1a2f0e7b4eb88575d78609709e6&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/114296134.jpg?k=b2e191aa61c544c312d3f6cdc2251834f5c7468119baaf99adc8eae1a4b25cce&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/114297452.jpg?k=199b765ca1b714e38e358339398cf8710cf404c57a7ecd101d50164d66f840b0&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/306410992.jpg?k=646f3f3932f04042235079d4229dd6680a57ee7c0af84af38551f862fd7c9f22&o=&hp=1"
+    ],
+    "description_ru": "Megapolis Hotel — это стиль и комфорт в каждой детали. К услугам гостей фитнес-центр, терраса и ресторан с изысканной кухней.",
+    "description_en": "Megapolis Hotel Shymkent represents style and comfort in every detail. Enjoy a fitness center, a terrace, and a restaurant with fine cuisine.",
+    "description_kz": "Megapolis Hotel — әрбір бөлшектегі стиль мен жайлылық. Қонақтарға фитнес-орталық, терраса және талғампаз мейрамхана ұсынылады.",
+    "description_zh": "大都市奇姆肯特酒店在每个细节上都体现了风格与舒适。享受健身中心、露台和提供精美佳肴的餐厅。",
+    "amenities": [
+      "Бесплатная частная парковка в отеле",
+      "Превосходный завтрак включен",
+      "Банковская карта не нужна",
+      "Может быть доступна скидка"
+    ],
+    "rooms": [
+      {
+        "title": "Двухместный номер Делюкс с 1 кроватью или 2 отдельными кроватями, вид на город",
+        "priceText": "KZT 39 560",
+        "beds": "Выберите тип кровати (при наличии) \t1 очень большая двуспальная кровать  \t2 односпальные кровати"
+      },
+      {
+        "title": "Люкс",
+        "priceText": "KZT 69 000",
+        "beds": "1 большая двуспальная кровать"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "1715712421",
+    "name_ru": "BnB Hotel Shymkent",
+    "name_en": "BnB Hotel Shymkent",
+    "name_kz": "BnB Hotel Shymkent",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/465739622.jpg?k=898a13073a43a9449a91c87526b669b44c518cada2e77228fa37948e386df539&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 9.4",
+    "priceTag": "KZT 22 966",
+    "lat": 42.3064409,
+    "lng": 69.63286,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/465739622.jpg?k=898a13073a43a9449a91c87526b669b44c518cada2e77228fa37948e386df539&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/465741780.jpg?k=b439fafceb1cd4e5d56d3f47c6b4ae7d74d67a0886bfb34482702f754bcdd5ec&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/515596808.jpg?k=e839c94517fc521f3f01acdbdf42aa72784f0373d66c7dee784f74416f0870a5&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/465746596.jpg?k=14d15477db190b3459c556fb84f7a8c5688d8d873dc6b0e87bc52d760a5f8215&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/465743913.jpg?k=65946c47971668bf13c63a06957532fb8371e77fb677587344cc259ad60dfd45&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/465743804.jpg?k=83625a11598605cd4f2deaa6c85656fb0987f4d2bf5d78eeaf996398dcdc4d99&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/465742745.jpg?k=13c1dc97c41d98a65cefbf8a9bf4e0efa46141825ec2268a5ca6532c39d5eae4&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/465743891.jpg?k=b8a2f1be2f4b2613be542fae54b5e0dc960d310314d54bec99026009f9a7627f&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/465739622.jpg?k=898a13073a43a9449a91c87526b669b44c518cada2e77228fa37948e386df539&o=&hp=1"
+    ],
+    "description_ru": "BnB Hotel Shymkent — это отель, расположенный в городе Шымкент. К услугам гостей отеля — бесплатный Wi-Fi и бесплатная частная парковка.",
+    "description_en": "BnB Hotel Shymkent is located in Shymkent and offers free Wi-Fi and free private parking.",
+    "description_kz": "BnB Hotel Shymkent — Шымкент қаласында орналасқан қонақ үй. Мұнда тегін Wi-Fi және тегін жеке автотұрақ бар.",
+    "amenities": [
+      "Бесплатная частная парковка в отеле",
+      "Завтрак включен",
+      "•\nОплата заранее",
+      "Завтрак входит в стоимость",
+      "Банковская карта не нужна"
+    ],
+    "rooms": [
+      {
+        "title": "Двухместный номер с 2 отдельными кроватями",
+        "priceText": "KZT 22 966",
+        "beds": ""
+      },
+      {
+        "title": "Стандартный двухместный номер с 2 отдельными кроватями",
+        "priceText": "KZT 24 900",
+        "beds": "2 односпальные кровати"
+      },
+      {
+        "title": "Стандартный номер с кроватью размера «king-size»",
+        "priceText": "KZT 24 900",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Улучшенный трехместный номер",
+        "priceText": "KZT 28 400",
+        "beds": "1 односпальная кровать  и 1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Люкс с кроватью размера «king-size»",
+        "priceText": "KZT 29 600",
+        "beds": "Спальня 1: 1 большая двуспальная кровать  Гостиная: 1 диван-кровать"
+      },
+      {
+        "title": "Классический четырехместный номер",
+        "priceText": "KZT 32 100",
+        "beds": "2 односпальные кровати  и 1 большая двуспальная кровать"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "1716457522",
+    "name_ru": "Hotel FN Shymkent",
+    "name_en": "Hotel FN Shymkent",
+    "name_kz": "Hotel FN Shymkent",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/644130107.jpg?k=7b69fbe9d9e4a6fd798635082087aae37e251a79cb6c9ae61462073f161d1108&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 8.9",
+    "priceTag": "KZT 23 000",
+    "lat": 42.315636,
+    "lng": 69.608914,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/644130107.jpg?k=7b69fbe9d9e4a6fd798635082087aae37e251a79cb6c9ae61462073f161d1108&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/646119070.jpg?k=1a6ee847098e42b1261be38190c12b27369828d6872cc706a0ebb393555c7096&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/390620244.jpg?k=677cd759bfaeb302db0b991e171102d29553675e9a610add419c7634e65b9d78&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/390570197.jpg?k=33e42013ee1c127fba34176e293e4ba14460b7eb30735ace70e6b022788fec63&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/587438763.jpg?k=0613b64d91ea16b627dc0d584173c6e0dbb0c8bc36f40a642906c06672cbc87b&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/390621324.jpg?k=5ec454d4438d53109e20ecfcdd465aecf629f793e9d4e610ad5d6f7a6bc368e8&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/644901820.jpg?k=3cef5c56bf4150aee605595e2a5bd1b8af48d3e1e356b2cd879fe3d3becada5e&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/644173865.jpg?k=b869e5f6c09dae9772dc7d22f683bda533fa2b8d3e0cb4b60e24c54ac3a32ac2&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/644130107.jpg?k=7b69fbe9d9e4a6fd798635082087aae37e251a79cb6c9ae61462073f161d1108&o=&hp=1"
+    ],
+    "description_ru": "Hotel FN Shymkent — это отель в городе Шымкент. К услугам гостей бар.",
+    "description_en": "Hotel FN Shymkent is located in Shymkent and features a bar.",
+    "description_kz": "Hotel FN Shymkent — Шымкент қаласында орналасқан қонақ үй. Қонақтар үшін бар қарастырылған.",
+    "amenities": [
+      "Бесплатная частная парковка в отеле",
+      "Потрясающий завтрак включен",
+      "Включен высокоскоростной интернет",
+      "Банковская карта не нужна"
+    ],
+    "rooms": [
+      {
+        "title": "Двухместный номер Делюкс с 1 кроватью или 2 отдельными кроватями и балконом",
+        "priceText": "KZT 23 000",
+        "beds": "Выберите тип кровати (при наличии) \t1 двуспальная кровать  \t2 односпальные кровати"
+      },
+      {
+        "title": "Улучшенный двухместный номер с 1 кроватью или 2 отдельными кроватями",
+        "priceText": "KZT 25 000",
+        "beds": "Выберите тип кровати (при наличии) \t1 очень большая двуспальная кровать  \t2 односпальные кровати"
+      },
+      {
+        "title": "Семейный люкс",
+        "priceText": "KZT 30 000",
+        "beds": "2 односпальные кровати  и 1 большая двуспальная кровать"
+      },
+      {
+        "title": "Люкс",
+        "priceText": "KZT 30 000",
+        "beds": "Спальня 1: 1 двуспальная кровать  Гостиная: 1 диван-кровать"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "1717214423",
+    "name_ru": "Orbita hotel Shymkent",
+    "name_en": "Orbita hotel Shymkent",
+    "name_kz": "Orbita hotel Shymkent",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/331290790.jpg?k=32ca4998fc1dc6aad0f8b48e92270da8d1df723da5ef8ce82243bfa591647af6&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 9.6",
+    "priceTag": "KZT 25 000",
+    "lat": 42.318556,
+    "lng": 69.561944,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/331290790.jpg?k=32ca4998fc1dc6aad0f8b48e92270da8d1df723da5ef8ce82243bfa591647af6&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/607318755.jpg?k=9b9c23635c33a4f87a0426f94afaaf46402d01a0e664c7e780741a58bad9e19b&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/335844822.jpg?k=2e468723d74aa69123ed25712ed261ea5f9c96c8f4f05b70a5d9ab2266dba0bc&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/335843833.jpg?k=9bfaff530aa523766dff629a291d4a65681fa52154e51bece305774671292f1a&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/340036691.jpg?k=1a59a6428dd787553850d3d31a7db011034f31525350bea5e4a939758f4d328c&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/335843813.jpg?k=aa2dea29cab32ce4c6dee55a4bd27f284c67e512cb05a7ff0d9dc3370c344043&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/335844802.jpg?k=6626724565393f3537760f5840ceebf1ea4eeff716b43f96fe52a034216b3b47&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/340038032.jpg?k=5c7056bfb5f849b89cf21be850e3f104b4e846ef20c346b5fd41daf3fafcd844&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/331290790.jpg?k=32ca4998fc1dc6aad0f8b48e92270da8d1df723da5ef8ce82243bfa591647af6&o=&hp=1"
+    ],
+    "description_ru": "Orbita hotel Shymkent — это отель, расположенный в городе Шымкент. В распоряжении гостей отеля с 4 звездами — круглосуточная стойка регистрации.",
+    "description_en": "Orbita hotel Shymkent is a 4-star hotel in Shymkent featuring a 24-hour front desk.",
+    "description_kz": "Orbita hotel Shymkent — Шымкент қаласында орналасқан 4 жұлдызды қонақ үй. Қонақтарға тәулік бойы жұмыс істейтін қабылдау бөлімі қызмет көрсетеді.",
+    "amenities": [
+      "Великолепный завтрак включен",
+      "Банковская карта не нужна",
+      "Может быть доступна скидка"
+    ],
+    "rooms": [
+      {
+        "title": "Двухместный номер с 1 кроватью",
+        "priceText": "KZT 25 000",
+        "beds": "1 двуспальная кровать"
+      },
+      {
+        "title": "Двухместный номер с 2 отдельными кроватями",
+        "priceText": "KZT 32 000",
+        "beds": "1 односпальная кровать"
+      },
+      {
+        "title": "Двухместный с 1 кроватью или 2 отдельными кроватями и душем",
+        "priceText": "KZT 35 000",
+        "beds": "2 односпальные кровати  и 1 большая двуспальная кровать"
+      },
+      {
+        "title": "Семейный люкс",
+        "priceText": "KZT 45 000",
+        "beds": "Спальня 1: 1 диван-кровать  и 1 большая двуспальная кровать  Гостиная: 1 диван-кровать"
+      }
+    ],
+    "nearbyAttractions": []
+  },
+  {
+    "id": "1717991724",
+    "name_ru": "Silver Hotel",
+    "name_en": "Silver Hotel",
+    "name_kz": "Silver Hotel",
+    "city": "Туркестан",
+    "type": "Hotel",
+    "image": "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/849261865.jpg?k=ca94ddc229ad8ed4b6807c1ad4c6f29fd79a09a1ba2bfb8b1ab3bf0940aac2a8&o=",
+    "stars": 5,
+    "booking_rating": "Оценка 9.2",
+    "priceTag": "KZT 20 000",
+    "lat": 42.3048608137533,
+    "lng": 69.6199319731552,
+    "gallery": [
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768x768/849261865.jpg?k=ca94ddc229ad8ed4b6807c1ad4c6f29fd79a09a1ba2bfb8b1ab3bf0940aac2a8&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/849265088.jpg?k=70e198565431a1622e0eff0ed2cdb14d10b87f6f9d93e1e7ca75d93210f4e0dc&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/837087762.jpg?k=2dd529068bbb9aacf95e30f9012dfbe0da9fbae4478746996195c763aea408bd&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/837372531.jpg?k=aff47e194dd4499d77b19a9fc49fb45261ad359087a2fd3f3eb1e4babef65927&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/837089713.jpg?k=04f5eb9f25bec8f1bb1ebf5190d237bfd9ae1582dc52b16a8246a693e2ce770b&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/849262737.jpg?k=69e32edaafe6214d7fd739e08446c7f0e35a433926498669d0f4a08866c0aeac&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/849266784.jpg?k=d21612d72773f399d5d1ea0ba4a242f53b12f50fc7ee3e25c0ca114e571623fa&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/849268213.jpg?k=7d6b17e739555e6840d6002530999a1712392e7f0b42e7b84aaf81b513ad1c18&o=",
+      "https://cf.bstatic.com/xdata/images/hotel/max500/849261865.jpg?k=ca94ddc229ad8ed4b6807c1ad4c6f29fd79a09a1ba2bfb8b1ab3bf0940aac2a8&o=&hp=1"
+    ],
+    "description_ru": "Silver Hotel — это отель с 4 звездами в городе Шымкент. В числе прочих удобств — ресторан, детский клуб и круглосуточная стойка регистрации.",
+    "description_en": "Silver Hotel is a 4-star hotel in Shymkent offering a restaurant, a kids' club, and a 24-hour front desk.",
+    "description_kz": "Silver Hotel — Шымкент қаласындағы 4 жұлдызды қонақ үй. Қызмет көрсету тізіміне мейрамхана, балалар клубы және тәулік бойы жұмыс істейтін қабылдау бөлімі кіреді.",
+    "amenities": [
+      "Бесплатная частная парковка в отеле",
+      "Включен континентальный завтрак",
+      "Банковская карта не нужна"
+    ],
+    "rooms": [
+      {
+        "title": "Стандартный двухместный номер с 1 кроватью",
+        "priceText": "KZT 20 000",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Люкс",
+        "priceText": "KZT 27 000",
+        "beds": "1 очень большая двуспальная кровать"
+      },
+      {
+        "title": "Трехместный номер",
+        "priceText": "KZT 30 000",
+        "beds": "3 односпальные кровати"
+      },
+      {
+        "title": "Семейный номер",
+        "priceText": "KZT 35 000",
+        "beds": "2 односпальные кровати  и 1 большая двуспальная кровать"
+      }
+    ],
+    "nearbyAttractions": []
+  }
+]

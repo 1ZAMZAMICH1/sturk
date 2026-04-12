@@ -35,6 +35,11 @@ const HotelsManager = () => {
     }, []);
 
     const handleSave = async (updatedHotel) => {
+        const isNew = !updatedHotel.id;
+        if (isNew) {
+            updatedHotel.id = Date.now().toString();
+        }
+
         const payload = {
             ...updatedHotel,
             rooms: JSON.stringify(updatedHotel.rooms || []),
@@ -44,9 +49,15 @@ const HotelsManager = () => {
             nearbyRestaurants: JSON.stringify(updatedHotel.nearbyRestaurants || [])
         };
 
-        const success = await updateSheetData('hotels', 'update', payload);
+        const action = isNew ? 'add' : 'update';
+
+        const success = await updateSheetData('hotels', action, payload);
         if (success) {
-            setHotels(prev => prev.map(h => h.id === updatedHotel.id ? updatedHotel : h));
+            if (isNew) {
+                setHotels(prev => [updatedHotel, ...prev]);
+            } else {
+                setHotels(prev => prev.map(h => h.id === updatedHotel.id ? updatedHotel : h));
+            }
             setSelectedHotel(null);
             const savedName = updatedHotel.name_ru || updatedHotel.name || 'Отель';
             alert(`Отель "${savedName}" сохранен в Google Таблице`);

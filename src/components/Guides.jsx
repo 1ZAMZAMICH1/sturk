@@ -16,6 +16,23 @@ import * as THREE from 'three';
 import './Guides.css';
 import { fetchSheetData } from '../services/api';
 
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.error("Three.js Image Error caught:", error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
+
 // --- ГЕНЕРАТОР ПОЗИЦИЙ ---
 const generatePositions = (seed, count) => {
   let localSeed = seed;
@@ -96,12 +113,16 @@ function ShieldItem({ data, index, openSignal }) {
               <circleGeometry args={[1.55, 64]} />
               <meshStandardMaterial color="#261912" roughness={1} />
             </mesh>
-            <Image
-              url={data.img || "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=300&q=60"}
-              scale={[1.8, 1.8]}
-              position={[0, 0.5, 0.05]}
-              transparent opacity={0.9} radius={1}
-            />
+            <React.Suspense fallback={null}>
+              <ErrorBoundary>
+                <Image
+                  url={data.img || "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=300&q=60"}
+                  scale={[1.8, 1.8]}
+                  position={[0, 0.5, 0.05]}
+                  transparent opacity={0.9} radius={1}
+                />
+              </ErrorBoundary>
+            </React.Suspense>
             <Text position={[0, -0.7, 0.1]} fontSize={0.22} maxWidth={2.0} textAlign="center"
               color="#d4af37" anchorX="center" anchorY="top" outlineWidth={0.015} outlineColor="#000" lineHeight={1.1}>
               {data.name}
@@ -251,7 +272,9 @@ const Guides = () => {
       <div className="guides-canvas-container">
         {canvasReady ? (
           <Canvas camera={{ position: [0, 0, 12], fov: 45 }} dpr={[1, 2]}>
-            <GuidesScene page={page} allGuides={guides} openSignals={openSignals} />
+            <React.Suspense fallback={null}>
+              <GuidesScene page={page} allGuides={guides} openSignals={openSignals} />
+            </React.Suspense>
           </Canvas>
         ) : (
           <div style={{ width: '100%', height: '100%', background: '#181614' }} />

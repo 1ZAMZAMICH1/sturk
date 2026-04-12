@@ -12,6 +12,11 @@
   align-items: center;
   padding: 2vh 0 4vh; /* Зазоры сверху и снизу */
   box-sizing: border-box;
+  pointer-events: none; /* ПРЯЧЕМ ВЕСЬ КОНТЕЙНЕР ОТ ПАЛЬЦЕВ ПО УМОЛЧАНИЮ */
+}
+
+.map-mob-root * {
+  pointer-events: none; /* Прячем и детей */
 }
 
 /* ── 3D ФОН ────────────────── */
@@ -35,6 +40,7 @@
   transition: all 1s ease 1s;
   margin: 0;
   flex-shrink: 0;
+  pointer-events: auto; /* Заголовок должен реагировать (если нужно) */
 }
 .mob-ui-title.visible { opacity: 1; }
 
@@ -77,6 +83,7 @@
   margin-left: -25px; margin-right: -25px;
   z-index: 5;
   filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
+  pointer-events: auto; /* А ВОТ БУМАГА ВКЛЮЧАЕТ ПАЛЬЦЫ ОБРАТНО */
 }
 .mob-scroll-wrap.open .mob-paper-center { width: 70vh; }
 .mob-paper-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; z-index: 1; }
@@ -104,7 +111,7 @@
 
 /* ── UI ────────────────────── */
 .mob-map-ui {
-  position: relative; /* Ушел от absolute, чтобы не наползать */
+  position: relative;
   width: 100%;
   z-index: 50;
   opacity: 0;
@@ -115,8 +122,10 @@
   gap: 12px;
   flex-shrink: 0;
   padding-bottom: env(safe-area-inset-bottom, 20px);
+  pointer-events: auto; /* Кнопки категорий тоже должны работать */
 }
 .mob-map-ui.visible { opacity: 1; }
+.mob-map-ui * { pointer-events: auto; }
 .mob-ui-section { display: flex; flex-direction: column; align-items: center; width: 100%; }
 .mob-section-label { color: rgba(220, 196, 142, 0.4); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; font-family: serif; margin-bottom: 8px; }
 .mob-ui-grid { 
@@ -145,15 +154,41 @@
 }
 .mob-ui-btn.active { background: #d4af37; color: #1a0b05; border-color: #d4af37; }
 
-/* Мозаика */
-.mob-ui-btn:nth-child(odd) { transform: translateX(-4px); }
-.mob-ui-btn:nth-child(even) { transform: translateX(4px); }
+/* ПИНЫ (КОМБО-МАРКЕРЫ) */
+.leaflet-marker-pane,
+.leaflet-shadow-pane {
+    mix-blend-mode: normal !important;
+    filter: none !important;
+    isolation: isolate;
+    z-index: 600 !important;
+}
 
-/* ПИНЫ */
-.custom-pin { display:flex; justify-content:center; align-items:center; }
-.pin-core { width:8px; height:8px; border-radius:50%; border:2px solid #fff; z-index:2; box-shadow:0 0 5px rgba(0,0,0,1); }
-.pin-glow { position:absolute; width:24px; height:24px; border-radius:50%; opacity:0.6; animation:pulse-mob 2s infinite; }
-@keyframes pulse-mob { 0%{transform:scale(1);opacity:0.6;} 100%{transform:scale(2);opacity:0;} }
+.leaflet-popup-pane {
+    z-index: 9999 !important;
+    isolation: isolate;
+}
+
+.marker-combo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.combo-icon {
+  width: 42px !important;
+  height: auto !important;
+  margin-bottom: -2px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  z-index: 2;
+}
+
+.pin-core { width: 6px; height: 6px; border-radius: 50%; border: 1px solid #fff; z-index: 5; box-shadow: 0 0 3px rgba(0,0,0,1); }
+.pin-glow { position: absolute; bottom: 8px; width: 16px; height: 16px; border-radius: 50%; opacity: 0.6; animation: pulse-mob 2s infinite; z-index: 1; }
+@keyframes pulse-mob { 0%{transform:scale(1);opacity:0.6;} 100%{transform:scale(2.5);opacity:0;} }
 
 .glass-popup .leaflet-popup-content-wrapper { 
   background:rgba(18,10,5,0.98); 

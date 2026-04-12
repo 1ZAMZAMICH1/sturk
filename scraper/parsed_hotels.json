@@ -1,0 +1,1175 @@
+[
+    {
+        "id": "1775912480176953",
+        "name_ru": "Апарт-отель Туркестан 16",
+        "name": "Апарт-отель Туркестан 16",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/516579274.webp?k=478b0f2df1d0a1150941153b461d01e5fc2413ccddfa433b65d0a30690c0c29e&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/516579274.webp?k=478b0f2df1d0a1150941153b461d01e5fc2413ccddfa433b65d0a30690c0c29e&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "177591248017631",
+        "name_ru": "PORT INN Hotel",
+        "name": "PORT INN Hotel",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/267156718.webp?k=d3c2334df7f671d7c3d6832948c2671c10a7e8cf0fce4e5d65e1ac72d4c615c5&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/267156718.webp?k=d3c2334df7f671d7c3d6832948c2671c10a7e8cf0fce4e5d65e1ac72d4c615c5&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480176816",
+        "name_ru": "at HOME",
+        "name": "at HOME",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/426299462.webp?k=af19c0974fa85ad86325f72f47dfa829cd026907d8585e94203f65c348234281&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/426299462.webp?k=af19c0974fa85ad86325f72f47dfa829cd026907d8585e94203f65c348234281&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480176809",
+        "name_ru": "однокомнатная квартира",
+        "name": "однокомнатная квартира",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/817962482.webp?k=480db9bc1374df2d40a74f3e932502e0761333a8e2788d9df54735ab94beba9b&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/817962482.webp?k=480db9bc1374df2d40a74f3e932502e0761333a8e2788d9df54735ab94beba9b&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480176403",
+        "name_ru": "New апартаменты возле Материнства и Детства",
+        "name": "New апартаменты возле Материнства и Детства",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/644470876.webp?k=4796f6a100b4d6ed85072f2b4ffb61f7d548d27c051439fde0618c22d032589c&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/644470876.webp?k=4796f6a100b4d6ed85072f2b4ffb61f7d548d27c051439fde0618c22d032589c&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480176250",
+        "name_ru": "Люкс Апартаменты в центре левого берега Астаны",
+        "name": "Люкс Апартаменты в центре левого берега Астаны",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/512041571.webp?k=e1339d27ccbb6ef7d312b6b25cdc4549b2060a1d0ca8fb56e98690810ac8566c&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/512041571.webp?k=e1339d27ccbb6ef7d312b6b25cdc4549b2060a1d0ca8fb56e98690810ac8566c&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480176475",
+        "name_ru": "Compass Travel",
+        "name": "Compass Travel",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/595404595.webp?k=7c932cea9dfc55b8a478b150e04e2ca2a45dcda2b891559aeebf8099216fe9ff&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/595404595.webp?k=7c932cea9dfc55b8a478b150e04e2ca2a45dcda2b891559aeebf8099216fe9ff&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480176775",
+        "name_ru": "ЖК Атамура",
+        "name": "ЖК Атамура",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/805696681.webp?k=c5ef0270f7f19310da6cdb04adca235c1a11d955fb49ef7b2121b7260dc8f6ae&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/805696681.webp?k=c5ef0270f7f19310da6cdb04adca235c1a11d955fb49ef7b2121b7260dc8f6ae&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "177591248017619",
+        "name_ru": "RAISSON A-HOTEL245 KHAN SHATyR",
+        "name": "RAISSON A-HOTEL245 KHAN SHATyR",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/795240229.webp?k=da5a7bd74a1330988aa512bd501e0183e4100a6ac5b15df7eb93d8214aa415ef&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/795240229.webp?k=da5a7bd74a1330988aa512bd501e0183e4100a6ac5b15df7eb93d8214aa415ef&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480176369",
+        "name_ru": "Kolsay",
+        "name": "Kolsay",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/783390594.webp?k=15c1b200add4c0e1e4cfb39a54f9d9bad076ddf2859a990bfec836f115dee009&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/783390594.webp?k=15c1b200add4c0e1e4cfb39a54f9d9bad076ddf2859a990bfec836f115dee009&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480176221",
+        "name_ru": "RAISSON A-HOTELA128 KHAN SHATyR",
+        "name": "RAISSON A-HOTELA128 KHAN SHATyR",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/415854751.webp?k=b054e0fdf44d0500c2ef238f6e505a828640f0fbef01730be7c247a2b7ac7a5e&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/415854751.webp?k=b054e0fdf44d0500c2ef238f6e505a828640f0fbef01730be7c247a2b7ac7a5e&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480176880",
+        "name_ru": "Sheraton Astana Hotel",
+        "name": "Sheraton Astana Hotel",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/623387231.webp?k=c46e698a13d859b2a989d375114f52eb1f7d50caeb5c435c68ac7205d84e7809&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/623387231.webp?k=c46e698a13d859b2a989d375114f52eb1f7d50caeb5c435c68ac7205d84e7809&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480176383",
+        "name_ru": "Уютный уголок на Лесной поляне",
+        "name": "Уютный уголок на Лесной поляне",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/787207627.webp?k=9be002524e397e6e7d139dd4a5c8bcdb659c89cd08483f6d3c8cf9907a030936&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/787207627.webp?k=9be002524e397e6e7d139dd4a5c8bcdb659c89cd08483f6d3c8cf9907a030936&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480176272",
+        "name_ru": "ALMA PARK Apartments 326",
+        "name": "ALMA PARK Apartments 326",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/764953271.webp?k=a899dab7be4bbb727b1ebbb4256c0deba0e8f20adae62588b2396b9f745a0036&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/764953271.webp?k=a899dab7be4bbb727b1ebbb4256c0deba0e8f20adae62588b2396b9f745a0036&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480176305",
+        "name_ru": "Аэропорт Астана 5 минут юг1 37",
+        "name": "Аэропорт Астана 5 минут юг1 37",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/810748586.webp?k=b2368897f75d8689eaed1c054b874b9051e1cdffdf0c853de0bcea096eb0dde6&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/810748586.webp?k=b2368897f75d8689eaed1c054b874b9051e1cdffdf0c853de0bcea096eb0dde6&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480176164",
+        "name_ru": "5 минут Астана Аэропорт",
+        "name": "5 минут Астана Аэропорт",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/810386465.webp?k=f196aac3d1947fb8f894bfa061c4342b00b5e1e713fe50dbcf641afbd259553e&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/810386465.webp?k=f196aac3d1947fb8f894bfa061c4342b00b5e1e713fe50dbcf641afbd259553e&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480176906",
+        "name_ru": "Апартаменты на левом берегу, Ханшатыр, центр материнства и детства, нейрохирургия",
+        "name": "Апартаменты на левом берегу, Ханшатыр, центр материнства и детства, нейрохирургия",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/502333665.webp?k=2582186bb9992586cf610b36898461afbbeb39e682acff9156bb34a5f127da9d&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/502333665.webp?k=2582186bb9992586cf610b36898461afbbeb39e682acff9156bb34a5f127da9d&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480176307",
+        "name_ru": "CAPS LOCK Airport Hotel",
+        "name": "CAPS LOCK Airport Hotel",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/351714816.webp?k=3d72eaeef5f8a8030893857384b799296c19faed0d1476c7e3e8f8512b19d1b7&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/351714816.webp?k=3d72eaeef5f8a8030893857384b799296c19faed0d1476c7e3e8f8512b19d1b7&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480177926",
+        "name_ru": "Korkem Apartments",
+        "name": "Korkem Apartments",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/608557592.webp?k=82bf459e695220a01d2a2dff537dddb073976d367eff4967a918401826c0282b&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/608557592.webp?k=82bf459e695220a01d2a2dff537dddb073976d367eff4967a918401826c0282b&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480177869",
+        "name_ru": "Altyn Eco Park",
+        "name": "Altyn Eco Park",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/188833860.webp?k=7ec610d3cc70c332522704488790722b43795a62193dd7bed183ab51b6cea3d5&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/188833860.webp?k=7ec610d3cc70c332522704488790722b43795a62193dd7bed183ab51b6cea3d5&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480177567",
+        "name_ru": "Уютные апартаменты в ЖК Millenium park",
+        "name": "Уютные апартаменты в ЖК Millenium park",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/510450053.webp?k=459cd1d321839665719aa2cd17f84e3be6d1f49ff90612c26dd6ef3aaabee634&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/510450053.webp?k=459cd1d321839665719aa2cd17f84e3be6d1f49ff90612c26dd6ef3aaabee634&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480177822",
+        "name_ru": "Топ квартира в ЖК Champion Центр города- Чисто и уютно",
+        "name": "Топ квартира в ЖК Champion Центр города- Чисто и уютно",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/827590034.webp?k=4e9efb985b6def80532a33f5f88caf8c785ca0d8f3f99943d3846d1503e42eea&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/827590034.webp?k=4e9efb985b6def80532a33f5f88caf8c785ca0d8f3f99943d3846d1503e42eea&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480177976",
+        "name_ru": "Athletic City, 1-Room Apartments",
+        "name": "Athletic City, 1-Room Apartments",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/775708336.webp?k=87d1292c4852d24e1edbcee4f268303a1f1424c90ebca35a55055ef8ae3a814e&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/775708336.webp?k=87d1292c4852d24e1edbcee4f268303a1f1424c90ebca35a55055ef8ae3a814e&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480177358",
+        "name_ru": "5 мин международный аэропорт",
+        "name": "5 мин международный аэропорт",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/810381408.webp?k=04cba5de42455d8ed6fa2676d347a1517afebc4517a0edd2832bb4234fbad974&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/810381408.webp?k=04cba5de42455d8ed6fa2676d347a1517afebc4517a0edd2832bb4234fbad974&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480177677",
+        "name_ru": "Жилой Комплекс Акжайык",
+        "name": "Жилой Комплекс Акжайык",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/365433616.webp?k=bc2070e5c9ff3408d059838eca8e404f0740198661e17336bccd73ec435e0491&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/365433616.webp?k=bc2070e5c9ff3408d059838eca8e404f0740198661e17336bccd73ec435e0491&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912480177772",
+        "name_ru": "Cozy Urban Retreat",
+        "name": "Cozy Urban Retreat",
+        "city": "Туркестан",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/561756388.webp?k=6fbb5ba1fcbf6a7d19d4ed0358b3337972830f4ddf9c7d9abe016a434a5661d9&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/561756388.webp?k=6fbb5ba1fcbf6a7d19d4ed0358b3337972830f4ddf9c7d9abe016a434a5661d9&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738990",
+        "name_ru": "Гостиница Сары Арка",
+        "name": "Гостиница Сары Арка",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/38138404.webp?k=95be0f6a8be5034647ad7c5efb94c6f083052d1870803255997ef4c95ae2549a&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/38138404.webp?k=95be0f6a8be5034647ad7c5efb94c6f083052d1870803255997ef4c95ae2549a&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738203",
+        "name_ru": "Shymkent Grand Hotel",
+        "name": "Shymkent Grand Hotel",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/742381230.webp?k=f08501939eb789bd32783a738274064ee7822af2b42a15252502e79cd054df80&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/742381230.webp?k=f08501939eb789bd32783a738274064ee7822af2b42a15252502e79cd054df80&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "177591248673899",
+        "name_ru": "ИксаОтель",
+        "name": "ИксаОтель",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/790883034.webp?k=8567ae74f197c3f27c13c9ddb6f1a44ea56890711dcd1ea46c3c98e8a6efb1bc&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/790883034.webp?k=8567ae74f197c3f27c13c9ddb6f1a44ea56890711dcd1ea46c3c98e8a6efb1bc&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "177591248673867",
+        "name_ru": "Cosmopolitan Hotel",
+        "name": "Cosmopolitan Hotel",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/825568985.webp?k=f6fe8467b721f8f00be7214198c7fa51cdc6d285228b695b0a09194a79ee32c7&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/825568985.webp?k=f6fe8467b721f8f00be7214198c7fa51cdc6d285228b695b0a09194a79ee32c7&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738190",
+        "name_ru": "Park Hotel al Bustan",
+        "name": "Park Hotel al Bustan",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/657185193.webp?k=371c6a7516b89f6aadb3a179560aa0b74b5df021254be0f89b23ed855231b8d7&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/657185193.webp?k=371c6a7516b89f6aadb3a179560aa0b74b5df021254be0f89b23ed855231b8d7&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "177591248673812",
+        "name_ru": "Aidana Plaza Hotel",
+        "name": "Aidana Plaza Hotel",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/114467917.webp?k=71a01f18e196be5c0c5efb6fdae44b991adaa442214c75ba41fe0886382bc9f3&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/114467917.webp?k=71a01f18e196be5c0c5efb6fdae44b991adaa442214c75ba41fe0886382bc9f3&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "177591248673818",
+        "name_ru": "Dostar Inn",
+        "name": "Dostar Inn",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/506520810.webp?k=48c0d1472bbca0273bd3439db49ded748a62e1460b91b46c2bf24bf50e233d1d&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/506520810.webp?k=48c0d1472bbca0273bd3439db49ded748a62e1460b91b46c2bf24bf50e233d1d&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738317",
+        "name_ru": "DoubleTree by Hilton Shymkent",
+        "name": "DoubleTree by Hilton Shymkent",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/487341035.webp?k=ea4ef3372b53e88f35037244ddaeaaeeaaf6b87047cbf43af0a297ce37f345d8&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/487341035.webp?k=ea4ef3372b53e88f35037244ddaeaaeeaaf6b87047cbf43af0a297ce37f345d8&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738739",
+        "name_ru": "Kainar Hotel",
+        "name": "Kainar Hotel",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/763456757.webp?k=7fb56eb3fa5cad6ca6c2f13fb931acb4539ceff00d0bbb376b5f1417424c76f3&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/763456757.webp?k=7fb56eb3fa5cad6ca6c2f13fb931acb4539ceff00d0bbb376b5f1417424c76f3&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738776",
+        "name_ru": "Rixos Khadisha Shymkent",
+        "name": "Rixos Khadisha Shymkent",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/39122817.webp?k=534b4f7c9f99ed9f5172b854ec593ff994a7f21545150fa5018124fe83b2db01&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/39122817.webp?k=534b4f7c9f99ed9f5172b854ec593ff994a7f21545150fa5018124fe83b2db01&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738810",
+        "name_ru": "AQ miniHOTEL",
+        "name": "AQ miniHOTEL",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/696094309.webp?k=cd83d4e6eedf9a4aef10786afe7aadb1facab635671acc2bbbf3eab4468026cd&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/696094309.webp?k=cd83d4e6eedf9a4aef10786afe7aadb1facab635671acc2bbbf3eab4468026cd&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738756",
+        "name_ru": "Ramada by Wyndham Shymkent",
+        "name": "Ramada by Wyndham Shymkent",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/833051256.webp?k=990de83c4b9a89bf7e2d531a7a7eb8bdcb8ea5eaa0b0f9e21649494de4c425b5&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/833051256.webp?k=990de83c4b9a89bf7e2d531a7a7eb8bdcb8ea5eaa0b0f9e21649494de4c425b5&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738535",
+        "name_ru": "Siluet Plaza Hotel",
+        "name": "Siluet Plaza Hotel",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/733068431.webp?k=241a521b7ef1818808937c0d9e13549d4ce43f0fccc2539442b2cdacc2d4fea4&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/733068431.webp?k=241a521b7ef1818808937c0d9e13549d4ce43f0fccc2539442b2cdacc2d4fea4&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738351",
+        "name_ru": "Aurum Garden Hotel",
+        "name": "Aurum Garden Hotel",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/597892576.webp?k=6726bc7d973e9355603dfb0933a820ef2aced91d93ebd10f861603aa9a2a5ea4&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/597892576.webp?k=6726bc7d973e9355603dfb0933a820ef2aced91d93ebd10f861603aa9a2a5ea4&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738900",
+        "name_ru": "Shymkent Park Hotel",
+        "name": "Shymkent Park Hotel",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/511807605.webp?k=8214f73a83cf7b4079f1b0d88cf24eb90b604fc84f815697bfb63eed701e9888&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/511807605.webp?k=8214f73a83cf7b4079f1b0d88cf24eb90b604fc84f815697bfb63eed701e9888&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738145",
+        "name_ru": "Sweet Home Art Boutique",
+        "name": "Sweet Home Art Boutique",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/742367308.webp?k=20eadc9415fbfacb2e9499e7edd50b8f690128ead1d685128b17d1b423dd2214&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/742367308.webp?k=20eadc9415fbfacb2e9499e7edd50b8f690128ead1d685128b17d1b423dd2214&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738426",
+        "name_ru": "Mardan Hotel",
+        "name": "Mardan Hotel",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/675155848.webp?k=c5d9681f2ca35c739f00b96c0b0642ae7f608459e072dd02ba8846d008f01726&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/675155848.webp?k=c5d9681f2ca35c739f00b96c0b0642ae7f608459e072dd02ba8846d008f01726&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738135",
+        "name_ru": "Luxury House",
+        "name": "Luxury House",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/93681523.webp?k=476ae90157760bd3212b22a406b3550f874e408d19c378aa1a3dbe5a1128c574&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/93681523.webp?k=476ae90157760bd3212b22a406b3550f874e408d19c378aa1a3dbe5a1128c574&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738870",
+        "name_ru": "ЖК Prime Park, сердце отдыха рядом с памятником Байдибек би, Зоопарком, Дендропарком, Shymkent Mall и парк музыкальным фонтаном Shymkent City",
+        "name": "ЖК Prime Park, сердце отдыха рядом с памятником Байдибек би, Зоопарком, Дендропарком, Shymkent Mall и парк музыкальным фонтаном Shymkent City",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/749169809.webp?k=7ce156939de2ec22efee4ba49f8afbada0b70050d7f2ce8a77d8e7963727f438&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/749169809.webp?k=7ce156939de2ec22efee4ba49f8afbada0b70050d7f2ce8a77d8e7963727f438&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738921",
+        "name_ru": "Qazaq Hotel Premium",
+        "name": "Qazaq Hotel Premium",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/608848026.webp?k=110ae3de576a5d5b72ec2909b5de231e3a66ebcd4ce762e45db2cf6e81433b41&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/608848026.webp?k=110ae3de576a5d5b72ec2909b5de231e3a66ebcd4ce762e45db2cf6e81433b41&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738397",
+        "name_ru": "Stela Hotel",
+        "name": "Stela Hotel",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/653825838.webp?k=9ce2f373a41ffef4b064c4777721a2327c8b14b2e0d17d1d853aba9d45a49a6e&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/653825838.webp?k=9ce2f373a41ffef4b064c4777721a2327c8b14b2e0d17d1d853aba9d45a49a6e&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "177591248673853",
+        "name_ru": "MirOtel",
+        "name": "MirOtel",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/529428830.webp?k=ccbf143b140959238b56273b8d2d223b82bc9951048a86f13cdea7eda565910f&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/529428830.webp?k=ccbf143b140959238b56273b8d2d223b82bc9951048a86f13cdea7eda565910f&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738633",
+        "name_ru": "3 комнатная квартира Шымкент Как дома",
+        "name": "3 комнатная квартира Шымкент Как дома",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/825875912.webp?k=e773b4cdd808cab1bb4686abaa3002a115ff2e1cf22d9721b157745e9e787ecd&o=",
+        "stars": 8,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/825875912.webp?k=e773b4cdd808cab1bb4686abaa3002a115ff2e1cf22d9721b157745e9e787ecd&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "1775912486738886",
+        "name_ru": "Престиж",
+        "name": "Престиж",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/825365735.webp?k=5202bcd0bfd286399ef8e3fd2d30f02e91d702fa4fa086990a506048692991e6&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/825365735.webp?k=5202bcd0bfd286399ef8e3fd2d30f02e91d702fa4fa086990a506048692991e6&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    },
+    {
+        "id": "17759124867382",
+        "name_ru": "City Hostel Shymkent",
+        "name": "City Hostel Shymkent",
+        "city": "Шымкент",
+        "type": "Hotel",
+        "image": "https://cf.bstatic.com/xdata/images/hotel/square240/318317854.webp?k=f05f0605973ba13457d7bbb475a7c1be3b96ede1bf7d1881fbc4464fcaece105&o=",
+        "stars": 5,
+        "priceTag": "По запросу",
+        "lat": 0,
+        "lng": 0,
+        "gallery": [
+            "https://cf.bstatic.com/xdata/images/hotel/square240/318317854.webp?k=f05f0605973ba13457d7bbb475a7c1be3b96ede1bf7d1881fbc4464fcaece105&o="
+        ],
+        "description_ru": "",
+        "amenities": [
+            "Wi-Fi",
+            "Кондиционер",
+            "Парковка"
+        ],
+        "rooms": [],
+        "nearbyAttractions": []
+    }
+]

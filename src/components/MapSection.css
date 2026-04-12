@@ -134,13 +134,61 @@
 }
 
 /* Очищаем иконки от фильтров карты */
-.leaflet-marker-icon, .leaflet-marker-shadow {
-    filter: none !important;
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+  filter: none !important;
 }
 
-.premium-map-icon {
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)) !important;
+/* КРИТИЧНО: Выводим маркеры поверх всех фильтров "старины" */
+.leaflet-marker-pane,
+.leaflet-shadow-pane {
+    mix-blend-mode: normal !important;
+    filter: none !important;
+    isolation: isolate;
+    z-index: 600 !important; /* Уменьшил до 600, чтобы Попап был гарантированно выше */
 }
+
+/* ФИКС: Попапы всегда поверх маркеров */
+.leaflet-popup-pane {
+    z-index: 9999 !important;
+    isolation: isolate;
+}
+
+.marker-combo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  /* Точка снизу, иконка сверху */
+}
+
+.combo-icon {
+  width: 16px !important; /* Гарантированный крошечный размер */
+  height: auto !important;
+  margin-bottom: -1px;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.8));
+  transition: transform 0.2s ease;
+  z-index: 2;
+  display: block;
+}
+
+.marker-combo:hover .combo-icon {
+  transform: scale(1.4) translateY(-1px);
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 1));
+}
+
+.pin-core { width: 4px; height: 4px; border-radius: 50%; border: 1px solid #fff; z-index: 5; box-shadow: 0 0 2px rgba(0,0,0,1); }
+.pin-glow { position: absolute; bottom: 8px; width: 12px; height: 12px; border-radius: 50%; opacity: 0.6; animation: pulse-pin 2s infinite; z-index: 1; }
+@keyframes pulse-pin { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(2.2); opacity: 0; } }
+
+.premium-map-icon {
+  filter: drop-shadow(0 0 12px rgba(255, 215, 0, 1)) drop-shadow(0 0 25px rgba(255, 215, 0, 0.6)) !important;
+  /* НЕТ анимации — она ломает Leaflet transform и сдвигает иконку с точки */
+}
+
 /* УБРАЛИ HOVER ПРЫЖОК, ТАК КАК ОН КОНФЛИКТУЕТ С LEAFLET */
 
 .inner-shadow-overlay {
@@ -165,9 +213,18 @@
   transition: opacity 1s ease 2s;
 }
 
-.map-header { top: 8vh; }
-.map-ui { bottom: 5vh; }
-.map-header.visible, .map-ui.visible { opacity: 1; }
+.map-header {
+  top: 8vh;
+}
+
+.map-ui {
+  bottom: 5vh;
+}
+
+.map-header.visible,
+.map-ui.visible {
+  opacity: 1;
+}
 
 .ui-title {
   color: #d4af37;
@@ -257,52 +314,64 @@
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); opacity: 0.6; }
-  100% { transform: scale(2); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
 }
 
 /* --- POPUP CARD --- */
 .map-popup-card {
-    display: flex;
-    flex-direction: column;
-    width: 180px;
+  display: flex;
+  flex-direction: column;
+  width: 180px;
 }
+
 .popup-preview-img {
-    width: 100%;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    border: 1px solid rgba(212, 175, 55, 0.3);
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
 }
+
 .popup-info h3 {
-    margin: 0 0 8px 0;
-    font-size: 0.9rem;
-    color: #f3e5ab;
-    font-family: 'Playfair Display', serif;
+  margin: 0 0 8px 0;
+  font-size: 0.9rem;
+  color: #f3e5ab;
+  font-family: 'Playfair Display', serif;
 }
+
 .popup-info p {
-    font-size: 0.75rem;
-    line-height: 1.4;
-    color: #ccc;
-    margin-bottom: 12px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: #ccc;
+  margin-bottom: 12px;
 }
+
 .popup-more-btn {
-    width: 100%;
-    background: #c59d5f;
-    color: #fff;
-    border: none;
-    padding: 8px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: 0.3s;
+  width: 100%;
+  background: #c59d5f;
+  color: #fff;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.3s;
 }
+
 .popup-more-btn:hover {
-    background: #d4af37;
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  background: #d4af37;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
 }
 
 .glass-popup .leaflet-popup-content-wrapper {
@@ -311,10 +380,11 @@
   border: 1px solid rgba(212, 175, 55, 0.5);
   padding: 0;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
 }
+
 .glass-popup .leaflet-popup-content {
-    margin: 12px;
+  margin: 12px;
 }
 
 /* --- MAP LABELS (TOOLTIPS) --- */
@@ -345,12 +415,13 @@
   font-family: 'Playfair Display', serif !important;
   font-size: 0.9rem !important;
   padding: 8px 15px !important;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.8), 0 0 10px rgba(212, 175, 55, 0.3) !important;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8), 0 0 10px rgba(212, 175, 55, 0.3) !important;
   border-radius: 4px !important;
   text-transform: none !important;
   letter-spacing: 0.5px !important;
 }
 
 .route-tooltip::before {
-  display: none !important; /* Убираем стандартный клювик для чистоты */
+  display: none !important;
+  /* Убираем стандартный клювик для чистоты */
 }

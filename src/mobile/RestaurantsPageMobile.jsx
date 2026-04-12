@@ -89,9 +89,9 @@ export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = []
                         <div className="rp-mob-modal-header">
                             <h2 className="rp-mob-m-title">{res[`name_${i18n.language}`] || res.name_ru || res.name}</h2>
                             <div className="rp-mob-m-meta">
-                                <span>{t(`restos_page.cuisines.${res.cuisine}`, { defaultValue: res.cuisine })}</span>
+                                <span>{t(`restos_page.cuisines.${res.cuisine || res.type}`, { defaultValue: res.cuisine || res.type || '...' })}</span>
                                 <span>·</span>
-                                <span>{res.priceTag}</span>
+                                <span>{res.priceTag || res.priceLevel}</span>
                                 <span>·</span>
                                 <span>{res[`city_${i18n.language}`] || res.city_ru || res.city || t('category.default_region')}</span>
                             </div>
@@ -209,7 +209,7 @@ const EditorialCard = ({ res, onClick }) => {
             <div className="rp-mob-card-img-wrap">
                 <img src={res.image} alt={res.name} className="rp-mob-card-img" />
                 <div className="rp-mob-card-overlay" />
-                <div className="rp-mob-card-badge">{res.cuisine}</div>
+                <div className="rp-mob-card-badge">{res.cuisine || res.type}</div>
 
                 <div className="rp-mob-card-content-overlay">
                     <h3 className="rp-mob-card-name">{res.name}</h3>
@@ -258,7 +258,8 @@ const RestaurantsPageMobile = () => {
 
     // Исправленная логика фильтрации
     const isFiltered = (r) => {
-        const matchesFilter = filter === 'Все' || r.cuisine === filter;
+        const rCuisine = r.cuisine || r.type;
+        const matchesFilter = filter === 'Все' || rCuisine === filter;
         const matchesCity = city === 'Все' || r.city === city;
         return matchesFilter && matchesCity;
     };

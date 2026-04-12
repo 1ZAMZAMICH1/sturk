@@ -34,77 +34,88 @@
 /* ─── BASE ─── */
 .gp-root {
     min-height: 100vh;
-    background:
-        /* Молочный горизонт снизу */
-        linear-gradient(0deg,
-            var(--gp-parchment) 0%,
-            #f0d4a0 8%,
-            #e8a060 16%,
-            #c05a18 26%,
-            transparent 40%
-        ),
-        /* Основное сумеречное небо */
-        linear-gradient(180deg,
-            #06040d 0%,        /* Зенит — почти черная ночь */
-            #0f0a1a 12%,       /* Глубокий фиолетовый */
-            #1c1030 22%,       /* Темно-пурпурный */
-            #2b1540 32%,       /* Синевато-фиолетовый */
-            #4a2208 46%,       /* Переход к теплому */
-            #7a3510 58%,       /* Тёмный янтарь */
-            #c06a20 72%,       /* Раскалённый закат */
-            #e59050 82%,       /* Теплый свет */
-            #f0c87a 90%,       /* Бледно-золотой */
-            var(--gp-parchment) 100%
-        );
+    background: linear-gradient(180deg,
+            #05040a 0%,
+            #2a1208 60%,
+            var(--gp-parchment) 100%);
     color: var(--gp-ink);
     font-family: 'Jost', sans-serif;
     position: relative;
     overflow-x: hidden;
     padding-bottom: 280px;
+    z-index: 1;
+}
+
+/* ── Слой 0: МАКСИМАЛЬНАЯ РАСТУШЁВКА (Атмосфера) ── */
+.gp-root::before {
+    content: '';
+    position: absolute;
+    inset: -100px;
+    background: linear-gradient(180deg,
+            #05040a 0%,
+            #1a0f2e 20%,
+            #4a2208 50%,
+            #c06a20 75%,
+            var(--gp-parchment) 100%);
+    filter: blur(100px);
+    /* Максимально размываем все переходы */
+    z-index: -2;
+    pointer-events: none;
 }
 
 /* ── Слой 1: ЗВЁЗДЫ ── */
-.gp-root::before {
+.gp-stars-bg {
     content: '';
     position: fixed;
     inset: 0;
-    z-index: 0;
+    z-index: -1;
     /* Три независимых слоя точек-звёзд разного размера */
     background-image:
-        radial-gradient(1px 1px at 11% 5%, rgba(255,255,255,0.9), transparent 100%),
-        radial-gradient(1px 1px at 23% 18%, rgba(255,255,255,0.7), transparent 100%),
-        radial-gradient(1.5px 1.5px at 34% 8%, rgba(255,240,200,0.9), transparent 100%),
-        radial-gradient(1px 1px at 47% 14%, rgba(255,255,255,0.85), transparent 100%),
-        radial-gradient(1.5px 1.5px at 56% 3%, rgba(255,255,255,0.9), transparent 100%),
-        radial-gradient(1px 1px at 67% 22%, rgba(255,255,255,0.7), transparent 100%),
-        radial-gradient(1px 1px at 78% 9%, rgba(255,240,200,0.8), transparent 100%),
-        radial-gradient(1.5px 1.5px at 89% 16%, rgba(255,255,255,0.9), transparent 100%),
-        radial-gradient(1px 1px at 7% 28%, rgba(255,255,255,0.6), transparent 100%),
-        radial-gradient(1px 1px at 19% 35%, rgba(255,255,255,0.5), transparent 100%),
-        radial-gradient(1px 1px at 41% 30%, rgba(255,255,255,0.7), transparent 100%),
-        radial-gradient(1px 1px at 62% 38%, rgba(255,240,200,0.5), transparent 100%),
-        radial-gradient(1px 1px at 83% 27%, rgba(255,255,255,0.6), transparent 100%),
-        radial-gradient(1.5px 1.5px at 95% 12%, rgba(255,255,255,0.9), transparent 100%),
-        radial-gradient(1px 1px at 3% 42%, rgba(255,255,255,0.4), transparent 100%),
-        radial-gradient(1px 1px at 27% 48%, rgba(255,255,255,0.5), transparent 100%),
-        radial-gradient(1px 1px at 52% 44%, rgba(255,255,255,0.4), transparent 100%),
-        radial-gradient(1px 1px at 74% 50%, rgba(255,255,255,0.3), transparent 100%),
-        radial-gradient(2px 2px at 15% 6%, rgba(255,240,180,0.7), transparent 100%),
-        radial-gradient(2px 2px at 72% 4%, rgba(255,240,180,0.7), transparent 100%),
-        radial-gradient(2px 2px at 44% 19%, rgba(255,240,180,0.6), transparent 100%);
+        radial-gradient(1px 1px at 11% 5%, rgba(255, 255, 255, 0.9), transparent 100%),
+        radial-gradient(1px 1px at 23% 18%, rgba(255, 255, 255, 0.7), transparent 100%),
+        radial-gradient(1.5px 1.5px at 34% 8%, rgba(255, 240, 200, 0.9), transparent 100%),
+        radial-gradient(1px 1px at 47% 14%, rgba(255, 255, 255, 0.85), transparent 100%),
+        radial-gradient(1.5px 1.5px at 56% 3%, rgba(255, 255, 255, 0.9), transparent 100%),
+        radial-gradient(1px 1px at 67% 22%, rgba(255, 255, 255, 0.7), transparent 100%),
+        radial-gradient(1px 1px at 78% 9%, rgba(255, 240, 200, 0.8), transparent 100%),
+        radial-gradient(1.5px 1.5px at 89% 16%, rgba(255, 255, 255, 0.9), transparent 100%),
+        radial-gradient(1px 1px at 7% 28%, rgba(255, 255, 255, 0.6), transparent 100%),
+        radial-gradient(1px 1px at 19% 35%, rgba(255, 255, 255, 0.5), transparent 100%),
+        radial-gradient(1px 1px at 41% 30%, rgba(255, 255, 255, 0.7), transparent 100%),
+        radial-gradient(1px 1px at 62% 38%, rgba(255, 240, 200, 0.5), transparent 100%),
+        radial-gradient(1px 1px at 83% 27%, rgba(255, 255, 255, 0.6), transparent 100%),
+        radial-gradient(1.5px 1.5px at 95% 12%, rgba(255, 255, 255, 0.9), transparent 100%),
+        radial-gradient(1px 1px at 3% 42%, rgba(255, 255, 255, 0.4), transparent 100%),
+        radial-gradient(1px 1px at 27% 48%, rgba(255, 255, 255, 0.5), transparent 100%),
+        radial-gradient(1px 1px at 52% 44%, rgba(255, 255, 255, 0.4), transparent 100%),
+        radial-gradient(1px 1px at 74% 50%, rgba(255, 255, 255, 0.3), transparent 100%),
+        radial-gradient(2px 2px at 15% 6%, rgba(255, 240, 180, 0.7), transparent 100%),
+        radial-gradient(2px 2px at 72% 4%, rgba(255, 240, 180, 0.7), transparent 100%),
+        radial-gradient(2px 2px at 44% 19%, rgba(255, 240, 180, 0.6), transparent 100%);
     background-size: 100% 100%;
     /* Маска: звёзды видны только в небе, исчезают ближе к горизонту */
-    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 35%, rgba(0,0,0,0) 65%);
-    mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 35%, rgba(0,0,0,0) 65%);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 35%, rgba(0, 0, 0, 0) 65%);
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 35%, rgba(0, 0, 0, 0) 65%);
     pointer-events: none;
     animation: starTwinkle 8s ease-in-out infinite alternate;
 }
 
 @keyframes starTwinkle {
-    0%   { opacity: 0.65; }
-    30%  { opacity: 0.90; }
-    60%  { opacity: 0.55; }
-    100% { opacity: 0.85; }
+    0% {
+        opacity: 0.65;
+    }
+
+    30% {
+        opacity: 0.90;
+    }
+
+    60% {
+        opacity: 0.55;
+    }
+
+    100% {
+        opacity: 0.85;
+    }
 }
 
 /* ── Слой 2: ЗЕРНИСТОСТЬ + WARMTH ── */
@@ -129,10 +140,9 @@
     width: 180vw;
     height: 55vh;
     background: radial-gradient(ellipse at center,
-        rgba(220, 110, 30, 0.25) 0%,
-        rgba(180, 80, 10, 0.15) 30%,
-        transparent 70%
-    );
+            rgba(220, 110, 30, 0.25) 0%,
+            rgba(180, 80, 10, 0.15) 30%,
+            rgba(180, 80, 10, 0) 70%);
     pointer-events: none;
     z-index: 1;
     filter: blur(60px);
@@ -140,8 +150,15 @@
 }
 
 @keyframes glowPulse {
-    from { opacity: 0.7; transform: translateX(-50%) scaleY(1);   }
-    to   { opacity: 1.0; transform: translateX(-50%) scaleY(1.1); }
+    from {
+        opacity: 0.7;
+        transform: translateX(-50%) scaleY(1);
+    }
+
+    to {
+        opacity: 1.0;
+        transform: translateX(-50%) scaleY(1.1);
+    }
 }
 
 /* ══════════════════════════════════════════
@@ -160,6 +177,7 @@
 .gp-skyline-svg {
     width: 100%;
     height: 100%;
+    background: linear-gradient(180deg, rgba(13, 10, 20, 0) 0%, rgba(13, 10, 20, 1) 100%);
 }
 
 /* Far mountains */
@@ -181,11 +199,25 @@
     fill: rgba(0, 0, 0, 0.8);
 }
 
-.gp-mountain-far { fill: rgba(30, 18, 8, 0.4); }
-.gp-mountain-mid { fill: rgba(20, 10, 4, 0.6); }
-.gp-bld { fill: #1a0f04; }
-.gp-bld-dark { fill: rgba(0, 0, 0, 0.7); }
-.gp-minaret { fill: rgba(10, 4, 0, 0.9); }
+.gp-mountain-far {
+    fill: rgba(30, 18, 8, 0.4);
+}
+
+.gp-mountain-mid {
+    fill: rgba(20, 10, 4, 0.6);
+}
+
+.gp-bld {
+    fill: #1a0f04;
+}
+
+.gp-bld-dark {
+    fill: rgba(0, 0, 0, 0.7);
+}
+
+.gp-minaret {
+    fill: rgba(10, 4, 0, 0.9);
+}
 
 /* ─── HEADER ─── */
 .gp-header-wrap {
@@ -409,7 +441,8 @@
 /* ─ AVATAR SECTION ─ */
 .gp-card-avatar-section {
     position: relative;
-    background: linear-gradient(180deg, #1e1228 0%, #3d1f08 60%, var(--gp-parchment) 100%);
+    /* Идеальный градиент: от космоса к прозрачному бежевому, чтобы избежать грязного серого бортика */
+    background: linear-gradient(180deg, #1e1228 0%, #3d1f08 55%, rgba(245, 233, 208, 0) 100%);
     padding: 35px 0 30px;
     display: flex;
     flex-direction: column;
@@ -435,6 +468,7 @@
             transparent 225deg 315deg,
             rgba(201, 150, 63, 0.15) 315deg 360deg);
     animation: compassRotate 40s linear infinite;
+    z-index: 1;
 }
 
 .gp-compass-middle {
@@ -442,6 +476,7 @@
     inset: 8px;
     border-radius: 50%;
     border: 1px solid rgba(201, 150, 63, 0.4);
+    z-index: 2;
 }
 
 .gp-avatar {
@@ -452,7 +487,10 @@
     border-radius: 50%;
     object-fit: cover;
     object-position: center top;
-    z-index: 10;
+    z-index: 5;
+    /* Гарантируем идеальный круг */
+    -webkit-mask-image: radial-gradient(circle, white 100%, transparent 100%);
+    mask-image: radial-gradient(circle, white 100%, transparent 100%);
 }
 
 .gp-compass-needle {
@@ -727,31 +765,23 @@
     position: relative;
     width: 160px;
     height: 160px;
-    margin-bottom: 8px;
+    margin-bottom: 24px;
+    flex-shrink: 0;
 }
 
-.gp-modal-avatar {
-    position: absolute;
-    inset: 16px;
-    width: calc(100% - 32px);
-    height: calc(100% - 32px);
-    border-radius: 50%;
-    object-fit: cover;
-    object-position: center top;
-    z-index: 10;
+/* Переопределяем инсеты для более крупного компаса в модалке */
+.gp-modal-avatar-wrap .gp-avatar {
+    inset: 18px;
+    width: calc(100% - 36px);
+    height: calc(100% - 36px);
 }
 
-.gp-modal-compass-ring {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    border: 2px solid var(--gp-gold);
-    background: conic-gradient(rgba(201, 150, 63, 0.2) 0deg 45deg,
-            transparent 45deg 135deg,
-            rgba(201, 150, 63, 0.2) 135deg 225deg,
-            transparent 225deg 315deg,
-            rgba(201, 150, 63, 0.2) 315deg 360deg);
-    animation: compassRotate 25s linear infinite;
+.gp-modal-avatar-wrap .gp-compass-middle {
+    inset: 10px;
+}
+
+.gp-modal-avatar-wrap .gp-compass-needle {
+    height: 32px;
 }
 
 .gp-modal-name {
@@ -1092,4 +1122,90 @@
 .tour-title-input:focus {
     border-bottom-color: var(--accent-gold);
     outline: none;
+}
+
+/* ══════════════════════════════════════════
+   MOBILE RESPONSIVENESS
+   ══════════════════════════════════════════ */
+@media (max-width: 900px) {
+    .gp-topbar {
+        padding: 0 20px;
+        height: 70px;
+    }
+
+    .gp-filter-bar {
+        padding: 10px 20px 15px;
+    }
+
+    .gp-grid {
+        grid-template-columns: 1fr;
+        padding: 0 20px;
+    }
+
+    /* MODAL MOBILE FIX */
+    .gp-modal-overlay {
+        padding: 0;
+    }
+
+    .gp-modal {
+        flex-direction: column;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        border-top: none;
+        overflow-y: auto;
+    }
+
+    .gp-modal-left {
+        flex: none;
+        width: 100%;
+        padding: 60px 25px 30px;
+    }
+
+    .gp-modal-right {
+        padding: 30px 25px 100px;
+        overflow: visible;
+    }
+
+    .gp-tour-title {
+        font-size: 1.8rem;
+    }
+
+    .gp-modal-close {
+        top: 15px;
+        right: 15px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        color: white;
+    }
+
+    .gp-hero-title {
+        letter-spacing: 5px;
+        font-size: 3rem;
+    }
+
+    .gp-modal-stats {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    /* SVG HORIZON MOBILE FIX */
+    .gp-horizon {
+        height: 200px;
+        /* Уменьшаем высоту, чтобы не перекрывала контент */
+        display: flex;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .gp-skyline-svg {
+        min-width: 1800px;
+        /* Увеличиваем масштаб, чтобы композиция была крупнее */
+        height: 100%;
+        position: relative;
+        left: 50%;
+        transform: translateX(-12%);
+        /* Тонкая настройка: чуть смещаем в сторону мавзолея */
+        object-fit: cover;
+    }
 }

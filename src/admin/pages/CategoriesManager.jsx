@@ -73,11 +73,9 @@ const CategoriesManager = () => {
     };
 
     const handleSave = async (updatedItem) => {
-        if (!updatedItem.id) {
+        const isNew = !updatedItem.id || String(updatedItem.id).length < 5;
+        if (isNew) {
             updatedItem.id = Date.now().toString();
-        }
-        if (!updatedItem.category_tag) {
-            updatedItem.category_tag = activeTab;
         }
 
         // Сплющиваем координаты для Google Таблиц (одна колонка - одна цифра)
@@ -93,16 +91,12 @@ const CategoriesManager = () => {
         // Убираем сложный объект, чтобы не путать Apps Script
         delete payload.coordinates;
 
-        console.log('Saving Attraction with Coords:', payload);
-
-        const success = await updateSheetData('attractions', 'update', payload);
+        const action = isNew ? 'add' : 'update';
+        const success = await updateSheetData('attractions', action, payload);
         if (success) {
-            // Даем Google Таблицам 2 секунды на запись, прежде чем обновлять список
-            setTimeout(() => {
-                loadAllData();
-                setSelectedItem(null);
-            }, 2000);
-            alert(`Объект "${updatedItem.name}" отправлен на сохранение. Данные обновятся через 2 сек.`);
+            loadAllData();
+            setSelectedItem(null);
+            alert(`Объект "${updatedItem.name_ru || updatedItem.name}" успешно сохранен!`);
         } else {
             alert('Ошибка при сохранении');
         }
@@ -222,7 +216,7 @@ const CategoriesManager = () => {
                         className="admin-add-btn" 
                         onClick={() => setSelectedItem({ 
                             name: '', 
-                            city: 'Туркестан', 
+                            city: '', 
                             category_tag: activeTab,
                             image: '',
                             description: '',

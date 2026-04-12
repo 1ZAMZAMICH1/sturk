@@ -15,6 +15,23 @@ import * as THREE from 'three';
 import './GuidesMobile.css';
 import { fetchSheetData } from '../services/api';
 
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.error("Three.js Image Error caught:", error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
+
 // --- ГЕНЕРАТОР ПОЗИЦИЙ (мобайл) ---
 const generatePositionsMobile = (seed, count) => {
   let localSeed = seed;
@@ -108,12 +125,14 @@ function ShieldItemMobile({ data, index, openSignal }) {
             </mesh>
             {detailsVisible && (
               <React.Suspense fallback={null}>
-                <Image
-                  url={data.img || "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=300&q=60"}
-                  scale={[1.8, 1.8]}
-                  position={[0, 0.4, 0.05]}
-                  transparent radius={1}
-                />
+                <ErrorBoundary>
+                  <Image
+                    url={data.img || "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=300&q=60"}
+                    scale={[1.8, 1.8]}
+                    position={[0, 0.4, 0.05]}
+                    transparent radius={1}
+                  />
+                </ErrorBoundary>
                 <Text position={[0, -0.7, 0.1]} fontSize={0.24} maxWidth={2.0} textAlign="center"
                   color="#d4af37" anchorX="center" anchorY="top">
                   {data.name}

@@ -51,6 +51,10 @@ const RestaurantsManager = () => {
             nearbyHotels: JSON.stringify(updated.nearbyHotels || [])
         };
 
+        if (!payload.id) {
+            payload.id = Date.now().toString();
+        }
+
         const success = await updateSheetData('restaurants', action, payload);
         if (success) {
             // Если это было добавление, перезагружаем список, чтобы получить ID от сервера (или просто перезагружаем)

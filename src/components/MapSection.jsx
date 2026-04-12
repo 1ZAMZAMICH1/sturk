@@ -30,12 +30,12 @@ const FILTERS = [
   { id: 'restaurant', label: 'Рестораны' },
 ];
 
-const TYPE_COLORS = { 
-  sight: '#00ffff', 
-  nature: '#00ff7f', 
-  hotel: '#ff9800', 
+const TYPE_COLORS = {
+  sight: '#00ffff',
+  nature: '#00ff7f',
+  hotel: '#ff9800',
   restaurant: '#e91e63',
-  city: '#ffd700' 
+  city: '#ffd700'
 };
 
 // ОПТИМИЗАЦИЯ: Кэш иконок, чтобы не создавать L.divIcon каждый рендер
@@ -142,23 +142,23 @@ const MapSection = () => {
   useEffect(() => {
     const loadData = async () => {
       const [points, routes, atts, hots, restos] = await Promise.all([
-          fetchSheetData('map_points'),
-          fetchSheetData('map_routes'),
-          fetchSheetData('attractions'),
-          fetchSheetData('hotels'),
-          fetchSheetData('restaurants')
+        fetchSheetData('map_points'),
+        fetchSheetData('map_routes'),
+        fetchSheetData('attractions'),
+        fetchSheetData('hotels'),
+        fetchSheetData('restaurants')
       ]);
-      
+
       setAttractions(atts || []);
       setHotels(hots || []);
       setRestaurants(restos || []);
 
       // Проверяем наличие валидных точек
       const hasValidPoints = points && Array.isArray(points) && points.length > 0 && points.some(p => p.pos);
-      
+
       const parsedPoints = (hasValidPoints ? points : FALLBACK_POINTS).map(p => ({
         ...p,
-        pos: Array.isArray(p.pos) ? p.pos : (typeof p.pos === 'string' && p.pos.includes(',') ? p.pos.split(',').map(Number) : [0,0])
+        pos: Array.isArray(p.pos) ? p.pos : (typeof p.pos === 'string' && p.pos.includes(',') ? p.pos.split(',').map(Number) : [0, 0])
       })).filter(p => !isNaN(p.pos[0]) && p.pos[0] !== 0);
 
       const parsedRoutes = (routes && Array.isArray(routes) && routes.length > 0) ? routes.map(r => {
@@ -172,7 +172,7 @@ const MapSection = () => {
       }).filter(r => r.nodes.length > 0) : [];
 
       const finalRoutes = (parsedRoutes.length > 0) ? parsedRoutes : FALLBACK_ROUTES;
-      
+
       setMapPoints(parsedPoints.length > 0 ? parsedPoints : FALLBACK_POINTS);
       setMapRoutes(finalRoutes);
     };
@@ -185,39 +185,45 @@ const MapSection = () => {
   // ОПТИМИЗАЦИЯ: useMemo предотвращает пересчет массива при каждом рендере (например при движении карты)
   const filteredPoints = useMemo(() => {
     if (filter === 'none') return [];
-    return mapPoints.filter(p => filter === 'all' || p.type === filter);
+    if (filter === 'all') return mapPoints;
+    
+    return mapPoints.filter(p => {
+      if (filter === 'nature') return p.type === 'nature' || p.type === 'sight';
+      if (filter === 'sight') return p.type === 'sight' || p.type === 'nature';
+      return p.type === filter;
+    });
   }, [filter, mapPoints]);
 
   const handleOpenDetails = (point) => {
-      console.log('Клик по точке на карте:', point.title, 'Тип:', point.type);
-      
-      let targetUrl = null;
+    console.log('Клик по точке на карте:', point.title, 'Тип:', point.type);
 
-      if (point.type === 'hotel') {
-          const hotelId = point.hotelId || point.attractionId || point.articleId;
-          const hotel = hotels.find(h => String(h.id) === String(hotelId)) || hotels.find(h => h.name === point.title);
-          if (hotel) targetUrl = `/hotels?id=${hotel.id}`;
-      } else if (point.type === 'restaurant') {
-          const restoId = point.restaurantId || point.attractionId || point.articleId;
-          const resto = restaurants.find(r => String(r.id) === String(restoId)) || restaurants.find(r => r.name === point.title);
-          if (resto) targetUrl = `/restaurants?id=${resto.id}`;
-      } else {
-          // По умолчанию считаем достопримечательностью (sight, nature, city)
-          const attrId = point.attractionId || point.articleId;
-          const attr = attractions.find(a => String(a.id) === String(attrId)) || attractions.find(a => a.name === point.title);
-          if (attr) {
-              const cat = attr.category_tag || attr.type || 'history';
-              targetUrl = `/category/${cat}?id=${attr.id}`;
-          }
-      }
+    let targetUrl = null;
 
-      if (targetUrl) {
-          console.log('Переход к объекту:', targetUrl);
-          navigate(targetUrl);
-      } else {
-          console.warn('Не удалось найти данные для этой точки.');
-          alert('Данные для этого объекта еще не заполнены или объект не найден.');
+    if (point.type === 'hotel') {
+      const hotelId = point.hotelId || point.attractionId || point.articleId;
+      const hotel = hotels.find(h => String(h.id) === String(hotelId)) || hotels.find(h => h.name === point.title);
+      if (hotel) targetUrl = `/hotels?id=${hotel.id}`;
+    } else if (point.type === 'restaurant') {
+      const restoId = point.restaurantId || point.attractionId || point.articleId;
+      const resto = restaurants.find(r => String(r.id) === String(restoId)) || restaurants.find(r => r.name === point.title);
+      if (resto) targetUrl = `/restaurants?id=${resto.id}`;
+    } else {
+      // По умолчанию считаем достопримечательностью (sight, nature, city)
+      const attrId = point.attractionId || point.articleId;
+      const attr = attractions.find(a => String(a.id) === String(attrId)) || attractions.find(a => a.name === point.title);
+      if (attr) {
+        const cat = attr.category_tag || attr.type || 'history';
+        targetUrl = `/category/${cat}?id=${attr.id}`;
       }
+    }
+
+    if (targetUrl) {
+      console.log('Переход к объекту:', targetUrl);
+      navigate(targetUrl);
+    } else {
+      console.warn('Не удалось найти данные для этой точки.');
+      alert('Данные для этого объекта еще не заполнены или объект не найден.');
+    }
   };
 
   return (
@@ -273,34 +279,34 @@ const MapSection = () => {
               />
               <MapResizeController />
               <div className="inner-shadow-overlay"></div>
-              
+
               {mapRoutes.map(route => {
                 const isActive = activeRouteId === route.id || activeRouteId === 'all';
                 if (!isActive && activeRouteId !== null) return null;
-                if (activeRouteId === null) return null; 
+                if (activeRouteId === null) return null;
 
                 return (
                   <React.Fragment key={route.id}>
                     {/* Линия свечения (Blur/Glow) */}
-                    <Polyline 
-                      positions={route.nodes} 
-                      color={route.color || '#00e5ff'} 
+                    <Polyline
+                      positions={route.nodes}
+                      color={route.color || '#00e5ff'}
                       weight={activeRouteId === route.id ? 12 : 8}
                       opacity={0.3}
                       lineJoin="round"
                     />
                     {/* Основная яркая линия */}
-                    <Polyline 
-                      positions={route.nodes} 
-                      color={route.color || '#00e5ff'} 
+                    <Polyline
+                      positions={route.nodes}
+                      color={route.color || '#00e5ff'}
                       weight={activeRouteId === route.id ? 5 : 3}
                       opacity={1}
                       lineJoin="round"
                       dashArray={activeRouteId === route.id ? 'none' : '12, 12'}
                     >
-                        <Tooltip sticky direction="top" className="route-tooltip">
-                            {route[`title_${i18n.language}`] || route.title_ru || route.title}
-                        </Tooltip>
+                      <Tooltip sticky direction="top" className="route-tooltip">
+                        {route[`title_${i18n.language}`] || route.title_ru || route.title}
+                      </Tooltip>
                     </Polyline>
                   </React.Fragment>
                 );
@@ -308,34 +314,57 @@ const MapSection = () => {
 
               {filteredPoints.map(point => {
                 let attr = null;
+                const pid = String(point.attractionId || point.articleId || point.hotelId || point.restaurantId || '').trim();
+                const ptitle = String(point.title_ru || point.title || '').trim().toLowerCase();
+
                 if (point.type === 'hotel') {
-                    attr = hotels.find(h => String(h.id) === String(point.hotelId || point.attractionId) || h.name === point.title);
+                  attr = hotels.find(h => String(h.id) === pid);
+                  if (!attr) attr = hotels.find(h => String(h.name || '').trim().toLowerCase() === ptitle);
                 } else if (point.type === 'restaurant') {
-                    attr = restaurants.find(r => String(r.id) === String(point.restaurantId || point.attractionId) || r.name === point.title);
+                  attr = restaurants.find(r => String(r.id) === pid);
+                  if (!attr) attr = restaurants.find(r => String(r.name || '').trim().toLowerCase() === ptitle);
                 } else {
-                    attr = attractions.find(a => String(a.id) === String(point.attractionId || point.articleId) || a.name === point.title);
+                  let allAtts = [];
+                  if (Array.isArray(attractions)) {
+                    allAtts = attractions;
+                  } else {
+                    allAtts = [...(attractions.city || []), ...(attractions.spirit || []), ...(attractions.nature || [])];
+                  }
+
+                  attr = allAtts.find(a => String(a.id) === pid);
+                  if (!attr) {
+                    attr = allAtts.find(a => {
+                      const cleanA = (a.name_ru || a.name || '').replace(/[^\w\а-яА-ЯёЁ]/g, '').trim().toLowerCase();
+                      const cleanP = ptitle.replace(/[^\w\а-яА-ЯёЁ]/g, '').trim().toLowerCase();
+                      return cleanP === cleanA && cleanP.length > 0;
+                    });
+                  }
                 }
-                
+
                 return (
                   <Marker
                     key={point.id}
                     position={point.pos}
-                    icon={point.icon ? L.icon({ 
-                      iconUrl: point.icon, 
-                      iconSize: [60, 60], 
-                      iconAnchor: [30, 30],
-                      className: 'premium-map-icon' 
-                    }) : getIcon(point.type)}
+                    icon={L.divIcon({
+                      className: 'premium-marker-wrapper',
+                      html: `
+                        <div class="marker-combo">
+                          ${point.icon ? `<img src="${point.icon}" class="combo-icon" style="width: 42px !important; height: auto !important;" />` : ''}
+                        </div>
+                      `,
+                      iconSize: [20, 30],
+                      iconAnchor: [10, 30]
+                    })}
                     eventHandlers={{ click: () => setActivePoint(point) }}
                   >
                     <Popup className="glass-popup" closeButton={false} autoPan={true}>
                       <div className="map-popup-card">
-                          {attr?.image && <img src={attr.image} className="popup-preview-img" alt="" />}
-                          <div className="popup-info">
-                              <h3>{point[`title_${i18n.language}`] || point.title_ru || point.title}</h3>
-                              <p>{(attr?.[`description_${i18n.language}`] || attr?.[`shortDescription_${i18n.language}`] || attr?.description_ru || point[`desc_${i18n.language}`] || point.desc_ru || point.desc)?.substring(0, 80)}...</p>
-                              <button className="popup-more-btn" onClick={() => handleOpenDetails(point)}>{t('map.details')}</button>
-                          </div>
+                        {(attr?.image || point.icon) && <img src={attr?.image || point.icon} className="popup-preview-img" alt="" />}
+                        <div className="popup-info">
+                          <h3>{attr?.[`name_${i18n.language}`] || point[`title_${i18n.language}`] || attr?.name_ru || attr?.name || point.title_ru || point.title}</h3>
+                          <p>{(attr?.[`description_${i18n.language}`] || attr?.[`shortDescription_${i18n.language}`] || point[`desc_${i18n.language}`] || attr?.description_ru || point.desc_ru || point.desc)?.substring(0, 80)}...</p>
+                          <button className="popup-more-btn" onClick={() => handleOpenDetails(point)}>{t('map.details')}</button>
+                        </div>
                       </div>
                     </Popup>
                   </Marker>
@@ -357,9 +386,9 @@ const MapSection = () => {
             <span className="section-label">{t('map.categories_label')}</span>
             <div className="ui-filters">
               {FILTERS.map(f => (
-                <button 
-                  key={f.id} 
-                  onClick={() => setFilter(f.id)} 
+                <button
+                  key={f.id}
+                  onClick={() => setFilter(f.id)}
                   className={`ui-btn ${filter === f.id ? 'active' : ''}`}
                 >
                   {t(`filters.${f.id}`)}
@@ -372,16 +401,16 @@ const MapSection = () => {
             <div className="ui-section">
               <span className="section-label">{t('map.routes_label')}</span>
               <div className="ui-filters">
-                <button 
-                  onClick={() => setActiveRouteId(activeRouteId === 'all' ? null : 'all')} 
+                <button
+                  onClick={() => setActiveRouteId(activeRouteId === 'all' ? null : 'all')}
                   className={`ui-btn ${activeRouteId === 'all' ? 'active' : ''}`}
                 >
                   {t('map.all_routes')}
                 </button>
                 {mapRoutes.map(route => (
-                  <button 
-                    key={route.id} 
-                    onClick={() => setActiveRouteId(activeRouteId === route.id ? null : route.id)} 
+                  <button
+                    key={route.id}
+                    onClick={() => setActiveRouteId(activeRouteId === route.id ? null : route.id)}
                     className={`ui-btn route-btn ${activeRouteId === route.id ? 'active' : ''}`}
                   >
                     🛤️ {route[`title_${i18n.language}`] || route.title_ru || route.title}

@@ -159,24 +159,44 @@ const PetroglyphWall = () => {
   const materialsRef = useRef([]);
 
   const items = useMemo(() => {
-    const glyphs = []; const count = 70; const radius = 50; const minDist = 10.0;
-    let currentSeed = 9999; let attempts = 0;
-    while (glyphs.length < count && attempts < 10000) {
-      attempts++; currentSeed++;
-      const angle = seededRandom(currentSeed) * Math.PI * 2;
-      const y = (seededRandom(currentSeed + 7000) - 0.5) * 50;
+    const glyphs = []; 
+    const count = 10; 
+    const radius = 45; 
+    const minDist = 5.0; // Уменьшил дистанцию, чтобы они могли стоять кучнее
+    
+    let currentSeed = 222; 
+    let attempts = 0;
+    
+    while (glyphs.length < count && attempts < 1000) {
+      attempts++; 
+      currentSeed++;
+      
+      // Генерируем петроглифы строго в видимом окне (90 градусов перед камерой)
+      // Math.PI - это центр "лица". Разброс +- 0.8 радиана (~45 градусов в каждую сторону)
+      const angle = Math.PI + (seededRandom(currentSeed) - 0.5) * 1.6; 
+      
+      // Разброс по высоте тоже сделаем кучнее к центру экрана
+      const y = (seededRandom(currentSeed + 7000) - 0.5) * 30;
+      
       const x = Math.sin(angle) * radius;
       const z = Math.cos(angle) * radius;
+      
       const newPos = new THREE.Vector3(x, y, z);
+      
       let tooClose = false;
-      for (let other of glyphs) { if (newPos.distanceTo(other.vecPos) < minDist) { tooClose = true; break; } }
+      for (let other of glyphs) { 
+        if (newPos.distanceTo(other.vecPos) < minDist) { tooClose = true; break; } 
+      }
+      
       if (!tooClose) {
         const rScale = seededRandom(currentSeed + 1000);
         glyphs.push({
-          pos: [x, y, z], vecPos: newPos,
-          rot: [0, angle + Math.PI, 0], scale: 5.0 + rScale * 8.0,
+          pos: [x, y, z], 
+          vecPos: newPos,
+          rot: [0, angle + Math.PI, 0], 
+          scale: 4.5 + rScale * 5.0,
           texture: textures[Math.floor(seededRandom(currentSeed + 2000) * textures.length)],
-          timeOffset: seededRandom(currentSeed + 3000) * 20
+          timeOffset: seededRandom(currentSeed + 3000) * 10
         });
       }
     }
@@ -185,14 +205,31 @@ const PetroglyphWall = () => {
 
   useFrame((state) => {
     const time = state.clock.elapsedTime;
-    items.forEach((item, i) => { if (materialsRef.current[i]) materialsRef.current[i].uTime = time + item.timeOffset; });
+    items.forEach((item, i) => { 
+      if (materialsRef.current[i]) materialsRef.current[i].uTime = time + item.timeOffset; 
+    });
   });
 
   return (
     <group>
       {items.map((item, i) => (
-        <mesh key={i} position={item.pos} rotation={item.rot} scale={[item.scale, item.scale, 1]} geometry={sharedPlaneGeometry} raycast={null}>
-          <petroSoftMaterial ref={el => materialsRef.current[i] = el} uTexture={item.texture} uColor={new THREE.Color("#d4af37")} side={THREE.DoubleSide} transparent={true} />
+        <mesh 
+          key={i} 
+          position={item.pos} 
+          rotation={item.rot} 
+          scale={[item.scale, item.scale, 1]} 
+          geometry={sharedPlaneGeometry} 
+          raycast={null}
+          frustumCulled={true}
+        >
+          <petroSoftMaterial 
+            ref={el => materialsRef.current[i] = el} 
+            uTexture={item.texture} 
+            uColor={new THREE.Color("#d4af37")} 
+            side={THREE.DoubleSide} 
+            transparent={true} 
+            depthWrite={false}
+          />
         </mesh>
       ))}
     </group>

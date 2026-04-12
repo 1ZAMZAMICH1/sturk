@@ -25,22 +25,63 @@ const heroImages = {
 export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos = [], guides = [] }) => {
     const { t, i18n } = useTranslation();
     const [activeImg, setActiveImg] = useState(item.image || item.img);
-    const all = [item.image || item.img, ...(item.gallery || [])].filter(Boolean);
+    
+    const all = useMemo(() => {
+        const parseGallery = (val) => {
+            if (!val) return [];
+            if (Array.isArray(val)) return val;
+            try { return JSON.parse(val); } catch (e) { return []; }
+        };
+        const gallery = parseGallery(item.gallery);
+        return [item.image || item.img, ...gallery].filter(Boolean);
+    }, [item.image, item.img, item.gallery]);
 
     const nearbyData = useMemo(() => {
-        const filteredHots = (item.nearbyHotels || []).map(id => hots.find(h => String(h.id) === String(id))).filter(Boolean);
-        const filteredRestos = (item.nearbyRestaurants || []).map(id => restos.find(r => String(r.id) === String(id))).filter(Boolean);
+        const parseIds = (val) => {
+            if (!val) return [];
+            if (Array.isArray(val)) return val;
+            try { return JSON.parse(val); } catch (e) { return []; }
+        };
+
+        const hotelIds = parseIds(item.nearbyHotels);
+        const restoIds = parseIds(item.nearbyRestaurants);
+        const guideIds = parseIds(item.nearbyGuides);
+
+        const filteredHots = (hotelIds || []).map(id => hots.find(h => String(h.id) === String(id))).filter(Boolean);
+        const filteredRestos = (restoIds || []).map(id => restos.find(r => String(r.id) === String(id))).filter(Boolean);
         
         const name = (item.name || item.title || "").toLowerCase();
         const keywords = name.replace(/мавзолей|ходжи|ахмеда|центр|визит|парк|озеро|река|пещера|комплекс|азрет|султан/g, '').trim().split(/\s+/);
-        const relatedGuides = guides.filter(guide => 
-            (guide.tours || []).some(tour => 
-                tour.highlights?.some(h => keywords.some(k => k.length > 3 && h.toLowerCase().includes(k))) ||
-                tour.title?.toLowerCase().includes(name)
-            )
-        );
+        
+        const relatedGuides = guides.filter(guide => {
+            // Гарантируем, что туры — это массив
+            let toursArr = [];
+            if (Array.isArray(guide.tours)) toursArr = guide.tours;
+            else if (typeof guide.tours === 'string') {
+                try { toursArr = JSON.parse(guide.tours); } catch(e) { toursArr = []; }
+            }
+
+            return (toursArr || []).some(tour => {
+                // Проверяем хайлайты (они тоже могут быть строкой или массивом)
+                let highlightsArr = [];
+                if (Array.isArray(tour.highlights)) highlightsArr = tour.highlights;
+                else if (typeof tour.highlights === 'string') {
+                    // Пробуем парсить как JSON, если не вышло — сплитим по запятой
+                    try { highlightsArr = JSON.parse(tour.highlights); } 
+                    catch(e) { highlightsArr = tour.highlights.split(',').map(s => s.trim()); }
+                }
+
+                const hasMatchInHighlights = highlightsArr.some(h => 
+                    keywords.some(k => k.length > 3 && String(h).toLowerCase().includes(k))
+                );
+                const hasMatchInTitle = String(tour[`title_${i18n.language}`] || tour.title_ru || tour.title || "").toLowerCase().includes(name);
+                
+                return hasMatchInHighlights || hasMatchInTitle;
+            });
+        });
         return { hotels: filteredHots, restaurants: filteredRestos, guides: relatedGuides };
-    }, [item, hots, restos, guides]);
+    }, [item, hots, restos, guides, i18n.language]);
+
 
     const openMap = () => {
         if (item.coordinates && item.coordinates.lat) {
@@ -135,27 +176,33 @@ const CategoryPage = () => {
 
     useEffect(() => {
         const loadAll = async () => {
-            const [allHots, allRestos, allGuides, allAtts] = await Promise.all([
-                fetchSheetData('hotels'),
-                fetchSheetData('restaurants'),
-                fetchSheetData('guides'),
-                fetchSheetData('attractions')
-            ]);
-            
-            const filteredData = (allAtts || []).filter(a => a.category_tag === catId || a.type === catId);
-            setData(filteredData);
-            setHots(allHots || []);
-            setRestos(allRestos || []);
-            setGuides(allGuides || []);
+            try {
+                // Загружаем данные по очереди, чтобы не злить Google параллельными запросами
+                const allHots = await fetchSheetData('hotels');
+                const allRestos = await fetchSheetData('restaurants');
+                const allGuides = await fetchSheetData('guides');
+                const allAtts = await fetchSheetData('attractions');
+                
+                const filteredData = (allAtts || []).filter(a => a.category_tag === catId || a.type === catId);
+                setData(filteredData);
+                setHots(allHots || []);
+                setRestos(allRestos || []);
+                setGuides(allGuides || []);
 
-            if (queryId) {
-                const item = (filteredData || []).find(i => String(i.id).trim() === String(queryId).trim());
-                if (item) setSelected(item);
+                if (queryId) {
+                    const item = (filteredData || []).find(i => String(i.id).trim() === String(queryId).trim());
+                    if (item) setSelected(item);
+                }
+            } catch (err) {
+                console.error("Load error:", err);
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
         };
         loadAll();
     }, [catId, queryId]);
+
+
 
     const cities = useMemo(() => {
         const set = new Set(data.map(i => i.city).filter(Boolean));

@@ -13,17 +13,17 @@ import heroTextImgZH from '../assets/hero-textzh.png';
 const MemoizedClouds = memo(() => {
   const cloudConfig = (
     <>
-      <Cloud seed={10} segments={120} bounds={[50, 40, 2]} volume={60} color="#1a0b05" position={[0, 0, -18]} speed={0} opacity={1} />
-      <Cloud seed={20} segments={80} bounds={[40, 30, 5]} volume={40} color="#2e1608" position={[0, 0, -14]} speed={0.02} opacity={0.95} />
-      <Cloud seed={30} segments={60} bounds={[35, 25, 6]} volume={30} color="#542a0c" position={[0, 0, -10]} speed={0.05} opacity={0.85} />
-      <Cloud seed={40} segments={50} bounds={[30, 20, 6]} volume={25} color="#783c12" position={[0, 0, -6]} speed={0.08} opacity={0.7} />
-      <Cloud seed={50} segments={40} bounds={[25, 15, 4]} volume={20} color="#9c5219" position={[0, 0, -2]} speed={0.12} opacity={0.6} />
-      <Cloud seed={60} segments={30} bounds={[20, 12, 4]} volume={15} color="#b86e28" position={[0, 0, 2]} speed={0.2} opacity={0.4} />
+      <Cloud seed={10} segments={80} bounds={[30, 20, 1]} volume={60} color="#1a0b05" position={[0, 0, -18]} speed={0} opacity={1} />
+      <Cloud seed={20} segments={60} bounds={[25, 18, 2]} volume={40} color="#2e1608" position={[0, 0, -14]} speed={0.02} opacity={0.95} />
+      <Cloud seed={30} segments={45} bounds={[20, 15, 3]} volume={30} color="#542a0c" position={[0, 0, -10]} speed={0.05} opacity={0.85} />
+      <Cloud seed={40} segments={35} bounds={[18, 12, 3]} volume={25} color="#783c12" position={[0, 0, -6]} speed={0.08} opacity={0.7} />
+      <Cloud seed={50} segments={30} bounds={[15, 10, 2]} volume={20} color="#9c5219" position={[0, 0, -2]} speed={0.12} opacity={0.6} />
+      <Cloud seed={60} segments={25} bounds={[12, 8, 2]} volume={15} color="#b86e28" position={[0, 0, 2]} speed={0.2} opacity={0.4} />
     </>
   );
   return (
     <group rotation={import.meta.env.PROD ? [0, 0, Math.PI] : [0, 0, 0]}>
-      <Clouds material={THREE.MeshBasicMaterial} limit={400}>{cloudConfig}</Clouds>
+      <Clouds material={THREE.MeshBasicMaterial} limit={400} frustumCulled={true}>{cloudConfig}</Clouds>
     </group>
   );
 });

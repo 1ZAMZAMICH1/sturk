@@ -10,26 +10,48 @@ import { EditorialModal } from './RestaurantsPage';
 import { fetchSheetData } from '../services/api';
 import heroTextImg from '../assets/hero-text.png';
 
-const AMENITY_MAP = {
-    'Wi-Fi': Icons.WiFi,
-    'Завтрак': Icons.Coffee,
-    'Бассейн': Icons.Pool,
-    'SPA': Icons.SPA,
-    'Фитнес': Icons.Gym,
-    'Кондиционер': Icons.AC,
-    'Парковка': Icons.Pin,
-    'Ресторан': Icons.Restaurants,
-    'Вид на мавзолей': Icons.Eye,
-    'Традиции': Icons.Users
-};
+const AMENITY_KEYWORDS = [
+    { regex: /wi-fi|интернет|wifi/i, icon: Icons.WiFi },
+    { regex: /завтрак|breakfast/i, icon: Icons.Coffee },
+    { regex: /парковка|parking/i, icon: Icons.Pin },
+    { regex: /бассейн|pool/i, icon: Icons.Pool },
+    { regex: /фитнес|зал|спорт|gym/i, icon: Icons.Gym },
+    { regex: /кондиционер|ac|air conditioning/i, icon: Icons.AC },
+    { regex: /ресторан|бар|food|drink|ресторан/i, icon: Icons.Restaurants },
+    { regex: /спа|spa/i, icon: Icons.SPA },
+    { regex: /вид|view/i, icon: Icons.Eye },
+    { regex: /семейный|family|children|дети/i, icon: Icons.Users },
+    { regex: /ресепшн|reception|стойка/i, icon: Icons.Dashboard },
+    { regex: /карта|card/i, icon: Icons.Categories }
+];
 
-export const Stars = ({ count }) => (
-    <div className="hp-stars">
-        {[...Array(5)].map((_, i) => (
-            <Icons.Star key={i} fill={i < count ? "var(--hp-gold)" : "none"} />
-        ))}
-    </div>
-);
+export const Stars = ({ count }) => {
+    // Robust parsing: handles numbers, strings ("5"), and even "5 звезд"
+    const parseStars = (val) => {
+        if (!val) return 0;
+        if (typeof val === 'number') return val;
+        const matched = String(val).match(/\d+/);
+        return matched ? parseInt(matched[0]) : 0;
+    };
+
+    const num = parseStars(count);
+    
+    return (
+        <div className="hp-stars" style={{ display: 'flex', gap: '4px', marginBottom: '8px' }}>
+            {[...Array(5)].map((_, i) => (
+                <svg key={i} width="16" height="16" viewBox="0 0 24 24" style={{ display: 'block' }}>
+                    <path 
+                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" 
+                        fill={i < num ? "#1a1410" : "none"}
+                        stroke="#1a1410"
+                        strokeWidth="2"
+                        strokeLinejoin="round"
+                    />
+                </svg>
+            ))}
+        </div>
+    );
+};
 
 export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
     const { t, i18n } = useTranslation();
@@ -126,11 +148,16 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                                         <h4 className="hp-sec-title">{t('hotels_page.amenities_title')}</h4>
                                         <div className="hp-amenities-refined">
                                             {parsedAmenities.map(a => {
-                                                const Icon = AMENITY_MAP[a] || Icons.Star;
+                                                const match = AMENITY_KEYWORDS.find(k => k.regex.test(a));
+                                                const Icon = match ? match.icon : Icons.Star;
+                                                const transKey = `hotels_page.amenities.${a}`;
+                                                const label = t(transKey);
+                                                const displayText = label === transKey ? a : label;
+
                                                 return (
                                                     <div key={a} className="hp-amenity-pill">
-                                                        <Icon style={{ width: '16px', color: 'var(--hp-gold)' }} />
-                                                        <span>{t(`hotels_page.amenities.${a}`)}</span>
+                                                        <Icon style={{ width: '16px', color: '#1a1410' }} />
+                                                        <span>{displayText}</span>
                                                     </div>
                                                 );
                                             })}
@@ -157,14 +184,19 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                                     <div className="hp-rooms-list-refined">
                                         {parsedRooms.map((room, idx) => {
                                             const RoomIcon = Icons[room.icon] || Icons.Bed;
-                                            const roomName = room[`name_${i18n.language}`] || room.name_ru || room.name;
+                                            const roomName = room[`title_${i18n.language}`] || room.title_ru || room.title || room[`name_${i18n.language}`] || room.name_ru || room.name;
+                                            const roomPrice = room.priceText || room.price;
+                                            
                                             return (
                                                 <div key={idx} className="hp-room-card-royal">
                                                     <div className="room-header-r">
                                                         <RoomIcon style={{ width: '20px', color: 'var(--hp-gold)' }} />
                                                         <span className="room-name">{roomName}</span>
                                                     </div>
-                                                    <span className="room-price">{t('hotels_page.from_price', { price: room.price })}</span>
+                                                    {room.beds && <div className="room-beds" style={{ fontSize: '0.8rem', color: '#666', marginTop: '4px' }}>{room.beds}</div>}
+                                                    <span className="room-price" style={{ marginTop: '8px', display: 'block' }}>
+                                                        {roomPrice && String(roomPrice).startsWith('KZT') ? roomPrice : t('hotels_page.from_price', { price: roomPrice })}
+                                                    </span>
                                                 </div>
                                             );
                                         })}

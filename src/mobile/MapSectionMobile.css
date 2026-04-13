@@ -8,22 +8,34 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Распределяем верх, центр и низ */
+  justify-content: space-between;
+  /* Распределяем верх, центр и низ */
   align-items: center;
-  padding: 2vh 0 4vh; /* Зазоры сверху и снизу */
+  padding: 2vh 0 4vh;
+  /* Зазоры сверху и снизу */
   box-sizing: border-box;
-  pointer-events: none; /* ПРЯЧЕМ ВЕСЬ КОНТЕЙНЕР ОТ ПАЛЬЦЕВ ПО УМОЛЧАНИЮ */
+  pointer-events: none;
+  /* ПРЯЧЕМ ВЕСЬ КОНТЕЙНЕР ОТ ПАЛЬЦЕВ ПО УМОЛЧАНИЮ */
 }
 
 .map-mob-root * {
-  pointer-events: none; /* Прячем и детей */
+  pointer-events: none;
+  /* Прячем и детей */
 }
 
 /* ── 3D ФОН ────────────────── */
-.mob-hero-bg { position: absolute; inset: 0; z-index: 0; }
+.mob-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
 .mob-color-grade {
-  position: absolute; inset: 0; pointer-events: none; z-index: 1;
-  background: radial-gradient(circle at center, rgba(212,175,55,0.2) 0%, rgba(139,69,19,0.4) 60%, rgba(26,11,5,0.9) 100% );
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(circle at center, rgba(212, 175, 55, 0.2) 0%, rgba(139, 69, 19, 0.4) 60%, rgba(26, 11, 5, 0.9) 100%);
   mix-blend-mode: soft-light;
 }
 
@@ -40,9 +52,13 @@
   transition: all 1s ease 1s;
   margin: 0;
   flex-shrink: 0;
-  pointer-events: auto; /* Заголовок должен реагировать (если нужно) */
+  pointer-events: auto;
+  /* Заголовок должен реагировать (если нужно) */
 }
-.mob-ui-title.visible { opacity: 1; }
+
+.mob-ui-title.visible {
+  opacity: 1;
+}
 
 /* ── ОБЁРТКА ДЛЯ ФИКСАЦИИ МЕСТА (LAYOUT BOX) ─────
    Эта коробка говорит браузеру, что свиток занимает 70vh в высоту. 
@@ -51,42 +67,74 @@
 .mob-scroll-frame {
   position: relative;
   width: 100%;
-  flex-grow: 1; /* Занимает всё доступное место между заголовком и кнопками */
+  flex-grow: 1;
+  /* Занимает всё доступное место между заголовком и кнопками */
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
-  min-height: 0; /* Важно для flex-grow */
+  min-height: 0;
+  /* Важно для flex-grow */
 }
 
 .mob-scroll-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 70vh;   /* Будущая высота */
-  height: 98vw;  /* Будущая ширина */
+  width: 70vh;
+  /* Будущая высота */
+  height: 98vw;
+  /* Будущая ширина */
   transform: rotate(90deg);
   filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.9));
 }
 
 /* ── РОЛЛЕРЫ (как на ПК) ──── */
-.mob-roller-wrapper { height: 100%; flex-shrink: 0; position: relative; z-index: 20; }
-.mob-roller-img { height: 100%; width: auto; display: block; filter: drop-shadow(15px 0 25px rgba(0, 0, 0, 0.7)); }
-.mob-roller-wrapper.right .mob-roller-img { filter: drop-shadow(-15px 0 25px rgba(0,0,0,0.7)); }
+.mob-roller-wrapper {
+  height: 100%;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 20;
+}
+
+.mob-roller-img {
+  height: 100%;
+  width: auto;
+  display: block;
+  filter: drop-shadow(15px 0 25px rgba(0, 0, 0, 0.7));
+}
+
+.mob-roller-wrapper.right .mob-roller-img {
+  filter: drop-shadow(-15px 0 25px rgba(0, 0, 0, 0.7));
+}
 
 /* ── БУМАГА ───────────────── */
 .mob-paper-center {
   position: relative;
-  height: 68%; /* Пропорция бумаги к ручкам */
+  height: 68%;
+  /* Пропорция бумаги к ручкам */
   width: 0px;
   transition: width 2.5s cubic-bezier(0.25, 1, 0.5, 1);
-  margin-left: -25px; margin-right: -25px;
+  margin-left: -25px;
+  margin-right: -25px;
   z-index: 5;
   filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
-  pointer-events: auto; /* А ВОТ БУМАГА ВКЛЮЧАЕТ ПАЛЬЦЫ ОБРАТНО */
+  pointer-events: auto;
+  /* А ВОТ БУМАГА ВКЛЮЧАЕТ ПАЛЬЦЫ ОБРАТНО */
 }
-.mob-scroll-wrap.open .mob-paper-center { width: 70vh; }
-.mob-paper-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; z-index: 1; }
+
+.mob-scroll-wrap.open .mob-paper-center {
+  width: 70vh;
+}
+
+.mob-paper-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  z-index: 1;
+}
 
 /* ── МАСКА И КАРТА ──────────── */
 .mob-map-mask {
@@ -100,13 +148,18 @@
 
 .mob-leaflet {
   /* Квадрат для покрытия всей площади бумаги при повороте, но умеренный */
-  width: 100vh !important;
+  width: 30vh !important;
   height: 100vh !important;
   position: absolute;
-  top: 50%; left: 50%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%) rotate(-90deg);
   background: transparent;
   filter: sepia(0.4) contrast(1.2) brightness(0.9) saturate(0.6);
+  pointer-events: auto !important;
+  /* РАЗРЕШАЕМ КАСАНИЯ ИМЕННО ДЛЯ КАРТЫ */
+  touch-action: none !important;
+  /* ЗАПРЕЩАЕМ СКРОЛЛ СТРАНИЦЫ ПРИ СВАЙПЕ ПО КАРТЕ */
 }
 
 /* ── UI ────────────────────── */
@@ -116,56 +169,84 @@
   z-index: 50;
   opacity: 0;
   transition: opacity 1s ease 2s;
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 12px;
   flex-shrink: 0;
   padding-bottom: env(safe-area-inset-bottom, 20px);
-  pointer-events: auto; /* Кнопки категорий тоже должны работать */
+  pointer-events: auto;
+  /* Кнопки категорий тоже должны работать */
 }
-.mob-map-ui.visible { opacity: 1; }
-.mob-map-ui * { pointer-events: auto; }
-.mob-ui-section { display: flex; flex-direction: column; align-items: center; width: 100%; }
-.mob-section-label { color: rgba(220, 196, 142, 0.4); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; font-family: serif; margin-bottom: 8px; }
-.mob-ui-grid { 
-  display: flex; 
-  flex-wrap: wrap; 
-  justify-content: center; 
-  gap: 8px; 
+
+.mob-map-ui.visible {
+  opacity: 1;
+}
+
+.mob-map-ui * {
+  pointer-events: auto;
+}
+
+.mob-ui-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.mob-section-label {
+  color: rgba(220, 196, 142, 0.4);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: serif;
+  margin-bottom: 8px;
+}
+
+.mob-ui-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
   max-width: 95vw;
   width: 100%;
 }
 
 .mob-ui-btn {
-  background: rgba(10, 5, 2, 0.8); 
-  border: 1px solid #8c7853; 
-  color: #dcc48e; 
-  padding: 8px 12px; 
+  background: rgba(10, 5, 2, 0.8);
+  border: 1px solid #8c7853;
+  color: #dcc48e;
+  padding: 8px 12px;
   border-radius: 4px;
-  font-family: 'Playfair Display', serif; 
-  text-transform: uppercase; 
-  font-size: 0.65rem; 
+  font-family: 'Playfair Display', serif;
+  text-transform: uppercase;
+  font-size: 0.65rem;
   letter-spacing: 1px;
-  max-width: 45%; /* Чтобы два в ряд влезали даже если текст длинный */
+  max-width: 45%;
+  /* Чтобы два в ряд влезали даже если текст длинный */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.mob-ui-btn.active { background: #d4af37; color: #1a0b05; border-color: #d4af37; }
+
+.mob-ui-btn.active {
+  background: #d4af37;
+  color: #1a0b05;
+  border-color: #d4af37;
+}
 
 /* ПИНЫ (КОМБО-МАРКЕРЫ) */
 .leaflet-marker-pane,
 .leaflet-shadow-pane {
-    mix-blend-mode: normal !important;
-    filter: none !important;
-    isolation: isolate;
-    z-index: 600 !important;
+  mix-blend-mode: normal !important;
+  filter: none !important;
+  isolation: isolate;
+  z-index: 600 !important;
 }
 
 .leaflet-popup-pane {
-    z-index: 9999 !important;
-    isolation: isolate;
+  z-index: 9999 !important;
+  isolation: isolate;
 }
 
 .marker-combo {
@@ -182,50 +263,87 @@
   width: 42px !important;
   height: auto !important;
   margin-bottom: -2px;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
   z-index: 2;
 }
 
-.pin-core { width: 6px; height: 6px; border-radius: 50%; border: 1px solid #fff; z-index: 5; box-shadow: 0 0 3px rgba(0,0,0,1); }
-.pin-glow { position: absolute; bottom: 8px; width: 16px; height: 16px; border-radius: 50%; opacity: 0.6; animation: pulse-mob 2s infinite; z-index: 1; }
-@keyframes pulse-mob { 0%{transform:scale(1);opacity:0.6;} 100%{transform:scale(2.5);opacity:0;} }
+.pin-core {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  z-index: 5;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 1);
+}
 
-.glass-popup .leaflet-popup-content-wrapper { 
-  background:rgba(18,10,5,0.98); 
-  color:#dcc48e; 
-  border:1px solid rgba(212, 175, 55, 0.5); 
-  border-radius:4px; 
-  font-family:serif; 
+.pin-glow {
+  position: absolute;
+  bottom: 8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: pulse-mob 2s infinite;
+  z-index: 1;
+}
+
+@keyframes pulse-mob {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+.glass-popup .leaflet-popup-content-wrapper {
+  background: rgba(18, 10, 5, 0.98);
+  color: #dcc48e;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  border-radius: 4px;
+  font-family: serif;
   padding: 0;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.8);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8);
 }
+
 .glass-popup .leaflet-popup-content {
-    margin: 8px;
+  margin: 8px;
 }
-.glass-popup h3 { margin:0 0 8px; font-size:0.85rem; text-transform:uppercase; color: #f3e5ab; }
+
+.glass-popup h3 {
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #f3e5ab;
+}
 
 /* POPUP CARD (MOBILE) */
 .map-popup-card {
-    display: flex;
-    flex-direction: column;
-    width: 140px;
+  display: flex;
+  flex-direction: column;
+  width: 140px;
 }
+
 .popup-preview-img {
-    width: 100%;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 4px;
-    margin-bottom: 8px;
-    border: 1px solid rgba(212, 175, 55, 0.2);
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
 }
+
 .popup-more-btn {
-    width: 100%;
-    background: #c59d5f;
-    color: #fff;
-    border: none;
-    padding: 8px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
+  width: 100%;
+  background: #c59d5f;
+  color: #fff;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
 }

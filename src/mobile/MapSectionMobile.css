@@ -148,7 +148,7 @@
 
 .mob-leaflet {
   /* Квадрат для покрытия всей площади бумаги при повороте, но умеренный */
-  width: 30vh !important;
+  width: 35vh !important;
   height: 100vh !important;
   position: absolute;
   top: 50%;

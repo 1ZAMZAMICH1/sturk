@@ -37,7 +37,7 @@ const MemoizedClouds = memo(() => {
 
 const Hero = () => {
   const [isReady, setIsReady] = useState(false);
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   const OFFSETS = {
@@ -125,7 +125,7 @@ const Hero = () => {
           className={`hero-history-btn ${isReady ? 'visible' : ''}`}
           onClick={() => navigate('/history')}
         >
-          История Региона
+          {t('hero.history_btn')}
         </button>
       </div>
 

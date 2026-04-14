@@ -4,7 +4,6 @@ import * as THREE from 'three';
 import { useNavigate } from 'react-router-dom';
 import { Canvas, useFrame, extend } from '@react-three/fiber';
 import { useTexture, shaderMaterial, Environment, Float } from '@react-three/drei';
-import { fetchSheetData } from '../services/api';
 import './CategoriesMobile.css';
 
 // Импорт картинок
@@ -380,24 +379,11 @@ const CategoriesMobile = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [hovered, setHovered] = useState(null);
-  const [archData, setArchData] = useState([]);
-
-  useEffect(() => {
-    const loadArches = async () => {
-      try {
-        const data = await fetchSheetData('categories');
-        if (data && Array.isArray(data) && data.length >= 3) { setArchData(data); }
-        else { 
-            setArchData([
-                { tag: 'city', title: t('category.default_region'), url: cityImg }, 
-                { tag: 'spirit', title: t('category.meta.history'), url: historyImg }, 
-                { tag: 'nature', title: t('category.meta.nature'), url: natureImg }
-            ]); 
-        }
-      } catch (err) { }
-    };
-    loadArches();
-  }, [t]);
+  const [archData] = useState([
+    { tag: 'city', title: t('category.default_region'), url: cityImg }, 
+    { tag: 'spirit', title: t('category.meta.history'), url: historyImg }, 
+    { tag: 'nature', title: t('category.meta.nature'), url: natureImg }
+  ]);
 
   const handlePortalClick = (index) => {
     const target = archData[index]?.tag || 'city';

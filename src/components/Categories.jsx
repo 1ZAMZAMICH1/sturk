@@ -15,7 +15,6 @@ import {
 } from '@react-three/drei';
 import * as THREE from 'three';
 import { useNavigate } from 'react-router-dom';
-import { fetchSheetData } from '../services/api';
 import './Categories.css';
 
 // Импорт картинок
@@ -425,25 +424,11 @@ const PortalCard = ({ index, url, title, color, position, rotation, hoveredState
 // --- СЦЕНА ---
 function CategoriesScene({ onSelectCategory }) {
   const [hovered, setHovered] = useState(null);
-  const [archData, setArchData] = useState([
+  const [archData] = useState([
     { tag: 'city', title: 'Городские', url: cityImg, color: '#40e0d0' },
     { tag: 'spirit', title: 'Исторические', url: historyImg, color: '#ffd700' },
-    { tag: 'nature', title: 'Духовные', url: natureImg, color: '#50c878' }
+    { tag: 'nature', title: 'Природные', url: natureImg, color: '#50c878' }
   ]);
-
-  useEffect(() => {
-    const loadArches = async () => {
-      try {
-        const data = await fetchSheetData('categories');
-        if (data && Array.isArray(data) && data.length >= 3) {
-          setArchData(data);
-        }
-      } catch (err) {
-        console.error('Error loading arches:', err);
-      }
-    };
-    loadArches();
-  }, []);
 
   const handlePortalClick = (index) => {
     const target = archData[index]?.tag || 'city';

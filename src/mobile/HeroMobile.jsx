@@ -30,7 +30,7 @@ const MemoizedClouds = memo(() => {
 
 const HeroMobile = () => {
   const [isReady, setIsReady] = useState(false);
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
   const navigate = useNavigate();
   
@@ -116,7 +116,7 @@ const HeroMobile = () => {
           style={{ pointerEvents: 'auto', marginTop: '20px' }}
           onClick={() => navigate('/history')}
         >
-          История Региона
+          {t('hero.history_btn')}
         </button>
       </div>
 

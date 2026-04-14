@@ -15,6 +15,10 @@ const SPECIALTY_ICONS = {
     'Архитектура': '🕌',
     'Приключения': '🧭',
     'Культура': '🎨',
+    'Духовность': '🕌',
+    'Археология': '🏺',
+    'Фото-гид': '📸',
+    'Default': '🧭'
 };
 
 const CATEGORY_COLORS = {
@@ -55,11 +59,10 @@ const GuideModal = ({ guide, onClose }) => {
                         <div className="gp-compass-outer" />
                         <div className="gp-compass-middle" />
                         <img src={guide.photo || "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=300&q=60"} alt={guide[`name_${i18n.language}`] || guide.name_ru || guide.name} className="gp-avatar" />
-                        <div className="gp-compass-needle" />
                     </div>
                     <h2 className="gp-modal-name">{guide[`name_${i18n.language}`] || guide.name_ru || guide.name}</h2>
                     <div className="gp-modal-specialty">
-                        <span>{SPECIALTY_ICONS[guide.specialty]}</span> {t(`guides_page.specialties.${guide.specialty}`)}
+                        <span>{SPECIALTY_ICONS[guide.specialty] || SPECIALTY_ICONS['Default']}</span> {t(`guides_page.specialties.${guide.specialty}`).includes('specialties.') ? guide.specialty : t(`guides_page.specialties.${guide.specialty}`)}
                     </div>
                     <Stars rating={guide.rating} />
                     <p className="gp-modal-reviews">({t('guides_page.reviews_label', { count: guide.reviewCount })})</p>
@@ -154,10 +157,9 @@ const GuideCard = ({ guide, onClick }) => {
                     <div className="gp-compass-outer" />
                     <div className="gp-compass-middle" />
                     <img src={guide.photo || "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=300&q=60"} alt={localizedName} className="gp-avatar" />
-                    <div className="gp-compass-needle" />
                 </div>
                 <div className="gp-specialty-badge">
-                    {SPECIALTY_ICONS[guide.specialty]} {t(`guides_page.specialties.${guide.specialty}`)}
+                    {SPECIALTY_ICONS[guide.specialty] || SPECIALTY_ICONS['Default']} {t(`guides_page.specialties.${guide.specialty}`).includes('specialties.') ? guide.specialty : t(`guides_page.specialties.${guide.specialty}`)}
                 </div>
             </div>
 
@@ -418,15 +420,19 @@ const GuidesPage = () => {
                 </div>
                 <div className="gp-filter-bar">
                     <div className="gp-filter-group">
-                        {SPECIALTIES.map(s => (
-                            <button
-                                key={s}
-                                className={`gp-f-btn ${filter === s ? 'active' : ''}`}
-                                onClick={() => setFilter(s)}
-                            >
-                                {s === 'All' ? t('guides_page.all_specialties') : t(`guides_page.specialties.${s}`)}
-                            </button>
-                        ))}
+                        {SPECIALTIES.map(s => {
+                            const label = s === 'All' ? t('guides_page.all_specialties') : t(`guides_page.specialties.${s}`);
+                            const displayLabel = label.includes('specialties.') ? s : label;
+                            return (
+                                <button
+                                    key={s}
+                                    className={`gp-f-btn ${filter === s ? 'active' : ''}`}
+                                    onClick={() => setFilter(s)}
+                                >
+                                    {displayLabel}
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

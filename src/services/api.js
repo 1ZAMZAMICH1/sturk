@@ -10,7 +10,7 @@ export const fetchSheetData = async (sheetName) => {
   } catch (e) { return []; }
 };
 
-const updateAllGistData = async (sheetName, data) => {
+export const updateAllGistData = async (sheetName, data) => {
   try {
     console.log('Sending to GitHub:', sheetName, data);
     const response = await fetch(`https://api.github.com/gists/${GIST_ID}`, {

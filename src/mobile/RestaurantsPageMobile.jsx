@@ -26,6 +26,15 @@ export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = []
     const { t, i18n } = useTranslation();
     const [mainImg, setMainImg] = useState(res.image);
 
+    let gallerySafe = [];
+    if (res.gallery) {
+        if (Array.isArray(res.gallery)) {
+            gallerySafe = res.gallery;
+        } else if (typeof res.gallery === 'string') {
+            try { gallerySafe = JSON.parse(res.gallery); } catch(e) {}
+        }
+    }
+
     const getObjId = (obj) => {
         const id = obj.id || obj.ID || obj.Id || obj.rowid || '';
         return String(id).trim();
@@ -67,9 +76,9 @@ export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = []
                 <div className="rp-mob-modal-visual">
                     <img src={mainImg} alt={res.name} className="rp-mob-modal-visual-img" />
                     
-                    {res.gallery && res.gallery.length > 0 && (
+                    {gallerySafe.length > 0 && (
                         <div className="rp-mob-modal-gallery-thumbs">
-                            {[res.image, ...res.gallery].map((url, i) => (
+                            {[res.image, ...gallerySafe].map((url, i) => (
                                 <img 
                                     key={i} 
                                     src={url} 
@@ -204,19 +213,24 @@ export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = []
 };
 
 const EditorialCard = ({ res, onClick }) => {
+    const { i18n } = useTranslation();
+    const displayName = res[`name_${i18n.language}`] || res.name_ru || res.name;
+    const displayCity = res[`city_${i18n.language}`] || res.city_ru || res.city;
+    const displaySig = res[`signature_${i18n.language}`] || res.signature_ru || res.signature;
+
     return (
         <div className="rp-mob-card" onClick={onClick}>
             <div className="rp-mob-card-img-wrap">
-                <img src={res.image} alt={res.name} className="rp-mob-card-img" />
+                <img src={res.image} alt={displayName} className="rp-mob-card-img" />
                 <div className="rp-mob-card-overlay" />
                 <div className="rp-mob-card-badge">{res.cuisine || res.type}</div>
 
                 <div className="rp-mob-card-content-overlay">
-                    <h3 className="rp-mob-card-name">{res.name}</h3>
+                    <h3 className="rp-mob-card-name">{displayName}</h3>
                     <div className="rp-mob-card-meta">
-                        <span>{res.city}</span>
+                        <span>{displayCity}</span>
                     </div>
-                    <div className="rp-mob-card-sig">{res.signature}</div>
+                    <div className="rp-mob-card-sig">{displaySig}</div>
                 </div>
             </div>
         </div>

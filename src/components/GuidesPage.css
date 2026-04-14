@@ -42,6 +42,8 @@
     font-family: 'Jost', sans-serif;
     position: relative;
     overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     padding-bottom: 280px;
     z-index: 1;
 }
@@ -97,7 +99,7 @@
     -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 35%, rgba(0, 0, 0, 0) 65%);
     mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 35%, rgba(0, 0, 0, 0) 65%);
     pointer-events: none;
-    animation: starTwinkle 8s ease-in-out infinite alternate;
+    animation: starTwinkle 15s ease-in-out infinite alternate;
 }
 
 @keyframes starTwinkle {
@@ -146,7 +148,7 @@
     pointer-events: none;
     z-index: 1;
     filter: blur(60px);
-    animation: glowPulse 6s ease-in-out infinite alternate;
+    z-index: 1;
 }
 
 @keyframes glowPulse {
@@ -401,8 +403,8 @@
     overflow: hidden;
     cursor: pointer;
     position: relative;
-    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.5s ease;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    will-change: transform;
 }
 
 /* Top parchment decorative line */

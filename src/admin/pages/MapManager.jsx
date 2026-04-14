@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { fetchSheetData, updateSheetData } from '../../services/api';
+import { fetchSheetData, updateSheetData, updateAllGistData } from '../../services/api';
 import { uploadImage } from '../../services/cloudinaryService';
 import { Icons } from '../AdminIcons';
 import 'leaflet/dist/leaflet.css';
@@ -58,11 +58,14 @@ const adminIconCache = {
 
 const getAdminMarkerIcon = (type, customIconUrl) => {
     if (customIconUrl) {
-        return L.icon({
-            iconUrl: customIconUrl,
-            iconSize: [32, 32],
-            iconAnchor: [16, 16]
-        });
+        if (!adminIconCache[customIconUrl]) {
+            adminIconCache[customIconUrl] = L.icon({
+                iconUrl: customIconUrl,
+                iconSize: [32, 32],
+                iconAnchor: [16, 16]
+            });
+        }
+        return adminIconCache[customIconUrl];
     }
     return adminIconCache[type] || adminIconCache.sight;
 };
@@ -121,6 +124,8 @@ const MapManager = () => {
     const [newRouteNodes, setNewRouteNodes] = useState([]);
     const [snapToRoads, setSnapToRoads] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
+    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+    const [dragMode, setDragMode] = useState(false);
 
 
     const loadData = async () => {
@@ -281,6 +286,30 @@ const MapManager = () => {
         }
     };
 
+    const handleSaveAllPoints = async () => {
+        if (isSaving) return;
+        setIsSaving(true);
+        try {
+            // Форматируем позиции обратно в строки перед сохранением
+            const dataToSave = points.map(p => ({
+                ...p,
+                pos: Array.isArray(p.pos) ? p.pos.join(',') : p.pos
+            }));
+            
+            const success = await updateAllGistData('map_points', dataToSave);
+            if (success) {
+                alert('Все изменения на карте сохранены!');
+                setHasUnsavedChanges(false);
+                loadData();
+            }
+        } catch (e) {
+            console.error(e);
+            alert('Ошибка при массовом сохранении');
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
     const handleSavePoint = async () => {
         if (!editingItem || isSaving) return;
         setIsSaving(true);
@@ -406,6 +435,45 @@ const MapManager = () => {
                             <button className="btn-cancel-route" onClick={() => setIsDrawing(false)}>Отмена</button>
                         </div>
                     )}
+                    
+                    {activeTab === 'points' && (
+                        <div className="point-actions" style={{ display: 'flex', gap: '8px' }}>
+                            <button 
+                                className={`btn-drag-mode ${dragMode ? 'on' : ''}`} 
+                                onClick={() => setDragMode(!dragMode)}
+                                style={{ 
+                                    background: dragMode ? '#c59d5f' : '#f5f5f5', 
+                                    color: dragMode ? '#fff' : '#666', 
+                                    border: '1px solid #ddd', 
+                                    padding: '10px 15px', 
+                                    borderRadius: '8px', 
+                                    fontWeight: 'bold',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                {dragMode ? '🔒 Режим текста' : '🖐 Режим Двигания'}
+                            </button>
+
+                            {hasUnsavedChanges && (
+                                <button 
+                                    className="btn-save-all" 
+                                    onClick={handleSaveAllPoints}
+                                    style={{ 
+                                        background: '#27ae60', 
+                                        color: '#fff', 
+                                        border: 'none', 
+                                        padding: '10px 20px', 
+                                        borderRadius: '8px', 
+                                        fontWeight: 'bold',
+                                        cursor: 'pointer',
+                                        boxShadow: '0 4px 10px rgba(39, 174, 96, 0.3)'
+                                    }}
+                                >
+                                    {isSaving ? 'Сохранение...' : 'СОХРАНИТЬ ВСЁ'}
+                                </button>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -416,23 +484,50 @@ const MapManager = () => {
                         <MapEvents />
                         <MapResizeManager />
                         
-                        {!loading && points.filter(p => p.pos && !isNaN(p.pos[0]) && !isNaN(p.pos[1])).map((p, idx) => (
-                            <Marker 
-                                key={`point-${p.id || p.title || idx}-${p.pos.join('-')}`} 
-                                position={p.pos} 
-                                icon={getAdminMarkerIcon(p.type, p.icon)}
-                                eventHandlers={{ 
-                                    click: (e) => { 
-                                        if (isDrawing) {
-                                            handlePointClickForRoute(p);
-                                        } else {
-                                            setEditingItem(p); 
-                                            setActiveTab('points'); 
+                        {!loading && points.filter(p => p.pos && !isNaN(p.pos[0]) && !isNaN(p.pos[1])).map((p, idx) => {
+                            const isEditing = activeTab === 'points' && editingItem && (editingItem.id === p.id || editingItem.title === p.title);
+                            // В режиме двигания — все перетаскиваемые. В обычном — только тот, что редактируем.
+                            const canDrag = activeTab === 'points' && (dragMode || isEditing);
+                            
+                            return (
+                                <Marker 
+                                    key={`point-${p.id || p.title || idx}`} 
+                                    position={p.pos}
+                                    draggable={canDrag} 
+                                    icon={getAdminMarkerIcon(p.type, p.icon)}
+                                    eventHandlers={{ 
+                                        click: (e) => { 
+                                            if (isDrawing) {
+                                                handlePointClickForRoute(p);
+                                            } else {
+                                                setEditingItem(p); 
+                                                setActiveTab('points'); 
+                                            }
+                                        },
+                                        dragend: (e) => {
+                                            const marker = e.target;
+                                            const newPos = marker.getLatLng();
+                                            const newPosArr = [newPos.lat, newPos.lng];
+                                            
+                                            // Если мы двигаем именно тот, что в форме — обновляем и форму
+                                            if (isEditing) {
+                                                setEditingItem(prev => ({...prev, pos: newPosArr}));
+                                            }
+                                            
+                                            // Обновляем позицию в глобальном списке для всех двигаемых объектов
+                                            setPoints(prevPoints => prevPoints.map(point => {
+                                                if (point.id === p.id && point.title === p.title) {
+                                                    return { ...point, pos: newPosArr };
+                                                }
+                                                return point;
+                                            }));
+                                            
+                                            setHasUnsavedChanges(true);
                                         }
-                                    } 
-                                }}
-                            />
-                        ))}
+                                    }}
+                                />
+                            );
+                        })}
 
                         {!loading && routes.filter(r => r.nodes && r.nodes.length > 0).map(r => (
                             <Polyline 
@@ -618,9 +713,12 @@ const MapManager = () => {
                             </div>
                         )}
 
-                        {editingItem && (
+                        {activeTab === 'points' && editingItem && (
                             <div className="item-edit-panel">
-                                <div className="art-group-label">Редактирование маркера</div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <div className="art-group-label">Редактирование маркера</div>
+                                    <button onClick={() => setEditingItem(null)} style={{ border: 'none', background: 'transparent', cursor: 'pointer', fontSize: '1.2rem' }}>✕</button>
+                                </div>
                                 
                                 <div className="form-row-multi">
                                     <div className="form-group">

@@ -12,7 +12,8 @@ import heroTextImgKZ from '../assets/hero-textkz.png';
 import heroTextImgEN from '../assets/hero-texten.png';
 import heroTextImgZH from '../assets/hero-textzh.png';
 import { Stars } from './HotelsPage';
-import LeafletMapWidget from './LeafletMapWidget';
+import LeafletMapWidget, { ExternalMapLinks } from './LeafletMapWidget';
+import { GuideModal } from './GuidesPage';
 
 export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos = [], guides = [] }) => {
     const { t, i18n } = useTranslation();
@@ -36,9 +37,11 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
 
         const hotelIds = parseIds(item.nearbyHotels);
         const restoIds = parseIds(item.nearbyRestaurants);
+        const guideIds = parseIds(item.nearbyGuides);
 
         const filteredHots = (hotelIds || []).map(id => hots.find(h => String(h.id) === String(id))).filter(Boolean);
         const filteredRestos = (restoIds || []).map(id => restos.find(r => String(r.id) === String(id))).filter(Boolean);
+        const filteredGuidesById = (guideIds || []).map(id => guides.find(g => String(g.id) === String(id))).filter(Boolean);
         
         const name = (item.name || "").toLowerCase();
         const keywords = name.replace(/мавзолей|ходжи|ахмеда|центр|визит|парк|озеро|река|пещера|комплекс|азрет|султан/g, '').trim().split(/\s+/);
@@ -68,7 +71,10 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                 return hasMatchInHighlights || hasMatchInTitle;
             });
         });
-        return { hotels: filteredHots, restaurants: filteredRestos, guides: relatedGuides };
+        // Если по ID ничего не нашли, пробуем старый поиск по словам
+        const guidesToShow = filteredGuidesById.length > 0 ? filteredGuidesById : relatedGuides;
+
+        return { hotels: filteredHots, restaurants: filteredRestos, guides: guidesToShow };
     }, [item, hots, restos, guides, i18n.language]);
 
 
@@ -110,6 +116,10 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                                         title={item[`name_${i18n.language}`] || item.name_ru || item.name} 
                                     />
                                 </div>
+                                <ExternalMapLinks 
+                                    lat={item.coordinates?.lat || item.lat || item.latitude || 0} 
+                                    lng={item.coordinates?.lng || item.lng || item.longitude || 0} 
+                                />
                                 <div className="cp-map-address">
                                     <Icons.Pin style={{ width: 14 }} />
                                     <span>{item.city || t('category.default_region')}, {item[`location_${i18n.language}`] || item.location_ru || item.location}</span>
@@ -132,7 +142,10 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                                     {nearbyData.hotels.map(h => (
                                         <div key={h.id} className="cp-mini-card clickable" onClick={() => onNavigate(h)}>
                                             <img src={h.image} alt="" />
-                                            <div><h6>{h[`name_${i18n.language}`] || h.name_ru || h.name}</h6><Stars count={h.stars} /></div>
+                                            <div>
+                                                <h6>{h[`name_${i18n.language}`] || h.name_ru || h.name}</h6>
+                                                <div style={{ display: 'flex' }}><Stars count={h.stars} /></div>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
@@ -145,7 +158,26 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                                     {nearbyData.restaurants.map(r => (
                                         <div key={r.id} className="cp-mini-card clickable" onClick={() => onNavigate(r)}>
                                             <img src={r.image} alt="" />
-                                            <div><h6>{r[`name_${i18n.language}`] || r.name_ru || r.name}</h6><span>{t(`restos_page.cuisines.${r.cuisine}`)}</span></div>
+                                            <div>
+                                                <h6>{r[`name_${i18n.language}`] || r.name_ru || r.name}</h6>
+                                                <span>{t(`restos_page.cuisines.${r.cuisine}`).includes('restos_page.cuisines.') ? (r[`cuisine_${i18n.language}`] || r.cuisine) : t(`restos_page.cuisines.${r.cuisine}`)}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        {nearbyData.guides.length > 0 && (
+                            <div className="cp-modal-sub-section">
+                                <h4 className="cp-sub-h">{t('guides_page.hero_title')}</h4>
+                                <div className="cp-mini-grid">
+                                    {nearbyData.guides.map(g => (
+                                        <div key={g.id} className="cp-mini-card clickable" onClick={() => onNavigate(g)}>
+                                            <img src={g.photo || g.image} alt="" />
+                                            <div>
+                                                <h6>{g[`name_${i18n.language}`] || g.name_ru || g.name}</h6>
+                                                <span style={{ fontSize: '0.7rem', color: '#d4af37' }}>{g.specialty || t('guides_page.all_specialties')}</span>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
@@ -274,7 +306,8 @@ const CategoryPage = () => {
             {selected && (
                 <>
                     {'stars' in selected ? <HotelModal hotel={selected} onClose={() => setSelected(null)} /> :
-                     'cuisine' in selected ? <EditorialModal res={selected} onClose={() => setSelected(null)} /> :
+                     ('cuisine' in selected || 'menu' in selected || 'delivery' in selected) ? <EditorialModal res={selected} onClose={() => setSelected(null)} /> :
+                     'specialty' in selected ? <GuideModal guide={selected} onClose={() => setSelected(null)} /> :
                      <AttractionModal 
                         item={selected} 
                         hots={hots} 

@@ -8,6 +8,12 @@
     "routes_label": "路线:",
     "all_routes": "全部路径"
   },
+  "maps": {
+    "open_in": "在应用中打开",
+    "google": "谷歌地图",
+    "yandex": "Yandex 地图",
+    "2gis": "2GIS"
+  },
   "ui": {
     "loading": "加载中...",
     "error_data": "信息即将发布。",

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import './RestaurantsPageMobile.css';
 import { Icons } from '../admin/AdminIcons';
-import LeafletMapWidget from '../components/LeafletMapWidget';
+import LeafletMapWidget, { ExternalMapLinks } from '../components/LeafletMapWidget';
 import { AttractionModal } from '../mobile/CategoryPageMobile';
 import { HotelModal } from '../mobile/HotelsPageMobile'; 
 import { fetchSheetData } from '../services/api';
@@ -185,6 +185,10 @@ export const EditorialModal = ({ res, onClose, onOpenOther, hots = [], atts = []
                                         title={res.name} 
                                     />
                                 </div>
+                                <ExternalMapLinks 
+                                    lat={res.lat} 
+                                    lng={res.lng} 
+                                />
                                 <div className="rp-mob-map-address">
                                     <Icons.Pin style={{ width: 14 }} />
                                     <span>{res.city}, {res.location}</span>

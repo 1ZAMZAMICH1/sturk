@@ -8,6 +8,12 @@
     "routes_label": "Routes:",
     "all_routes": "All Routes"
   },
+  "maps": {
+    "open_in": "Open in",
+    "google": "Google Maps",
+    "yandex": "Yandex Maps",
+    "2gis": "2GIS"
+  },
   "ui": {
     "loading": "Loading...",
     "error_data": "Information is coming soon.",

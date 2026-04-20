@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { fetchSheetData } from '../services/api';
@@ -30,7 +30,7 @@ const CATEGORY_COLORS = {
     'культура': '#5f1a3a',
 };
 
-const Stars = ({ rating }) => {
+export const GuideStars = ({ rating }) => {
     const full = Math.floor(rating);
     const half = rating % 1 >= 0.5;
     return (
@@ -44,9 +44,24 @@ const Stars = ({ rating }) => {
 };
 
 /* ── GUIDE MODAL ── */
-const GuideModal = ({ guide, onClose }) => {
+export const GuideModal = ({ guide, onClose }) => {
     const { t, i18n } = useTranslation();
-    const [activeTour, setActiveTour] = useState(guide.tours && guide.tours.length > 0 ? guide.tours[0] : null);
+    
+    // Причесываем данные (на случай если они пришли "сырыми" из другого компонента)
+    const processedTours = useMemo(() => {
+        if (!guide.tours) return [];
+        if (Array.isArray(guide.tours)) return guide.tours;
+        try { return JSON.parse(guide.tours); } catch (e) { return []; }
+    }, [guide.tours]);
+
+    const processedLangs = useMemo(() => {
+        if (!guide.languages) return [];
+        if (Array.isArray(guide.languages)) return guide.languages;
+        if (typeof guide.languages === 'string') return guide.languages.split(',').map(s => s.trim());
+        return [];
+    }, [guide.languages]);
+
+    const [activeTour, setActiveTour] = useState(processedTours.length > 0 ? processedTours[0] : null);
     
     return (
         <div className="gp-modal-overlay" onClick={onClose}>
@@ -64,7 +79,7 @@ const GuideModal = ({ guide, onClose }) => {
                     <div className="gp-modal-specialty">
                         <span>{SPECIALTY_ICONS[guide.specialty] || SPECIALTY_ICONS['Default']}</span> {t(`guides_page.specialties.${guide.specialty}`).includes('specialties.') ? guide.specialty : t(`guides_page.specialties.${guide.specialty}`)}
                     </div>
-                    <Stars rating={guide.rating} />
+                    <GuideStars rating={guide.rating} />
                     <p className="gp-modal-reviews">({t('guides_page.reviews_label', { count: guide.reviewCount })})</p>
 
                     <div className="gp-modal-stats">
@@ -73,24 +88,23 @@ const GuideModal = ({ guide, onClose }) => {
                             <span className="gp-stat-lbl">{t('guides_page.exp_label', { count: guide.experience }).split(' ')[1]} {t('guides_page.exp_label', { count: guide.experience }).split(' ')[2]}</span>
                         </div>
                         <div className="gp-stat">
-                            <span className="gp-stat-val">{guide.tours?.length || 0}</span>
-                            <span className="gp-stat-lbl">{t('guides_page.routes_label', { count: guide.tours?.length }).split(' ')[1]}</span>
+                            <span className="gp-stat-val">{processedTours.length}</span>
+                            <span className="gp-stat-lbl">{t('guides_page.routes_label', { count: processedTours.length }).split(' ')[1]}</span>
                         </div>
                         <div className="gp-stat">
-                            <span className="gp-stat-val">{guide.languages?.length || 0}</span>
-                            <span className="gp-stat-lbl">{t('guides_page.langs_label', { count: guide.languages?.length }).split(' ')[1]}</span>
+                            <span className="gp-stat-val">{processedLangs.length}</span>
+                            <span className="gp-stat-lbl">{t('guides_page.langs_label', { count: processedLangs.length }).split(' ')[1]}</span>
                         </div>
                     </div>
 
                     <p className="gp-modal-desc">{guide[`description_${i18n.language}`] || guide.description_ru || guide.description}</p>
 
                     <div className="gp-modal-langs">
-                        {guide.languages?.map(l => <span key={l} className="gp-lang-chip">{l}</span>)}
+                        {processedLangs.map(l => <span key={l} className="gp-lang-chip">{l}</span>)}
                     </div>
 
-                    {/* Tour picker */}
                     <div className="gp-tour-picker">
-                        {guide.tours?.map(t => {
+                        {processedTours.map(t => {
                             const tourTitle = t[`title_${i18n.language}`] || t.title_ru || t.title;
                             const tourPrice = t[`price_${i18n.language}`] || t.price_ru || t.price;
                             return (
@@ -165,7 +179,7 @@ const GuideCard = ({ guide, onClick }) => {
 
             <div className="gp-card-body">
                 <h3 className="gp-card-name">{localizedName}</h3>
-                <Stars rating={guide.rating} />
+                <GuideStars rating={guide.rating} />
                 <p className="gp-card-desc">{localizedDesc?.substring(0, 110)}…</p>
 
                 <div className="gp-card-langs">

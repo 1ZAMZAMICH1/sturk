@@ -1,4 +1,4 @@
-const GIST_ID = '422713639bb29643abef3fef6c220400';
+const GIST_ID = '';
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || 'YOUR_TOKEN_HERE';
 
 async function fixMap() {
@@ -9,7 +9,7 @@ async function fixMap() {
             const r = await fetch(`https://gist.githubusercontent.com/1ZAMZAMICH1/${GIST_ID}/raw/${name}.json?rnd=${Math.random()}`);
             if (!r.ok) return [];
             return await r.json();
-        } catch(e) { return []; }
+        } catch (e) { return []; }
     }
 
     console.log("⏳ Загружаем данные из облака...");
@@ -34,7 +34,7 @@ async function fixMap() {
         if (!hasPoint(h.id, 'hotel')) {
             console.log(`📍 Создаем точку для отеля: ${h.name_ru || h.name}`);
             updatedPoints.push({
-                id: 'p_h_' + h.id + '_' + Math.floor(Math.random()*1000),
+                id: 'p_h_' + h.id + '_' + Math.floor(Math.random() * 1000),
                 pos: [parseFloat(h.lat), parseFloat(h.lng)],
                 type: 'hotel',
                 hotelId: h.id,
@@ -51,7 +51,7 @@ async function fixMap() {
         if (!hasPoint(r.id, 'restaurant')) {
             console.log(`📍 Создаем точку для ресторана: ${r.name_ru || r.name}`);
             updatedPoints.push({
-                id: 'p_r_' + r.id + '_' + Math.floor(Math.random()*1000),
+                id: 'p_r_' + r.id + '_' + Math.floor(Math.random() * 1000),
                 pos: [parseFloat(r.lat), parseFloat(r.lng)],
                 type: 'restaurant',
                 restaurantId: r.id,

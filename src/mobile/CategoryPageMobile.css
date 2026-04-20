@@ -154,6 +154,38 @@
     pointer-events: none;
 }
 
+/* ─── INTEGRATED MAP BLOCK (matches PC version) ─── */
+.cp-map-placeholder {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--gold-border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 12px;
+}
+
+.cp-map-view {
+    height: 200px;
+    width: 100%;
+    position: relative;
+    background: #000;
+}
+
+.cp-map-address {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.82rem;
+    color: var(--ivory60);
+    border-top: 1px solid var(--gold-dim);
+}
+
+.cp-map-address svg {
+    color: var(--gold);
+    flex-shrink: 0;
+}
+
+
 .cp-map-corner {
     position: absolute;
     width: 20px;
@@ -406,9 +438,10 @@
 .cp-modal-inner-wrapper {
     display: flex;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     position: relative;
     background: #000;
+    margin: 0;
 }
 
 .cp-modal-bottom-fade {
@@ -424,8 +457,9 @@
     .cp-modal-left {
         display: block !important;
         width: 100% !important;
-        height: 350px !important;
-        flex: 0 0 350px !important;
+        height: 380px !important;
+        padding: 0 !important;
+        margin: 0 !important;
         position: relative !important;
         z-index: 2 !important;
     }
@@ -633,10 +667,15 @@
 ═════════════════════════════════*/
 .cp-modal-overlay {
     position: fixed;
-    inset: 0;
-    z-index: 13000;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99999;
     background: rgba(0, 0, 0, 0.97);
     display: flex;
+    justify-content: center;
+    overflow: hidden;
     animation: modalIn 0.5s ease;
 }
 
@@ -651,22 +690,31 @@
 }
 
 .cp-modal-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: #1a1410;
-    border: 2px solid #d4ac6b;
-    color: #d4ac6b;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    cursor: pointer;
-    transition: all 0.3s ease;
+    all: unset !important;
+    position: absolute !important;
+    top: 15px !important;
+    right: 15px !important;
+    background: #1a1410 !important;
+    border: 1px solid #c8a84b !important;
+    color: #c8a84b !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 999999 !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.cp-modal-close svg {
+    color: #c8a84b !important;
+    fill: currentColor !important;
+    stroke: currentColor !important;
 }
 
 .cp-modal-close:hover {
@@ -891,10 +939,10 @@
 @media (max-width: 900px) {
     .cp-modal-inner-wrapper {
         flex-direction: column;
-        width: 95%;
-        height: 90vh;
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 0 !important;
         overflow-y: auto;
-        border-radius: 20px;
     }
 
     .cp-modal-left {
@@ -918,10 +966,19 @@
     }
 
     .cp-modal-close {
-        top: 15px;
-        right: 15px;
-        width: 36px;
-        height: 36px;
+        all: unset !important;
+        position: absolute !important;
+        top: 15px !important;
+        right: 15px !important;
+        width: 40px !important;
+        height: 40px !important;
+        background: #1a1410 !important;
+        border: 1px solid #c8a84b !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        z-index: 999999 !important;
     }
 
     .cp-mini-grid {
@@ -987,6 +1044,7 @@
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 2;
+        line-clamp: 2;
         -webkit-box-orient: vertical;
     }
 
@@ -997,6 +1055,7 @@
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 5;
+        line-clamp: 5;
         -webkit-box-orient: vertical;
     }
 }

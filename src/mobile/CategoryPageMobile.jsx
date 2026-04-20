@@ -8,7 +8,8 @@ import { HotelModal } from './HotelsPageMobile';
 import { EditorialModal } from './RestaurantsPageMobile';
 import { Icons } from '../admin/AdminIcons';
 import { Stars } from './HotelsPageMobile';
-import LeafletMapWidget from '../components/LeafletMapWidget';
+import LeafletMapWidget, { ExternalMapLinks } from '../components/LeafletMapWidget';
+import { GuideModal } from '../components/GuidesPage';
 
 import heroTextImgRU from '../assets/hero-text.png';
 import heroTextImgKZ from '../assets/hero-textkz.png';
@@ -53,33 +54,22 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
         const name = (item.name || item.title || "").toLowerCase();
         const keywords = name.replace(/мавзолей|ходжи|ахмеда|центр|визит|парк|озеро|река|пещера|комплекс|азрет|султан/g, '').trim().split(/\s+/);
         
+        const filteredGuidesById = (guideIds || []).map(id => guides.find(g => String(g.id) === String(id))).filter(Boolean);
+
         const relatedGuides = guides.filter(guide => {
-            // Гарантируем, что туры — это массив
-            let toursArr = [];
-            if (Array.isArray(guide.tours)) toursArr = guide.tours;
-            else if (typeof guide.tours === 'string') {
+            let toursArr = Array.isArray(guide.tours) ? guide.tours : [];
+            if (!toursArr.length && typeof guide.tours === 'string') {
                 try { toursArr = JSON.parse(guide.tours); } catch(e) { toursArr = []; }
             }
-
             return (toursArr || []).some(tour => {
-                // Проверяем хайлайты (они тоже могут быть строкой или массивом)
-                let highlightsArr = [];
-                if (Array.isArray(tour.highlights)) highlightsArr = tour.highlights;
-                else if (typeof tour.highlights === 'string') {
-                    // Пробуем парсить как JSON, если не вышло — сплитим по запятой
-                    try { highlightsArr = JSON.parse(tour.highlights); } 
-                    catch(e) { highlightsArr = tour.highlights.split(',').map(s => s.trim()); }
-                }
-
-                const hasMatchInHighlights = highlightsArr.some(h => 
-                    keywords.some(k => k.length > 3 && String(h).toLowerCase().includes(k))
-                );
-                const hasMatchInTitle = String(tour[`title_${i18n.language}`] || tour.title_ru || tour.title || "").toLowerCase().includes(name);
-                
-                return hasMatchInHighlights || hasMatchInTitle;
+                let highlightsArr = Array.isArray(tour.highlights) ? tour.highlights : [];
+                const tourTitle = String(tour[`title_${i18n.language}`] || tour.title_ru || tour.title || "").toLowerCase();
+                return highlightsArr.some(h => keywords.some(k => k.length > 3 && String(h).toLowerCase().includes(k))) || tourTitle.includes(name);
             });
         });
-        return { hotels: filteredHots, restaurants: filteredRestos, guides: relatedGuides };
+
+        const guidesToShow = filteredGuidesById.length > 0 ? filteredGuidesById : relatedGuides;
+        return { hotels: filteredHots, restaurants: filteredRestos, guides: guidesToShow };
     }, [item, hots, restos, guides, i18n.language]);
 
 
@@ -111,18 +101,27 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                     <div className="cp-modal-eyebrow">{item[`category_${i18n.language}`] || item.category || t('category.meta.sub')}</div>
                     <h2 className="cp-modal-title">{item[`name_${i18n.language}`] || item.name_ru || item.name || item.title}</h2>
                     <p className="cp-modal-desc">{item[`fullDescription_${i18n.language}`] || item.fullDescription_ru || item.fullDescription || item[`description_${i18n.language}`] || item.description_ru || item.description}</p>
-                        <div className="cp-modal-map" style={{ display: 'block', visibility: 'visible', opacity: 1 }}>
-                             <div className="cp-sub-h" style={{ color: 'var(--gold)', marginBottom: '10px' }}>{t('restos_page.sec_location')}</div>
-                             <div style={{ height: '220px', borderRadius: '12px', background: '#0a1628', marginTop: '10px', position: 'relative', border: '1px solid rgba(255,255,255,0.1)' }}>
-                                 <LeafletMapWidget 
-                                    lat={item.lat || item.latitude} 
-                                    lng={item.lng || item.longitude} 
-                                    title={item.name || item.title} 
-                                 />
+                        <div style={{ marginTop: '20px', display: 'block' }}>
+                             <div className="cp-sub-h">
+                                 {t('restos_page.sec_location')}
                              </div>
-                             <p style={{ marginTop: '15px', fontSize: '0.9rem', color: '#f3e5c3', opacity: 1, fontWeight: '400' }}>
-                                {item.city || t('category.default_region')}, {item.location}
-                             </p>
+                             <div className="cp-map-placeholder">
+                                 <div className="cp-map-view">
+                                     <LeafletMapWidget 
+                                        lat={parseFloat(item.lat || item.latitude || (item.coordinates && item.coordinates.lat) || 43.3013)} 
+                                        lng={parseFloat(item.lng || item.longitude || (item.coordinates && item.coordinates.lng) || 68.2704)} 
+                                        title={item.name || item.title} 
+                                     />
+                                 </div>
+                                 <ExternalMapLinks 
+                                    lat={parseFloat(item.lat || item.latitude || (item.coordinates && item.coordinates.lat) || 43.3013)} 
+                                    lng={parseFloat(item.lng || item.longitude || (item.coordinates && item.coordinates.lng) || 68.2704)} 
+                                 />
+                                 <div className="cp-map-address">
+                                     <Icons.Pin style={{ width: 14, color: '#c8a84b' }} />
+                                     <span>{item.city || t('category.default_region')}, {item[`location_${i18n.language}`] || item.location_ru || item.location}</span>
+                                 </div>
+                             </div>
                         </div>
                     <div className="cp-modal-rich-sections">
                         {nearbyData.hotels.length > 0 && (
@@ -132,7 +131,10 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                                     {nearbyData.hotels.map(h => (
                                         <div key={h.id} className="cp-mini-card clickable" onClick={() => onNavigate && onNavigate(h)}>
                                             <img src={h.image || h.img} alt="" />
-                                            <div><h6>{h.name || h.title}</h6><Stars count={h.stars} /></div>
+                                            <div>
+                                                <h6>{h[`name_${i18n.language}`] || h.name_ru || h.name || h.title}</h6>
+                                                <div style={{ display: 'flex' }}><Stars count={h.stars} /></div>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
@@ -145,7 +147,26 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
                                     {nearbyData.restaurants.map(r => (
                                         <div key={r.id} className="cp-mini-card clickable" onClick={() => onNavigate && onNavigate(r)}>
                                             <img src={r.image || r.img} alt="" />
-                                            <div><h6>{r.name || r.title}</h6><span>{r.cuisine || r.type}</span></div>
+                                            <div>
+                                                <h6>{r[`name_${i18n.language}`] || r.name_ru || r.name || r.title}</h6>
+                                                <span>{t(`restos_page.cuisines.${r.cuisine}`).includes('restos_page.cuisines.') ? (r[`cuisine_${i18n.language}`] || r.cuisine) : t(`restos_page.cuisines.${r.cuisine}`)}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        {nearbyData.guides.length > 0 && (
+                            <div className="cp-modal-sub-section">
+                                <h4 className="cp-sub-h">{t('guides_page.hero_title')}</h4>
+                                <div className="cp-mini-grid">
+                                    {nearbyData.guides.map(g => (
+                                        <div key={g.id} className="cp-mini-card clickable" onClick={() => onNavigate && onNavigate(g)}>
+                                            <img src={g.photo || g.image || g.img} alt="" />
+                                            <div>
+                                                <h6>{g[`name_${i18n.language}`] || g.name_ru || g.name || g.title}</h6>
+                                                <span style={{ fontSize: '0.7rem', color: 'var(--gold)' }}>{g.specialty || t('guides_page.all_specialties')}</span>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
@@ -282,7 +303,7 @@ const CategoryPage = () => {
                             onClose={() => setSelected(null)} 
                             onOpenOther={(type, item) => setSelected(item)}
                         />
-                    ) : 'cuisine' in selected ? (
+                    ) : ('cuisine' in selected || 'menu' in selected || 'delivery' in selected) ? (
                         <EditorialModal 
                             res={selected} 
                             hots={hots} 
@@ -290,6 +311,8 @@ const CategoryPage = () => {
                             onClose={() => setSelected(null)} 
                             onOpenOther={(type, item) => setSelected(item)}
                         />
+                    ) : 'specialty' in selected ? (
+                        <GuideModal guide={selected} onClose={() => setSelected(null)} />
                     ) : (
                         <AttractionModal 
                             item={selected} 

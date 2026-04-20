@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const GIST_ID = '422713639bb29643abef3fef6c220400';
+const GIST_ID = '';
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || 'YOUR_TOKEN_HERE';
 
 async function sync() {
@@ -20,7 +20,7 @@ async function sync() {
             const r = await fetch(`https://gist.githubusercontent.com/1ZAMZAMICH1/${GIST_ID}/raw/${name}.json?rnd=${Math.random()}`);
             if (!r.ok) return [];
             return await r.json();
-        } catch(e) { return []; }
+        } catch (e) { return []; }
     }
 
     console.log("⏳ Получаем текущее состояние базы...");
@@ -54,7 +54,7 @@ async function sync() {
             if (!item.lat || !item.lng) return null;
 
             return {
-                id: 'p_' + Date.now().toString().slice(-4) + Math.floor(Math.random()*1000),
+                id: 'p_' + Date.now().toString().slice(-4) + Math.floor(Math.random() * 1000),
                 pos: [parseFloat(item.lat), parseFloat(item.lng)],
                 type: type,
                 [idField]: item.id,

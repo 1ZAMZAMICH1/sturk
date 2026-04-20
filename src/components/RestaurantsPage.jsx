@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import './RestaurantsPage.css';
 import { Icons } from '../admin/AdminIcons';
-import LeafletMapWidget from './LeafletMapWidget';
+import LeafletMapWidget, { ExternalMapLinks } from './LeafletMapWidget';
 import heroTextImg from '../assets/hero-text.png';
 
 // We need access to Attractions & Hotels for cross-modal linking
@@ -194,6 +194,10 @@ export const EditorialModal = ({ res, onClose, onOpenOther }) => {
                                         title={res.name} 
                                     />
                                 </div>
+                                <ExternalMapLinks 
+                                    lat={res.lat} 
+                                    lng={res.lng} 
+                                />
                                 <div className="rp-map-address">
                                     <Icons.Pin style={{ width: 14 }} />
                                     <span>{res.city}, {res[`location_${i18n.language}`] || res.location_ru || res.location}</span>

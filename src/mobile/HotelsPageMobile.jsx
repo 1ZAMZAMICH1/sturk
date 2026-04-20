@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import './HotelsPageMobile.css';
 import { Icons } from '../admin/AdminIcons';
-import LeafletMapWidget from '../components/LeafletMapWidget';
+import LeafletMapWidget, { ExternalMapLinks } from '../components/LeafletMapWidget';
 import { AttractionModal } from '../mobile/CategoryPageMobile';
 import { EditorialModal } from './RestaurantsPageMobile';
 import { fetchSheetData } from '../services/api';
@@ -52,8 +52,8 @@ export const Stars = ({ count }) => {
                 <svg key={i} width="16" height="16" viewBox="0 0 24 24" style={{ display: 'block' }}>
                     <path 
                         d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" 
-                        fill={i < num ? "#1a1410" : "none"}
-                        stroke="#1a1410"
+                        fill={i < num ? "#d4af37" : "none"}
+                        stroke="#d4af37"
                         strokeWidth="2"
                         strokeLinejoin="round"
                     />
@@ -208,6 +208,10 @@ export const HotelModal = ({ hotel, onClose, onOpenOther }) => {
                                                 title={hotel.name} 
                                             />
                                         </div>
+                                        <ExternalMapLinks 
+                                            lat={hotel.lat} 
+                                            lng={hotel.lng} 
+                                        />
                                         <p style={{ color: 'var(--hp-ink)', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
                                             <Icons.Pin style={{ width: '14px' }} />
                                             {localizedLoc}

@@ -8,6 +8,12 @@
     "routes_label": "Маршруты:",
     "all_routes": "Все пути"
   },
+  "maps": {
+    "open_in": "Открыть в",
+    "google": "Google Карты",
+    "yandex": "Яндекс Карты",
+    "2gis": "2GIS"
+  },
   "ui": {
     "loading": "Загрузка...",
     "error_data": "Данные еще не заполнены.",

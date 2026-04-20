@@ -88,7 +88,7 @@ export const AttractionModal = ({ item, onClose, onNavigate, hots = [], restos =
 
     return createPortal(
         <div className="cp-modal-overlay" onClick={onClose}>
-            <div style={{ display: 'flex', width: '100%', height: '100%', position: 'relative' }} onClick={e => e.stopPropagation()}>
+            <div style={{ display: 'flex', width: '100%', height: '100%', position: 'relative', background: 'transparent' }} onClick={e => e.stopPropagation()}>
                 <button className="cp-modal-close" onClick={onClose}><Icons.Close /></button>
                 <div className="cp-modal-left">
                     <img src={activeImg} alt={item[`name_${i18n.language}`] || item.name_ru || item.name} className="cp-modal-main-img" />

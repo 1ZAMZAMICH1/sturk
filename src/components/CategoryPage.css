@@ -557,14 +557,11 @@
 /* ═════════════════════════════════
    МОДАЛЬНОЕ ОКНО — РОСКОШНОЕ
 ═════════════════════════════════*/
-.cp-modal-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 12000;
-    background: rgba(0, 0, 0, 0.97);
-    display: flex;
-    animation: modalIn 0.5s ease;
+.cp-modal-overlay-redundant-removed {
+    display: none;
 }
+
+/* Удалили дубль */
 
 @keyframes modalIn {
     from {
@@ -593,7 +590,7 @@
     justify-content: center;
     transition: all 0.3s;
     clip-path: polygon(50% 0%, 90% 8%, 100% 30%, 100% 100%, 0% 100%, 0% 30%, 10% 8%);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .cp-modal-close:hover {
@@ -626,6 +623,9 @@
     width: 55%;
     position: relative;
     overflow: hidden;
+    /* Маска, которая плавно «растворяет» левую часть в правую (аккуратно, как на мобилке) */
+    -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+    mask-image: linear-gradient(to right, black 85%, transparent 100%);
 }
 
 .cp-modal-main-img {
@@ -640,8 +640,8 @@
 .cp-modal-img-fade {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to right, transparent 50%, rgba(0, 0, 0, 0.97) 100%);
     pointer-events: none;
+    /* Убрали фон, теперь переход за счет маски контейнера */
 }
 
 .cp-modal-thumbs {
@@ -678,7 +678,36 @@
     padding: 80px 70px;
     overflow-y: auto;
     position: relative;
+    background: transparent !important;
 }
+
+/* ⚡️ ФИНАЛЬНЫЙ ФОРСИРОВАННЫЙ ФОН (ОТЛАЖЕНО) ⚡️ */
+.cp-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 12000;
+    display: flex;
+    background-color: #050407 !important;
+    background-image:
+        /* 1. ПАТТЕРН СВЕРХУ (ДЛЯ БЕСШОВНОГО ПЕРЕХОДА) */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23c9963f' stroke-width='0.6' opacity='0.08'%3E%3Cpath d='M60 4 L116 60 L60 116 L4 60 Z'/%3E%3Cpath d='M60 22 L98 60 L60 98 L22 60 Z'/%3E%3Cline x1='60' y1='4' x2='60' y2='116'/%3E%3Cline x1='4' y1='60' x2='116' y2='60'/%3E%3Cline x1='16' y1='16' x2='104' y2='104'/%3E%3Cline x1='104' y1='16' x2='16' y2='104'/%3E%3Ccircle cx='60' cy='60' r='10'/%3E%3Ccircle cx='60' cy='60' r='18'/%3E%3Ccircle cx='60' cy='4' r='3'/%3E%3Ccircle cx='60' cy='116' r='3'/%3E%3Ccircle cx='4' cy='60' r='3'/%3E%3Ccircle cx='116' cy='60' r='3'/%3E%3Crect x='56' y='56' width='8' height='8' transform='rotate(45 60 60)'/%3E%3C/g%3E%3C/svg%3E"),
+        /* 2. ГРАДИЕНТЫ ПОД НИМ */
+        radial-gradient(circle at 50% 40%, rgba(30, 20, 10, 0.6) 0%, transparent 70%),
+        radial-gradient(circle at 0% 0%, rgba(201, 150, 63, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 100% 100%, rgba(201, 150, 63, 0.08) 0%, transparent 40%) !important;
+    background-size: 120px 120px, cover, cover, cover !important;
+    background-repeat: repeat, no-repeat, no-repeat, no-repeat !important;
+}
+
+.cp-modal-overlay::before {
+    display: none !important;
+}
+
+.cp-modal-right,
+.cp-modal-inner-wrapper {
+    background: transparent !important;
+}
+
 
 /* Декоративная вертикальная линия */
 .cp-modal-right::before {

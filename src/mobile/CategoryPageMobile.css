@@ -28,7 +28,8 @@
     overflow-x: hidden;
     padding-bottom: 120px;
     position: relative;
-    touch-action: pan-y; /* Важно для свайпа */
+    touch-action: pan-y;
+    /* Важно для свайпа */
 }
 
 /* ── КАЗАХСКИЙ ОРНАМЕНТ (ФОН) — ЭФФЕКТ «ПРОЯВЛЕНИЯ» СВЕТОМ ── */
@@ -121,12 +122,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 15px; /* Уменьшил паддинги для мобилки */
+    padding: 12px 15px;
+    /* Уменьшил паддинги для мобилки */
     border-bottom: 1px solid var(--gold-dim);
     gap: 10px;
 }
-.cp-topbar > span {
-    white-space: nowrap; /* Счетчик не переносим */
+
+.cp-topbar>span {
+    white-space: nowrap;
+    /* Счетчик не переносим */
 }
 
 .cp-modal-map {
@@ -246,7 +250,8 @@
 .cp-header-logo {
     height: 100%;
     width: auto;
-    max-width: 120px; /* Чтобы длинная надпись i18n не выдавила лого */
+    max-width: 120px;
+    /* Чтобы длинная надпись i18n не выдавила лого */
     object-fit: contain;
 }
 
@@ -314,7 +319,12 @@
     flex-wrap: wrap;
     width: 100%;
 }
-.cp-loc-row::-webkit-scrollbar { display: none; } /* Прячем скроллбар */
+
+.cp-loc-row::-webkit-scrollbar {
+    display: none;
+}
+
+/* Прячем скроллбар */
 
 .cp-loc-label {
     font-size: 0.6rem;
@@ -401,17 +411,21 @@
 
 .cp-hero-h span {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(1.4rem, 7vw, 3.2rem); /* Уменьшил базу для казахского */
+    font-size: clamp(1.4rem, 7vw, 3.2rem);
+    /* Уменьшил базу для казахского */
     color: var(--ivory);
     text-transform: uppercase;
-    letter-spacing: 1px; /* Плотнее для длинных слов */
+    letter-spacing: 1px;
+    /* Плотнее для длинных слов */
     line-height: 1.1;
     text-shadow: 0 0 10px rgba(0, 0, 0, 1), 0 0 25px rgba(0, 0, 0, 0.9);
     max-width: 95vw;
     display: block;
-    white-space: nowrap; /* ЗАПРЕТ ПЕРЕНОСА */
+    white-space: nowrap;
+    /* ЗАПРЕТ ПЕРЕНОСА */
     overflow: hidden;
-    text-overflow: ellipsis; /* Если совсем не влезет - многоточие */
+    text-overflow: ellipsis;
+    /* Если совсем не влезет - многоточие */
 }
 
 .cp-hero-sub {
@@ -440,12 +454,24 @@
     width: 100%;
     min-height: 100%;
     position: relative;
-    background: #000;
     margin: 0;
+
+    /* ─── RICH TURKIC BACKGROUND (FORCED VISIBILITY) ─── */
+    background-color: #080608;
+    background-image:
+        /* 1. SVG PATTERN ON TOP */
+        url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%27120%27%20height=%27120%27%20viewBox=%270%200%20120%20120%27%3E%3Cg%20fill=%27none%27%20stroke=%27%23c9963f%27%20stroke-width=%270.8%27%20opacity=%270.6%27%3E%3Cpath%20d=%27M60%204%20L116%2060%20L60%20116%20L4%2060%20Z%27/%3E%3Cpath%20d=%27M60%2022%20L98%2060%20L60%2098%20L22%2060%20Z%27/%3E%3Cline%20x1=%2760%27%20y1=%274%27%20x2=%2760%27%20y2=%27116%27/%3E%3Cline%20x1=%274%27%20y1=%2760%27%20x2=%27116%27%20y2=%2760%27/%3E%3Cline%20x1=%2716%27%20y1=%2716%27%20x2=%27104%27%20y2=%27104%27/%3E%3Cline%20x1=%27104%27%20y1=%2716%27%20x2=%2716%27%20y2=%27104%27/%3E%3Ccircle%20cx=%2760%27%20cy=%2760%27%20r=%2710%27/%3E%3Ccircle%20cx=%2760%27%20cy=%2760%27%20r=%2718%27/%3E%3Ccircle%20cx=%2760%27%20cy=%274%27%20r=%273%27/%3E%3Ccircle%20cx=%2760%27%20cy=%27116%27%20r=%273%27/%3E%3Ccircle%20cx=%274%27%20cy=%2760%27%20r=%273%27/%3E%3Ccircle%20cx=%27116%27%20cy=%2760%27%20r=%273%27/%3E%3Crect%20x=%2756%27%20y=%2756%27%20width=%278%27%20height=%278%27%20transform=%27rotate(45%2060%2060)%27/%3E%3C/g%3E%3C/svg%3E"),
+        /* 2. GRADIENTS BELOW */
+        radial-gradient(ellipse 100% 70% at 50% 40%, rgba(100, 70, 30, 0.4) 0%, transparent 80%),
+        radial-gradient(ellipse at 0% 0%, rgba(201, 150, 63, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 0%, rgba(201, 150, 63, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 100%, rgba(201, 150, 63, 0.1) 0%, transparent 60%);
+    background-size: 120px 120px, auto, auto, auto, auto;
+    background-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat;
 }
 
 .cp-modal-bottom-fade {
-    display: none;
+    display: none !important;
 }
 
 @media (max-width: 768px) {
@@ -454,6 +480,7 @@
         flex-direction: column !important;
         overflow-y: auto !important;
     }
+
     .cp-modal-left {
         display: block !important;
         width: 100% !important;
@@ -463,12 +490,14 @@
         position: relative !important;
         z-index: 2 !important;
     }
+
     .cp-modal-main-img {
         display: block !important;
         width: 100% !important;
         height: 100% !important;
         object-fit: cover !important;
     }
+
     .cp-modal-bottom-fade {
         display: block !important;
         position: absolute;
@@ -476,22 +505,27 @@
         left: 0;
         width: 100%;
         height: 150px;
-        background: linear-gradient(to bottom, transparent, #000) !important;
+        background: none !important;
+        /* УБРАЛИ ГРАДИЕНТ */
         pointer-events: none;
         z-index: 5 !important;
     }
+
     .cp-modal-right {
         display: block !important;
         width: 100% !important;
         padding: 30px 20px !important;
         position: relative !important;
         z-index: 10 !important;
-        background: #000 !important;
+        background: transparent !important;
+        /* СДЕЛАЛИ ПРОЗРАЧНЫМ */
     }
+
     /* Скрываем ПК-шную правую растушевку на мобилке */
     .cp-modal-img-fade {
         display: none !important;
     }
+
     /* Галерея превью — поверх растушевки */
     .cp-modal-thumbs {
         z-index: 20 !important;
@@ -756,6 +790,9 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* Перенесли маску сюда, чтобы не «съедались» превьюшки */
+    -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+    mask-image: linear-gradient(to right, black 85%, transparent 100%);
 }
 
 .cp-modal-img-fade {
@@ -772,7 +809,7 @@
     display: flex;
     gap: 8px;
     padding: 20px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    background: none !important; /* УБРАЛИ ЧЕРНЫЙ ФОН ПРЕВЬЮШЕК */
 }
 
 .cp-thumb {
@@ -886,7 +923,7 @@
     text-transform: uppercase;
     color: var(--gold);
     margin: 0 0 20px;
-    opacity: 0.8;
+    opacity: 0.;
 }
 
 .cp-mini-grid {
@@ -949,6 +986,13 @@
         width: 100%;
         height: 35vh;
         flex: 0 0 35vh;
+        -webkit-mask-image: none !important;
+        mask-image: none !important; /* УБРАЛИ МАСКУ ОТСЮДА */
+    }
+
+    .cp-modal-main-img {
+        -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%) !important;
+        mask-image: linear-gradient(to bottom, black 80%, transparent 100%) !important;
     }
 
     .cp-modal-right {
@@ -957,7 +1001,7 @@
     }
 
     .cp-modal-img-fade {
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.97) 20%, transparent 100%);
+        background: none;
     }
 
     .cp-modal-title {
@@ -993,8 +1037,10 @@
     .cp-mosaic-grid-mobile {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
-        gap: 8px !important; /* Уменьшил зазор */
-        padding: 5px !important; /* Уменьшил паддинги по бокам */
+        gap: 8px !important;
+        /* Уменьшил зазор */
+        padding: 5px !important;
+        /* Уменьшил паддинги по бокам */
         align-items: start;
     }
 
@@ -1003,7 +1049,8 @@
     }
 
     .cp-double-arch {
-        height: 360px !important; /* Та самая высота, которая понравилась */
+        height: 360px !important;
+        /* Та самая высота, которая понравилась */
         padding: 3px;
         background: var(--gold);
         clip-path: polygon(50% 0%, 88% 8%, 100% 20%, 100% 80%, 88% 92%, 50% 100%, 12% 92%, 0% 80%, 0% 20%, 12% 8%);
@@ -1058,4 +1105,34 @@
         line-clamp: 5;
         -webkit-box-orient: vertical;
     }
+}
+
+
+/* ⚡️ ГЛАВНЫЙ ПУЛЬТ УПРАВЛЕНИЯ ФОНОМ ⚡️ */
+.cp-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 12000;
+    display: flex;
+    background-color: #050407 !important;
+    background-image:
+        radial-gradient(circle at 50% 40%, rgba(30, 20, 10, 0.6) 0%, transparent 70%),
+        radial-gradient(circle at 0% 0%, rgba(201, 150, 63, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 100% 100%, rgba(201, 150, 63, 0.08) 0%, transparent 40%) !important;
+    background-size: cover !important;
+    overflow-y: auto !important;
+}
+
+.cp-modal-overlay::before {
+    content: '' !important;
+    position: absolute !important;
+    inset: 0 !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+    display: block !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23c9963f' stroke-width='0.6' opacity='1'%3E%3Cpath d='M60 4 L116 60 L60 116 L4 60 Z'/%3E%3Cpath d='M60 22 L98 60 L60 98 L22 60 Z'/%3E%3Cline x1='60' y1='4' x2='60' y2='116'/%3E%3Cline x1='4' y1='60' x2='116' y2='60'/%3E%3Cline x1='16' y1='16' x2='104' y2='104'/%3E%3Cline x1='104' y1='16' x2='16' y2='104'/%3E%3Ccircle cx='60' cy='60' r='10'/%3E%3Ccircle cx='60' cy='60' r='18'/%3E%3Ccircle cx='60' cy='4' r='3'/%3E%3Ccircle cx='60' cy='116' r='3'/%3E%3Ccircle cx='4' cy='60' r='3'/%3E%3Ccircle cx='116' cy='60' r='3'/%3E%3Crect x='56' y='56' width='8' height='8' transform='rotate(45 60 60)'/%3E%3C/g%3E%3C/svg%3E") !important;
+    background-size: 120px 120px !important;
+
+    /* 👇 ВОТ ТУТ РЕГУЛИРУЙ ПРОЗРАЧНОСТЬ УЗОРА! (от 0 до 1) 👇 */
+    opacity: 0.17;
 }

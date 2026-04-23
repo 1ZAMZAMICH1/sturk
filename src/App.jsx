@@ -13,6 +13,7 @@ import GuidesPage from './components/GuidesPage';
 import AdminPanel from './admin/AdminPanel';
 import RegionalHistory from './components/RegionalHistory';
 import RegionalHistoryMobile from './mobile/RegionalHistoryMobile';
+import AIChat from './components/AIChat';
 
 function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -34,6 +35,7 @@ function App() {
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/history" element={isMobile ? <RegionalHistoryMobile /> : <RegionalHistory />} />
       </Routes>
+      <AIChat />
     </Router>
   );
 }

@@ -2,36 +2,31 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Ленивая загрузка компонентов
-const LandingPage = lazy(() => import('./components/LandingPage'));
-const LandingPageMobile = lazy(() => import('./mobile/LandingPageMobile'));
-const CategoryPage = lazy(() => import('./components/CategoryPage'));
-const CategoryPageMobile = lazy(() => import('./mobile/CategoryPageMobile'));
-const HotelsPage = lazy(() => import('./components/HotelsPage'));
-const HotelsPageMobile = lazy(() => import('./mobile/HotelsPageMobile'));
-const RestaurantsPage = lazy(() => import('./components/RestaurantsPage'));
-const RestaurantsPageMobile = lazy(() => import('./mobile/RestaurantsPageMobile'));
-const GuidesPage = lazy(() => import('./components/GuidesPage'));
-const AdminPanel = lazy(() => import('./admin/AdminPanel'));
-const RegionalHistory = lazy(() => import('./components/RegionalHistory'));
-const RegionalHistoryMobile = lazy(() => import('./mobile/RegionalHistoryMobile'));
-const AIChat = lazy(() => import('./components/AIChat'));
+// Обычные импорты для всех страниц (используются на локалке для стабильности)
+import LandingPage from './components/LandingPage';
+import LandingPageMobile from './mobile/LandingPageMobile';
+import CategoryPage from './components/CategoryPage';
+import CategoryPageMobile from './mobile/CategoryPageMobile';
+import HotelsPage from './components/HotelsPage';
+import HotelsPageMobile from './mobile/HotelsPageMobile';
+import RestaurantsPage from './components/RestaurantsPage';
+import RestaurantsPageMobile from './mobile/RestaurantsPageMobile';
+import GuidesPage from './components/GuidesPage';
+import AdminPanel from './admin/AdminPanel';
+import RegionalHistory from './components/RegionalHistory';
+import RegionalHistoryMobile from './mobile/RegionalHistoryMobile';
+import AIChat from './components/AIChat';
 
-// Простой загрузчик на время подгрузки чанков
-const LoadingFallback = () => (
-    <div style={{ 
-        width: '100vw', 
-        height: '100vh', 
-        background: '#1a0b05', 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center' 
-    }}>
-        <div className="loader-logo" style={{ color: '#c8a84b', fontSize: '1.5rem', fontFamily: 'serif' }}>
-            Turkistan Travel
-        </div>
-    </div>
-);
+// "Ленивые" версии для сервера
+const LazyCategoryPage = lazy(() => import('./components/CategoryPage'));
+const LazyCategoryPageMobile = lazy(() => import('./mobile/CategoryPageMobile'));
+const LazyGuidesPage = lazy(() => import('./components/GuidesPage'));
+const LazyAdminPanel = lazy(() => import('./admin/AdminPanel'));
+const LazyRegionalHistory = lazy(() => import('./components/RegionalHistory'));
+const LazyRegionalHistoryMobile = lazy(() => import('./mobile/RegionalHistoryMobile'));
+
+// Проверяем, находимся ли мы на сервере (Production)
+const isProd = import.meta.env.PROD;
 
 function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -44,18 +39,27 @@ function App() {
 
   return (
     <Router>
-      <Suspense fallback={<LoadingFallback />}>
+      <Suspense fallback={null}>
         <Routes>
+          {/* На лендинге и страницах с картами всегда используем прямые импорты для стабильности Leaflet */}
           <Route path="/" element={isMobile ? <LandingPageMobile /> : <LandingPage />} />
-          <Route path="/category/:id" element={isMobile ? <CategoryPageMobile /> : <CategoryPage />} />
           <Route path="/hotels" element={isMobile ? <HotelsPageMobile /> : <HotelsPage />} />
           <Route path="/restaurants" element={isMobile ? <RestaurantsPageMobile /> : <RestaurantsPage />} />
-          <Route path="/guides" element={<GuidesPage />} />
-          <Route path="/admin" element={<AdminPanel />} />
-          <Route path="/history" element={isMobile ? <RegionalHistoryMobile /> : <RegionalHistory />} />
+          
+          {/* Для остальных страниц на сервере используем Lazy, на локалке - обычные */}
+          <Route path="/category/:id" element={
+            isProd ? (isMobile ? <LazyCategoryPageMobile /> : <LazyCategoryPage />) : (isMobile ? <CategoryPageMobile /> : <CategoryPage />)
+          } />
+          
+          <Route path="/guides" element={isProd ? <LazyGuidesPage /> : <GuidesPage />} />
+          <Route path="/admin" element={isProd ? <LazyAdminPanel /> : <AdminPanel />} />
+          
+          <Route path="/history" element={
+            isProd ? (isMobile ? <LazyRegionalHistoryMobile /> : <LazyRegionalHistory />) : (isMobile ? <RegionalHistoryMobile /> : <RegionalHistory />)
+          } />
         </Routes>
-        <AIChat />
       </Suspense>
+      <AIChat />
     </Router>
   );
 }

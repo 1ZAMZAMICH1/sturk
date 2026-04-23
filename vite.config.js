@@ -5,13 +5,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-    rollupOptions: {
-      output: {
-        // Убрали ручное разделение, чтобы избежать конфликтов библиотек
-      }
-    },
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 1500,
     cssCodeSplit: true,
-    sourcemap: false
+    sourcemap: false,
+    minify: 'esbuild',
+    assetsInlineLimit: 4096 // Маленькие картинки превращаем в код, чтобы не плодить запросы
   }
 })

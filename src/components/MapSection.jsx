@@ -64,20 +64,25 @@ const MapResizeController = () => {
   useEffect(() => {
     if (!map) return;
 
-    // Немедленный вызов при монтировании
-    map.invalidateSize();
+    // Безопасный вызов invalidateSize
+    const safeInvalidate = () => {
+      if (map && map.getContainer()) {
+        map.invalidateSize();
+      }
+    };
+
+    safeInvalidate();
 
     // ResizeObserver — поймает точный момент изменения размера контейнера
     const container = map.getContainer();
     const observer = new ResizeObserver(() => {
-      map.invalidateSize();
+      safeInvalidate();
     });
     if (container) observer.observe(container);
 
-    // Принудительный вызов после анимации свитка (transition: 2.5s)
-    const t1 = setTimeout(() => map.invalidateSize(), 2600);
-    // Ещё один чуть позже на случай рендер-задержки
-    const t2 = setTimeout(() => map.invalidateSize(), 3000);
+    // Принудительный вызов после анимации свитка
+    const t1 = setTimeout(safeInvalidate, 2600);
+    const t2 = setTimeout(safeInvalidate, 3000);
 
     return () => {
       observer.disconnect();

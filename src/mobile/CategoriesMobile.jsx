@@ -267,17 +267,16 @@ const MobilePortalCard = ({ index, url, title, position, rotation, hoveredState,
   const activeUrl = archContentAssets[index % 3];
   const texture = useTexture(activeUrl);
 
-  const labelTexturesRU = useTexture([gor1, ist1, duh1]);
-  const labelTexturesKZ = useTexture([gor2kaz, ist2kaz, prir2kaz]);
-  const labelTexturesEN = useTexture([gor3en, ist3en, prir3en]);
-  const labelTexturesZH = useTexture([gor4zn, ist4zn, prir4zn]);
+  // ОПТИМИЗАЦИЯ: Грузим текстуры ТОЛЬКО для текущего языка (экономим 9-12 запросов)
+  const langAssets = useMemo(() => {
+    if (i18n.language === 'kz') return [gor2kaz, ist2kaz, prir2kaz];
+    if (i18n.language === 'en') return [gor3en, ist3en, prir3en];
+    if (i18n.language === 'zh') return [gor4zn, ist4zn, prir4zn];
+    return [gor1, ist1, duh1];
+  }, [i18n.language]);
 
-  const activeLabel = useMemo(() => {
-    if (i18n.language === 'kz') return labelTexturesKZ[index % 3];
-    if (i18n.language === 'en') return labelTexturesEN[index % 3];
-    if (i18n.language === 'zh') return labelTexturesZH[index % 3];
-    return labelTexturesRU[index % 3];
-  }, [i18n.language, index, labelTexturesKZ, labelTexturesEN, labelTexturesZH, labelTexturesRU]);
+  const labelTextures = useTexture(langAssets);
+  const activeLabel = labelTextures[index % 3];
 
   useFrame((state, delta) => {
     const dt = Math.min(delta, 0.1);
@@ -360,7 +359,13 @@ const MobilePortalCard = ({ index, url, title, position, rotation, hoveredState,
     >
       <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
         <mesh geometry={frameGeometry} position={[0, 0, -0.09]}>
-          <meshStandardMaterial color="#d4af37" metalness={0.9} roughness={0.3} envMapIntensity={1.5} />
+          <meshStandardMaterial 
+            color="#d4af37" 
+            metalness={0.7} 
+            roughness={0.2} 
+            emissive="#1a0b05"
+            emissiveIntensity={0.2}
+          />
         </mesh>
         <mesh geometry={imageGeometry} position={[0, 0, 0]}>
           <meshBasicMaterial map={texture} side={THREE.FrontSide} />
@@ -397,13 +402,16 @@ const CategoriesMobile = () => {
       </div>
 
       <Canvas camera={{ position: [0, 0, 24], fov: 42 }} style={{ touchAction: 'pan-y' }} dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: 'high-performance', stencil: false }}>
-        <Environment preset="city" blur={1} />
+        {/* Убрали тяжелый Environment для ускорения загрузки */}
         <color attach="background" args={['#1a0b05']} />
         <PetroglyphWall />
         <KeregeBackground />
-        <ambientLight intensity={0.6} />
-        <pointLight position={[0, 0, 10]} intensity={6.0} color="#ffaa00" distance={100} />
-        <spotLight position={[0, 15, 10]} intensity={5.0} color="#fff" angle={0.5} />
+        <ambientLight intensity={0.4} />
+        <hemisphereLight intensity={0.8} color="#ffffff" groundColor="#2a1a10" />
+        <directionalLight position={[10, 10, 10]} intensity={2.0} color="#ffffff" />
+        <directionalLight position={[-10, 0, -5]} intensity={1.5} color="#c8a84b" /> {/* Контурный свет */}
+        <pointLight position={[0, 0, 15]} intensity={3.0} color="#ffaa00" distance={100} />
+        <spotLight position={[0, 15, 10]} intensity={3.0} color="#fff" angle={0.5} />
 
         <group position={[0, -0.5, 0]} scale={1.1}>
           {archData.slice(0, 3).map((item, idx) => (
@@ -427,5 +435,10 @@ const CategoriesMobile = () => {
     </div>
   );
 };
+
+// Предзагрузка основных текстур для мобайла
+useTexture.preload(gor2);
+useTexture.preload(ist2);
+useTexture.preload(duh2);
 
 export default CategoriesMobile;

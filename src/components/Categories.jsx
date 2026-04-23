@@ -286,18 +286,16 @@ const PortalCard = ({ index, url, title, color, position, rotation, hoveredState
 
   const texture = useTexture(activeUrl);
   
-  // Выбор текстуры подписи в зависимости от языка
-  const labelTexturesRU = useTexture([gor1, ist1, duh1]);
-  const labelTexturesKZ = useTexture([gor2kaz, ist2kaz, prir2kaz]);
-  const labelTexturesEN = useTexture([gor3en, ist3en, prir3en]);
-  const labelTexturesZH = useTexture([gor4zn, ist4zn, prir4zn]);
-  
-  const activeLabel = useMemo(() => {
-    if (i18n.language === 'kz') return labelTexturesKZ[index % 3];
-    if (i18n.language === 'en') return labelTexturesEN[index % 3];
-    if (i18n.language === 'zh') return labelTexturesZH[index % 3];
-    return labelTexturesRU[index % 3];
-  }, [i18n.language, index, labelTexturesKZ, labelTexturesEN, labelTexturesZH, labelTexturesRU]);
+  // ОПТИМИЗАЦИЯ: Грузим только нужные подписи
+  const langAssets = useMemo(() => {
+    if (i18n.language === 'kz') return [gor2kaz, ist2kaz, prir2kaz];
+    if (i18n.language === 'en') return [gor3en, ist3en, prir3en];
+    if (i18n.language === 'zh') return [gor4zn, ist4zn, prir4zn];
+    return [gor1, ist1, duh1];
+  }, [i18n.language]);
+
+  const labelTextures = useTexture(langAssets);
+  const activeLabel = labelTextures[index % 3];
 
   useLayoutEffect(() => {
     if (activeLabel) {
@@ -500,5 +498,9 @@ const Categories = () => {
     </div>
   );
 };
+// Предзагрузка основных текстур (начинается сразу при загрузке JS)
+useTexture.preload(gor2);
+useTexture.preload(ist2);
+useTexture.preload(duh2);
 
-export default Categories;
+export default Categories;

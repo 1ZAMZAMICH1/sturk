@@ -198,11 +198,13 @@ const CategoryPage = () => {
     useEffect(() => {
         const loadAll = async () => {
             try {
-                // Загружаем данные по очереди, чтобы не злить Google параллельными запросами
-                const allHots = await fetchSheetData('hotels');
-                const allRestos = await fetchSheetData('restaurants');
-                const allGuides = await fetchSheetData('guides');
-                const allAtts = await fetchSheetData('attractions');
+                // Загружаем всё параллельно для максимальной скорости
+                const [allHots, allRestos, allGuides, allAtts] = await Promise.all([
+                    fetchSheetData('hotels'),
+                    fetchSheetData('restaurants'),
+                    fetchSheetData('guides'),
+                    fetchSheetData('attractions')
+                ]);
                 
                 const filteredData = (allAtts || []).filter(a => a.category_tag === catId || a.type === catId);
                 setData(filteredData);

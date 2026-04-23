@@ -2,12 +2,28 @@
 const GIST_ID = '422713639bb29643abef3fef6c220400';
 const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
 
-export const fetchSheetData = async (sheetName) => {
+// Кэш в памяти, чтобы не делать лишних запросов к Gist при навигации
+const dataCache = {};
+
+export const fetchSheetData = async (sheetName, forceRefresh = false) => {
+  // Если данные уже есть в кэше и мы не просим принудительно обновить - отдаем из памяти
+  if (dataCache[sheetName] && !forceRefresh) {
+    return dataCache[sheetName];
+  }
+
   try {
-    const response = await fetch(`https://gist.githubusercontent.com/1ZAMZAMICH1/${GIST_ID}/raw/${sheetName}.json?rnd=${Math.random()}`);
-    if (!response.ok) return [];
-    return await response.json();
-  } catch (e) { return []; }
+    // В продакшене кэшируем на 5 минут, если не форсируем обновление
+    const rnd = forceRefresh ? Math.random() : Math.floor(Date.now() / (1000 * 60 * 5));
+    const response = await fetch(`https://gist.githubusercontent.com/1ZAMZAMICH1/${GIST_ID}/raw/${sheetName}.json?rnd=${rnd}`);
+    
+    if (!response.ok) return dataCache[sheetName] || []; // Fallback к кэшу если сеть упала
+    
+    const data = await response.json();
+    dataCache[sheetName] = data; // Сохраняем в кэш
+    return data;
+  } catch (e) { 
+    return dataCache[sheetName] || []; 
+  }
 };
 
 export const updateAllGistData = async (sheetName, data) => {
@@ -47,7 +63,8 @@ export const updateAllGistData = async (sheetName, data) => {
 
 export const updateSheetData = async (sheetName, action, payload) => {
     try {
-        let currentData = await fetchSheetData(sheetName);
+        // При обновлении ВСЕГДА берем свежие данные из сети
+        let currentData = await fetchSheetData(sheetName, true);
         if (!Array.isArray(currentData)) currentData = [];
         let newData = [...currentData];
 
@@ -63,23 +80,22 @@ export const updateSheetData = async (sheetName, action, payload) => {
             }
         } else if (action === 'delete') {
             newData = newData.filter(item => {
-                // Пытаемся удалить по ID (самый надежный способ)
                 if (payload.id && String(item.id) === String(payload.id)) return false;
-                
-                // Если ID нет, пытаемся по атракшион айди
                 if (payload.attractionId && String(item.attractionId) === String(payload.attractionId)) return false;
-
-                // Если и этого нет (мусорная запись), чистим по заголовку и позиции
+                
                 const itemPos = Array.isArray(item.pos) ? item.pos.join(',') : String(item.pos);
                 const payloadPos = Array.isArray(payload.pos) ? payload.pos.join(',') : String(payload.pos);
-                
                 if (item.title === payload.title && itemPos === payloadPos) return false;
 
                 return true;
             });
         }
 
-        return await updateAllGistData(sheetName, newData);
+        const success = await updateAllGistData(sheetName, newData);
+        if (success) {
+            dataCache[sheetName] = newData; // Обновляем кэш в памяти
+        }
+        return success;
     } catch (e) {
         console.error(e);
         return false;

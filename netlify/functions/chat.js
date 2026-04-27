@@ -11,35 +11,55 @@ exports.handler = async (event, context) => {
     const { message, history = [] } = JSON.parse(event.body);
     const apiKey = process.env.GROQ_API_KEY;
 
-    // Пытаемся прочитать данные о Туркестане
+    // Пытаемся прочитать данные о Туркестане и новости/статьи
     let turkistanData = "";
+    let newsData = "";
+    const GIST_ID = '422713639bb29643abef3fef6c220400';
+
     try {
+      // 1. Загружаем основные объекты (отели, рестораны)
       const dataPath = path.resolve(__dirname, '../../res.json');
       const rawData = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+      const sites = rawData.slice(0, 30).map(item => 
+        `- ${item.name_ru || item.name_en} (${item.type}): ${item.priceTag || 'н/д'}`
+      ).join('\n');
+      turkistanData = sites;
+
+      // 2. Загружаем свежие новости и мероприятия из Gist
+      try {
+        const newsResponse = await fetch(`https://gist.githubusercontent.com/1ZAMZAMICH1/${GIST_ID}/raw/articles.json?rnd=${Math.random()}`);
+        if (newsResponse.ok) {
+          const articles = await newsResponse.json();
+          newsData = articles.map(a => 
+            `* [${a.date}] ${a.title}: ${a.excerpt || ''}`
+          ).join('\n');
+        }
+      } catch (e) {
+        console.error("News load error:", e);
+      }
       
-      // Создаем максимально сжатую выжимку для экономии места
-      const sites = rawData.slice(0, 40).map(item => {
-        return `${item.name_ru || item.name_en} (${item.type}): ${item.description_ru ? item.description_ru.substring(0, 80) : ''}... Цена: ${item.priceTag || 'н/д'}`;
-      }).join('\n');
-      
-      turkistanData = `Вот список некоторых объектов в Туркестане:\n${sites}`;
     } catch (e) {
       console.error("Data load error:", e);
-      turkistanData = "Данные о конкретных объектах временно недоступны, но отвечай на основе общих знаний о Туркестане.";
     }
 
-    const systemPrompt = `Ты — дружелюбный ИИ-гид по Туркестану (Казахстан). 
-    Твоя задача — помогать туристам находить интересные места, отели и рестораны.
-    Отвечай вежливо, давай конкретные рекомендации.
-    Используй данные ниже, если они подходят под запрос.
-    
-    КОНТЕКСТ ОБЪЕКТОВ:
+    const systemPrompt = `Ты — элитный ИИ-гид по Туркестану. 
+    Твоя задача — предоставлять информацию ВЕЛИКОЛЕПНО СТРУКТУРИРОВАННО.
+
+    ДАННЫЕ ОБ ОБЪЕКТАХ:
     ${turkistanData}
+
+    АКТУАЛЬНЫЕ НОВОСТИ И МЕРОПРИЯТИЯ:
+    ${newsData}
+
+    ПРАВИЛА ФОРМАТИРОВАНИЯ (ОБЯЗАТЕЛЬНО):
+    1. Используй **жирный шрифт** для названий мест и важных дат.
+    2. Используй маркированные списки для перечислений.
+    3. Разделяй мысли абзацами (двойной перенос строки).
+    4. Если спрашивают про мероприятия, ОБЯЗАТЕЛЬНО проверяй раздел "АКТУАЛЬНЫЕ НОВОСТИ".
+    5. Текст должен выглядеть премиально, как в дорогом путеводителе.
+    6. НИКАКИХ эмодзи (по запросу пользователя).
     
-    Правила:
-    1. Если не знаешь точного ответа, предлагай общие популярные места (Мавзолей Ходжи Ахмеда Ясави, Керуен-Сарай и т.д.).
-    2. Отвечай на языке пользователя (по умолчанию на русском).
-    3. Будь кратким, но гостеприимным.`;
+    Отвечай на языке пользователя. Будь экспертным, но лаконичным.`;
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -54,8 +74,8 @@ exports.handler = async (event, context) => {
           ...history,
           { role: 'user', content: message }
         ],
-        temperature: 0.7,
-        max_tokens: 800
+        temperature: 0.5, // Немного снизим для более стабильного форматирования
+        max_tokens: 1000
       })
     });
 

@@ -106,26 +106,26 @@ export const ExternalMapLinks = ({ lat, lng }) => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        padding: '10px 8px',
-                        background: 'rgba(200, 168, 75, 0.1)',
-                        border: '1px solid rgba(200, 168, 75, 0.3)',
+                        padding: '12px 10px',
+                        background: '#1a1410', // Темный фон для контраста на бумаге
+                        border: '1px solid #c8a84b',
                         borderRadius: '8px',
-                        color: '#c8a84b',
-                        fontSize: '0.7rem',
+                        color: '#c8a84b', // Золотой текст на темном фоне
+                        fontSize: '0.75rem',
                         textDecoration: 'none',
                         textTransform: 'uppercase',
-                        letterSpacing: '1px',
-                        fontWeight: '600',
+                        letterSpacing: '2px',
+                        fontWeight: '700',
                         transition: 'all 0.3s ease',
                         textAlign: 'center'
                     }}
                     onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'rgba(200, 168, 75, 0.2)';
-                        e.currentTarget.style.borderColor = '#c8a84b';
+                        e.currentTarget.style.background = '#251a0c'; // Чуть светлее черного на ховер
+                        e.currentTarget.style.borderColor = '#e8c97a';
                     }}
                     onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'rgba(200, 168, 75, 0.1)';
-                        e.currentTarget.style.borderColor = 'rgba(200, 168, 75, 0.3)';
+                        e.currentTarget.style.background = '#1a1410';
+                        e.currentTarget.style.borderColor = '#c8a84b';
                     }}
                 >
                     {link.name}

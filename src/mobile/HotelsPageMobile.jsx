@@ -53,9 +53,10 @@ export const Stars = ({ count }) => {
                     <path 
                         d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" 
                         fill={i < num ? "#d4af37" : "none"}
-                        stroke="#d4af37"
-                        strokeWidth="2"
+                        stroke="#1a1410" /* Темная обводка, чтобы звезда читалась на светлом фоне */
+                        strokeWidth="1"
                         strokeLinejoin="round"
+                        style={{ filter: i < num ? 'drop-shadow(0 0 2px rgba(212, 175, 55, 0.4))' : 'none' }}
                     />
                 </svg>
             ))}

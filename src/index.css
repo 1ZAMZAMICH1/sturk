@@ -11,3 +11,13 @@ html, body, #root {
   min-height: 100%;
   background-color: #1a1a1a;
 }
+
+/* Global Icon Fix: Prevent SVGs from expanding to 100% when styles are missing */
+.nav-icon-svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: middle;
+}

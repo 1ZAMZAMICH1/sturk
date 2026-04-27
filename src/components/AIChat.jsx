@@ -4,8 +4,16 @@ import './AIChat.css';
 import MagicOrbWebGL from './MagicOrbWebGL';
 
 const AIChat = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
+    const mobileTuning = {
+        orbBottom: 30,
+        hudHeight: 97,
+        hudBottom: 30
+    };
+
+    const isMobile = window.innerWidth < 768;
+
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
@@ -61,12 +69,13 @@ const AIChat = () => {
     return (
         <div className={`ai-chat-container ${isOpen ? 'open' : ''}`}>
             {/* ═══════════════════ ПОЛНОЭКРАННЫЙ HUD BAR ═══════════════════ */}
-            <div className="ai-hud-bar-wrapper">
+            <div className="ai-hud-bar-wrapper" style={isMobile ? { bottom: `${mobileTuning.hudBottom}px` } : {}}>
                 <svg
                     className="ai-hud-bar-svg"
                     viewBox="0 -30 1440 130"
-                    preserveAspectRatio="xMidYMax meet"
+                    preserveAspectRatio={isMobile ? "xMidYMax slice" : "xMidYMax meet"}
                     xmlns="http://www.w3.org/2000/svg"
+                    style={isMobile ? { height: `${mobileTuning.hudHeight}px` } : {}}
                 >
                     <defs>
                         {/* Основной золотой градиент (по горизонтали: тёмный → золото → светлый → золото → тёмный) */}
@@ -150,8 +159,7 @@ const AIChat = () => {
                     <path d="M 640 8 Q 672 -4, 720 -6 Q 768 -4, 800 8"
                         fill="none" stroke="#ffe066" strokeWidth="1.2" opacity="0.6"/>
 
-                    {/* Синее подсвечивание ниши под шаром */}
-                    <ellipse cx="720" cy="10" rx="90" ry="18" fill="#00b3ff" opacity="0.08" filter="url(#orbGlow)"/>
+                    {/* СИНЕЕ ПОДСВЕЧИВАНИЕ УБРАНО ПО ЗАПРОСУ */}
 
                     {/* Боковые якорные крюки возле шара */}
                     <path d="M 640 8 L 640 30 Q 640 44, 628 48 L 598 58" fill="none" stroke="url(#hudGold)" strokeWidth="2.2" strokeLinecap="round"/>
@@ -172,7 +180,11 @@ const AIChat = () => {
             </div>
 
             {/* МАГИЧЕСКАЯ ТЮРКСКАЯ СФЕРА (Кнопка чата) */}
-            <div className={`ai-orb-trigger ${loading ? 'ai-loading' : ''}`} onClick={() => setIsOpen(!isOpen)}>
+            <div 
+                className={`ai-orb-trigger ${loading ? 'ai-loading' : ''}`} 
+                onClick={() => setIsOpen(!isOpen)}
+                style={isMobile ? { bottom: `${mobileTuning.orbBottom}px` } : {}}
+            >
                 
                 {/* 3D Фрактал от Sabosugi (на фоне) */}
                 <MagicOrbWebGL />

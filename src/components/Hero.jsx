@@ -4,6 +4,7 @@ import { Canvas } from '@react-three/fiber';
 import { Clouds, Cloud, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import { useNavigate } from 'react-router-dom';
+import AIChat from './AIChat';
 import './Hero.css';
 import heroTextImgRU from '../assets/hero-text.png';
 import heroTextImgKZ from '../assets/hero-textkz.png';
@@ -130,6 +131,7 @@ const Hero = () => {
       </div>
 
       <div className="hero-transition-bottom"></div>
+      <AIChat />
     </div>
   );
 };

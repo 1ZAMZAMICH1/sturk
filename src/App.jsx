@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // Только Лендинг и Чат грузим сразу, чтобы они были видны мгновенно
 import LandingPage from './components/LandingPage';
 import LandingPageMobile from './mobile/LandingPageMobile';
-import AIChat from './components/AIChat';
 
 // ВСЕ остальные страницы делаем "ленивыми". 
 // Т.к. StrictMode отключен, конфликтов с картами (Leaflet) быть не должно.
@@ -42,7 +41,6 @@ function App() {
           <Route path="/history" element={isMobile ? <RegionalHistoryMobile /> : <RegionalHistory />} />
         </Routes>
       </Suspense>
-      <AIChat />
     </Router>
   );
 }

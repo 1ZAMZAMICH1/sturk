@@ -8,8 +8,8 @@ const MagicOrbWebGL = () => {
     const mountRef = useRef(null);
 
     useEffect(() => {
-        const width = 80;
-        const height = 80;
+        const width = mountRef.current.clientWidth || 80;
+        const height = mountRef.current.clientHeight || 80;
 
         // 1. Scene Setup
         const scene = new THREE.Scene();

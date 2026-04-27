@@ -4,6 +4,7 @@ import { Canvas } from '@react-three/fiber';
 import { Clouds, Cloud, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import { useNavigate } from 'react-router-dom';
+import AIChat from '../components/AIChat';
 import './HeroMobile.css';
 import heroTextImgRU from '../assets/hero-text.png';
 import heroTextImgKZ from '../assets/hero-textkz.png';
@@ -124,6 +125,7 @@ const HeroMobile = () => {
       <div className="vignette-overlay-mob" style={{ zIndex: 21 }}></div>
       <div className="hero-trans-bottom-mob" style={{ zIndex: 22 }}></div>
 
+      <AIChat />
     </div>
   );
 };

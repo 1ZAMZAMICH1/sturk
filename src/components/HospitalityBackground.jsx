@@ -22,6 +22,7 @@ const HospitalityBackground = () => {
             <div className="sticky-bg-content">
                 {canvasReady ? (
                     <Canvas camera={{ position: [0, 0, 10], fov: 50 }} style={{ touchAction: 'pan-y' }} dpr={[1, 1.5]} gl={{ alpha: false, antialias: false, powerPreference: 'high-performance' }}>
+                        <color attach="background" args={['#2a0a0a']} />
                         <DarkAtmosphere />
                     </Canvas>
                 ) : (

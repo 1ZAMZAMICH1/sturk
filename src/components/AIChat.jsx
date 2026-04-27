@@ -60,6 +60,117 @@ const AIChat = () => {
 
     return (
         <div className={`ai-chat-container ${isOpen ? 'open' : ''}`}>
+            {/* ═══════════════════ ПОЛНОЭКРАННЫЙ HUD BAR ═══════════════════ */}
+            <div className="ai-hud-bar-wrapper">
+                <svg
+                    className="ai-hud-bar-svg"
+                    viewBox="0 -30 1440 130"
+                    preserveAspectRatio="xMidYMax meet"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <defs>
+                        {/* Основной золотой градиент (по горизонтали: тёмный → золото → светлый → золото → тёмный) */}
+                        <linearGradient id="hudGold" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%"   stopColor="#1a0f00"/>
+                            <stop offset="8%"   stopColor="#7a5010"/>
+                            <stop offset="20%"  stopColor="#c8a84b"/>
+                            <stop offset="35%"  stopColor="#ffd700"/>
+                            <stop offset="50%"  stopColor="#fff5a0"/>
+                            <stop offset="65%"  stopColor="#ffd700"/>
+                            <stop offset="80%"  stopColor="#c8a84b"/>
+                            <stop offset="92%"  stopColor="#7a5010"/>
+                            <stop offset="100%" stopColor="#1a0f00"/>
+                        </linearGradient>
+
+                        {/* Вертикальный градиент для объёмной панели */}
+                        <linearGradient id="hudPanelGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%"  stopColor="#4a3510" stopOpacity="0.9"/>
+                            <stop offset="40%" stopColor="#1a0f00" stopOpacity="0.97"/>
+                            <stop offset="100%" stopColor="#0a0500" stopOpacity="1"/>
+                        </linearGradient>
+
+                        {/* Градиент для свечения снизу (магическое) */}
+                        <linearGradient id="hudGlowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%"   stopColor="#00b3ff" stopOpacity="0"/>
+                            <stop offset="30%"  stopColor="#00b3ff" stopOpacity="0.15"/>
+                            <stop offset="50%"  stopColor="#00cfff" stopOpacity="0.4"/>
+                            <stop offset="70%"  stopColor="#00b3ff" stopOpacity="0.15"/>
+                            <stop offset="100%" stopColor="#00b3ff" stopOpacity="0"/>
+                        </linearGradient>
+
+                        {/* Золотое свечение верхней линии */}
+                        <filter id="goldGlow" x="-5%" y="-100%" width="110%" height="350%">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur"/>
+                            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                        </filter>
+
+                        {/* Синее свечение орба */}
+                        <filter id="orbGlow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+                            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                        </filter>
+
+                        {/* Паттерн геометрический (ромбы) */}
+                        <pattern id="hudPattern" x="0" y="0" width="24" height="20" patternUnits="userSpaceOnUse">
+                            <polygon points="12,0 24,10 12,20 0,10" fill="none" stroke="#c8a84b" strokeWidth="0.4" opacity="0.3"/>
+                        </pattern>
+
+                        {/* Клип прямой*/}
+                        <clipPath id="hudClip">
+                            <rect x="0" y="0" width="1440" height="100"/>
+                        </clipPath>
+                    </defs>
+
+                    {/* Фон полностью прозрачный — только линии и декор */}
+
+
+                    {/* === ТЮРКСКИЕ ДЕКОРАТИВНЫЕ ЭЛЕМЕНТЫ === */}
+
+                    {/* --- ЛЕВЫЙ ОРНАМЕНТАЛЬНЫЙ БЛОК --- */}
+                    {/* Скобка-когть L1 */}
+                    <path d="M 570 8 L 570 35 Q 570 50, 555 55 L 480 70 Q 460 75, 440 70 L 0 70"
+                        fill="none" stroke="url(#hudGold)" strokeWidth="1.5" opacity="0.7"/>
+                    {/* Скобка-когть L2 чуть выше */}
+                    <path d="M 600 8 L 600 28 Q 600 40, 588 44 L 520 58 Q 505 62, 490 60 L 0 60"
+                        fill="none" stroke="#c8a84b" strokeWidth="0.8" opacity="0.45"/>
+
+
+                    {/* --- ПРАВЫЙ ОРНАМЕНТАЛЬНЫЙ БЛОК (зеркально) --- */}
+                    <path d="M 870 8 L 870 35 Q 870 50, 885 55 L 960 70 Q 980 75, 1000 70 L 1440 70"
+                        fill="none" stroke="url(#hudGold)" strokeWidth="1.5" opacity="0.7"/>
+                    <path d="M 840 8 L 840 28 Q 840 40, 852 44 L 920 58 Q 935 62, 950 60 L 1440 60"
+                        fill="none" stroke="#c8a84b" strokeWidth="0.8" opacity="0.45"/>
+
+
+                    {/* === ЦЕНТРАЛЬНЫЙ АРТЕФАКТ (гнездо шара) === */}
+                    {/* Большая центральная арка */}
+                    <path d="M 620 8 Q 660 -12, 720 -14 Q 780 -12, 820 8"
+                        fill="none" stroke="url(#hudGold)" strokeWidth="3" filter="url(#goldGlow)"/>
+                    {/* Внутренняя арка */}
+                    <path d="M 640 8 Q 672 -4, 720 -6 Q 768 -4, 800 8"
+                        fill="none" stroke="#ffe066" strokeWidth="1.2" opacity="0.6"/>
+
+                    {/* Синее подсвечивание ниши под шаром */}
+                    <ellipse cx="720" cy="10" rx="90" ry="18" fill="#00b3ff" opacity="0.08" filter="url(#orbGlow)"/>
+
+                    {/* Боковые якорные крюки возле шара */}
+                    <path d="M 640 8 L 640 30 Q 640 44, 628 48 L 598 58" fill="none" stroke="url(#hudGold)" strokeWidth="2.2" strokeLinecap="round"/>
+                    <path d="M 800 8 L 800 30 Q 800 44, 812 48 L 842 58" fill="none" stroke="url(#hudGold)" strokeWidth="2.2" strokeLinecap="round"/>
+
+                    {/* Малые декор. круги у основания крюков */}
+                    <circle cx="598" cy="60" r="4" fill="none" stroke="#ffd700" strokeWidth="1.5" opacity="0.8"/>
+                    <circle cx="842" cy="60" r="4" fill="none" stroke="#ffd700" strokeWidth="1.5" opacity="0.8"/>
+
+                    {/* Центральный крупный ромб-разделитель */}
+                    <polygon points="720,1 730,11 720,21 710,11" fill="#daa520" opacity="0.9" stroke="#fff8b0" strokeWidth="0.8" filter="url(#goldGlow)"/>
+
+                    {/* Малые декор точки по верху */}
+                    {[660, 680, 700, 740, 760, 780].map(x => (
+                        <circle key={x} cx={x} cy="8" r="1.5" fill="#ffd700" opacity="0.7"/>
+                    ))}
+                </svg>
+            </div>
+
             {/* МАГИЧЕСКАЯ ТЮРКСКАЯ СФЕРА (Кнопка чата) */}
             <div className={`ai-orb-trigger ${loading ? 'ai-loading' : ''}`} onClick={() => setIsOpen(!isOpen)}>
                 

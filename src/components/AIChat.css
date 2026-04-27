@@ -15,8 +15,8 @@
     bottom: 25px;
     left: 50%;
     transform: translateX(-50%);
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     cursor: pointer;
     pointer-events: auto;
     z-index: 100;
@@ -62,7 +62,7 @@
 /* Окно чата (появляется по центру над шаром) */
 .ai-chat-window {
     position: absolute;
-    bottom: 160px;
+    bottom: 120px;
     left: 50%;
     transform: translateX(-50%) translateY(30px);
     width: 420px;
@@ -253,11 +253,29 @@
 @media (max-width: 768px) {
     .ai-chat-window {
         width: calc(100vw - 30px);
-        bottom: 140px;
+        bottom: 110px;
     }
     .ai-orb-trigger {
-        width: 90px;
-        height: 90px;
+        width: 60px;
+        height: 60px;
         bottom: 15px;
     }
+}
+
+/* ═══════════ Полноэкранный HUD BAR ═══════════ */
+.ai-hud-bar-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 130px;
+    pointer-events: none;
+    z-index: 50;
+    overflow: visible;
+}
+
+.ai-hud-bar-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
 }

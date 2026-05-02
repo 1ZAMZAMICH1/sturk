@@ -489,11 +489,7 @@ const Categories = () => {
   }, []);
 
   return (
-    <div className="categories-container" style={{ 
-      position: 'relative', 
-      opacity: isReady ? 1 : 0, 
-      transition: 'opacity 0.8s ease' 
-    }}>
+    <div className="categories-container" style={{ position: 'relative' }}>
       <div className="categories-transition-top"></div>
 
       <div className="categories-header">
@@ -506,7 +502,7 @@ const Categories = () => {
         gl={{ powerPreference: "high-performance", antialias: true }}
       >
         <Suspense fallback={null}>
-          {isReady && <CategoriesScene onSelectCategory={(url) => navigate(url)} />}
+          <CategoriesScene onSelectCategory={(url) => navigate(url)} />
         </Suspense>
       </Canvas>
     </div>

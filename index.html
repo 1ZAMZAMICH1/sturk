@@ -4,7 +4,19 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>turkistan-travel</title>
+    <title>Turkistan Travel Guide</title>
+
+    <!-- ⚡ ПРЕДЗАГРУЗКА КРИТИЧЕСКИХ АССЕТОВ ⚡ -->
+    <!-- Браузер начнет качать их ПЕРВЫМ ДЕЛОМ, еще до выполнения JS -->
+    <link rel="preload" as="image" href="/src/assets/hero-text.png" fetchpriority="high">
+    <link rel="preload" as="image" href="/src/assets/scroll-paper.png">
+    <link rel="preload" as="image" href="/src/assets/scroll-left.png">
+    <link rel="preload" as="image" href="/src/assets/scroll-right.png">
+    <link rel="preload" as="image" href="/src/assets/gor2.png">
+    <link rel="preload" as="image" href="/src/assets/ist2.png">
+    <link rel="preload" as="image" href="/src/assets/duh2.png">
+    
+    <!-- Предзагрузка шрифтов (если есть) или других важных ресурсов можно добавить сюда -->
   </head>
   <body>
     <div id="root"></div>

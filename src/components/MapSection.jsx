@@ -262,7 +262,7 @@ const MapSection = () => {
       </div>
 
       {/* СВИТОК */}
-      <div className={`scroll-container ${isOpen && isScrollFullyReady ? 'open' : ''}`} style={{ opacity: isScrollFullyReady ? 1 : 0, transition: 'opacity 0.5s ease' }}>
+      <div className={`scroll-container ${isOpen ? 'open' : ''}`}>
         <div className="roller-wrapper left">
           <img src={rollerLeftImg} alt="" className="roller-img" fetchpriority="high" />
         </div>

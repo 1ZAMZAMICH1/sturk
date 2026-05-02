@@ -264,11 +264,11 @@ const MapSection = () => {
       {/* СВИТОК */}
       <div className={`scroll-container ${isOpen ? 'open' : ''}`}>
         <div className="roller-wrapper left">
-          <img src={rollerLeftImg} alt="" className="roller-img" fetchpriority="high" />
+          <img src={rollerLeftImg} alt="" className="roller-img" fetchPriority="high" />
         </div>
 
         <div className="paper-center">
-          <img src={paperTextureImg} className="paper-bg-image" alt="" fetchpriority="high" />
+          <img src={paperTextureImg} className="paper-bg-image" alt="" fetchPriority="high" />
           <div className="map-mask-wrapper" style={{
             maskImage: `url(${paperTextureImg})`,
             WebkitMaskImage: `url(${paperTextureImg})`,
@@ -388,7 +388,7 @@ const MapSection = () => {
         </div>
 
         <div className="roller-wrapper right">
-          <img src={rollerRightImg} alt="" className="roller-img" fetchpriority="high" />
+          <img src={rollerRightImg} alt="" className="roller-img" fetchPriority="high" />
         </div>
       </div>
 

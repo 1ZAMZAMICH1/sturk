@@ -420,7 +420,7 @@ const PortalCard = ({ index, url, title, color, position, rotation, hoveredState
 };
 
 // --- СЦЕНА ---
-function CategoriesScene({ onSelectCategory }) {
+function CategoriesScene({ isReady, onSelectCategory }) {
   const [hovered, setHovered] = useState(null);
   const [archData] = useState([
     { tag: 'city', title: 'Городские', url: cityImg, color: '#40e0d0' },
@@ -449,7 +449,7 @@ function CategoriesScene({ onSelectCategory }) {
       <spotLight position={[0, 10, 5]} intensity={3} color="#fff" angle={0.5} />
 
       <group position={[0, -0.5, 0]}>
-        {archData.slice(0, 3).map((item, idx) => (
+        {isReady && archData.slice(0, 3).map((item, idx) => (
           <PortalCard
             key={idx}
             index={idx}
@@ -502,7 +502,7 @@ const Categories = () => {
         gl={{ powerPreference: "high-performance", antialias: true }}
       >
         <Suspense fallback={null}>
-          <CategoriesScene onSelectCategory={(url) => navigate(url)} />
+          <CategoriesScene isReady={isReady} onSelectCategory={(url) => navigate(url)} />
         </Suspense>
       </Canvas>
     </div>

@@ -116,7 +116,7 @@ const Hero = () => {
           src={currentHeroImg}
           alt="Turkistan"
           onLoad={() => setImgLoaded(true)}
-          fetchpriority="high"
+          fetchPriority="high"
           loading="eager"
           className={`hero-text-image ${isReady && imgLoaded ? 'visible' : ''}`}
           style={{

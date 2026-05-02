@@ -1,7 +1,7 @@
 import React, { useState, memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Canvas } from '@react-three/fiber';
-import { Clouds, Cloud, Sparkles } from '@react-three/drei';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Clouds, Cloud, Sparkles, Stats } from '@react-three/drei';
 import * as THREE from 'three';
 import { useNavigate } from 'react-router-dom';
 import AIChat from '../components/AIChat';
@@ -90,6 +90,7 @@ const HeroMobile = () => {
             }}
             flat
         >
+            <Stats />
             <ambientLight intensity={1.2 * (import.meta.env.PROD ? 3.0 : 1.0)} />
             <pointLight position={[10, 10, 10]} color="#ff7b00" intensity={5.0 * (import.meta.env.PROD ? 3.0 : 1.0)} />
             <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={3.0} />

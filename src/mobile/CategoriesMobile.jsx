@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import * as THREE from 'three';
 import { useNavigate } from 'react-router-dom';
 import { Canvas, useFrame, extend } from '@react-three/fiber';
-import { useTexture, shaderMaterial, Environment, Float } from '@react-three/drei';
+import { useTexture, shaderMaterial, Environment, Float, Stats } from '@react-three/drei';
 import './CategoriesMobile.css';
 
 // Импорт картинок
@@ -402,6 +402,7 @@ const CategoriesMobile = () => {
       </div>
 
       <Canvas camera={{ position: [0, 0, 24], fov: 42 }} style={{ touchAction: 'pan-y' }} dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: 'high-performance', stencil: false }}>
+        <Stats />
         {/* Убрали тяжелый Environment для ускорения загрузки */}
         <color attach="background" args={['#1a0b05']} />
         <PetroglyphWall />

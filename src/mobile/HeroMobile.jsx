@@ -14,17 +14,17 @@ import heroTextImgZH from '../assets/hero-textzh.png';
 const MemoizedClouds = memo(() => {
   const cloudConfig = (
     <>
-      <Cloud seed={10} segments={80} bounds={[30, 20, 1]} volume={60} color="#1a0b05" position={[0, 0, -18]} speed={0} opacity={1} />
-      <Cloud seed={20} segments={60} bounds={[25, 18, 2]} volume={40} color="#2e1608" position={[0, 0, -14]} speed={0.02} opacity={0.95} />
-      <Cloud seed={30} segments={45} bounds={[20, 15, 3]} volume={30} color="#542a0c" position={[0, 0, -10]} speed={0.05} opacity={0.85} />
-      <Cloud seed={40} segments={35} bounds={[18, 12, 3]} volume={25} color="#783c12" position={[0, 0, -6]} speed={0.08} opacity={0.7} />
-      <Cloud seed={50} segments={30} bounds={[15, 10, 2]} volume={20} color="#9c5219" position={[0, 0, -2]} speed={0.12} opacity={0.6} />
-      <Cloud seed={60} segments={25} bounds={[12, 8, 2]} volume={15} color="#b86e28" position={[0, 0, 2]} speed={0.2} opacity={0.4} />
+      <Cloud seed={10} segments={30} bounds={[50, 40, 2]} volume={80} color="#1a0b05" position={[0, 0, -18]} speed={0} opacity={1} scale={3.5} />
+      <Cloud seed={20} segments={25} bounds={[40, 30, 5]} volume={60} color="#2e1608" position={[0, 0, -14]} speed={0.02} opacity={0.95} scale={3.0} />
+      <Cloud seed={30} segments={20} bounds={[35, 25, 6]} volume={50} color="#542a0c" position={[0, 0, -10]} speed={0.05} opacity={0.85} scale={2.5} />
+      <Cloud seed={40} segments={15} bounds={[30, 20, 6]} volume={40} color="#783c12" position={[0, 0, -6]} speed={0.08} opacity={0.7} scale={2.0} />
+      <Cloud seed={50} segments={10} bounds={[25, 15, 4]} volume={30} color="#9c5219" position={[0, 0, -2]} speed={0.12} opacity={0.6} scale={1.5} />
+      <Cloud seed={60} segments={10} bounds={[20, 12, 4]} volume={20} color="#b86e28" position={[0, 0, 2]} speed={0.2} opacity={0.4} scale={1.2} />
     </>
   );
   return (
     <group rotation={import.meta.env.PROD ? [0, 0, Math.PI] : [0, 0, 0]}>
-      <Clouds material={THREE.MeshBasicMaterial} limit={400} frustumCulled={true}>{cloudConfig}</Clouds>
+      <Clouds material={THREE.MeshBasicMaterial} limit={150} frustumCulled={true}>{cloudConfig}</Clouds>
     </group>
   );
 });
@@ -75,18 +75,19 @@ const HeroMobile = () => {
       <div style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' }}>
         <Canvas
             camera={{ position: [0, 0, 14], fov: 60, up: [0, 1, 0] }}
-            style={{ width: '100%', height: '100%' }}
-            dpr={[1, 1.5]}
+            style={{ touchAction: 'pan-y' }}
+            dpr={1}
             gl={{
-              antialias: true,
-              powerPreference: "high-performance",
-              alpha: false,
-              stencil: false,
-              depth: true,
+                antialias: false,
+                powerPreference: "high-performance",
+                alpha: false,
+                stencil: false,
+                depth: true,
+                precision: 'lowp'
             }}
             onCreated={({ gl }) => {
-              gl.setClearColor('#1a0b05');
-              setTimeout(() => setIsReady(true), 200);
+                gl.setClearColor('#1a0b05');
+                setTimeout(() => setIsReady(true), 200);
             }}
             flat
         >
@@ -94,8 +95,11 @@ const HeroMobile = () => {
             <ambientLight intensity={1.2 * (import.meta.env.PROD ? 3.0 : 1.0)} />
             <pointLight position={[10, 10, 10]} color="#ff7b00" intensity={5.0 * (import.meta.env.PROD ? 3.0 : 1.0)} />
             <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={3.0} />
-            <Sparkles count={800} scale={[40, 30, 2]} position={[0, 0, 10]} size={2} speed={0.4} opacity={1} color="#ffcc66" noise={1} />
+            
+            <Sparkles count={150} scale={[40, 30, 2]} position={[0, 0, 10]} size={2} speed={0.4} opacity={1} color="#ffcc66" noise={1} />
+
             <MemoizedClouds />
+
             <color attach="background" args={['#1a0b05']} />
             <fog attach="fog" args={['#1a0b05', 5, 40]} />
         </Canvas>

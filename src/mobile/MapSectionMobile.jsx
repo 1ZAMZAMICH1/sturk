@@ -70,11 +70,11 @@ const MobileMapBackground = React.memo(() => (
     <ambientLight intensity={0.6} />
     <pointLight position={[10, 10, 10]} color="#ffd700" intensity={2.5} />
     <pointLight position={[-10, -5, -5]} color="#d4af37" intensity={1.5} />
-    <Clouds material={THREE.MeshBasicMaterial} limit={400}>
-      <Cloud seed={10} segments={40} bounds={[50, 40, 2]} volume={60} color="#3b251a" position={[0, 0, -20]} speed={0} opacity={0.9} />
-      <Cloud seed={20} segments={30} bounds={[40, 30, 5]} volume={40} color="#5c4033" position={[0, 0, -16]} speed={0.02} opacity={0.8} />
-      <Cloud seed={30} segments={25} bounds={[35, 25, 6]} volume={30} color="#8c6b4a" position={[0, 0, -12]} speed={0.05} opacity={0.6} />
-      <Cloud seed={40} segments={20} bounds={[30, 20, 6]} volume={25} color="#a67c52" position={[0, 0, -8]} speed={0.08} opacity={0.4} />
+    <Clouds material={THREE.MeshBasicMaterial} limit={100}>
+      <Cloud seed={10} segments={15} bounds={[50, 40, 2]} volume={80} color="#3b251a" position={[0, 0, -20]} speed={0} opacity={0.9} scale={3} />
+      <Cloud seed={20} segments={10} bounds={[40, 30, 5]} volume={60} color="#5c4033" position={[0, 0, -16]} speed={0.02} opacity={0.8} scale={2.5} />
+      <Cloud seed={30} segments={8} bounds={[35, 25, 6]} volume={50} color="#8c6b4a" position={[0, 0, -12]} speed={0.05} opacity={0.6} scale={2} />
+      <Cloud seed={40} segments={5} bounds={[30, 20, 6]} volume={40} color="#a67c52" position={[0, 0, -8]} speed={0.08} opacity={0.4} scale={1.5} />
     </Clouds>
     <color attach="background" args={['#261912']} />
     <fog attach="fog" args={['#261912', 5, 45]} />
@@ -146,7 +146,17 @@ const MapSectionMobile = () => {
     <div className={`map-mob-root ${isOpen ? 'open' : ''}`}>
 
       <div className="mob-hero-bg">
-        <Canvas camera={{ position:[0,0,14], fov:60 }} dpr={1} gl={{ antialias: false, powerPreference: 'high-performance', depth: true, stencil: false }}>
+        <Canvas 
+          camera={{ position:[0,0,14], fov:60 }} 
+          dpr={1} 
+          gl={{ 
+            antialias: false, 
+            powerPreference: 'high-performance', 
+            depth: true, 
+            stencil: false,
+            precision: 'lowp'
+          }}
+        >
           <MobileMapBackground />
         </Canvas>
         <div className="mob-color-grade" />

@@ -401,7 +401,17 @@ const CategoriesMobile = () => {
         <h2 className="cat-mob-title" style={{ whiteSpace: 'nowrap' }}>{t('categories.title')}</h2>
       </div>
 
-      <Canvas camera={{ position: [0, 0, 24], fov: 42 }} style={{ touchAction: 'pan-y' }} dpr={[1, 1.5]} gl={{ antialias: true, powerPreference: 'high-performance', stencil: false }}>
+      <Canvas 
+        camera={{ position: [0, 0, 24], fov: 42 }} 
+        style={{ touchAction: 'pan-y' }} 
+        dpr={1} 
+        gl={{ 
+          antialias: false, 
+          powerPreference: 'high-performance', 
+          stencil: false,
+          precision: 'lowp'
+        }}
+      >
         <Stats />
         {/* Убрали тяжелый Environment для ускорения загрузки */}
         <color attach="background" args={['#1a0b05']} />

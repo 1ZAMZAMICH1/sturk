@@ -19,7 +19,17 @@ const HospitalityBackground = () => {
     return (
         <div className="hosp-canvas-container shared-background">
             <div className="sticky-bg-content">
-                <Canvas camera={{ position: [0, 0, 10], fov: 50 }} style={{ touchAction: 'pan-y' }} dpr={[1, 1.5]} gl={{ alpha: false, antialias: false, powerPreference: 'high-performance' }}>
+                <Canvas 
+                    camera={{ position: [0, 0, 10], fov: 50 }} 
+                    style={{ touchAction: 'pan-y' }} 
+                    dpr={1} 
+                    gl={{ 
+                        alpha: false, 
+                        antialias: false, 
+                        powerPreference: 'high-performance',
+                        precision: 'lowp'
+                    }}
+                >
                     <color attach="background" args={['#2a0a0a']} />
                     <DarkAtmosphere />
                 </Canvas>

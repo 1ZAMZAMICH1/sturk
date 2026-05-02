@@ -258,27 +258,22 @@ const Guides = () => {
     return () => { isMounted = false; clearAll(); };
   }, [loading, guides.length]);
 
-  const { ref: sectionRef, inView: canvasReady } = useInView({ rootMargin: '400px' });
 
-  if (loading) return <div ref={sectionRef} className="guides-section loading-center">{t('guides.loading')}</div>;
+  if (loading) return <div className="guides-section loading-center">{t('guides.loading')}</div>;
 
   return (
-    <div ref={sectionRef} className="guides-section">
+    <div className="guides-section">
       <div className="noise-overlay"></div>
       <div className="vignette-guides"></div>
       <div className="center-text-container">
         <h2 className="center-title">{t('guides.title')}</h2>
       </div>
       <div className="guides-canvas-container">
-        {canvasReady ? (
-          <Canvas camera={{ position: [0, 0, 12], fov: 45 }} dpr={[1, 2]}>
-            <React.Suspense fallback={null}>
-              <GuidesScene page={page} allGuides={guides} openSignals={openSignals} />
-            </React.Suspense>
-          </Canvas>
-        ) : (
-          <div style={{ width: '100%', height: '100%', background: '#181614' }} />
-        )}
+        <Canvas camera={{ position: [0, 0, 12], fov: 45 }} dpr={[1, 1.5]}>
+          <React.Suspense fallback={null}>
+            <GuidesScene page={page} allGuides={guides} openSignals={openSignals} />
+          </React.Suspense>
+        </Canvas>
       </div>
       <Link to="/guides" className="guides-explore-link">
         {t('guides.btn')}

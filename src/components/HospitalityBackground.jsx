@@ -16,18 +16,13 @@ const DarkAtmosphere = () => {
 };
 
 const HospitalityBackground = () => {
-    const { ref: sectionRef, inView: canvasReady } = useInView({ rootMargin: '400px' });
     return (
-        <div ref={sectionRef} className="hosp-canvas-container shared-background">
+        <div className="hosp-canvas-container shared-background">
             <div className="sticky-bg-content">
-                {canvasReady ? (
-                    <Canvas camera={{ position: [0, 0, 10], fov: 50 }} style={{ touchAction: 'pan-y' }} dpr={[1, 1.5]} gl={{ alpha: false, antialias: false, powerPreference: 'high-performance' }}>
-                        <color attach="background" args={['#2a0a0a']} />
-                        <DarkAtmosphere />
-                    </Canvas>
-                ) : (
-                    <div style={{ width: '100%', height: '100%', background: '#2a0a0a' }} />
-                )}
+                <Canvas camera={{ position: [0, 0, 10], fov: 50 }} style={{ touchAction: 'pan-y' }} dpr={[1, 1.5]} gl={{ alpha: false, antialias: false, powerPreference: 'high-performance' }}>
+                    <color attach="background" args={['#2a0a0a']} />
+                    <DarkAtmosphere />
+                </Canvas>
                 <div className="fabric-texture-overlay"></div>
                 <div className="warm-vignette"></div>
             </div>

@@ -132,7 +132,6 @@ const HeroBackgroundScene = React.memo(() => {
 
 const MapSection = () => {
   const { t, i18n } = useTranslation();
-  const { ref: sectionRef, inView: canvasReady } = useInView({ rootMargin: '300px' });
   const [isOpen, setIsOpen] = useState(false);
   const [filter, setFilter] = useState('all');
   const [activePoint, setActivePoint] = useState(null);
@@ -232,19 +231,15 @@ const MapSection = () => {
   };
 
   return (
-    <div ref={sectionRef} className={`map-section ${isOpen ? 'open' : ''}`}>
+    <div className={`map-section ${isOpen ? 'open' : ''}`}>
 
       <div className="map-transition-bottom"></div>
 
-      {/* 3D ФОН — грузится только когда секция видна */}
+      {/* 3D ФОН — грузится сразу */}
       <div className="hero-bg-container">
-        {canvasReady ? (
-          <Canvas camera={{ position: [0, 0, 14], fov: 60 }} dpr={[1, 1.5]}>
-            <HeroBackgroundScene />
-          </Canvas>
-        ) : (
-          <div style={{ width: '100%', height: '100%', background: '#261912' }} />
-        )}
+        <Canvas camera={{ position: [0, 0, 14], fov: 60 }} dpr={[1, 1.5]}>
+          <HeroBackgroundScene />
+        </Canvas>
         <div className="color-grade-overlay"></div>
       </div>
 

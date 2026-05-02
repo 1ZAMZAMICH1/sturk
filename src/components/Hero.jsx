@@ -95,14 +95,12 @@ const Hero = () => {
         }}
         onCreated={({ gl }) => {
           gl.setClearColor('#1a0b05');
-          setTimeout(() => setIsReady(true), 200);
+          setTimeout(() => setIsReady(true), 150);
         }}
         flat
       >
-        {/* Boost light in production to compensate for darker rendering */}
         <ambientLight intensity={1.2 * (import.meta.env.PROD ? 3.0 : 1.0)} />
         <pointLight position={[10, 10, 10]} color="#ff7b00" intensity={5.0 * (import.meta.env.PROD ? 3.0 : 1.0)} />
-        <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={3.0} />
         <pointLight position={[-10, -10, -5]} color="#8a3324" intensity={3.0} />
         <Sparkles count={800} scale={[40, 30, 2]} position={[0, 0, 10]} size={2} speed={0.4} opacity={1} color="#ffcc66" noise={1} />
 

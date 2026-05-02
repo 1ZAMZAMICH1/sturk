@@ -472,29 +472,24 @@ function CategoriesScene({ onSelectCategory }) {
 const Categories = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { ref: sectionRef, inView: canvasReady } = useInView({ rootMargin: '300px' });
 
   return (
-    <div ref={sectionRef} className="categories-container" style={{ position: 'relative' }}>
+    <div className="categories-container" style={{ position: 'relative' }}>
       <div className="categories-transition-top"></div>
 
       <div className="categories-header">
         <h2 className="categories-title">{t('categories.title')}</h2>
       </div>
 
-      {canvasReady ? (
-        <Canvas
-          camera={{ position: [0, 0, 9], fov: 50 }}
-          dpr={[1, 2]}
-          gl={{ powerPreference: "high-performance", antialias: true }}
-        >
-          <Suspense fallback={null}>
-            <CategoriesScene onSelectCategory={(url) => navigate(url)} />
-          </Suspense>
-        </Canvas>
-      ) : (
-        <div style={{ width: '100%', flex: 1, background: '#1a0b05' }} />
-      )}
+      <Canvas
+        camera={{ position: [0, 0, 9], fov: 50 }}
+        dpr={[1, 1.5]}
+        gl={{ powerPreference: "high-performance", antialias: true }}
+      >
+        <Suspense fallback={null}>
+          <CategoriesScene onSelectCategory={(url) => navigate(url)} />
+        </Suspense>
+      </Canvas>
     </div>
   );
 };

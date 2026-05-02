@@ -13,58 +13,54 @@ import TransitionDivider from './TransitionDivider';
 
 import { useInView } from '../hooks/useInView';
 
-const LazySection = ({ children, height = '100vh', nextBg, type = 'ornament' }) => {
-    const { ref, inView } = useInView({ rootMargin: '400px', once: true });
-    return (
-        <section ref={ref} style={{ minHeight: height, background: inView ? 'transparent' : '#1a0b05' }}>
-            {inView ? (
-                <>
-                    {children}
-                    {nextBg && <TransitionDivider type={type} nextBg={nextBg} />}
-                </>
-            ) : <div style={{ height }} />}
-        </section>
-    );
-};
-
 const LandingPage = () => {
     return (
         <div className="App">
-            {/* 1. HERO - Всегда грузим сразу */}
+            {/* 1. HERO */}
             <section style={{ height: '100vh' }}>
                 <Hero />
             </section>
 
             <TransitionDivider type="ornament" nextBg="#1a0b05" />
 
-            {/* ОСТАЛЬНЫЕ СЕКЦИИ — лениво через Intersection Observer */}
-            <LazySection nextBg="#261912">
+            {/* 2. CATEGORIES */}
+            <section style={{ height: '100vh' }}>
                 <Categories />
-            </LazySection>
+            </section>
 
-            <LazySection nextBg="#2a0a0a">
+            <TransitionDivider type="ornament" nextBg="#261912" />
+
+            {/* 3. MAP */}
+            <section style={{ height: '100vh' }}>
                 <MapSection />
-            </LazySection>
+            </section>
 
-            <LazySection nextBg="#1a0b05">
-                <div className="hospitality-hotels-wrapper" style={{ position: 'relative' }}>
-                    <HospitalityBackground />
-                    <section style={{ height: '100vh', position: 'relative' }}>
-                        <Hospitality />
-                    </section>
-                    <section style={{ height: '100vh', position: 'relative' }}>
-                        <Hotels />
-                    </section>
-                </div>
-            </LazySection>
+            <TransitionDivider type="ornament" nextBg="#2a0a0a" />
 
-            <LazySection nextBg="#181614">
+            {/* 4. HOSPITALITY & HOTELS */}
+            <div className="hospitality-hotels-wrapper" style={{ position: 'relative' }}>
+                <HospitalityBackground />
+                <section style={{ height: '100vh', position: 'relative' }}>
+                    <Hospitality />
+                </section>
+                <section style={{ height: '100vh', position: 'relative' }}>
+                    <Hotels />
+                </section>
+            </div>
+
+            <TransitionDivider type="ornament" nextBg="#1a0b05" />
+
+            {/* 5. GUIDES */}
+            <section style={{ height: '100vh' }}>
                 <Guides />
-            </LazySection>
+            </section>
 
-            <LazySection>
+            <TransitionDivider type="ornament" nextBg="#181614" />
+
+            {/* 6. ARTICLES (News) */}
+            <section style={{ height: '100vh' }}>
                 <Articles />
-            </LazySection>
+            </section>
         </div>
     );
 };

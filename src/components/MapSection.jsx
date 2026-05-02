@@ -143,8 +143,21 @@ const MapSection = () => {
   const [activeRouteId, setActiveRouteId] = useState(null); // Новый стейт для выбора маршрута
   const navigate = useNavigate();
 
+  const [scrollReady, setScrollReady] = useState({ left: false, right: false, paper: false });
+  const isScrollFullyReady = scrollReady.left && scrollReady.right && scrollReady.paper;
+
   useEffect(() => {
     const loadData = async () => {
+      // Предзагрузка изображений свитка для мгновенного появления
+      const preloadImg = (src, key) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => setScrollReady(prev => ({ ...prev, [key]: true }));
+      };
+      preloadImg(rollerLeftImg, 'left');
+      preloadImg(rollerRightImg, 'right');
+      preloadImg(paperTextureImg, 'paper');
+
       const [points, routes, atts, hots, restos] = await Promise.all([
         fetchSheetData('map_points'),
         fetchSheetData('map_routes'),
@@ -249,13 +262,13 @@ const MapSection = () => {
       </div>
 
       {/* СВИТОК */}
-      <div className={`scroll-container ${isOpen ? 'open' : ''}`}>
+      <div className={`scroll-container ${isOpen && isScrollFullyReady ? 'open' : ''}`} style={{ opacity: isScrollFullyReady ? 1 : 0, transition: 'opacity 0.5s ease' }}>
         <div className="roller-wrapper left">
-          <img src={rollerLeftImg} alt="" className="roller-img" />
+          <img src={rollerLeftImg} alt="" className="roller-img" fetchpriority="high" />
         </div>
 
         <div className="paper-center">
-          <img src={paperTextureImg} className="paper-bg-image" alt="" />
+          <img src={paperTextureImg} className="paper-bg-image" alt="" fetchpriority="high" />
           <div className="map-mask-wrapper" style={{
             maskImage: `url(${paperTextureImg})`,
             WebkitMaskImage: `url(${paperTextureImg})`,
@@ -375,7 +388,7 @@ const MapSection = () => {
         </div>
 
         <div className="roller-wrapper right">
-          <img src={rollerRightImg} alt="" className="roller-img" />
+          <img src={rollerRightImg} alt="" className="roller-img" fetchpriority="high" />
         </div>
       </div>
 

@@ -472,9 +472,28 @@ function CategoriesScene({ onSelectCategory }) {
 const Categories = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [isReady, setIsReady] = useState(false);
+
+  // Оптимизация: предзагрузка через нативный Image API для контроля готовности
+  useEffect(() => {
+    const criticalAssets = [gor2, ist2, duh2];
+    let loadedCount = 0;
+    criticalAssets.forEach(src => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === criticalAssets.length) setIsReady(true);
+      };
+    });
+  }, []);
 
   return (
-    <div className="categories-container" style={{ position: 'relative' }}>
+    <div className="categories-container" style={{ 
+      position: 'relative', 
+      opacity: isReady ? 1 : 0, 
+      transition: 'opacity 0.8s ease' 
+    }}>
       <div className="categories-transition-top"></div>
 
       <div className="categories-header">
@@ -483,11 +502,11 @@ const Categories = () => {
 
       <Canvas
         camera={{ position: [0, 0, 9], fov: 50 }}
-        dpr={[1, 1.5]}
+        dpr={Math.min(window.devicePixelRatio, 1.5)} // Оптимизируем DPR для скорости
         gl={{ powerPreference: "high-performance", antialias: true }}
       >
         <Suspense fallback={null}>
-          <CategoriesScene onSelectCategory={(url) => navigate(url)} />
+          {isReady && <CategoriesScene onSelectCategory={(url) => navigate(url)} />}
         </Suspense>
       </Canvas>
     </div>

@@ -63,6 +63,8 @@ const Hero = () => {
   };
 
 
+  const [imgLoaded, setImgLoaded] = useState(false);
+
   return (
     <div className="hero-container">
       <div className="texture-overlay"></div>
@@ -115,7 +117,10 @@ const Hero = () => {
           key={`hero-text-${i18n.language}`}
           src={currentHeroImg}
           alt="Turkistan"
-          className={`hero-text-image ${isReady ? 'visible' : ''}`}
+          onLoad={() => setImgLoaded(true)}
+          fetchpriority="high"
+          loading="eager"
+          className={`hero-text-image ${isReady && imgLoaded ? 'visible' : ''}`}
           style={{
             transform: `translate(${currentOffset.x}px, ${currentOffset.y}px)`,
           }}

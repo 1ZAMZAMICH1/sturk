@@ -57,7 +57,7 @@ const Hotels = () => {
                                 style={{ cursor: 'pointer' }}
                             >
                                 <div className="khan-img-box">
-                                    <img src={item.image || item.img} alt={item.name || item.title} />
+                                    <img src={item.image || item.img} alt={item.name || item.title} loading="lazy" />
                                     <div className="grain-overlay"></div>
                                 </div>
                                 <div className="khan-border">

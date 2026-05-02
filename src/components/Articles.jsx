@@ -137,7 +137,7 @@ const Articles = () => {
                 </div>
                 <div className="card-body">
                   <div className="image-container">
-                    <img src={article.image} alt={localizedTitle} />
+                    <img src={article.image} alt={localizedTitle} loading="lazy" />
                     <span className="category-tag">{article.category}</span>
                   </div>
                   <h3>{localizedTitle}</h3>

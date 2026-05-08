@@ -11,6 +11,10 @@ const MagicOrbWebGL = () => {
         const width = mountRef.current.clientWidth || 80;
         const height = mountRef.current.clientHeight || 80;
 
+        // 🟢 ДЕТЕКТОР ПРОИЗВОДИТЕЛЬНОСТИ
+        const ua = navigator.userAgent;
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+        
         // 1. Scene Setup
         const scene = new THREE.Scene();
 
@@ -19,11 +23,10 @@ const MagicOrbWebGL = () => {
         camera.position.set(0, 0, 6);
 
         // 3. Renderer Setup
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true });
         renderer.setSize(width, height);
-        renderer.setClearColor(0x000000, 0); // Прозрачный 
+        renderer.setClearColor(0x000000, 0); 
         
-        // Settings strictly defined by user tuning
         const params = {
             primaryEnergy: '#00b3ff', 
             secondaryEnergy: '#2e9aff', 
@@ -34,7 +37,8 @@ const MagicOrbWebGL = () => {
             orbRotation: 0.89,
             density: 3.0, 
             chromaticAberration: 0.035,
-            dpr: 2.0,
+            // 🟢 ТРЮК: На мобилках снижаем DPR для скорости
+            dpr: isMobile ? 1.2 : 2.0,
             internalAnim: 0.43, 
             smoothness: 0.088, 
             asymmetry: 0.55, 
@@ -252,7 +256,7 @@ const MagicOrbWebGL = () => {
             blending: THREE.AdditiveBlending
         });
 
-        const geometry = new THREE.SphereGeometry(2.0, 128, 128);
+        const geometry = new THREE.SphereGeometry(2.0, isMobile ? 64 : 128, isMobile ? 64 : 128);
         const orb = new THREE.Mesh(geometry, material);
         scene.add(orb);
 
@@ -301,12 +305,20 @@ const MagicOrbWebGL = () => {
         const caPass = new ShaderPass(ChromaticAberrationShader);
         composer.addPass(caPass);
 
-
         const clock = new THREE.Clock();
         let animationFrameId;
 
+        // 🟢 ТРЮК: Умный сон через IntersectionObserver
+        let isVisible = true;
+        const observer = new IntersectionObserver(([entry]) => {
+            isVisible = entry.isIntersecting;
+        }, { threshold: 0.1 });
+        if (mountRef.current) observer.observe(mountRef.current);
+
         function animate() {
             animationFrameId = requestAnimationFrame(animate);
+            if (!isVisible) return; // ПАУЗА, ЕСЛИ НЕ ВИДИМ
+
             const delta = clock.getDelta();
             uniforms.uTime.value += delta * params.speed;
             orb.rotation.y += delta * params.orbRotation;
@@ -323,6 +335,7 @@ const MagicOrbWebGL = () => {
 
         return () => {
             cancelAnimationFrame(animationFrameId);
+            observer.disconnect();
             if (mountRef.current && mountRef.current.contains(renderer.domElement)) {
                 mountRef.current.removeChild(renderer.domElement);
             }

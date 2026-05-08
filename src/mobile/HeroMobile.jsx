@@ -4,7 +4,6 @@ import { Canvas } from '@react-three/fiber';
 import { Clouds, Cloud, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import { useNavigate } from 'react-router-dom';
-import AIChat from '../components/AIChat';
 import './HeroMobile.css';
 
 import heroTextImgRU from '../assets/hero-text.png';
@@ -62,7 +61,7 @@ const MemoizedClouds = memo(() => {
 
   return (
     <group rotation={import.meta.env.PROD ? [0, 0, Math.PI] : [0, 0, 0]}>
-      <Clouds ref={cloudsRef} material={THREE.MeshBasicMaterial} limit={400} frustumCulled={true}>
+      <Clouds ref={cloudsRef} limit={400} frustumCulled={true}>
         {cloudConfig}
       </Clouds>
     </group>

@@ -68,11 +68,7 @@ const LandingPageMobile = () => {
 
             <TransitionDivider type="ornament" nextBg="#1a0b05" />
 
-            {/* 8. EXPERIMENTAL HERO (OPTIMIZED LAB) */}
-            <section ref={hero2Ref} style={{ minHeight: '100vh', width: '100%', position: 'relative' }}>
-                <h2 style={{ color: '#fff', textAlign: 'center', padding: '20px' }}>EXPERIMENTAL OPTIMIZED VERSION</h2>
-                <HeroMobile2 isInView={hero2InView} />
-            </section>
+
         </div>
     );
 };

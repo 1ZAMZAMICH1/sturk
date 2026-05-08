@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import HeroMobile from './HeroMobile';
+import HeroMobile2 from './HeroMobile2';
 import CategoriesMobile from './CategoriesMobile';
 import MapSectionMobile from './MapSectionMobile';
 import HospitalityMobile from './HospitalityMobile';
@@ -59,9 +60,16 @@ const LandingPageMobile = () => {
             <section style={{ minHeight: '100vh', width: '100%' }}>
                 <Articles />
             </section>
+
+            <TransitionDivider type="ornament" nextBg="#1a0b05" />
+
+            {/* 8. EXPERIMENTAL HERO (OPTIMIZED) */}
+            <section style={{ minHeight: '100vh', width: '100%', position: 'relative' }}>
+                <h2 style={{ color: '#fff', textAlign: 'center', padding: '20px' }}>EXPERIMENTAL OPTIMIZED VERSION</h2>
+                <HeroMobile2 isInView={true} />
+            </section>
         </div>
     );
 };
 
 export default LandingPageMobile;
-

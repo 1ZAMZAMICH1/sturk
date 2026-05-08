@@ -2,12 +2,9 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Только Лендинг и Чат грузим сразу, чтобы они были видны мгновенно
 import LandingPage from './components/LandingPage';
 import LandingPageMobile from './mobile/LandingPageMobile';
 
-// ВСЕ остальные страницы делаем "ленивыми". 
-// Т.к. StrictMode отключен, конфликтов с картами (Leaflet) быть не должно.
 const CategoryPage = lazy(() => import('./components/CategoryPage'));
 const CategoryPageMobile = lazy(() => import('./mobile/CategoryPageMobile'));
 const HotelsPage = lazy(() => import('./components/HotelsPage'));

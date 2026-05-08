@@ -155,7 +155,7 @@ const HeroMobile = ({ isInView = true }) => {
       <div className="vignette-overlay-mob" style={{ zIndex: 21 }}></div>
       <div className="hero-trans-bottom-mob" style={{ zIndex: 22 }}></div>
 
-      <AIChat />
+   
     </div>
   );
 };

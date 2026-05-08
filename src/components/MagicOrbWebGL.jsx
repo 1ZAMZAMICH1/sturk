@@ -11,18 +11,13 @@ const MagicOrbWebGL = () => {
         const width = mountRef.current.clientWidth || 80;
         const height = mountRef.current.clientHeight || 80;
 
-        // 🟢 ДЕТЕКТОР ПРОИЗВОДИТЕЛЬНОСТИ
         const ua = navigator.userAgent;
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
         
-        // 1. Scene Setup
         const scene = new THREE.Scene();
-
-        // 2. Camera Setup
         const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
         camera.position.set(0, 0, 6);
 
-        // 3. Renderer Setup
         const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true });
         renderer.setSize(width, height);
         renderer.setClearColor(0x000000, 0); 
@@ -37,8 +32,8 @@ const MagicOrbWebGL = () => {
             orbRotation: 0.89,
             density: 3.0, 
             chromaticAberration: 0.035,
-            // 🟢 ТРЮК: На мобилках снижаем DPR для скорости
-            dpr: isMobile ? 1.2 : 2.0,
+            // 🟢 ВЫКРУЧИВАЕМ СКОРОСТЬ НА МОБИЛКАХ
+            dpr: isMobile ? 0.75 : 2.0,
             internalAnim: 0.43, 
             smoothness: 0.088, 
             asymmetry: 0.55, 
@@ -57,7 +52,6 @@ const MagicOrbWebGL = () => {
             varying vec3 vLocalPosition;
             varying vec3 vNormal;
             varying vec3 vViewPosition;
-
             void main() {
                 vLocalPosition = position;
                 vNormal = normalize(normalMatrix * normal);
@@ -79,6 +73,7 @@ const MagicOrbWebGL = () => {
             uniform float uInternalAnim;
             uniform float uSmoothness;
             uniform float uAsymmetry;
+            uniform float uIsMobile; // Флаг мобилки
             
             varying vec3 vLocalPosition;
             varying vec3 vNormal;
@@ -87,12 +82,9 @@ const MagicOrbWebGL = () => {
             float evaluateStructure(vec3 pos) {
                 float densityAcc = 0.0;
                 vec3 anchor = pos;
-                
                 float animTime = uTime * uInternalAnim;
-                float s = sin(animTime);
-                float c = cos(animTime);
+                float s = sin(animTime); float c = cos(animTime);
                 mat2 rotAnim = mat2(c, s, -s, c);
-
                 float a = 0.5 * uAsymmetry;
                 mat2 rotAsym1 = mat2(cos(a), sin(a), -sin(a), cos(a));
                 float b = 0.3 * uAsymmetry;
@@ -100,27 +92,19 @@ const MagicOrbWebGL = () => {
                 
                 for (int step = 0; step < 12; ++step) {
                     if (float(step) >= uFractalIters) break;
-                    
-                    pos.xy *= rotAnim;
-                    pos.yz *= rotAnim;
-                    pos.xz *= rotAsym1;
-                    pos.yz *= rotAsym2;
+                    pos.xy *= rotAnim; pos.yz *= rotAnim;
+                    pos.xz *= rotAsym1; pos.yz *= rotAsym2;
                     pos += vec3(0.05, -0.02, 0.03) * uAsymmetry;
-                    
                     vec3 foldedPos = sqrt(pos * pos + uSmoothness);
                     float magnitudeSq = dot(foldedPos, foldedPos);
                     magnitudeSq = max(magnitudeSq, 0.00001); 
                     pos = (uFractalScale * foldedPos / magnitudeSq) - uFractalScale;
-                    
-                    float ySq = pos.y * pos.y;
-                    float zSq = pos.z * pos.z;
+                    float ySq = pos.y * pos.y; float zSq = pos.z * pos.z;
                     float yz2 = 2.0 * pos.y * pos.z;
                     pos.yz = vec2(ySq - zSq, yz2);
-                    
                     pos = vec3(pos.z, pos.x, pos.y);
                     densityAcc += exp(uFractalDecay * abs(dot(pos, anchor)));
                 }
-                
                 return densityAcc * 0.5;
             }
 
@@ -139,18 +123,19 @@ const MagicOrbWebGL = () => {
                 vec3 finalEnergy = vec3(0.0);
                 float fieldVal = 0.0;
                 
+                // 🟢 ОПТИМИЗАЦИЯ: В 2 раза меньше шагов на мобилках
+                int iterations = uIsMobile > 0.5 ? 32 : 64;
+
                 for(int i = 0; i < 64; i++) {
+                    if (i >= iterations) break;
                     currentDepth += marchStep * exp(-2.0 * fieldVal);
                     if(currentDepth > limits.y) break;
-                    
                     vec3 samplePoint = origin + currentDepth * dir;
                     fieldVal = evaluateStructure(samplePoint);
-                    
                     float vSq = fieldVal * fieldVal;
                     float gradientBlend = smoothstep(0.0, 0.4, fieldVal);
                     vec3 currentGradient = mix(uSecondaryColor, uPrimaryColor, gradientBlend);
                     vec3 emission = currentGradient * (fieldVal * 1.8 + vSq * 1.0);
-                    
                     finalEnergy = 0.99 * finalEnergy + (0.08 * uDensity) * emission;
                 }
                 return finalEnergy;
@@ -159,36 +144,27 @@ const MagicOrbWebGL = () => {
             void main() {
                 vec3 rayOrig = uLocalCamPos;
                 vec3 rayDir = normalize(vLocalPosition - uLocalCamPos);
-                
-                float t = uTime * 0.1;
-                float s = sin(t);
-                float c = cos(t);
+                float t = uTime * 0.1; float s = sin(t); float c = cos(t);
                 mat2 rotXZ = mat2(c, s, -s, c);
-                rayOrig.xz *= rotXZ;
-                rayDir.xz *= rotXZ;
-
+                rayOrig.xz *= rotXZ; rayDir.xz *= rotXZ;
                 vec2 limits = getVolumeBounds(rayOrig, rayDir, 2.0);
                 if (limits.x < 0.0) discard;
-                
                 vec3 volumeColor = traceEnergy(rayOrig, rayDir, limits);
-                
                 vec3 normal = normalize(vNormal);
                 vec3 viewDir = normalize(vViewPosition);
                 float facingRatio = max(dot(normal, viewDir), 0.0);
                 float edgeAA = smoothstep(0.0, 0.05, facingRatio);
-                
                 vec3 finalColor = 0.5 * log(1.0 + volumeColor);
                 finalColor = clamp(finalColor, 0.0, 1.0) * edgeAA;
-                
                 float maxLuma = max(finalColor.r, max(finalColor.g, finalColor.b));
                 float alpha = clamp(maxLuma * 1.5, 0.0, 1.0) * edgeAA;
-                
                 gl_FragColor = vec4(finalColor, alpha);
             }
         `;
 
         const uniforms = {
             uTime: { value: 0 },
+            uIsMobile: { value: isMobile ? 1.0 : 0.0 },
             uLocalCamPos: { value: new THREE.Vector3() },
             uPrimaryColor: { value: new THREE.Color(params.primaryEnergy) },
             uSecondaryColor: { value: new THREE.Color(params.secondaryEnergy) },
@@ -202,13 +178,8 @@ const MagicOrbWebGL = () => {
         };
 
         const material = new THREE.ShaderMaterial({
-            vertexShader,
-            fragmentShader,
-            uniforms,
-            transparent: true,
-            side: THREE.DoubleSide,
-            depthWrite: false,
-            blending: THREE.AdditiveBlending
+            vertexShader, fragmentShader, uniforms,
+            transparent: true, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending
         });
 
         const atmosphereVertexShader = `
@@ -223,14 +194,10 @@ const MagicOrbWebGL = () => {
         `;
 
         const atmosphereFragmentShader = `
-            uniform vec3 uColor;
-            uniform float uGlow;
-            uniform float uLevel;
-            varying vec3 vNormal;
-            varying vec3 vViewPosition;
+            uniform vec3 uColor; uniform float uGlow; uniform float uLevel;
+            varying vec3 vNormal; varying vec3 vViewPosition;
             void main() {
-                vec3 normal = normalize(vNormal);
-                vec3 viewDir = normalize(vViewPosition);
+                vec3 normal = normalize(vNormal); vec3 viewDir = normalize(vViewPosition);
                 float vdn = max(dot(normal, viewDir), 0.0);
                 float edgeFade = smoothstep(0.0, 0.15, vdn);
                 float innerFadePoint = clamp(1.0 - uLevel, 0.0, 0.99);
@@ -247,88 +214,48 @@ const MagicOrbWebGL = () => {
         };
 
         const atmosphereMaterial = new THREE.ShaderMaterial({
-            vertexShader: atmosphereVertexShader,
-            fragmentShader: atmosphereFragmentShader,
-            uniforms: atmosphereUniforms,
-            transparent: true,
-            side: THREE.FrontSide,
-            depthWrite: false,
-            blending: THREE.AdditiveBlending
+            vertexShader: atmosphereVertexShader, fragmentShader: atmosphereFragmentShader,
+            uniforms: atmosphereUniforms, transparent: true, side: THREE.FrontSide, depthWrite: false, blending: THREE.AdditiveBlending
         });
 
         const geometry = new THREE.SphereGeometry(2.0, isMobile ? 64 : 128, isMobile ? 64 : 128);
         const orb = new THREE.Mesh(geometry, material);
         scene.add(orb);
-
         const atmosphereMesh = new THREE.Mesh(geometry, atmosphereMaterial);
         atmosphereMesh.scale.set(params.atmosphereScale, params.atmosphereScale, params.atmosphereScale);
         orb.add(atmosphereMesh);
 
-        // Composer & Postprocessing
         const composer = new EffectComposer(renderer);
         composer.setPixelRatio(params.dpr);
         const renderPass = new RenderPass(scene, camera);
-        renderPass.clearColor = new THREE.Color(0,0,0);
-        renderPass.clearAlpha = 0;
+        renderPass.clearColor = new THREE.Color(0,0,0); renderPass.clearAlpha = 0;
         composer.addPass(renderPass);
         
         const ChromaticAberrationShader = {
-            uniforms: {
-                "tDiffuse": { value: null },
-                "uAmount": { value: params.chromaticAberration }
-            },
-            vertexShader: `
-                varying vec2 vUv;
-                void main() {
-                    vUv = uv;
-                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-                }
-            `,
-            fragmentShader: `
-                uniform sampler2D tDiffuse;
-                uniform float uAmount;
-                varying vec2 vUv;
-                void main() {
-                    vec4 baseColor = texture2D(tDiffuse, vUv);
-                    float luma = max(baseColor.r, max(baseColor.g, baseColor.b));
-                    float mask = smoothstep(0.01, 0.1, luma);
-                    vec2 offset = (vUv - 0.5) * uAmount;
-                    float r = texture2D(tDiffuse, vUv + offset).r;
-                    float g = texture2D(tDiffuse, vUv).g;
-                    float b = texture2D(tDiffuse, vUv - offset).b;
-                    vec3 aberratedColor = vec3(r, g, b);
-                    // Retain alpha channel
-                    gl_FragColor = vec4(mix(baseColor.rgb, aberratedColor, mask), baseColor.a);
-                }
-            `
+            uniforms: { "tDiffuse": { value: null }, "uAmount": { value: params.chromaticAberration } },
+            vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+            fragmentShader: `uniform sampler2D tDiffuse; uniform float uAmount; varying vec2 vUv; void main() { vec4 baseColor = texture2D(tDiffuse, vUv); float luma = max(baseColor.r, max(baseColor.g, baseColor.b)); float mask = smoothstep(0.01, 0.1, luma); vec2 offset = (vUv - 0.5) * uAmount; float r = texture2D(tDiffuse, vUv + offset).r; float g = texture2D(tDiffuse, vUv).g; float b = texture2D(tDiffuse, vUv - offset).b; vec3 aberratedColor = vec3(r, g, b); gl_FragColor = vec4(mix(baseColor.rgb, aberratedColor, mask), baseColor.a); }`
         };
         const caPass = new ShaderPass(ChromaticAberrationShader);
         composer.addPass(caPass);
 
         const clock = new THREE.Clock();
         let animationFrameId;
-
-        // 🟢 ТРЮК: Умный сон через IntersectionObserver
         let isVisible = true;
-        const observer = new IntersectionObserver(([entry]) => {
-            isVisible = entry.isIntersecting;
-        }, { threshold: 0.1 });
+        const observer = new IntersectionObserver(([entry]) => { isVisible = entry.isIntersecting; }, { threshold: 0.1 });
         if (mountRef.current) observer.observe(mountRef.current);
 
         function animate() {
             animationFrameId = requestAnimationFrame(animate);
-            if (!isVisible) return; // ПАУЗА, ЕСЛИ НЕ ВИДИМ
-
+            if (!isVisible) return; 
             const delta = clock.getDelta();
             uniforms.uTime.value += delta * params.speed;
             orb.rotation.y += delta * params.orbRotation;
             orb.rotation.x += delta * (params.orbRotation * 0.5);
             orb.updateMatrixWorld();
-            
             const localCam = new THREE.Vector3().copy(camera.position);
             orb.worldToLocal(localCam);
             uniforms.uLocalCamPos.value.copy(localCam);
-
             composer.render();
         }
         animate();
@@ -336,32 +263,12 @@ const MagicOrbWebGL = () => {
         return () => {
             cancelAnimationFrame(animationFrameId);
             observer.disconnect();
-            if (mountRef.current && mountRef.current.contains(renderer.domElement)) {
-                mountRef.current.removeChild(renderer.domElement);
-            }
-            geometry.dispose();
-            material.dispose();
-            atmosphereMaterial.dispose();
-            renderer.dispose();
+            if (mountRef.current && mountRef.current.contains(renderer.domElement)) mountRef.current.removeChild(renderer.domElement);
+            geometry.dispose(); material.dispose(); atmosphereMaterial.dispose(); renderer.dispose();
         };
     }, []);
 
-    return (
-        <div 
-            ref={mountRef} 
-            style={{ 
-                width: '100%', 
-                height: '100%', 
-                position: 'absolute', 
-                top: 0, 
-                left: 0, 
-                zIndex: -1,
-                borderRadius: '50%',
-                overflow: 'hidden',
-                backgroundColor: 'transparent'
-            }} 
-        />
-    );
+    return ( <div ref={mountRef} style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: -1, borderRadius: '50%', overflow: 'hidden', backgroundColor: 'transparent' }} /> );
 };
 
 export default MagicOrbWebGL;

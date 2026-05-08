@@ -1,6 +1,7 @@
 // src/mobile/LandingPageMobile.jsx
 
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
+import { useInView } from 'react-intersection-observer';
 import HeroMobile from './HeroMobile';
 import HeroMobile2 from './HeroMobile2';
 import CategoriesMobile from './CategoriesMobile';
@@ -13,11 +14,15 @@ import TransitionDivider from '../components/TransitionDivider';
 import HospitalityBackground from '../components/HospitalityBackground';
 
 const LandingPageMobile = () => {
+    // Детекторы видимости, чтобы Hero не работали одновременно
+    const { ref: hero1Ref, inView: hero1InView } = useInView({ threshold: 0.1 });
+    const { ref: hero2Ref, inView: hero2InView } = useInView({ threshold: 0.1 });
+
     return (
         <div className="App-mobile">
-            {/* 1. HERO */}
-            <section style={{ minHeight: '100vh', width: '100%', position: 'relative' }}>
-                <HeroMobile />
+            {/* 1. HERO (ORIGINAL / ADAPTIVE) */}
+            <section ref={hero1Ref} style={{ minHeight: '100vh', width: '100%', position: 'relative' }}>
+                <HeroMobile isInView={hero1InView} />
             </section>
 
             <TransitionDivider type="ornament" nextBg="#1a0b05" />
@@ -63,10 +68,10 @@ const LandingPageMobile = () => {
 
             <TransitionDivider type="ornament" nextBg="#1a0b05" />
 
-            {/* 8. EXPERIMENTAL HERO (OPTIMIZED) */}
-            <section style={{ minHeight: '100vh', width: '100%', position: 'relative' }}>
+            {/* 8. EXPERIMENTAL HERO (OPTIMIZED LAB) */}
+            <section ref={hero2Ref} style={{ minHeight: '100vh', width: '100%', position: 'relative' }}>
                 <h2 style={{ color: '#fff', textAlign: 'center', padding: '20px' }}>EXPERIMENTAL OPTIMIZED VERSION</h2>
-                <HeroMobile2 isInView={true} />
+                <HeroMobile2 isInView={hero2InView} />
             </section>
         </div>
     );
